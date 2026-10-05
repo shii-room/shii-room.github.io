@@ -233,7 +233,7 @@
 
   /* MESSAGE：匿名メッセージ */
   .mbox { max-width: 560px; }
-  .mbox__card { position: relative; margin-top: 22px; padding: 20px 20px 16px; border-radius: 20px; background: var(--white); box-shadow: 6px 6px 0 var(--rose); }
+  .mbox__card { position: relative; margin: 22px 8px 0 0; padding: 20px 20px 16px; border-radius: 20px; background: var(--white); box-shadow: 6px 6px 0 var(--rose); }
   .mbox__card textarea { display: block; width: 100%; min-height: 150px; border: 0; resize: vertical; background: transparent; font: inherit; font-size: 16px; line-height: 1.8; color: var(--ink); -webkit-appearance: none; appearance: none; }
   .mbox__card textarea:focus { outline: none; }
   .mbox__card textarea::placeholder { color: rgba(142,92,105,.55); }
@@ -418,6 +418,8 @@
     <div class="sec__head"><h2 class="sec__en">Message</h2><span class="sec__ja">匿名メッセージ</span></div>
     <div class="mbox">
       <p class="req__lead">しぃに匿名でメッセージを送れます。質問、感想、配信でやってほしいことなど、なんでもどうぞ💌</p>
+      <button class="acc__btn" id="msg-acc" type="button" aria-expanded="false" aria-controls="msg-panel">💌 メッセージを書く<span class="acc__mark" aria-hidden="true"></span></button>
+      <div class="acc__panel" id="msg-panel"><div>
       <form id="msg-form" novalidate>
         <div class="mbox__card">
           <label for="msg-body" class="req__hp">メッセージ</label>
@@ -438,6 +440,7 @@
         <p>いまメッセージはお休み中です</p>
         <p>再開したら X でお知らせするね。</p>
       </div>
+      </div></div>
     </div>
   </section>
 
@@ -580,6 +583,16 @@
     }).then(function(){ btn.disabled=false; });
   });
   $('msg-again').addEventListener('click',function(){ $('msg-done').hidden=true; form.hidden=false; ta.focus(); });
+  var acc=$('msg-acc'), panel=$('msg-panel');
+  function openAcc(open){
+    acc.setAttribute('aria-expanded',open?'true':'false'); panel.classList.toggle('is-open',open);
+    panel.inert=!open;
+  }
+  openAcc(false);
+  acc.addEventListener('click',function(){ openAcc(acc.getAttribute('aria-expanded')!=='true'); });
+  // 「メッセージを送る」ボタンから来たときは開いた状態にする
+  document.addEventListener('click',function(e){ var a=e.target.closest('a[href="#message"]'); if(a) openAcc(true); });
+  if(location.hash==='#message') openAcc(true);
 })();
 </script>
 <script>
