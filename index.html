@@ -18,7 +18,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&family=Yomogi&display=swap" rel="stylesheet">
 <script>
-try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-motion: reduce)').matches){ document.documentElement.classList.add('op'); sessionStorage.setItem('shii_op','1'); } }catch(e){}
+try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.documentElement.classList.add('op'); sessionStorage.setItem('shii_op','1');
+  // 起動時は必ずいちばん上から（前回の位置や #リンク を引き継がない）
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+} }catch(e){}
 </script>
 <style>
   :root {
@@ -765,8 +770,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var root=document.documentElement, op=document.getElementById('opening');
   if(!root.classList.contains('op')){ if(op) op.remove(); return; }
   var done=false;
+  function top(){ window.scrollTo(0,0); }
+  top(); window.addEventListener('load', top);
   function finish(){
     if(done) return; done=true;
+    top();
     op.classList.add('is-out');
     root.classList.remove('op'); root.classList.add('op-in');
     setTimeout(function(){ op.remove(); }, 500);
