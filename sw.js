@@ -1,5 +1,5 @@
 // しぃの部屋：オフラインでも開けるようにするキャッシュ
-const CACHE = 'shii-v4';
+const CACHE = 'shii-v5';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

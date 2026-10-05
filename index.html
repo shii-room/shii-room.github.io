@@ -213,6 +213,24 @@
   .req__again { margin-top: 14px; background: none; border: 0; padding: 0; font: inherit; font-size: 13px; letter-spacing: .08em; color: var(--ink); border-bottom: 1.5px solid var(--rose); cursor: pointer; }
   @media (min-width: 768px) { .req__row { grid-template-columns: 1fr 1fr; } }
 
+  .acc__btn {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    width: 100%; max-width: 560px; margin-top: 22px; padding: 16px 22px;
+    background: var(--white); color: var(--ink); border: 1.5px solid var(--rose); border-radius: 999px;
+    box-shadow: 4px 4px 0 var(--rose); cursor: pointer;
+    font-family: var(--maru); font-weight: 700; font-size: 15px; letter-spacing: .1em; text-align: left;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .acc__btn:hover { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--rose); }
+  .acc__mark { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--rose); position: relative; transition: transform .25s; }
+  .acc__mark::before, .acc__mark::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; margin: -1px 0 0 -6px; background: var(--white); border-radius: 1px; }
+  .acc__mark::after { transform: rotate(90deg); transition: transform .25s; }
+  .acc__btn[aria-expanded="true"] .acc__mark::after { transform: rotate(0deg); }
+  .acc__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .acc__panel > div { overflow: hidden; }
+  .acc__panel.is-open { grid-template-rows: 1fr; }
+  .acc__panel.is-open > div { overflow: visible; }
+
   /* MESSAGE：匿名メッセージ */
   .mbox { max-width: 560px; }
   .mbox__card { position: relative; margin-top: 22px; padding: 20px 20px 16px; border-radius: 20px; background: var(--white); box-shadow: 6px 6px 0 var(--rose); }
@@ -370,6 +388,8 @@
     <div class="sec__head"><h2 class="sec__en">Request</h2><span class="sec__ja">歌のリクエスト</span></div>
     <div class="req">
       <p class="req__lead">歌ってほしい曲を送ってね。全部は歌えないかもだけど、ちゃんと見てます🎤</p>
+      <button class="acc__btn" id="req-acc" type="button" aria-expanded="false" aria-controls="req-panel">🎤 リクエストを書く<span class="acc__mark" aria-hidden="true"></span></button>
+      <div class="acc__panel" id="req-panel"><div>
       <form class="req__form" id="req-form" novalidate>
         <div class="req__row">
           <div class="req__f"><label for="req-song">曲名</label><input id="req-song" name="song" type="text" maxlength="80" autocomplete="off" required></div>
@@ -390,6 +410,7 @@
         <p>いまリクエストはお休み中です</p>
         <p>再開したら X でお知らせするね。</p>
       </div>
+      </div></div>
     </div>
   </section>
 
@@ -511,6 +532,16 @@
     }).then(function(){ btn.disabled=false; });
   });
   $('req-again').addEventListener('click',function(){ $('req-done').hidden=true; form.hidden=false; $('req-song').focus(); });
+  var acc=$('req-acc'), panel=$('req-panel');
+  function openAcc(open){
+    acc.setAttribute('aria-expanded',open?'true':'false'); panel.classList.toggle('is-open',open);
+    panel.inert=!open;
+  }
+  openAcc(false);
+  acc.addEventListener('click',function(){ openAcc(acc.getAttribute('aria-expanded')!=='true'); });
+  // 「歌をリクエスト」ボタンから来たときは開いた状態にする
+  document.addEventListener('click',function(e){ var a=e.target.closest('a[href="#request"]'); if(a) openAcc(true); });
+  if(location.hash==='#request') openAcc(true);
 })();
 </script>
 <script>
