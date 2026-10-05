@@ -177,6 +177,15 @@
   .acts { list-style: none; margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; }
   .acts li { padding: 8px 16px; border-radius: 999px; background: var(--glass); border: 1px solid var(--white); font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .06em; }
 
+  .xfeed { margin-top: 40px; max-width: 560px; }
+  .xfeed__label { font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .1em; margin-bottom: 12px; color: var(--rose-deep); }
+  .xfeed__list { display: grid; gap: 4px; }
+  .xfeed__list .twitter-tweet { margin: 0 !important; }
+  .xfeed__item { min-height: 40px; }
+  .xfeed__more { display: inline-block; margin-top: 12px; font-size: 12px; letter-spacing: .06em; color: var(--ink-sub); transition: color .2s; }
+  .xfeed__more:hover { color: var(--rose-deep); }
+  [hidden] { display: none !important; }
+
   /* LINK */
   .links { list-style: none; }
   .links li + li { border-top: 1px solid var(--rule); }
@@ -306,6 +315,11 @@
       <li>PUBG MOBILE参加型</li>
       <li>歌ってみた</li>
     </ul>
+    <div class="xfeed" id="xfeed" hidden>
+      <p class="xfeed__label">X のピックアップ</p>
+      <div class="xfeed__list" id="xfeed-list"></div>
+      <a class="xfeed__more" href="https://x.com/shiitarou210" target="_blank" rel="noopener">ほかのポストも X で見る ↗</a>
+    </div>
   </section>
 
   <section class="sec" id="link">
@@ -344,6 +358,25 @@
   btn.addEventListener('click', function(){ set(btn.getAttribute('aria-expanded')!=='true'); });
   menu.addEventListener('click', function(e){ if(e.target.closest('a')) set(false); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') set(false); });
+})();
+</script>
+<script>
+(function(){
+  var box=document.getElementById('xfeed'), list=document.getElementById('xfeed-list');
+  function idOf(u){ var m=String(u).match(/status(?:es)?\/(\d+)/); return m?m[1]:null; }
+  fetch('https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/shii_posts',{method:'POST',headers:{'apikey':'sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC','Content-Type':'application/json'},body:'{}'}).then(function(r){return r.ok?r.json():[];}).then(function(d){
+    var ids=(d||[]).map(function(p){return idOf(p.url);}).filter(Boolean).slice(0,5);
+    if(!ids.length) return;
+    box.hidden=false;
+    var sc=document.createElement('script'); sc.src='https://platform.twitter.com/widgets.js'; sc.async=true; sc.charset='utf-8';
+    sc.onload=function(){
+      ids.forEach(function(id){
+        var el=document.createElement('div'); el.className='xfeed__item'; list.appendChild(el);
+        window.twttr.widgets.createTweet(id, el, {lang:'ja', dnt:true, theme:'light', align:'left'});
+      });
+    };
+    document.body.appendChild(sc);
+  }).catch(function(){});
 })();
 </script>
 <script>
