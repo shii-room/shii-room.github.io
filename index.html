@@ -213,6 +213,18 @@
   .req__again { margin-top: 14px; background: none; border: 0; padding: 0; font: inherit; font-size: 13px; letter-spacing: .08em; color: var(--ink); border-bottom: 1.5px solid var(--rose); cursor: pointer; }
   @media (min-width: 768px) { .req__row { grid-template-columns: 1fr 1fr; } }
 
+  /* MESSAGE：匿名メッセージ */
+  .mbox { max-width: 560px; }
+  .mbox__card { position: relative; margin-top: 22px; padding: 20px 20px 16px; border-radius: 20px; background: var(--white); box-shadow: 6px 6px 0 var(--rose); }
+  .mbox__card textarea { display: block; width: 100%; min-height: 150px; border: 0; resize: vertical; background: transparent; font: inherit; font-size: 16px; line-height: 1.8; color: var(--ink); -webkit-appearance: none; appearance: none; }
+  .mbox__card textarea:focus { outline: none; }
+  .mbox__card textarea::placeholder { color: rgba(142,92,105,.55); }
+  .mbox__count { text-align: right; font-family: var(--en); font-weight: 500; font-size: 12px; color: var(--ink-sub); }
+  .mbox__count.over { color: #B3264A; }
+  .mbox__note { margin-top: 14px; font-size: 12px; letter-spacing: .04em; color: var(--ink-sub); }
+  .mbox .btn { cursor: pointer; }
+  .mbox .btn:disabled { opacity: .55; cursor: default; transform: none; }
+
   /* LINK */
   .links { list-style: none; }
   .links li + li { border-top: 1px solid var(--rule); }
@@ -257,8 +269,8 @@
         <a href="#profile">PROFILE</a>
         <a href="#schedule">SCHEDULE</a>
         <a href="#request">REQUEST</a>
+        <a href="#message">MESSAGE</a>
         <a href="#link">LINK</a>
-        <a href="#present">PRESENT</a>
       </nav>
       <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
     </div>
@@ -272,6 +284,7 @@
       <li><a href="#profile"><span class="en">Profile</span><span class="ja">プロフィール</span></a></li>
       <li><a href="#schedule"><span class="en">Schedule</span><span class="ja">配信</span></a></li>
       <li><a href="#request"><span class="en">Request</span><span class="ja">歌のリクエスト</span></a></li>
+      <li><a href="#message"><span class="en">Message</span><span class="ja">匿名メッセージ</span></a></li>
       <li><a href="#link"><span class="en">Link</span><span class="ja">リンク</span></a></li>
       <li><a href="#present"><span class="en">Present</span><span class="ja">贈りもの</span></a></li>
     </ul>
@@ -283,6 +296,7 @@
     <div class="hero__btns">
       <a class="btn btn--main" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を見にいく</a>
       <a class="btn" href="#request">🎤 歌をリクエスト</a>
+      <a class="btn" href="#message">💌 メッセージを送る</a>
     </div>
   </div>
 </nav>
@@ -379,6 +393,33 @@
     </div>
   </section>
 
+  <section class="sec" id="message">
+    <div class="sec__head"><h2 class="sec__en">Message</h2><span class="sec__ja">匿名メッセージ</span></div>
+    <div class="mbox">
+      <p class="req__lead">しぃに匿名でメッセージを送れます。質問、感想、配信でやってほしいことなど、なんでもどうぞ💌</p>
+      <form id="msg-form" novalidate>
+        <div class="mbox__card">
+          <label for="msg-body" class="req__hp">メッセージ</label>
+          <textarea id="msg-body" name="body" maxlength="300" placeholder="ここにメッセージを書いてね"></textarea>
+          <p class="mbox__count" id="msg-count">0 / 300</p>
+        </div>
+        <div class="req__hp" aria-hidden="true"><label for="msg-web">website</label><input id="msg-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <p class="mbox__note">名前やアカウントはしぃには伝わりません。配信やXで紹介されることがあります。</p>
+        <button class="btn btn--main" type="submit">メッセージを送る</button>
+        <p class="req__msg" id="msg-msg" role="status" aria-live="polite"></p>
+      </form>
+      <div class="req__done" id="msg-done" hidden>
+        <p>メッセージ届いたよ！ありがとう💌</p>
+        <p>配信やXでお返事するかも。</p>
+        <button class="req__again" id="msg-again" type="button">もう1通送る</button>
+      </div>
+      <div class="req__closed" id="msg-closed" hidden>
+        <p>いまメッセージはお休み中です</p>
+        <p>再開したら X でお知らせするね。</p>
+      </div>
+    </div>
+  </section>
+
   <section class="sec" id="link">
     <div class="sec__head"><h2 class="sec__en">Link</h2><span class="sec__ja">リンク</span></div>
     <ul class="links">
@@ -470,6 +511,44 @@
     }).then(function(){ btn.disabled=false; });
   });
   $('req-again').addEventListener('click',function(){ $('req-done').hidden=true; form.hidden=false; $('req-song').focus(); });
+})();
+</script>
+<script>
+(function(){
+  var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
+  function rpc(fn,body){
+    return fetch(SB+fn,{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:JSON.stringify(body||{})})
+      .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){
+        if(!r.ok) throw new Error((d&&d.message)||'server'); return d; }); });
+  }
+  var $=function(id){return document.getElementById(id);};
+  var form=$('msg-form'), ta=$('msg-body'), cnt=$('msg-count'), msg=$('msg-msg'), btn=form.querySelector('button[type=submit]');
+  var LAST='shii_msg_last', WAIT=30000;
+  function say(t,err){ msg.textContent=t; msg.classList.toggle('err',!!err); }
+  function last(){ try{return +localStorage.getItem(LAST)||0;}catch(e){return 0;} }
+  function mark(){ try{localStorage.setItem(LAST,String(Date.now()));}catch(e){} }
+  function closed(){ form.hidden=true; $('msg-done').hidden=true; $('msg-closed').hidden=false; }
+  function count(){ var n=ta.value.length; cnt.textContent=n+' / 300'; cnt.classList.toggle('over',n>=300); }
+  ta.addEventListener('input',count);
+  rpc('shii_msg_status').then(function(open){ if(open===false) closed(); }).catch(function(){});
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var body=ta.value.trim();
+    if(!body){ say('メッセージを書いてね',true); ta.focus(); return; }
+    var left=WAIT-(Date.now()-last());
+    if(left>0){ say('続けて送るときは少しあけてね（あと'+Math.ceil(left/1000)+'秒）',true); return; }
+    btn.disabled=true; say('送っています…');
+    if(form.elements.website.value){ form.reset(); count(); form.hidden=true; $('msg-done').hidden=false; btn.disabled=false; return; }
+    rpc('shii_msg_submit',{p_body:body})
+    .then(function(){ mark(); form.reset(); count(); say(''); form.hidden=true; $('msg-done').hidden=false; })
+    .catch(function(err){
+      if(err.message==='closed'){ closed(); return; }
+      say(err.message==='busy'?'いま混み合っています。少し待ってからもう一度送ってね'
+        :err.message==='empty'?'メッセージを書いてね'
+        :'送れませんでした。電波を確認してもう一度送ってね',true);
+    }).then(function(){ btn.disabled=false; });
+  });
+  $('msg-again').addEventListener('click',function(){ $('msg-done').hidden=true; form.hidden=false; ta.focus(); });
 })();
 </script>
 <script>

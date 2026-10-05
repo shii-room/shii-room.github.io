@@ -68,12 +68,21 @@
   .rq.is-done .t,.rq.is-done .a,.rq.is-done .c{opacity:.5}
   .rq.is-done .sung{background:transparent}
   .reload{margin-top:14px;height:auto;padding:0;border:0;background:none;font:inherit;font-size:12px;color:var(--sub);text-decoration:underline;cursor:pointer}
+  .tab{font-size:13px}
+  .mg .body{font-size:15px;line-height:1.8;white-space:pre-wrap;word-break:break-word}
+  .mg.is-read .body{opacity:.55}
+  .mg .card-btn{height:36px;padding:0 12px;font-size:13px;background:var(--peri);color:var(--white)}
+  .sheet{position:fixed;inset:0;z-index:20;background:rgba(94,53,64,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+  .sheet__in{width:min(520px,100%);max-height:100%;overflow:auto;background:var(--sky-top);border-radius:20px;padding:18px}
+  .sheet__in img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 4px 16px rgba(94,53,64,.2)}
+  .sheet__hint{margin-top:10px;font-size:12px;color:var(--sub);text-align:center}
+  .sheet .row button{flex:1}
   [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <main>
-  <h1>しぃ管理<small>歌のリクエストと X のポスト</small></h1>
+  <h1>しぃ管理<small>リクエスト・メッセージ・X のポスト</small></h1>
 
   <section id="keyView" class="card" hidden>
     <label for="key">合言葉を入れてください</label>
@@ -85,6 +94,7 @@
   <section id="mainView" hidden>
     <div class="tabs" role="tablist">
       <button class="tab" id="tabReq" role="tab" aria-selected="true" type="button">リクエスト<b id="reqCount"></b></button>
+      <button class="tab" id="tabMsg" role="tab" aria-selected="false" type="button">メッセージ<b id="msgCount"></b></button>
       <button class="tab" id="tabPost" role="tab" aria-selected="false" type="button">X のポスト</button>
     </div>
 
@@ -99,6 +109,17 @@
       <ul id="reqList"><li class="empty">読み込み中…</li></ul>
       <button class="reload" id="reqReload" type="button">最新にする</button>
       </div>
+    </div>
+
+    <div id="msgView" hidden>
+      <div class="switch">
+        <div>メッセージ受付<small id="mOpenText">読み込み中…</small></div>
+        <button class="toggle" id="mOpenToggle" role="switch" aria-checked="true" aria-label="メッセージ受付" type="button" disabled></button>
+      </div>
+      <p class="msg" id="mMsg"></p>
+      <h2 style="margin-top:20px">届いたメッセージ（新しい順）</h2>
+      <ul id="mList"><li class="empty">読み込み中…</li></ul>
+      <button class="reload" id="mReload" type="button">最新にする</button>
     </div>
 
     <div id="postView" hidden>
@@ -122,6 +143,16 @@
     </div>
   </section>
 </main>
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet__in">
+    <img id="sheetImg" alt="メッセージの画像">
+    <p class="sheet__hint">画像を長押しして保存もできます</p>
+    <div class="row">
+      <button class="ghost" id="sheetClose" type="button">閉じる</button>
+      <button class="primary" id="sheetShare" type="button">保存・シェア</button>
+    </div>
+  </div>
+</div>
 <script>
 (function(){
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', SBKEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
@@ -230,14 +261,109 @@
   $('reqReload').onclick=loadReq;
 
   function showTab(name){
-    var r=name==='req';
-    $('tabReq').setAttribute('aria-selected',r?'true':'false'); $('tabPost').setAttribute('aria-selected',r?'false':'true');
-    $('reqView').hidden=!r; $('postView').hidden=r;
+    [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView']].forEach(function(x){
+      var on=x[0]===name; $(x[1]).setAttribute('aria-selected',on?'true':'false'); $(x[2]).hidden=!on;
+    });
   }
   $('tabReq').onclick=function(){ showTab('req'); };
+  $('tabMsg').onclick=function(){ showTab('msg'); };
   $('tabPost').onclick=function(){ showTab('post'); };
 
-  function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadPosts(); }
+  // ---- 匿名メッセージ ----
+  var mg={items:[],open:true};
+  function mcall(act,id,val){ return call('shii_msg_admin',{p_action:act,p_id:id||null,p_value:(val===undefined?null:val)}); }
+  function renderMOpen(){
+    var t=$('mOpenToggle'); t.disabled=false; t.setAttribute('aria-checked',mg.open?'true':'false');
+    $('mOpenText').textContent=mg.open?'受付中（サイトから送れます）':'お休み中（サイトに「お休み中」と出ます）';
+  }
+  function renderM(){
+    var ul=$('mList'); ul.innerHTML='';
+    var unread=mg.items.filter(function(x){return !x.read;}).length;
+    $('msgCount').textContent=unread?String(unread):'';
+    if(!mg.items.length){ ul.innerHTML='<li class="empty">まだメッセージはありません</li>'; return; }
+    mg.items.forEach(function(it){
+      var li=document.createElement('li'); li.className='rq mg'+(it.read?' is-read':'');
+      var left=document.createElement('div');
+      var b=document.createElement('div'); b.className='body'; b.textContent=it.body; left.appendChild(b);
+      var m=document.createElement('small'); m.className='m'; m.textContent=(it.read?'読んだ・':'')+fmt(it.at); left.appendChild(m);
+      var acts=document.createElement('div'); acts.className='acts';
+      var c=document.createElement('button'); c.className='card-btn'; c.type='button'; c.textContent='画像にする';
+      c.onclick=function(){ openCard(it.body); if(!it.read){ mcall('read',it.id,true).then(function(){ it.read=true; renderM(); }).catch(function(){}); } };
+      var r=document.createElement('button'); r.className='sung'; r.type='button'; r.textContent=it.read?'未読にする':'読んだ✓';
+      r.onclick=function(){ r.disabled=true;
+        mcall('read',it.id,!it.read).then(function(){ it.read=!it.read; renderM(); })
+          .catch(function(e){ r.disabled=false; fail(e,$('mMsg')); });
+      };
+      var d=document.createElement('button'); d.className='del'; d.type='button'; d.textContent='消す';
+      d.onclick=function(){ if(!confirm('このメッセージを消す？'))return; d.disabled=true;
+        mcall('delete',it.id).then(function(){ mg.items=mg.items.filter(function(x){return x.id!==it.id;}); renderM(); })
+          .catch(function(e){ d.disabled=false; fail(e,$('mMsg')); });
+      };
+      acts.appendChild(c); acts.appendChild(r); acts.appendChild(d);
+      li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
+    });
+  }
+  function loadM(){
+    say($('mMsg'),'');
+    return mcall('list').then(function(d){ mg.items=d.items||[]; mg.open=d.open!==false; renderMOpen(); renderM(); })
+      .catch(function(e){ $('mList').innerHTML='<li class="empty">読み込めませんでした</li>'; $('mOpenText').textContent=''; fail(e,$('mMsg')); });
+  }
+  $('mOpenToggle').onclick=function(){
+    var t=$('mOpenToggle'), next=!mg.open; t.disabled=true;
+    mcall('open',null,next).then(function(d){ mg.open=d.open; renderMOpen(); say($('mMsg'),next?'受付を再開しました':'受付をお休みにしました'); })
+      .catch(function(e){ t.disabled=false; fail(e,$('mMsg')); });
+  };
+  $('mReload').onclick=loadM;
+
+  // メッセージを X 用の画像にする
+  var cardBlob=null;
+  function wrap(ctx,text,maxW){
+    var lines=[];
+    String(text).split('\n').forEach(function(par){
+      var line='';
+      Array.from(par).forEach(function(ch){
+        if(ctx.measureText(line+ch).width>maxW){ lines.push(line); line=ch; } else line+=ch;
+      });
+      lines.push(line);
+    });
+    return lines;
+  }
+  function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  function openCard(text){
+    var W=1200, pad=110, font='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
+    var cv=document.createElement('canvas'), ctx=cv.getContext('2d');
+    var size=text.length>160?40:text.length>80?46:54;
+    ctx.font='700 '+size+'px '+font;
+    var lines=wrap(ctx,text,W-pad*2-80), lh=size*1.7;
+    var H=Math.max(630, Math.round(lines.length*lh+pad*2+150));
+    cv.width=W; cv.height=H;
+    var g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#F6E4E9'); g.addColorStop(1,'#E2B9C6');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,255,255,.55)';
+    for(var y=14;y<H;y+=28) for(var x=14;x<W;x+=28){ ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); }
+    var cx=pad-40, cy=pad-40, cw=W-(pad-40)*2, ch=H-(pad-40)*2-70;
+    ctx.fillStyle='#E07496'; rr(ctx,cx+12,cy+12,cw,ch,36); ctx.fill();
+    ctx.fillStyle='#fff'; rr(ctx,cx,cy,cw,ch,36); ctx.fill();
+    ctx.fillStyle='#5E3540'; ctx.font='700 '+size+'px '+font; ctx.textBaseline='middle';
+    var top=cy+(ch-lines.length*lh)/2+lh/2;
+    lines.forEach(function(l,i){ ctx.fillText(l,pad,top+i*lh); });
+    ctx.fillStyle='#8E5C69'; ctx.font='700 30px '+font; ctx.textAlign='right';
+    ctx.fillText('しぃの部屋 💌 匿名メッセージ',W-pad+40,H-55);
+    cv.toBlob(function(b){
+      cardBlob=b; var u=URL.createObjectURL(b); var img=$('sheetImg'); if(img.dataset.u) URL.revokeObjectURL(img.dataset.u);
+      img.src=u; img.dataset.u=u; $('sheet').hidden=false;
+    },'image/png');
+  }
+  $('sheetClose').onclick=function(){ $('sheet').hidden=true; };
+  $('sheet').addEventListener('click',function(e){ if(e.target.id==='sheet') $('sheet').hidden=true; });
+  $('sheetShare').onclick=function(){
+    if(!cardBlob) return;
+    var file=new File([cardBlob],'shii-message.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file]}).catch(function(){}); return; }
+    var a=document.createElement('a'); a.href=$('sheetImg').src; a.download='shii-message.png'; document.body.appendChild(a); a.click(); a.remove();
+  };
+
+  function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadM(); loadPosts(); }
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };
   $('key').addEventListener('keydown',function(e){ if(e.key==='Enter') $('saveKey').click(); });
