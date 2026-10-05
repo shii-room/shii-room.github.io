@@ -347,32 +347,31 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     background-size: 100% 100%, 42px 100%;
     background-repeat: no-repeat, repeat-x;
     box-shadow: 0 0 24px rgba(30,5,15,.55);
-    animation-duration: 2.9s; animation-timing-function: cubic-bezier(.45,0,.4,1); animation-delay: 3.9s; animation-fill-mode: forwards;
+    will-change: transform, translate;
+    backface-visibility: hidden;
   }
-  .op-l { left: -30vw; background-position: 0 0, right 0 top 0; animation-name: op-open-l; }
-  .op-r { right: -30vw; background-position: 0 0, 0 0; animation-name: op-open-r; }
-  /* 上はレールに沿ってすべり、裾は遅れて振り子のように揺れながらついてくる */
-  @keyframes op-open-l {
-    0% { transform: translateX(0vw) skewX(0deg); }
-    10% { transform: translateX(-2.5vw) skewX(2.5deg); }
-    20% { transform: translateX(-9vw) skewX(8deg); }
-    33% { transform: translateX(-19vw) skewX(4deg); }
-    45% { transform: translateX(-26vw) skewX(-5deg); }
-    58% { transform: translateX(-30vw) skewX(3deg); }
-    70% { transform: translateX(-35vw) skewX(-3deg); }
-    82% { transform: translateX(-40vw) skewX(1.5deg); }
-    100% { transform: translateX(-45vw) skewX(0deg); }
+  /* 横の移動（なめらかに減速）と、裾の揺れ（振り子）を別々に動かす */
+  .op-l { left: -30vw; background-position: 0 0, right 0 top 0;
+    animation: op-slide-l 3s cubic-bezier(.4,.05,.2,1) 3.9s forwards, op-swing-l 3.2s linear 3.9s forwards; }
+  .op-r { right: -30vw; background-position: 0 0, 0 0;
+    animation: op-slide-r 3s cubic-bezier(.4,.05,.2,1) 3.9s forwards, op-swing-r 3.2s linear 3.9s forwards; }
+  @keyframes op-slide-l { from { translate: 0 0; } to { translate: -45vw 0; } }
+  @keyframes op-slide-r { from { translate: 0 0; } to { translate: 45vw 0; } }
+  @keyframes op-swing-l {
+    0%   { transform: skewX(0deg);    animation-timing-function: cubic-bezier(.3,0,.5,1); }
+    20%  { transform: skewX(8deg);    animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    44%  { transform: skewX(-5deg);   animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    64%  { transform: skewX(2.8deg);  animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    82%  { transform: skewX(-1.2deg); animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    100% { transform: skewX(0deg); }
   }
-  @keyframes op-open-r {
-    0% { transform: translateX(0vw) skewX(0deg); }
-    10% { transform: translateX(2.5vw) skewX(-2.5deg); }
-    20% { transform: translateX(9vw) skewX(-8deg); }
-    33% { transform: translateX(19vw) skewX(-4deg); }
-    45% { transform: translateX(26vw) skewX(5deg); }
-    58% { transform: translateX(30vw) skewX(-3deg); }
-    70% { transform: translateX(35vw) skewX(3deg); }
-    82% { transform: translateX(40vw) skewX(-1.5deg); }
-    100% { transform: translateX(45vw) skewX(0deg); }
+  @keyframes op-swing-r {
+    0%   { transform: skewX(0deg);    animation-timing-function: cubic-bezier(.3,0,.5,1); }
+    20%  { transform: skewX(-8deg);   animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    44%  { transform: skewX(5deg);    animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    64%  { transform: skewX(-2.8deg); animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    82%  { transform: skewX(1.2deg);  animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    100% { transform: skewX(0deg); }
   }
   .op-valance {
     position: absolute; left: -5%; right: -5%; top: 0; height: 13%; z-index: 2;
@@ -388,6 +387,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     position: absolute; left: 50%; top: 50vh; top: 50svh; z-index: 3; width: 300vmax; height: 300vmax; margin: -150vmax 0 0 -150vmax;
     background: radial-gradient(circle, rgba(255,240,200,.18) 0, rgba(255,240,200,.08) 13vmin, transparent 17vmin, rgba(20,4,12,.94) 24vmin);
     transform: translate(-60vw, -40vh) scale(.6);
+    will-change: transform, opacity;
     animation: op-spot 2s ease-in-out .8s forwards, op-flood 1.1s ease-in 3.85s forwards;
   }
   @keyframes op-spot {
@@ -808,7 +808,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     setTimeout(function(){ op.remove(); }, 500);
     setTimeout(function(){ root.classList.remove('op-in'); }, 1200);
   }
-  var timer=setTimeout(finish, 6900);
+  var timer=setTimeout(finish, 7150);
   var show=setTimeout(function(){ root.classList.add('op-show'); }, 3900);
   var pop=setTimeout(function(){ root.classList.add('op-in'); }, 4100);
   op.addEventListener('click', function(){ clearTimeout(timer); clearTimeout(show); clearTimeout(pop); finish(); });
