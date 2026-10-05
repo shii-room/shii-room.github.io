@@ -332,6 +332,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .opening { display: none; }
   html.op .opening { display: block; }
   html.op body { overflow: hidden; }
+  /* 暗幕が届かない端（アプリ内ブラウザのバーの裏など）からページが見えないよう、幕が開くまで中身を隠す */
+  html.op:not(.op-show), html.op:not(.op-show) body { background: #2A0F1A !important; }
+  html.op:not(.op-show) .header, html.op:not(.op-show) main, html.op:not(.op-show) .footer { visibility: hidden; }
   html.op .bubble { animation: none; opacity: 0; }
   .opening { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100vh + 160px); height: calc(100lvh + 160px); z-index: 100; overflow: hidden; background-color: #2A0F1A; cursor: pointer; transition: opacity .45s ease; animation: op-bg .8s ease 3.95s forwards; }
   @keyframes op-bg { to { background-color: rgba(42,15,26,0); } }
@@ -777,12 +780,14 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     top();
     op.classList.add('is-out');
     root.classList.remove('op'); root.classList.add('op-in');
+    setTimeout(function(){ root.classList.remove('op-show'); }, 600);
     setTimeout(function(){ op.remove(); }, 500);
     setTimeout(function(){ root.classList.remove('op-in'); }, 1200);
   }
   var timer=setTimeout(finish, 5800);
+  var show=setTimeout(function(){ root.classList.add('op-show'); }, 3900);
   var pop=setTimeout(function(){ root.classList.add('op-in'); }, 4100);
-  op.addEventListener('click', function(){ clearTimeout(timer); clearTimeout(pop); finish(); });
+  op.addEventListener('click', function(){ clearTimeout(timer); clearTimeout(show); clearTimeout(pop); finish(); });
 })();
 </script>
 <script>
