@@ -134,8 +134,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     22% { transform: translateY(-5px) rotate(6deg) scale(1.02); }
     30% { transform: translateY(0) rotate(8deg) scale(1); }
   }
-  .hero__photo img { animation: fuwa 4.5s ease-in-out infinite; }
-  @keyframes fuwa { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(-.6deg); } }
+  .hero__photo img { animation: fuwa 5s ease-in-out infinite; }
+  @keyframes fuwa {
+    0%, 100% { transform: translateY(0) rotate(-.5deg); box-shadow: 8px 8px 0 var(--rose); }
+    50%      { transform: translateY(-14px) rotate(.9deg); box-shadow: 10px 16px 0 rgba(224,116,150,.75); }
+  }
   .hero__name .heart { transform-origin: 50% 60%; animation: dokidoki 1.4s ease-in-out infinite; }
   @keyframes dokidoki { 0%, 40%, 100% { transform: scale(1); } 10% { transform: scale(1.3); } 20% { transform: scale(.95); } 30% { transform: scale(1.18); } }
   .floaty { position: absolute; z-index: 3; pointer-events: none; color: var(--rose); opacity: 0; animation: floaty 4s ease-in infinite; }
@@ -306,6 +309,34 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .mbox .btn { cursor: pointer; }
   .mbox .btn:disabled { opacity: .55; cursor: default; transform: none; }
 
+  /* 動くフレーム（リクエスト：音符／メッセージ：ハートと手紙） */
+  .deco { position: relative; padding: 28px 20px 24px; border-radius: 26px; background: rgba(255,255,255,.28); border: 2px dashed rgba(255,255,255,.95); }
+  .deco__i { position: absolute; z-index: 1; display: block; pointer-events: none; color: var(--rose); filter: drop-shadow(0 2px 3px rgba(150,70,95,.25)); animation: deco-bob 3s ease-in-out infinite; }
+  .deco__i svg { display: block; width: 100%; height: 100%; }
+  .deco__i.w { color: var(--white); filter: drop-shadow(0 1px 4px rgba(224,116,150,.7)); }
+  .deco__i.p1 { left: -12px; top: -16px; width: 34px; height: 34px; animation-duration: 2.8s; }
+  .deco__i.p2 { right: 18%; top: -14px; width: 24px; height: 24px; animation-duration: 3.4s; animation-delay: -1.2s; }
+  .deco__i.p3 { right: -12px; top: 34%; width: 28px; height: 28px; animation-duration: 3.1s; animation-delay: -.6s; }
+  .deco__i.p4 { left: -10px; bottom: 22%; width: 22px; height: 22px; animation-duration: 2.6s; animation-delay: -1.8s; }
+  .deco__i.p5 { right: -8px; bottom: -14px; width: 32px; height: 32px; animation-duration: 3.6s; animation-delay: -.9s; }
+  .deco__i.p6 { left: 30%; bottom: -12px; width: 20px; height: 20px; animation-duration: 2.9s; animation-delay: -2.2s; }
+  @keyframes deco-bob {
+    0%, 100% { transform: translateY(0) rotate(-10deg); }
+    50%      { transform: translateY(-7px) rotate(10deg); }
+  }
+  .deco__rise { position: absolute; z-index: 1; bottom: 12px; width: 18px; height: 18px; pointer-events: none; color: var(--rose); opacity: 0; animation: deco-rise 4.2s ease-in infinite; }
+  .deco__rise svg { display: block; width: 100%; height: 100%; }
+  .deco__rise.r1 { right: 16%; animation-delay: .4s; }
+  .deco__rise.r2 { right: 34%; width: 14px; height: 14px; animation-delay: 2.2s; color: var(--white); }
+  .deco__rise.r3 { right: 6%; width: 16px; height: 16px; animation-delay: 3.3s; }
+  @keyframes deco-rise {
+    0%   { opacity: 0; transform: translate(0, 0) rotate(-12deg) scale(.7); }
+    15%  { opacity: .9; }
+    50%  { transform: translate(8px, -60px) rotate(10deg) scale(1); }
+    85%  { opacity: .6; }
+    100% { opacity: 0; transform: translate(-6px, -120px) rotate(-8deg) scale(.9); }
+  }
+
   /* LINK */
   .links { list-style: none; }
   .links li + li { border-top: 1px solid var(--rule); }
@@ -443,6 +474,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="heart" viewBox="0 0 24 22"><path fill="currentColor" d="M12 21.5S0 14.2 0 6.6A6.3 6.3 0 0 1 12 3.9 6.3 6.3 0 0 1 24 6.6c0 7.6-12 14.9-12 14.9z"/></symbol>
   <symbol id="kira" viewBox="0 0 20 20"><path fill="currentColor" d="M10 0c.6 5.2 4.8 9.4 10 10-5.2.6-9.4 4.8-10 10-.6-5.2-4.8-9.4-10-10C5.2 9.4 9.4 5.2 10 0z"/></symbol>
+  <symbol id="note1" viewBox="0 0 24 24"><path fill="currentColor" d="M10 3v11.55A4 4 0 1 0 12 18V7h6V3z"/></symbol>
+  <symbol id="note2" viewBox="0 0 24 24"><path fill="currentColor" d="M8 4v10.6A3.5 3.5 0 1 0 10 18V8.5l9-2v6.1A3.5 3.5 0 1 0 21 16V2z"/></symbol>
+  <symbol id="mail" viewBox="0 0 24 20"><rect x="1" y="2" width="22" height="16" rx="3" fill="#fff" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 4.5 12 11l9.5-6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path fill="currentColor" d="M12 15.6s-3.2-1.9-3.2-3.9a1.7 1.7 0 0 1 3.2-.9 1.7 1.7 0 0 1 3.2.9c0 2-3.2 3.9-3.2 3.9z"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
   <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g></symbol>
   <symbol id="i-house" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/></g></symbol>
@@ -577,7 +611,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
   <section class="sec" id="request">
     <div class="sec__head"><h2 class="sec__en">Request</h2><span class="sec__ja">歌のリクエスト</span></div>
-    <div class="req">
+    <div class="req deco deco--music">
+      <span class="deco__i p1" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p6" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__rise r3" aria-hidden="true"><svg><use href="#note1"/></svg></span>
       <p class="req__lead">歌ってほしい曲を送ってね。全部は歌えないかもだけど、ちゃんと見てます🎤</p>
       <button class="acc__btn" id="req-acc" type="button" aria-expanded="false" aria-controls="req-panel">🎤 リクエストを書く<span class="acc__mark" aria-hidden="true"></span></button>
       <div class="acc__panel" id="req-panel"><div>
@@ -607,7 +642,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
   <section class="sec" id="message">
     <div class="sec__head"><h2 class="sec__en">Message</h2><span class="sec__ja">匿名メッセージ</span></div>
-    <div class="mbox">
+    <div class="mbox deco deco--love">
+      <span class="deco__i p1" aria-hidden="true"><svg><use href="#mail"/></svg></span><span class="deco__i p2" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p3 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#mail"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__rise r3" aria-hidden="true"><svg><use href="#heart"/></svg></span>
       <p class="req__lead">しぃに匿名でメッセージを送れます。質問、感想、配信でやってほしいことなど、なんでもどうぞ💌</p>
       <button class="acc__btn" id="msg-acc" type="button" aria-expanded="false" aria-controls="msg-panel">💌 メッセージを書く<span class="acc__mark" aria-hidden="true"></span></button>
       <div class="acc__panel" id="msg-panel"><div>
