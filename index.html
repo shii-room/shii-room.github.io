@@ -381,6 +381,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     -webkit-mask: radial-gradient(28px 22px at 28px 100%, transparent 98%, #000) 0 0 / 56px 100% repeat-x;
             mask: radial-gradient(28px 22px at 28px 100%, transparent 98%, #000) 0 0 / 56px 100% repeat-x;
     box-shadow: 0 6px 18px rgba(60,10,30,.4);
+    will-change: transform;
+    animation: op-valance 2.8s cubic-bezier(.55,-0.25,.25,1) 4.1s forwards, op-valance-sway 1.6s ease-in-out 3.9s 1;
+  }
+  /* 一瞬ぐっと下に引かれてから、ふわっと上へ巻き上がる */
+  @keyframes op-valance { from { translate: 0 0; } to { translate: 0 -115%; } }
+  @keyframes op-valance-sway {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(.8deg); }
+    55% { transform: rotate(-.6deg); }
+    80% { transform: rotate(.3deg); }
   }
   @keyframes op-up { to { transform: translateY(-110%); } }
   .op-dark {
