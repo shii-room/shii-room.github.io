@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261006152001">
+<meta name="build" content="20261006152238">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -175,8 +175,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       hsl(190 100% 72%) 40%, hsl(240 100% 80%) 50%, hsl(290 100% 80%) 60%, hsl(340 100% 76%) 70%,
       hsl(25 100% 74%) 80%, hsl(55 100% 72%) 90%, hsl(140 90% 72%) 100%);
     background-size: 300% 300%;
-    mix-blend-mode: overlay; opacity: .5;
-    animation: holo-flow 7s linear infinite;
+    mix-blend-mode: overlay; opacity: 0;
+    transition: opacity .5s ease;
   }
   .holo::after {
     background:
@@ -185,13 +185,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       radial-gradient(circle, rgba(255,240,250,.8) 0 .5px, transparent 1px) 4px 5px / 13px 13px;
     background-size: 300% 100%, 9px 9px, 13px 13px;
     background-repeat: no-repeat, repeat, repeat;
-    mix-blend-mode: soft-light; opacity: .9;
-    animation: holo-glare 5s ease-in-out infinite;
+    mix-blend-mode: soft-light; opacity: 0;
+    transition: opacity .5s ease;
   }
-  @keyframes holo-flow { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
-  @keyframes holo-glare { 0%, 20% { background-position: 130% 0, 0 0, 4px 5px; } 70%, 100% { background-position: -30% 0, 0 0, 4px 5px; } }
+  /* ふだんは光らない。タップした時だけキラッ */
+  .tilt.is-flash .holo::before { opacity: .5; animation: holo-flow 1.6s ease-out forwards; }
+  .tilt.is-flash .holo::after  { opacity: .9; animation: holo-glare 1.2s ease-in-out forwards; }
+  @keyframes holo-flow { 0% { background-position: 0% 50%; } 100% { background-position: 60% 50%; } }
+  @keyframes holo-glare { 0% { background-position: 130% 0, 0 0, 4px 5px; } 100% { background-position: -30% 0, 0 0, 4px 5px; } }
   .tilt.is-touch .holo::before { animation: none; background-position: var(--hx, 50%) var(--hy, 50%); opacity: .65; }
-  .tilt.is-touch .holo::after { animation: none; background-position: var(--gx, 50%) 0, 0 0, 4px 5px; }
+  .tilt.is-touch .holo::after { animation: none; opacity: .9; background-position: var(--gx, 50%) 0, 0 0, 4px 5px; }
   .bubble::after { content: ""; position: absolute; left: 6px; bottom: 4px; width: 16px; height: 16px; background: var(--white); clip-path: polygon(100% 0, 0 100%, 60% 30%); }
   .hero__en { font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .4em; color: var(--ink-sub); }
   .hero__welcome { margin-top: 10px; font-family: var(--hand); font-size: clamp(18px, 5vw, 22px); letter-spacing: .08em; color: var(--ink-sub); }
@@ -941,9 +944,15 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       el.style.setProperty('--hx',(x*100).toFixed(1)+'%'); el.style.setProperty('--hy',(y*100).toFixed(1)+'%');
       el.style.setProperty('--gx',(130-x*160).toFixed(1)+'%');
     }
+    var down=false, ft=null;
     function reset(){ el.classList.remove('is-touch'); el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg'); }
-    el.addEventListener('pointermove',move); el.addEventListener('pointerdown',move);
-    el.addEventListener('pointerleave',reset); el.addEventListener('pointerup',function(e){ if(e.pointerType!=='mouse') reset(); }); el.addEventListener('pointercancel',reset);
+    function flash(){ clearTimeout(ft); el.classList.remove('is-flash'); void el.offsetWidth; el.classList.add('is-flash'); ft=setTimeout(function(){ el.classList.remove('is-flash'); }, 1700); }
+    // 光るのは押している間（指を追う）と、離した瞬間のキラッだけ
+    el.addEventListener('pointerdown',function(e){ down=true; move(e); });
+    el.addEventListener('pointermove',function(e){ if(down) move(e); });
+    el.addEventListener('pointerup',function(){ if(down){ down=false; reset(); flash(); } });
+    el.addEventListener('pointerleave',function(){ if(down){ down=false; reset(); } });
+    el.addEventListener('pointercancel',function(){ down=false; reset(); });
   });
 })();
 </script>
