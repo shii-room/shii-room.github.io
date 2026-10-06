@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="build" content="20261006140005">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -77,10 +78,22 @@
   .sheet__in img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 4px 16px rgba(94,53,64,.2)}
   .sheet__hint{margin-top:10px;font-size:12px;color:var(--sub);text-align:center}
   .sheet .row button{flex:1}
+
+  /* 更新のお知らせ */
+  .upd { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 90; transform: translate(-50%, 160%);
+    display: flex; align-items: center; gap: 10px; max-width: calc(100% - 32px); padding: 12px 18px 12px 16px;
+    background: #E07496; color: #fff; border: 2px solid #fff; border-radius: 999px; box-shadow: 0 8px 22px rgba(150,70,95,.35);
+    font-family: "Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif; font-weight: 700; font-size: 14px; letter-spacing: .06em;
+    cursor: pointer; transition: transform .45s cubic-bezier(.3,1.5,.5,1); -webkit-tap-highlight-color: transparent; }
+  .upd.is-show { transform: translate(-50%, 0); }
+  .upd small { display: block; font-weight: 500; font-size: 11px; opacity: .9; }
+  .upd__dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: #fff; animation: upd-blink 1.2s ease-in-out infinite; }
+  @keyframes upd-blink { 50% { opacity: .3; transform: scale(.7); } }
   [hidden]{display:none!important}
 </style>
 </head>
 <body>
+<button class="upd" id="upd" type="button" hidden><span class="upd__dot" aria-hidden="true"></span><span>新しいバージョンがあります<small>タップで更新</small></span></button>
 <main>
   <h1>しぃ管理<small>リクエスト・メッセージ・X のポスト</small></h1>
 
@@ -370,6 +383,27 @@
   $('resetKey').onclick=function(){ setPass(''); showKey(''); };
 
   getPass() ? start() : showKey('');
+})();
+</script>
+<script>
+(function(){
+  var meta=document.querySelector('meta[name="build"]'), mine=meta&&meta.content, el=document.getElementById('upd'), shown=false;
+  if(!mine||!el) return;
+  var base=location.pathname.indexOf('/admin')===0?'../':'./';
+  function check(){
+    if(shown||document.visibilityState==='hidden') return;
+    fetch(base+'version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(v){
+      if(v&&v.build&&v.build!==mine){ shown=true; el.hidden=false; requestAnimationFrame(function(){ el.classList.add('is-show'); }); }
+    }).catch(function(){});
+  }
+  el.addEventListener('click',function(){
+    el.querySelector('small').textContent='更新しています…';
+    var go=function(){ location.reload(); };
+    if('caches' in window){ caches.keys().then(function(ks){ return Promise.all(ks.map(function(k){ return caches.delete(k); })); }).then(go,go); } else go();
+  });
+  setTimeout(check, 1500);
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') check(); });
+  setInterval(check, 10*60*1000);
 })();
 </script>
 </body>

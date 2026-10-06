@@ -6,6 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261006140005">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -337,6 +338,17 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     100% { opacity: 0; transform: translate(-6px, -120px) rotate(-8deg) scale(.9); }
   }
 
+  /* 更新のお知らせ */
+  .upd { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 90; transform: translate(-50%, 160%);
+    display: flex; align-items: center; gap: 10px; max-width: calc(100% - 32px); padding: 12px 18px 12px 16px;
+    background: #E07496; color: #fff; border: 2px solid #fff; border-radius: 999px; box-shadow: 0 8px 22px rgba(150,70,95,.35);
+    font-family: "Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif; font-weight: 700; font-size: 14px; letter-spacing: .06em;
+    cursor: pointer; transition: transform .45s cubic-bezier(.3,1.5,.5,1); -webkit-tap-highlight-color: transparent; }
+  .upd.is-show { transform: translate(-50%, 0); }
+  .upd small { display: block; font-weight: 500; font-size: 11px; opacity: .9; }
+  .upd__dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: #fff; animation: upd-blink 1.2s ease-in-out infinite; }
+  @keyframes upd-blink { 50% { opacity: .3; transform: scale(.7); } }
+
   /* LINK */
   .links { list-style: none; }
   .links li + li { border-top: 1px solid var(--rule); }
@@ -503,6 +515,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   <div class="op-burst"><span><svg><use href="#kira"/></svg></span><span><svg><use href="#heart"/></svg></span><span><svg><use href="#kira"/></svg></span><span><svg><use href="#heart"/></svg></span><span><svg><use href="#kira"/></svg></span><span><svg><use href="#heart"/></svg></span><span><svg><use href="#kira"/></svg></span><span><svg><use href="#heart"/></svg></span></div>
   <p class="op-skip">タップでスキップ</p>
 </div>
+
+<button class="upd" id="upd" type="button" hidden><span class="upd__dot" aria-hidden="true"></span><span>新しいバージョンがあります<small>タップで更新</small></span></button>
 
 <header class="header">
   <div class="header__in">
@@ -885,6 +899,27 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
 }
+</script>
+<script>
+(function(){
+  var meta=document.querySelector('meta[name="build"]'), mine=meta&&meta.content, el=document.getElementById('upd'), shown=false;
+  if(!mine||!el) return;
+  var base=location.pathname.indexOf('/admin')===0?'../':'./';
+  function check(){
+    if(shown||document.visibilityState==='hidden') return;
+    fetch(base+'version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(v){
+      if(v&&v.build&&v.build!==mine){ shown=true; el.hidden=false; requestAnimationFrame(function(){ el.classList.add('is-show'); }); }
+    }).catch(function(){});
+  }
+  el.addEventListener('click',function(){
+    el.querySelector('small').textContent='更新しています…';
+    var go=function(){ location.reload(); };
+    if('caches' in window){ caches.keys().then(function(ks){ return Promise.all(ks.map(function(k){ return caches.delete(k); })); }).then(go,go); } else go();
+  });
+  setTimeout(check, 1500);
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') check(); });
+  setInterval(check, 10*60*1000);
+})();
 </script>
 </body>
 </html>
