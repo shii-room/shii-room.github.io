@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007083322">
+<meta name="build" content="20261007084357">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -305,7 +305,14 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .prof__buddy.is-flip .buddy__flip { transform: rotateY(180deg); }
   .buddy__f, .buddy__b { display: block; width: 102px; height: auto; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
   .buddy__b { position: absolute; left: 0; top: 0; transform: rotateY(180deg); }
-  .prof__buddy.is-flip .buddy__bob { animation: hop .7s cubic-bezier(.3,.6,.4,1); }
+  .prof__buddy.is-flip .buddy__bob { animation: hop .7s cubic-bezier(.3,.6,.4,1), happy .5s ease-in-out .65s 3; }
+  /* うれしくて左右にふりふり */
+  @keyframes happy {
+    0%, 100% { transform: rotate(0) translateY(0) scale(1, 1); }
+    25% { transform: rotate(-9deg) translateY(-5px) scale(1.03, .97); }
+    50% { transform: rotate(0) translateY(0) scale(1, 1); }
+    75% { transform: rotate(9deg) translateY(-5px) scale(1.03, .97); }
+  }
   @keyframes hop { 0% { transform: translateY(0) scale(1.06,.92); } 40% { transform: translateY(-22px) scale(.97,1.04); } 80% { transform: translateY(0) scale(1.05,.94); } 100% { transform: none; } }
   .pop-heart { position: absolute; z-index: 2; left: 50%; top: 4%; width: 26px; height: 24px; margin-left: -13px; color: var(--rose); pointer-events: none; opacity: 0; animation: popheart .9s ease-out both; }
   .pop-heart svg { display: block; width: 100%; height: 100%; }
@@ -972,18 +979,21 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // ふだんの「にこっ」用に、裏の絵を表側にも重ねる（データは使い回し）
   var bk=b.querySelector('.buddy__b'), fr=b.querySelector('.buddy__f');
   if(bk&&fr){ var sm=document.createElement('img'); sm.className='buddy__smile'; sm.alt=''; sm.src=bk.src; fr.after(sm); }
-  b.addEventListener('click',function(){
-    // クルッと裏返って「><」の顔に → ハートが出る → しばらくして元に戻る
-    clearTimeout(back);
-    b.classList.add('is-flip');
-    for(var i=0;i<3;i++){
+  function hearts(n,delay){
+    for(var i=0;i<n;i++){
       var h=document.createElementNS('http://www.w3.org/2000/svg','svg');
       var u=document.createElementNS('http://www.w3.org/2000/svg','use'); u.setAttribute('href','#heart'); h.appendChild(u);
       var s=document.createElement('span'); s.className='pop-heart'; s.appendChild(h);
-      s.style.setProperty('--dx',((i-1)*22)+'px'); s.style.animationDelay=(.25+i*.08)+'s';
-      b.appendChild(s); setTimeout(function(el){ return function(){ el.remove(); }; }(s), 1500);
+      s.style.setProperty('--dx',((i-(n-1)/2)*22+(Math.random()*10-5))+'px'); s.style.animationDelay=(delay+i*.08)+'s';
+      b.appendChild(s); setTimeout(function(el){ return function(){ el.remove(); }; }(s), (delay+1.4)*1000);
     }
-    back=setTimeout(function(){ b.classList.remove('is-flip'); }, 1800);
+  }
+  b.addEventListener('click',function(){
+    // クルッと裏返って「><」の顔に → ハートを出しながらふりふり → 元に戻る
+    clearTimeout(back);
+    b.classList.remove('is-flip'); void b.offsetWidth; b.classList.add('is-flip');
+    hearts(3,.25); hearts(2,.95); hearts(2,1.55);
+    back=setTimeout(function(){ b.classList.remove('is-flip'); }, 2300);
   });
 })();
 </script>
