@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007094747">
+<meta name="build" content="20261007095416">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -435,15 +435,14 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .mbox .btn:disabled { opacity: .55; cursor: default; transform: none; }
 
   /* 動くフレーム（リクエスト：音符／メッセージ：ハートと手紙） */
-  .deco { position: relative; padding: 40px 20px 24px; border-radius: 26px; background: rgba(255,255,255,.28); border: 2px dashed rgba(255,255,255,.95); }
-  /* いちごソースがとろ〜り（さりげなく）：枠の角のあたりにだけ少しかかって、たまに一滴たれる */
-  .deco::before { content: ""; position: absolute; left: -2px; top: -2px; width: 62%; height: 40px; z-index: 0; pointer-events: none;
-    border-radius: 26px 0 0 0; background: 0 0 / 360px 40px repeat-x;
-    -webkit-mask-image: linear-gradient(to right, #000 55%, transparent 100%); mask-image: linear-gradient(to right, #000 55%, transparent 100%);
-    opacity: .92; }
+  .deco { position: relative; padding: 48px 20px 24px; border-radius: 26px; background: rgba(255,255,255,.28); border: 2px dashed rgba(255,255,255,.95); }
+  /* いちごミルクのアイシング：枠の上にとろっとかかって、カラースプレー付き。たまに一滴たれる */
+  .deco::before { content: ""; position: absolute; left: -2px; right: -2px; top: -2px; height: 50px; z-index: 0; pointer-events: none;
+    border-radius: 26px 26px 0 0; background: 0 0 / 360px 50px repeat-x;
+    filter: drop-shadow(0 2px 1.5px rgba(220,90,140,.18)); }
   .deco::after { content: ""; position: absolute; z-index: 0; pointer-events: none; width: 8px; height: 10px;
     border-radius: 50% 50% 50% 50% / 38% 38% 62% 62%;
-    background: radial-gradient(circle at 62% 62%, #fff 0 1.1px, transparent 1.6px), linear-gradient(#F98AAE, #EE6F9B);
+    background: radial-gradient(circle at 62% 62%, #fff 0 1.1px, transparent 1.6px), linear-gradient(#FC9BBC, #F585AC);
     transform-origin: 50% 0; transform: scale(0); opacity: 0;
     animation: sauce-drop 10s ease-in infinite; }
   @keyframes sauce-drop {
@@ -453,21 +452,18 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     88% { transform: translateY(0) scale(1, 1.2); opacity: 1; }
     98%, 100% { transform: translateY(54px) scale(.85, 1); opacity: 0; }
   }
-  .deco--sweets::before { background-image: url(img/drip0.svg); }
-  .deco--sweets::after { left: calc(147.9px - 7px); top: calc(25.6px - 9px); animation-delay: 0.0s; }
-  .deco--night::before { background-image: url(img/drip1.svg); }
-  .deco--night::after { right: calc(144.4px - 7px); top: calc(21.8px - 9px); animation-delay: 1.4s; }
-  .deco--night::before { left: auto; right: -2px; transform: scaleX(-1); border-radius: 26px 0 0 0; }
-  .deco--music::before { background-image: url(img/drip2.svg); }
-  .deco--music::after { left: calc(107.0px - 7px); top: calc(20.7px - 9px); animation-delay: 2.8s; }
-  .deco--love::before { background-image: url(img/drip1.svg); }
-  .deco--love::after { left: calc(144.4px - 7px); top: calc(21.8px - 9px); animation-delay: 4.2s; }
-  .deco--spark::before { background-image: url(img/drip2.svg); }
-  .deco--spark::after { right: calc(107.0px - 7px); top: calc(20.7px - 9px); animation-delay: 5.6s; }
-  .deco--spark::before { left: auto; right: -2px; transform: scaleX(-1); border-radius: 26px 0 0 0; }
-  .deco--gift::before { background-image: url(img/drip0.svg); }
-  .deco--gift::after { right: calc(147.9px - 7px); top: calc(25.6px - 9px); animation-delay: 7.0s; }
-  .deco--gift::before { left: auto; right: -2px; transform: scaleX(-1); border-radius: 26px 0 0 0; }
+  .deco--sweets::before { background-image: url(img/drip0.svg); background-position: 0px 0; }
+  .deco--sweets::after { left: calc(158.1px - 2px - 4px); top: calc(30.5px - 2px - 6px); animation-delay: 0.0s; }
+  .deco--night::before { background-image: url(img/drip1.svg); background-position: -60px 0; }
+  .deco--night::after { left: calc(179.9px - 2px - 4px); top: calc(26.1px - 2px - 6px); animation-delay: 1.6s; }
+  .deco--music::before { background-image: url(img/drip2.svg); background-position: -20px 0; }
+  .deco--music::after { left: calc(119.1px - 2px - 4px); top: calc(30.7px - 2px - 6px); animation-delay: 3.2s; }
+  .deco--love::before { background-image: url(img/drip0.svg); background-position: -140px 0; }
+  .deco--love::after { left: calc(129.9px - 2px - 4px); top: calc(34.0px - 2px - 6px); animation-delay: 4.8s; }
+  .deco--spark::before { background-image: url(img/drip1.svg); background-position: 40px 0; }
+  .deco--spark::after { left: calc(176.3px - 2px - 4px); top: calc(26.1px - 2px - 6px); animation-delay: 6.4s; }
+  .deco--gift::before { background-image: url(img/drip2.svg); background-position: -90px 0; }
+  .deco--gift::after { left: calc(153.1px - 2px - 4px); top: calc(30.3px - 2px - 6px); animation-delay: 8.0s; }
   .deco > :not(.deco__i):not(.deco__rise) { position: relative; z-index: 1; }
   .deco__i { position: absolute; z-index: 1; display: block; pointer-events: none; color: var(--rose); filter: drop-shadow(0 2px 3px rgba(150,70,95,.25)); animation: deco-bob 3s ease-in-out infinite; }
   .deco__i svg { display: block; width: 100%; height: 100%; }
