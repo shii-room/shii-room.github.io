@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007043956">
+<meta name="build" content="20261007044555">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -194,6 +194,22 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes holo-glare { 0% { background-position: 130% 0, 0 0; } 100% { background-position: -30% 0, 0 0; } }
   .tilt.is-touch .holo::before { animation: none; background-position: var(--hx, 50%) var(--hy, 50%); opacity: .65; }
   .tilt.is-touch .holo::after { animation: none; opacity: .9; background-position: var(--gx, 50%) 0, var(--lx, 0px) var(--ly, 0px); }
+  /* サイン：タップした時だけピンクゴールドにキラッ */
+  .sig { position: absolute; z-index: 3; pointer-events: none; opacity: 0; transition: opacity .4s ease;
+    filter: drop-shadow(0 0 1.5px rgba(255,226,160,.95)) drop-shadow(0 0 6px rgba(255,150,195,.85)); }
+  .sig__ink { position: absolute; inset: 0;
+    -webkit-mask: url(img/sig.webp) 0 0 / 100% 100% no-repeat; mask: url(img/sig.webp) 0 0 / 100% 100% no-repeat;
+    background: linear-gradient(110deg, #ff7fb5 0%, #ffc2dc 16%, #e6ad4a 30%, #fff3c8 40%, #f0bf5c 50%, #ff98c6 66%, #ffd9ea 80%, #e6ad4a 100%);
+    background-size: 260% 100%; background-position: 100% 0; }
+  .sig__star { position: absolute; width: 16%; aspect-ratio: 1; color: #fff6d6; opacity: 0; transform: scale(.2) rotate(0); }
+  .sig__star { right: -4%; top: -6%; }
+  .sig__star.s2 { left: 6%; top: 18%; width: 10%; }
+  .tilt.is-touch .sig, .tilt.is-flash .sig { opacity: 1; }
+  .tilt.is-touch .sig__ink, .tilt.is-flash .sig__ink { animation: sig-shine 1.3s ease-in-out infinite alternate; }
+  .tilt.is-touch .sig__star, .tilt.is-flash .sig__star { animation: sig-star 1.1s ease-in-out infinite; }
+  .tilt.is-touch .sig__star.s2, .tilt.is-flash .sig__star.s2 { animation-delay: .5s; }
+  @keyframes sig-shine { from { background-position: 100% 0; } to { background-position: 0% 0; } }
+  @keyframes sig-star { 0%, 100% { opacity: 0; transform: scale(.2) rotate(0); } 50% { opacity: 1; transform: scale(1) rotate(90deg); } }
   .bubble::after { content: ""; position: absolute; left: 6px; bottom: 4px; width: 16px; height: 16px; background: var(--white); clip-path: polygon(100% 0, 0 100%, 60% 30%); }
   .hero__en { font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .4em; color: var(--ink-sub); }
   .hero__welcome { margin-top: 10px; font-family: var(--hand); font-size: clamp(18px, 5vw, 22px); letter-spacing: .08em; color: var(--ink-sub); }
@@ -640,7 +656,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   <section class="hero" aria-label="しぃ">
     <div class="hero__in">
       <figure class="hero__photo">
-        <span class="tilt"><span class="floater"><span class="holo"><img src="img/main.webp" fetchpriority="high" alt="ケーキの上に座るメイド服のしぃ" width="900" height="1273"></span></span></span>
+        <span class="tilt"><span class="floater"><span class="holo"><img src="img/main.webp" fetchpriority="high" alt="ケーキの上に座るメイド服のしぃ" width="900" height="1273"><span class="sig" style="left:58.333%;top:81.697%;width:38.000%;height:16.732%" aria-hidden="true"><span class="sig__ink"></span><svg class="sig__star"><use href="#kira"/></svg><svg class="sig__star s2"><use href="#kira"/></svg></span></span></span></span>
         <p class="bubble" aria-hidden="true">来てくれて<br>ありがとう！</p>
         <span class="floaty f1" aria-hidden="true"><svg><use href="#heart"/></svg></span>
         <span class="floaty f2 floaty--w" aria-hidden="true"><svg><use href="#heart"/></svg></span>
