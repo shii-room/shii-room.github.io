@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008022000">
+<meta name="build" content="20261008023100">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -138,6 +138,24 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .menu__top { display: inline-block; margin-top: 26px; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .08em; color: var(--ink-sub); border-bottom: 1.5px solid var(--rose); }
   body.menu-open { overflow: hidden; }
   @media (min-width: 768px) { .header .nav { display: flex; } }
+
+
+  /* メニューの端でかくれんぼ */
+  .menu-peeks{position:fixed;inset:calc(env(safe-area-inset-top,0px) + 57px) 0 0;z-index:10;overflow:hidden;pointer-events:none;}
+  .menu-peeks[hidden]{display:none;}
+  .menu-peek{position:absolute;padding:0;border:0;background:none;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;opacity:0;transition:transform .35s ease-in,opacity .25s;}
+  .menu-peek:focus-visible{outline:2px dashed var(--rose-deep);outline-offset:-4px;border-radius:28px;}
+  .menu-peek--mini{width:96px;height:171px;top:var(--peek-y,18%);filter:drop-shadow(0 3px 4px rgba(150,70,95,.18));}
+  .menu-peek--mini img{display:block;width:100%;height:auto;pointer-events:none;}
+  .menu-peek--mini[data-side="left"]{left:0;transform:translateX(-115%) rotate(20deg);}
+  .menu-peek--mini[data-side="right"]{right:0;transform:translateX(115%) rotate(-20deg);}
+  .menu-peek--mini.is-peeking[data-side="left"]{opacity:1;transform:translateX(-38%) rotate(20deg);transition:transform .65s cubic-bezier(.2,.8,.3,1),opacity .3s;}
+  .menu-peek--mini.is-peeking[data-side="right"]{opacity:1;transform:translateX(38%) rotate(-20deg);transition:transform .65s cubic-bezier(.2,.8,.3,1),opacity .3s;}
+  .menu-peek--large{left:var(--large-x,55%);bottom:0;width:clamp(280px,60vw,460px);transform:translate(-50%,105%);mix-blend-mode:multiply;}
+  .menu-peek--large img{display:block;width:100%;height:auto;pointer-events:none;}
+  .menu-peek--large.is-peeking{opacity:1;transform:translate(-50%,57%);transition:transform 1.2s cubic-bezier(.2,.8,.3,1),opacity .7s;}
+  .menu-peek:not(.is-peeking){pointer-events:none;}
+  @media(prefers-reduced-motion:reduce){.menu-peek,.menu-peek--mini.is-peeking,.menu-peek--large.is-peeking{transition:opacity .15s;}}
 
   /* Hero */
   .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 80px; display: grid; gap: 28px; }
@@ -901,6 +919,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   </div>
 </nav>
 
+<div class="menu-peeks" id="menu-peeks" hidden>
+  <button class="menu-peek menu-peek--mini" id="menu-peek-mini" type="button" data-side="right" aria-label="ミニしぃをタップしてかくれんぼ" disabled><img src="img/chibi-a.webp" alt="" width="320" height="569"></button>
+  <button class="menu-peek menu-peek--large" id="menu-peek-large" type="button" aria-label="のぞいているしぃをタップして隠す" disabled><img src="img/menu-large.jpg" alt="" width="1888" height="1334" loading="lazy"></button>
+</div>
+
 <main id="top">
   <section class="hero" aria-label="しぃ">
     <div class="hero__in">
@@ -1168,11 +1191,45 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 <script>
 (function(){
   var btn=document.querySelector('.menu-btn'), menu=document.getElementById('menu');
+  var layer=document.getElementById('menu-peeks'), mini=document.getElementById('menu-peek-mini'), large=document.getElementById('menu-peek-large');
+  var active=false, miniTimer=null, bigTimer=null, bigHide=null, slot=-1;
+  var positions=[['left','16%'],['right','20%'],['left','43%'],['right','47%'],['left','68%'],['right','70%']];
+  function revealMini(){
+    if(!active) return;
+    var next=Math.floor(Math.random()*(positions.length-1)); if(next>=slot) next++;
+    slot=next; mini.dataset.side=positions[slot][0]; mini.style.setProperty('--peek-y',positions[slot][1]);
+    mini.querySelector('img').src='img/chibi-a.webp'; mini.disabled=false; mini.classList.add('is-peeking');
+  }
+  function hideLarge(){large.classList.remove('is-peeking');large.disabled=true;}
+  function revealLarge(){
+    if(!active) return;
+    large.style.setProperty('--large-x',(45+Math.random()*25)+'%');
+    large.disabled=false; large.classList.add('is-peeking');
+    bigHide=setTimeout(hideLarge,4200);
+    bigTimer=setTimeout(revealLarge,24000+Math.random()*12000);
+  }
+  function peekMenu(open){
+    active=open; clearTimeout(miniTimer);clearTimeout(bigTimer);clearTimeout(bigHide);
+    mini.classList.remove('is-peeking');hideLarge(); mini.disabled=true;layer.hidden=!open;
+    if(open){miniTimer=setTimeout(revealMini,650);bigTimer=setTimeout(revealLarge,9500);}
+  }
+  mini.addEventListener('click',function(){
+    if(!active||mini.disabled) return;
+    mini.disabled=true; mini.querySelector('img').src='img/chibi-b.webp';
+    clearTimeout(miniTimer);
+    miniTimer=setTimeout(function(){mini.classList.remove('is-peeking');miniTimer=setTimeout(revealMini,650);},120);
+  });
+  large.addEventListener('click',function(){clearTimeout(bigHide);hideLarge();});
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden) peekMenu(false);
+    else if(btn.getAttribute('aria-expanded')==='true') peekMenu(true);
+  });
   function set(open){
     btn.setAttribute('aria-expanded', open);
     btn.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
     menu.classList.toggle('is-open', open);
     document.body.classList.toggle('menu-open', open);
+    peekMenu(open);
   }
   btn.addEventListener('click', function(){ set(btn.getAttribute('aria-expanded')!=='true'); });
   menu.addEventListener('click', function(e){ if(e.target.closest('a')) set(false); });
