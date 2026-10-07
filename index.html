@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007140722">
+<meta name="build" content="20261008012800">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -549,6 +549,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* SONGS */
   .deco--songs::before { background-image: url(img/drip2.svg); background-position: -110px 0; }
   .deco--songs::after { left: calc(243.1px - 110px - 2px - 4px); top: calc(30.3px - 2px - 6px); animation-delay: 2.2s; }
+  .songs__credit { display:flex; flex-wrap:wrap; gap:4px 10px; }
+  .songs__credit a { font-size:10px; padding:4px; color:var(--ink-sub); text-decoration:none; }
+  .songs__credit a:hover { color:var(--rose-deep); text-decoration:underline; }
   .songs__modes { display:flex; gap:4px; padding:4px; border-radius:999px; background:rgba(255,255,255,.55); margin-bottom:8px; }
   .songs__modes button { flex:1; border:0; border-radius:999px; padding:8px 6px; background:transparent; color:var(--ink-sub); font:inherit; font-size:12px; cursor:pointer; }
   .songs__modes button[aria-pressed="true"] { background:var(--white); color:var(--rose-deep); box-shadow:0 2px 8px rgba(181,100,130,.12); }
@@ -1046,7 +1049,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
           <input id="song-q" type="search" placeholder="曲名・読みでさがす" autocomplete="off" aria-label="曲をさがす">
         </div>
-        <p id="song-search-note" class="songs__count" aria-live="polite">ひらがなでも検索 ♡ 読み・ジャンル：UTAEMO</p>
+        <p class="songs__count songs__credit"><span id="song-search-note" aria-live="polite">ひらがな・英字で検索 ♡</span> <span>データ：UTAEMO <a href="https://utalis.github.io/" target="_blank" rel="noopener" aria-label="UTAEMOを開く（新しいタブ）">↗</a></span></p>
         <div class="songs__kana" id="song-kana" role="group" aria-label="五十音で絞り込み"></div>
         <div class="songs__tags" id="song-tags" hidden></div>
         <div class="songs__tools">
@@ -1624,7 +1627,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         if(!m) throw new Error('format');
         var data=JSON.parse(m[1]); if(!Array.isArray(data)||!data.length) throw new Error('empty');
         utaemoMaster=data; utaemoReady=true; addUtaemoSearchData();
-        $('song-search-note').textContent='ひらがなでも検索 ♡ 読み・ジャンル：UTAEMO';
+        $('song-search-note').textContent='ひらがな・英字で検索 ♡';
         if(q||kana||genre||order!=='original') render();
       }).catch(function(){ $('song-search-note').textContent='読みデータを取得できませんでした。曲名・アーティスト名で検索できます'; })
       .then(function(){clearTimeout(timer);});
@@ -1635,7 +1638,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var hits=songs.filter(function(s){
       var text=mode==='artist'?(s.artistSearch||s.artist):(s.titleSearch||s.title);
       var first=mode==='artist'?(s.artistKana||norm(s.artist).charAt(0)):(s.titleKana||norm(s.title).charAt(0));
-      return (!tag||s.tag===tag)&&(!nq||norm(text).indexOf(nq)>=0)&&(!kana||kana.indexOf(first)>=0)&&(!genre||(s.searchGenres||[]).indexOf(genre)>=0||s.tag===genre);
+      return (!tag||s.tag===tag)&&(!nq||norm(text).indexOf(nq)>=0)&&(!kana||(kana==='abc'?/^[a-z]/.test(norm(mode==='artist'?s.artist:s.title)):kana.indexOf(first)>=0))&&(!genre||(s.searchGenres||[]).indexOf(genre)>=0||s.tag===genre);
     });
     if(order!=='original') hits.sort(function(a,b){
       if(order==='artist') return collator.compare(a.artistSort||norm(a.artist),b.artistSort||norm(b.artist))||collator.compare(a.titleSort||norm(a.title),b.titleSort||norm(b.title));
@@ -1702,7 +1705,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     mode=b.dataset.mode; document.querySelectorAll('[data-mode]').forEach(function(c){c.setAttribute('aria-pressed',c===b?'true':'false');});
     $('song-q').placeholder=(mode==='artist'?'アーティスト名':'曲名')+'・読みでさがす'; loadUtaemoSearch(); shown=STEP; render();
   });});
-  [['すべて',''],['あ行','あいうえおぁぃぅぇぉ'],['か行','かきくけこがぎぐげご'],['さ行','さしすせそざじずぜぞ'],['た行','たちつてとだぢづでどっ'],['な行','なにぬねの'],['は行','はひふへほばびぶべぼぱぴぷぺぽ'],['ま行','まみむめも'],['や行','やゆよゃゅょ'],['ら行','らりるれろ'],['わ行','わをんゎ']].forEach(function(row){
+  [['すべて',''],['あ行','あいうえおぁぃぅぇぉ'],['か行','かきくけこがぎぐげご'],['さ行','さしすせそざじずぜぞ'],['た行','たちつてとだぢづでどっ'],['な行','なにぬねの'],['は行','はひふへほばびぶべぼぱぴぷぺぽ'],['ま行','まみむめも'],['や行','やゆよゃゅょ'],['ら行','らりるれろ'],['わ行','わをんゎ'],['ABC','abc']].forEach(function(row){
     var b=document.createElement('button'); b.type='button'; b.textContent=row[0]; b.setAttribute('aria-pressed',row[1]===''?'true':'false');
     b.addEventListener('click',function(){kana=row[1]; Array.prototype.forEach.call($('song-kana').children,function(c){c.setAttribute('aria-pressed',c===b?'true':'false');}); loadUtaemoSearch(); shown=STEP; openSongList(true); render();}); $('song-kana').appendChild(b);
   });
