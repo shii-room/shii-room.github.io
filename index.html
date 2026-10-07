@@ -553,8 +553,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .songs__tools label { font-size:13px; color:var(--ink-sub); }
   .songs__tools select, .songs__random { max-width:100%; padding:9px 13px; border:1.5px solid var(--white); border-radius:999px; background:rgba(255,255,255,.8); color:var(--rose-deep); font:inherit; font-size:13px; }
   .songs__random:disabled { opacity:.5; }
-  .songs__accordion { margin-top:14px; padding:12px; border-radius:18px; background:rgba(255,255,255,.4); }
-  .songs__accordion summary { cursor:pointer; font-family:var(--maru); font-weight:700; color:var(--rose-deep); }
   .songs__picked { margin-top:12px; padding:14px; border-radius:16px; background:rgba(255,255,255,.8); color:var(--ink); overflow-wrap:anywhere; }
   .songs__picked .songs__req { margin-top:8px; }
   .songs__search { position: relative; margin-top: 18px; }
@@ -1039,6 +1037,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
           <input id="song-q" type="search" placeholder="曲名・アーティストでさがす" autocomplete="off" aria-label="曲をさがす">
         </div>
+        <p id="song-search-note" class="songs__count" aria-live="polite">曲名・アーティストの読み検索は、うたえものデータを使います</p>
         <div class="songs__tags" id="song-tags" hidden></div>
         <div class="songs__tools">
           <label for="song-sort">並び順</label>
@@ -1047,10 +1046,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         </div>
         <div class="songs__picked" id="song-picked" role="status" hidden></div>
         <p class="songs__count" id="song-count" aria-live="polite">読み込み中…</p>
-        <details class="songs__accordion" id="song-accordion"><summary>歌える曲リストを開く</summary>
+        <button class="acc__btn" id="song-acc" type="button" aria-expanded="false" aria-controls="song-panel">🎤 歌える曲リストを開く<span class="acc__mark" aria-hidden="true"></span></button>
+        <div class="acc__panel" id="song-panel"><div>
         <ul class="songs__list" id="song-list"></ul>
         <button class="songs__more" id="song-more" type="button" hidden>もっと見る</button>
-        </details>
+        </div></div>
       </div>
     </div>
   </section>
@@ -1571,10 +1571,49 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
   var $=function(id){return document.getElementById(id);};
   var songs=[], tag='', q='', order='original', shown=20, STEP=20;
+  var utaemoMaster=[], utaemoLoading=null, utaemoReady=false;
   var collator=new Intl.Collator('ja',{numeric:true,sensitivity:'base'});
+  // UTAEMOの公開マスターから検索用の読みだけを参照する。曲一覧はしぃのデータを維持。
+  function searchMatchKey(value){return norm(value).replace(/[〜～~]/g,'~').replace(/[’‘′`]/g,"'").replace(/[‐‑‒–—―−]/g,'-');}
+  function addUtaemoSearchData(){
+    var byTitle=Object.create(null), byArtist=Object.create(null);
+    utaemoMaster.forEach(function(m){
+      if(!m||typeof m.t!=='string'||typeof m.a!=='string') return;
+      var t=searchMatchKey(m.t), a=searchMatchKey(m.a);
+      (byTitle[t]||(byTitle[t]=[])).push(m);
+      (byArtist[a]||(byArtist[a]=[])).push(m.y||'');
+    });
+    songs.forEach(function(s){
+      var hits=byTitle[searchMatchKey(s.title)]||[], artist=searchMatchKey(s.artist);
+      var exact=hits.filter(function(m){return searchMatchKey(m.a)===artist;});
+      var match=exact.length===1?exact[0]:null;
+      // 同名曲を取り違えない。タイトルだけ一致する場合は、全候補の読みが一致するときだけ利用。
+      var readings=hits.map(function(m){return m.ty||'';}).filter(Boolean);
+      var titleReading=match?(match.ty||''):(readings.length===hits.length&&readings.every(function(r){return r===readings[0];})?readings[0]:'');
+      var artistReadings=byArtist[artist]||[];
+      s.searchText=[s.title,s.artist||'',s.title_reading||'',s.artist_reading||'',titleReading].concat(artistReadings).join(' ');
+    });
+  }
+  function loadUtaemoSearch(){
+    if(utaemoLoading) return utaemoLoading;
+    var controller=new AbortController(), timer=setTimeout(function(){controller.abort();},12000);
+    $('song-search-note').textContent='うたえもの読みデータを読み込み中…';
+    utaemoLoading=fetch('https://raw.githubusercontent.com/utalis/utalis.github.io/main/index.html',{signal:controller.signal})
+      .then(function(r){if(!r.ok) throw new Error('master');return r.text();})
+      .then(function(html){
+        var m=html.match(/const MASTER_SONGS = (\[[^\n]*\]);/);
+        if(!m) throw new Error('format');
+        var data=JSON.parse(m[1]); if(!Array.isArray(data)||!data.length) throw new Error('empty');
+        utaemoMaster=data; utaemoReady=true; addUtaemoSearchData();
+        $('song-search-note').textContent='うたえもの曲名・アーティストの読みで検索できます';
+        if(q) render();
+      }).catch(function(){ $('song-search-note').textContent='読みデータを取得できませんでした。曲名・アーティスト名で検索できます'; })
+      .then(function(){clearTimeout(timer);});
+    return utaemoLoading;
+  }
   function filteredSongs(){
     var nq=norm(q);
-    var hits=songs.filter(function(s){return (!tag||s.tag===tag)&&(!nq||norm(s.title+' '+(s.artist||'')).indexOf(nq)>=0);});
+    var hits=songs.filter(function(s){return (!tag||s.tag===tag)&&(!nq||norm(s.searchText||s.title+' '+(s.artist||'')).indexOf(nq)>=0);});
     if(order!=='original') hits.sort(function(a,b){
       if(order==='artist') return collator.compare(norm(a.artist),norm(b.artist))||collator.compare(norm(a.title),norm(b.title));
       return collator.compare(norm(a.title),norm(b.title))*(order==='reverse'?-1:1);
@@ -1633,9 +1672,17 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       box.appendChild(b);
     });
   }
-  $('song-q').addEventListener('input',function(e){ q=e.target.value; shown=STEP; if(q) $('song-accordion').open=true; render(); });
+  $('song-q').addEventListener('input',function(e){ q=e.target.value; loadUtaemoSearch(); shown=STEP; if(q) openSongList(true); render(); });
+  $('song-q').addEventListener('focus',loadUtaemoSearch);
   $('song-sort').addEventListener('change',function(e){order=e.target.value; shown=STEP; render();});
-  $('song-accordion').addEventListener('toggle',function(){this.querySelector('summary').textContent=this.open?'歌える曲リストを閉じる':'歌える曲リストを開く';});
+  var songAcc=$('song-acc'), songPanel=$('song-panel');
+  function openSongList(open){
+    songAcc.setAttribute('aria-expanded',open?'true':'false');
+    songAcc.firstChild.nodeValue=open?'🎤 歌える曲リストを閉じる':'🎤 歌える曲リストを開く';
+    songPanel.classList.toggle('is-open',open); songPanel.inert=!open;
+  }
+  openSongList(false);
+  songAcc.addEventListener('click',function(){openSongList(songAcc.getAttribute('aria-expanded')!=='true');});
   $('song-random').addEventListener('click',function(){
     var hits=filteredSongs(); if(!hits.length) return;
     var s=hits[Math.floor(Math.random()*hits.length)], box=$('song-picked');
@@ -1644,7 +1691,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   });
   $('song-more').addEventListener('click',function(){ shown+=STEP; render(); });
   fetch(SB+'shii_songs_list',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'})
-    .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?d:[]; tags(); render(); })
+    .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?d:[]; if(utaemoReady) addUtaemoSearchData(); tags(); render(); })
     .catch(function(){ songs=[]; render(); });
 })();
 </script>
