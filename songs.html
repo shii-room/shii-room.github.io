@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261008020100"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261008021100"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -777,6 +777,11 @@
 .songs__tools select,.songs__random { font-size:12px; padding:8px 10px; }
 .header__home { font-size:12px; color:var(--ink-sub); }
 .page-foot { text-align:center; padding:0 16px 32px; font-size:12px; color:var(--ink-sub); }
+.songs__roulette { margin-top:16px; padding:12px; border:2px solid var(--rose); border-radius:22px; background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,231,240,.92)); box-shadow:4px 4px 0 rgba(224,116,150,.35),inset 0 0 0 3px var(--white); }
+.songs__roulette .songs__random { display:block; width:100%; padding:11px 14px; border:2px solid var(--white); background:var(--rose); color:var(--white); box-shadow:0 3px 0 var(--rose-deep); font-family:var(--maru); font-weight:700; font-size:14px; cursor:pointer; transition:transform .15s,box-shadow .15s; }
+.songs__roulette .songs__random:enabled:hover { transform:translateY(2px); box-shadow:0 1px 0 var(--rose-deep); }
+.songs__roulette .songs__random:focus-visible { border-radius:999px; }
+.songs__roulette .songs__picked { border:1px solid rgba(224,116,150,.45); background:var(--white); }
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="heart" viewBox="0 0 24 22"><path fill="currentColor" d="M12 21.5S0 14.2 0 6.6A6.3 6.3 0 0 1 12 3.9 6.3 6.3 0 0 1 24 6.6c0 7.6-12 14.9-12 14.9z"/></symbol>
   <symbol id="kira" viewBox="0 0 20 20"><path fill="currentColor" d="M10 0c.6 5.2 4.8 9.4 10 10-5.2.6-9.4 4.8-10 10-.6-5.2-4.8-9.4-10-10C5.2 9.4 9.4 5.2 10 0z"/></symbol>
@@ -825,9 +830,11 @@
           <select id="song-genre" aria-label="ジャンル"><option value="">全ジャンル</option><option>J-POP</option><option>アニソン</option><option>ボカロ</option><option>洋楽</option><option>演歌</option><option>その他</option></select>
           <label class="req__hp" for="song-sort">並び順</label>
           <select id="song-sort"><option value="original">登録順</option><option value="title">曲名：五十音順</option><option value="reverse">曲名：五十音逆順</option><option value="artist">アーティスト順</option></select>
-          <button class="songs__random" id="song-random" type="button" disabled>おまかせで1曲 ♡</button>
         </div>
-        <div class="songs__picked" id="song-picked" role="status" hidden></div>
+        <div class="songs__roulette">
+          <button class="songs__random" id="song-random" type="button" disabled>おまかせで1曲 ♡</button>
+          <div class="songs__picked" id="song-picked" role="status" hidden></div>
+        </div>
         <p class="songs__count" id="song-count" aria-live="polite">読み込み中…</p>
         <button class="acc__btn" id="song-acc" type="button" aria-expanded="false" aria-controls="song-panel">🎤 歌える曲リストを開く<span class="acc__mark" aria-hidden="true"></span></button>
         <div class="acc__panel" id="song-panel"><div>
