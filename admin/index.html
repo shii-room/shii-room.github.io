@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261007135502">
+<meta name="build" content="20261007140329">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -309,6 +309,17 @@
   function scall(act,songsArg,id){ return call('shii_songs_admin',{p_action:act,p_songs:songsArg||null,p_id:id||null}); }
   function parseSongs(text){
     var out=[], tag='';
+    // setlinkの一覧をそのままコピーした形（曲名 / アーティスト / 詳細を表示 のくり返し）
+    if(/詳細を表示/.test(text)){
+      var buf=[];
+      String(text).split(/\r?\n/).forEach(function(raw){
+        var l=raw.trim(); if(!l) return;
+        if(/^(歌えるかもリスト|総曲数|並び替え)/.test(l) || l==='▲' || l==='▼') return;
+        if(l==='詳細を表示'){ if(buf.length){ var ar=buf[1]||''; if(ar==='未設定') ar=''; out.push({title:buf[0].slice(0,120), artist:ar.slice(0,80), tag:''}); } buf=[]; return; }
+        buf.push(l);
+      });
+      return out;
+    }
     String(text).split(/\r?\n/).forEach(function(raw){
       var line=raw.replace(/\u3000/g,' ').trim(); if(!line) return;
       var h=line.match(/^【(.+?)】$/)||line.match(/^[#＃■◆●]\s*(.+)$/)||line.match(/^\[(.+?)\]$/);
