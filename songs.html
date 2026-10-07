@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261008021100"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261008022000"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -782,6 +782,7 @@
 .songs__roulette .songs__random:enabled:hover { transform:translateY(2px); box-shadow:0 1px 0 var(--rose-deep); }
 .songs__roulette .songs__random:focus-visible { border-radius:999px; }
 .songs__roulette .songs__picked { border:1px solid rgba(224,116,150,.45); background:var(--white); }
+.songs__memo{display:block;margin-top:4px;color:var(--ink-sub);font-size:12px;line-height:1.5;font-weight:400;}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="heart" viewBox="0 0 24 22"><path fill="currentColor" d="M12 21.5S0 14.2 0 6.6A6.3 6.3 0 0 1 12 3.9 6.3 6.3 0 0 1 24 6.6c0 7.6-12 14.9-12 14.9z"/></symbol>
   <symbol id="kira" viewBox="0 0 20 20"><path fill="currentColor" d="M10 0c.6 5.2 4.8 9.4 10 10-5.2.6-9.4 4.8-10 10-.6-5.2-4.8-9.4-10-10C5.2 9.4 9.4 5.2 10 0z"/></symbol>
@@ -854,42 +855,88 @@
   var songs=[], tag='', q='', mode='title', kana='', genre='', order='original', shown=20, STEP=20;
   var utaemoMaster=[], utaemoLoading=null, utaemoReady=false;
   var collator=new Intl.Collator('ja',{numeric:true,sensitivity:'base'});
-  // UTAEMOの公開マスターから検索用の読みだけを参照する。曲一覧はしぃのデータを維持。
+  // 公開マスターと照合。元の入力は検索用に残し、確定できる候補だけ補完する。
   function searchMatchKey(value){return norm(value).replace(/[〜～~]/g,'~').replace(/[’‘′`]/g,"'").replace(/[‐‑‒–—―−]/g,'-');}
-  function uniqueSongs(data){
-    var seen=Object.create(null);
-    return data.filter(function(s){
-      if(!s||typeof s.title!=='string') return false;
-      var key=JSON.stringify([searchMatchKey(s.title),searchMatchKey(s.artist)]);
-      if(seen[key]) return false; seen[key]=true; return true;
-    });
+  function catalogKey(value){return searchMatchKey(value).replace(/[^\p{L}\p{N}]/gu,'');}
+  function prepareSong(s){
+    s.originalTitle=s.originalTitle||s.title; s.originalArtist=s.originalArtist||s.artist||'';
+    var notes=[];
+    s.title=s.originalTitle.replace(/[（(]\s*(?:キー\s*)?([+＋\-−－]\s*\d+)\s*[)）]/g,function(_,v){notes.push('キー '+v.normalize('NFKC').replace(/−/g,'-').replace(/\s/g,''));return '';}).trim();
+    s.keyNotes=notes; return s;
   }
+  function uniqueSongs(data){
+    var seen=Object.create(null), result=[];
+    data.forEach(function(s){
+      if(!s||typeof s.title!=='string') return;
+      var key=JSON.stringify([catalogKey(s.title),catalogKey(s.artist)]), previous=seen[key];
+      if(previous){
+        (s.keyNotes||[]).forEach(function(n){if(previous.keyNotes.indexOf(n)<0) previous.keyNotes.push(n);});
+        previous.titleSearch=[previous.titleSearch||previous.title,s.titleSearch||s.originalTitle||s.title].join(' ');
+        previous.artistSearch=[previous.artistSearch||previous.artist,s.artistSearch||s.originalArtist||s.artist].join(' ');
+      }else{seen[key]=s; s.keyNotes=s.keyNotes||[]; result.push(s);}
+    });
+    return result;
+  }
+  // 実際の入力とマスターを確認済みの対応。近似だけでは曲・歌手を決めない。
+  var reviewedSongs={
+    'Bling‐bang-bang':542,'GLAMORUS SKY':1202,'KISSをして':596,
+    'あたしを彼女をしたいなら':622,'ダイヤモンド クレバス':717,
+    'ハム太郎のっとこうた':1353,'ヒロイン育成計画feat.涼海ひより(CV水瀬いのり)':1332,
+    'もってけ！セーラー服':179,'愛して愛して愛してる':463,
+    '革命道中-On The away-':20,'丸の内サディスティック':703,
+    '激！帝国華撃団':773,'奏':1524,'二足歩行':1081
+  };
+  var artistAliases={
+    'ORANGERANGE':'オレンジレンジ','五条真由美':'五條真由美',
+    'Tesm.ねこかん':'Team.ねこかん［猫］','WhiteFrame':'WhiteFlame',
+    '黒うさ':'WhiteFlame','松谷裕子':'松谷祐子','井上あずち':'井上あずみ',
+    'kiyori/電ポルP':'電ポルP','後ろからは言よる隊G':'後ろから這いより隊Ｇ',
+    'サユリ':'さユり','ぬゆり':'ぬゆり feat.flower',
+    '石川智晶(石川千亜紀)':'石川智晶','みきとP':'ミキト(みきとP)',
+    'ika':'ika_mo',"シェリル・ノーム sterling May'n":"シェリル・ノーム starring May'n",
+    '月島きらり sterling 久住小春(モーニング娘。)':'月島きらり starring 久住小春(モーニング娘。)',
+    '七海るちあ、宝生波音、洞院リナ':'七海るちあ(中田あすみ)、宝生波音(寺門仁美)、洞院リナ(浅野まゆみ)' 
+  };
   function addUtaemoSearchData(){
-    var byTitle=Object.create(null), byArtist=Object.create(null);
+    var byTitle=Object.create(null), byArtist=Object.create(null), byId=Object.create(null);
     utaemoMaster.forEach(function(m){
       if(!m||typeof m.t!=='string'||typeof m.a!=='string') return;
-      var t=searchMatchKey(m.t), a=searchMatchKey(m.a);
+      var t=catalogKey(m.t), a=catalogKey(m.a); byId[m.id]=m;
       (byTitle[t]||(byTitle[t]=[])).push(m);
       (byArtist[a]||(byArtist[a]=[])).push(m.y||'');
     });
     songs.forEach(function(s){
-      var hits=byTitle[searchMatchKey(s.title)]||[], artist=searchMatchKey(s.artist);
-      var exact=hits.filter(function(m){return searchMatchKey(m.a)===artist;});
+      var alias=artistAliases[s.originalArtist], artist=catalogKey(alias||s.artist);
+      var hits=byTitle[catalogKey(s.title)]||[];
+      var exact=hits.filter(function(m){return catalogKey(m.a)===artist;});
       var match=exact.length===1?exact[0]:null;
-      // 同名曲を取り違えない。タイトルだけ一致する場合は、全候補の読みが一致するときだけ利用。
+      // 確認済み対応も、元のアーティストが変わったら適用しない。
+      var reviewed=byId[reviewedSongs[s.title]];
+      if(!match&&reviewed){
+        var expected={542:'Creepy Nuts',1202:'NANA starring 中島美嘉',717:"シェリル・ノーム starring May'n",179:'泉こなた・柊かがみ・柊つかさ・高良みゆき',773:'帝国歌劇団',1524:'藤宮香織（cv.雨宮天）'};
+        if(catalogKey(reviewed.a)===artist||(expected[reviewed.id]&&catalogKey(expected[reviewed.id])===artist)) match=reviewed;
+      }
+      if(!match&&!artist&&hits.length===1) match=hits[0];
+      if(match){
+        if(match.t!=='GO!!') s.title=match.t;
+        if(match.a!=='超ときめき･宣伝部') s.artist=match.a;
+      }
+      // 同名・別アーティストは変更しない。マスターにない曲は元の表記を維持。
       var readings=hits.map(function(m){return m.ty||'';}).filter(Boolean);
       var titleReading=match?(match.ty||''):(readings.length===hits.length&&readings.every(function(r){return r===readings[0];})?readings[0]:'');
-      var artistReadings=byArtist[artist]||[];
-      s.titleSearch=[s.title,s.title_reading||'',titleReading].join(' ');
-      s.artistSearch=[s.artist||'',s.artist_reading||''].concat(artistReadings).join(' ');
+      var artistReadings=byArtist[catalogKey(s.artist)]||[];
+      s.titleSearch=[s.title,s.originalTitle,s.title_reading||'',titleReading].join(' ');
+      s.artistSearch=[s.artist||'',s.originalArtist,s.artist_reading||''].concat(artistReadings).join(' ');
       s.titleSort=norm(titleReading||s.title_reading||s.title);
       s.artistSort=norm(artistReadings[0]||s.artist_reading||s.artist);
       s.titleKana=norm(titleReading||s.title_reading||s.title).charAt(0);
       s.artistKana=norm(artistReadings[0]||s.artist_reading||s.artist).charAt(0);
       s.searchGenres=match&&Array.isArray(match.genres)?match.genres:[];
-      s.searchText=[s.title,s.artist||'',s.title_reading||'',s.artist_reading||'',titleReading].concat(artistReadings).join(' ');
+      s.searchText=s.titleSearch+' '+s.artistSearch;
     });
+    songs=uniqueSongs(songs);
   }
+  function keyMemo(s){return s.keyNotes&&s.keyNotes.length?'<small class="songs__memo">'+esc(s.keyNotes.join(' ／ '))+'</small>':'';}
   function loadUtaemoSearch(){
     if(utaemoLoading) return utaemoLoading;
     var controller=new AbortController(), timer=setTimeout(function(){controller.abort();},12000);
@@ -902,7 +949,7 @@
         var data=JSON.parse(m[1]); if(!Array.isArray(data)||!data.length) throw new Error('empty');
         utaemoMaster=data; utaemoReady=true; addUtaemoSearchData();
         $('song-search-note').textContent='ひらがな・英字で検索 ♡';
-        if(q||kana||genre||order!=='original') render();
+        tags(); render();
       }).catch(function(){ $('song-search-note').textContent='読みデータを取得できませんでした。曲名・アーティスト名で検索できます'; })
       .then(function(){clearTimeout(timer);});
     return utaemoLoading;
@@ -932,7 +979,7 @@
     if(!hits.length){ list.innerHTML='<li class="songs__empty">見つからなかった…！リクエストで送ってみてね♡</li>'; $('song-more').hidden=true; return; }
     hits.slice(0,shown).forEach(function(s,i){
       var li=document.createElement('li'); li.style.animationDelay=Math.min(i,10)*.03+'s';
-      li.innerHTML='<span class="songs__note"><svg><use href="#note1"/></svg></span><span class="songs__txt"><span class="songs__title">'+esc(s.title)+'</span>'+(s.artist?'<span class="songs__artist">'+esc(s.artist)+'</span>':'')+'</span><button class="songs__req" type="button" aria-label="'+esc(s.title)+'のリクエストコメントをコピー"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 16V5.5A2.5 2.5 0 0 1 7.5 3H15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>コピー</button>';
+      li.innerHTML='<span class="songs__note"><svg><use href="#note1"/></svg></span><span class="songs__txt"><span class="songs__title">'+esc(s.title)+'</span>'+(s.artist?'<span class="songs__artist">'+esc(s.artist)+'</span>':'')+keyMemo(s)+'</span><button class="songs__req" type="button" aria-label="'+esc(s.title)+'のリクエストコメントをコピー"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 16V5.5A2.5 2.5 0 0 1 7.5 3H15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>コピー</button>';
       li.querySelector('button').addEventListener('click',function(){ pickSong(s); });
       list.appendChild(li);
     });
@@ -955,7 +1002,7 @@
     clearTimeout(toastT); toastT=setTimeout(function(){ el.classList.remove('is-show'); }, 3200);
   }
   function pickSong(s){
-    var txt='🎤リクエスト：'+s.title+(s.artist?'／'+s.artist:'');
+    var txt='🎤リクエスト：'+s.title+(s.artist?'／'+s.artist:'')+(s.keyNotes.length?'（'+s.keyNotes.join(' ／ ')+'）':'');
     copyText(txt).then(function(){
       toast('<b>コピーしたよ！</b>配信のコメント欄に貼り付けてね♡<a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を開く</a>');
     }).catch(function(){
@@ -995,7 +1042,7 @@
   $('song-random').addEventListener('click',function(){
     var hits=filteredSongs(); if(!hits.length) return;
     var s=hits[Math.floor(Math.random()*hits.length)], box=$('song-picked');
-    box.innerHTML='<span>この曲はいかが？ ♡</span><strong class="songs__title">'+esc(s.title)+'</strong><span class="songs__artist">'+esc(s.artist)+'</span><button class="songs__req" type="button">リクエストをコピー</button>';
+    box.innerHTML='<span>この曲はいかが？ ♡</span><strong class="songs__title">'+esc(s.title)+'</strong><span class="songs__artist">'+esc(s.artist)+'</span>'+keyMemo(s)+'<button class="songs__req" type="button">リクエストをコピー</button>';
     box.querySelector('button').addEventListener('click',function(){pickSong(s);}); box.hidden=false;
   });
   $('song-share').addEventListener('click',function(){
@@ -1006,7 +1053,7 @@
   function shareCopy(url){copyText(url).then(function(){toast('<b>曲リストのURLをコピーしたよ！</b>リスナーさんに送ってね♡');}).catch(function(){toast('<b>曲リストのURL</b>'+esc(url));});}
   $('song-more').addEventListener('click',function(){ shown+=STEP; render(); });
   fetch(SB+'shii_songs_list',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'})
-    .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?uniqueSongs(d):[]; if(utaemoReady) addUtaemoSearchData(); tags(); render(); })
+    .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?uniqueSongs(d.map(prepareSong)):[]; if(utaemoReady) addUtaemoSearchData(); tags(); render(); loadUtaemoSearch(); })
     .catch(function(){ songs=[]; render(); });
 })();
 </script><script>
