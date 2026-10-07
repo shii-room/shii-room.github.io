@@ -6,7 +6,17 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007095416">
+<meta name="build" content="20261007100343">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="しぃの部屋">
+<meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
+<meta property="og:description" content="ほにゃららLIVERS所属・元メイドのしぃの公式サイト。Mirrativで夜22時からほぼ毎日配信中♡ 歌のリクエストや匿名メッセージも送れます。">
+<meta property="og:url" content="https://shii-room.github.io/">
+<meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://shii-room.github.io/img/ogp.jpg">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -259,6 +269,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     transition: transform .15s, box-shadow .15s, background-color .15s; -webkit-tap-highlight-color: transparent;
   }
   .quick a:hover, .quick a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); background: var(--white); }
+  .quick a.quick__wide { grid-column: 1 / -1; flex-direction: row; gap: 10px; min-height: 56px; font-size: 14px;
+    background: linear-gradient(90deg, rgba(255,255,255,.85), rgba(255,236,242,.9)); }
+  .quick__wide small { font-family: var(--maru); font-weight: 500; font-size: 11px; color: var(--ink-sub); padding: 2px 8px; border-radius: 999px; background: #FBE3EA; }
   .quick__i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #FBE3EA; color: var(--rose); }
   .quick__i svg { width: 20px; height: 20px; }
   .quick a:nth-child(2) .quick__i svg, .quick a:nth-child(5) .quick__i svg { width: 18px; height: 18px; }
@@ -513,6 +526,50 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .upd__dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: #fff; animation: upd-blink 1.2s ease-in-out infinite; }
   @keyframes upd-blink { 50% { opacity: .3; transform: scale(.7); } }
 
+  /* OMIKUJI */
+  .deco--omi::before { background-image: url(img/drip1.svg); background-position: -180px 0; }
+  .deco--omi::after { left: calc(136.3px - 180px + 360px - 2px - 4px); top: calc(26.1px - 2px - 6px); animation-delay: 4.2s; }
+  .omi { text-align: center; }
+  .omi .req__lead { text-align: left; }
+  .omi__stage { display: grid; place-items: end center; height: 210px; margin-top: 4px; padding-bottom: 10px; }
+  .omi__box { position: relative; width: 110px; transform-origin: 50% 90%; filter: drop-shadow(0 8px 10px rgba(150,70,95,.25)); }
+  .omi__box svg { display: block; width: 100%; height: auto; position: relative; z-index: 1; }
+  .omi__stick { position: absolute; left: 50%; top: 14px; width: 12px; height: 70px; margin-left: -6px; border-radius: 5px; z-index: 0;
+    background: linear-gradient(90deg, #F3D9A6, #FFF1D2 50%, #E9C686); box-shadow: inset 0 12px 0 #E8789F; transform: translateY(40px); opacity: 0; }
+  .omi__box.is-shake { animation: omi-shake 1.1s ease-in-out; }
+  @keyframes omi-shake {
+    0%, 100% { transform: rotate(0); }
+    10% { transform: rotate(-14deg) translateY(-6px); } 22% { transform: rotate(12deg) translateY(-2px); }
+    34% { transform: rotate(-12deg) translateY(-6px); } 46% { transform: rotate(10deg); }
+    58% { transform: rotate(-8deg) translateY(-4px); } 70% { transform: rotate(6deg); } 84% { transform: rotate(-3deg); }
+  }
+  .omi__box.is-out .omi__stick { animation: omi-stick .6s cubic-bezier(.3,1.5,.5,1) forwards; }
+  @keyframes omi-stick { from { opacity: 1; transform: translateY(40px); } to { opacity: 1; transform: translateY(-58px) rotate(6deg); } }
+  .omi__btn { cursor: pointer; }
+  .omi__btn:disabled { opacity: .6; cursor: default; transform: none; box-shadow: 4px 4px 0 var(--white); }
+  .omi__res { margin: 26px auto 0; max-width: 360px; padding: 22px 20px 20px; border-radius: 22px; background: var(--white); box-shadow: 0 6px 0 rgba(224,116,150,.4), 0 10px 24px rgba(150,70,95,.15);
+    border: 2px solid #FBE3EA; animation: omi-pop .7s cubic-bezier(.3,1.6,.5,1) both; }
+  @keyframes omi-pop { from { opacity: 0; transform: scale(.6) rotate(-4deg); } to { opacity: 1; transform: none; } }
+  .omi__date { font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .2em; color: var(--ink-sub); }
+  .omi__rank { margin-top: 4px; font-family: var(--maru); font-weight: 700; font-size: 46px; line-height: 1.2; letter-spacing: .08em; color: var(--rose);
+    text-shadow: 3px 3px 0 #FBE3EA; }
+  .omi__rank.is-rare { background: linear-gradient(110deg, #E6AD4A, #FF8FBF 45%, #E6AD4A 80%); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; }
+  .omi__msg { margin-top: 10px; font-size: 15px; line-height: 1.9; letter-spacing: .04em; color: var(--ink); }
+  .omi__lucky { display: grid; gap: 6px; margin: 16px 0 0; padding-top: 14px; border-top: 1px dashed #F3C2D2; text-align: left; font-size: 13px; }
+  .omi__lucky div { display: flex; justify-content: space-between; gap: 12px; }
+  .omi__lucky dt { font-family: var(--maru); font-weight: 700; color: var(--ink-sub); }
+  .omi__lucky dd { margin: 0; font-family: var(--maru); font-weight: 700; color: var(--rose-deep); }
+  .omi__share { margin-top: 18px; min-width: 0; height: 44px; font-size: 13px; }
+  .omi__next { margin-top: 12px; font-size: 12px; color: var(--ink-sub); }
+
+  /* どこをタップしても小さなハート */
+  .tap-fx { position: fixed; z-index: 95; width: 16px; height: 15px; margin: -8px 0 0 -8px; pointer-events: none; color: var(--rose);
+    animation: tap-fx .75s ease-out forwards; }
+  .tap-fx svg { display: block; width: 100%; height: 100%; }
+  .tap-fx.w { color: #fff; filter: drop-shadow(0 0 2px rgba(224,116,150,.8)); }
+  @keyframes tap-fx { 0% { opacity: 0; transform: translate(0, 0) scale(.3) rotate(var(--r)); } 25% { opacity: 1; transform: translate(calc(var(--x) * .4), -10px) scale(1.05) rotate(var(--r)); }
+    100% { opacity: 0; transform: translate(var(--x), -38px) scale(.7) rotate(var(--r)); } }
+
   /* LINK */
   .links { list-style: none; }
   .links li + li { border-top: 1px solid var(--rule); }
@@ -662,6 +719,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   <symbol id="star" viewBox="0 0 24 24"><path fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="m12 3 2.6 5.6 6.1.7-4.5 4.1 1.2 6L12 16.4l-5.4 3 1.2-6-4.5-4.1 6.1-.7z"/></symbol>
   <symbol id="moon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5z"/></symbol>
   <symbol id="gift" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2" fill="#fff" stroke="currentColor" stroke-width="1.6"/><rect x="2" y="6" width="20" height="4" rx="1.5" fill="currentColor"/><path d="M12 6v15" stroke="currentColor" stroke-width="2.4"/><path d="M12 6c-1.5-3-5.5-3.5-5.5-1.2S12 6 12 6zm0 0c1.5-3 5.5-3.5 5.5-1.2S12 6 12 6z" fill="currentColor"/></symbol>
+  <symbol id="omi" viewBox="0 0 24 24"><g fill="currentColor"><rect x="10.6" y="1.5" width="2.8" height="7" rx="1.2" transform="rotate(14 12 5)"/><path d="M6 7.5h12l-1.4 13.2a1.6 1.6 0 0 1-1.6 1.4H9a1.6 1.6 0 0 1-1.6-1.4z"/></g><path d="M9.2 13.2s1.1-.9 2.8-.9 2.8.9 2.8.9M10 16.5h4" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
   <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g></symbol>
   <symbol id="i-house" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/></g></symbol>
@@ -692,6 +750,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <a href="#schedule">SCHEDULE</a>
         <a href="#request">REQUEST</a>
         <a href="#message">MESSAGE</a>
+        <a href="#omikuji">OMIKUJI</a>
         <a href="#link">LINK</a>
       </nav>
       <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
@@ -709,6 +768,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
       <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
       <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
+      <a class="quick__wide" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>今日のしぃおみくじ<small>1日1回</small></a>
     </div>
     <p class="menu__label">SNS</p>
     <ul class="menu__sns">
@@ -754,6 +814,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
           <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
           <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
+          <a class="quick__wide" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>今日のしぃおみくじ<small>1日1回</small></a>
         </nav>
       </div>
     </div>
@@ -886,6 +947,42 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <p>再開したら X でお知らせするね。</p>
       </div>
       </div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="omikuji">
+    <div class="sec__head"><h2 class="sec__en">Omikuji</h2><span class="sec__ja">しぃおみくじ</span></div>
+    <div class="deco deco--omi">
+      <span class="deco__i p1" aria-hidden="true"><svg><use href="#omi"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#heart"/></svg></span>
+      <div class="omi">
+        <p class="req__lead">1日1回、しぃが今日の運勢を占うよ🔮 いいことあるといいね！</p>
+        <div class="omi__stage">
+          <div class="omi__box" id="omi-box" aria-hidden="true">
+            <span class="omi__stick"></span>
+            <svg viewBox="0 0 120 150"><defs><linearGradient id="omiG" x1="0" x2="1"><stop offset="0" stop-color="#F7A1BE"/><stop offset=".45" stop-color="#FFD3E1"/><stop offset="1" stop-color="#EE84A9"/></linearGradient></defs>
+              <path d="M18 22h84l-8 118a8 8 0 0 1-8 7H34a8 8 0 0 1-8-7z" fill="url(#omiG)" stroke="#fff" stroke-width="4"/>
+              <ellipse cx="60" cy="22" rx="42" ry="9" fill="#E8789F" stroke="#fff" stroke-width="4"/>
+              <rect x="40" y="52" width="40" height="66" rx="6" fill="#fff"/>
+              <text x="60" y="76" text-anchor="middle" font-size="17" font-weight="700" fill="#C9557B" font-family="Hiragino Maru Gothic ProN, Zen Maru Gothic, sans-serif">お</text>
+              <text x="60" y="95" text-anchor="middle" font-size="17" font-weight="700" fill="#C9557B" font-family="Hiragino Maru Gothic ProN, Zen Maru Gothic, sans-serif">み</text>
+              <text x="60" y="114" text-anchor="middle" font-size="12" font-weight="700" fill="#C9557B" font-family="Hiragino Maru Gothic ProN, Zen Maru Gothic, sans-serif">くじ</text>
+              <path d="M30 138c6-4 12 4 18 0s12 4 18 0 12 4 18 0 12 4 18 0" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+            </svg>
+          </div>
+        </div>
+        <button class="btn btn--main omi__btn" id="omi-btn" type="button">おみくじを引く</button>
+        <div class="omi__res" id="omi-res" hidden>
+          <p class="omi__date" id="omi-date"></p>
+          <p class="omi__rank" id="omi-rank"></p>
+          <p class="omi__msg" id="omi-msg"></p>
+          <dl class="omi__lucky">
+            <div><dt>ラッキースイーツ</dt><dd id="omi-sweet"></dd></div>
+            <div><dt>ラッキーカラー</dt><dd id="omi-color"></dd></div>
+          </dl>
+          <a class="btn omi__share" id="omi-share" href="#" target="_blank" rel="noopener">Xでシェアする</a>
+          <p class="omi__next">また明日引いてね♡</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1184,6 +1281,75 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     }
     back=setTimeout(function(){ b.classList.remove('is-flip'); }, 2600);
   });
+})();
+</script>
+<script>
+(function(){
+  // ---- しぃおみくじ（1日1回・結果はこの端末に保存） ----
+  var KEY='shii_omikuji';
+  var RANKS=[
+    {r:'しぃ吉',w:3,rare:true,m:['しぃ吉…！？超レアだよ！今日はなにをやってもうまくいく最強の日✨ しぃも一緒にお祝いしたい！']},
+    {r:'大吉',w:15,m:['大吉おめでとう〜！🎉 今日はいいことがたくさん起きる予感！配信にも来てくれたらもっとハッピーになれるかも♡','すごい！大吉だよ！ちょっと勇気を出したことが、うまくいく日かも🍰']},
+    {r:'中吉',w:22,m:['中吉！いい感じの一日になりそう♪ 甘いもの食べてゆっくりしてね🍭','中吉だよ〜！今日は好きなことをすると運気アップ！']},
+    {r:'小吉',w:22,m:['小吉！小さな幸せがたくさん見つかる日だよ。見つけたら教えてね♡','小吉〜！ちょっと休憩すると、いいアイデアが浮かぶかも☕']},
+    {r:'吉',w:23,m:['吉！のんびりマイペースがいちばんの日。無理しないでね🎀','吉だよ！今日はだれかに「ありがとう」を言うといいことあるかも']},
+    {r:'末吉',w:15,m:['末吉！後半になるほど運気が上がっていくよ。夜はしぃの配信でまったりしよ？🌙','末吉〜！今日がんばったぶん、明日きっといいことあるよ！']}
+  ];
+  var SWEETS=['いちごショートケーキ🍰','ペロペロキャンディ🍭','マカロン','いちごパフェ🍓','チョコレート🍫','ドーナツ🍩','カップケーキ🧁','プリン🍮','わたあめ','クッキー🍪'];
+  var COLORS=['いちごミルクピンク','ラベンダー','ミントグリーン','クリームイエロー','ベビーブルー','チェリーレッド','ホワイト'];
+  var $=function(id){return document.getElementById(id);};
+  var btn=$('omi-btn'), box=$('omi-box'); if(!btn) return;
+  function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'null'); return v&&v.d===today()?v:null; }catch(e){ return null; } }
+  function save(v){ try{ localStorage.setItem(KEY,JSON.stringify(v)); }catch(e){} }
+  function pick(){
+    var tot=RANKS.reduce(function(s,x){return s+x.w;},0), n=Math.random()*tot, i=0;
+    for(;i<RANKS.length;i++){ n-=RANKS[i].w; if(n<0) break; }
+    var R=RANKS[Math.min(i,RANKS.length-1)];
+    return { d:today(), i:RANKS.indexOf(R), m:Math.floor(Math.random()*R.m.length), s:Math.floor(Math.random()*SWEETS.length), c:Math.floor(Math.random()*COLORS.length) };
+  }
+  function show(v, animate){
+    var R=RANKS[v.i];
+    $('omi-date').textContent=v.d.replace(/-/g,'.')+' のしぃおみくじ';
+    $('omi-rank').textContent=R.r; $('omi-rank').classList.toggle('is-rare',!!R.rare);
+    $('omi-msg').textContent=R.m[v.m]; $('omi-sweet').textContent=SWEETS[v.s]; $('omi-color').textContent=COLORS[v.c];
+    var txt='今日のしぃおみくじは【'+R.r+'】でした🔮\nラッキースイーツは'+SWEETS[v.s]+'！\n#しぃの見守り隊';
+    $('omi-share').href='https://x.com/intent/tweet?text='+encodeURIComponent(txt)+'&url='+encodeURIComponent('https://shii-room.github.io/#omikuji');
+    var res=$('omi-res'); res.hidden=false; if(!animate) res.style.animation='none';
+    btn.disabled=true; btn.textContent='今日はもう引いたよ♡';
+    box.classList.add('is-out');
+  }
+  var saved=load(); if(saved) show(saved,false);
+  btn.addEventListener('click',function(){
+    if(load()) return;
+    btn.disabled=true; btn.textContent='シャカシャカ…';
+    box.classList.remove('is-out'); void box.offsetWidth; box.classList.add('is-shake');
+    setTimeout(function(){
+      box.classList.remove('is-shake');
+      var v=pick(); save(v); show(v,true);
+      setTimeout(function(){ $('omi-res').scrollIntoView({behavior:'smooth',block:'center'}); }, 250);
+    }, 1150);
+  });
+})();
+</script>
+<script>
+(function(){
+  // ---- どこをタップしても小さなハート ----
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var last=0;
+  document.addEventListener('pointerdown',function(e){
+    if(document.documentElement.classList.contains('op')) return;
+    if(e.target.closest('input, textarea, select')) return;
+    var now=Date.now(); if(now-last<70) return; last=now;
+    for(var i=0;i<2;i++){
+      var s=document.createElement('span'); s.className='tap-fx'+(i?' w':'');
+      s.innerHTML='<svg viewBox="0 0 24 22"><use href="#'+(i?'kira':'heart')+'"/></svg>';
+      s.style.left=e.clientX+'px'; s.style.top=e.clientY+'px';
+      s.style.setProperty('--x',((Math.random()*36-18)|0)+'px'); s.style.setProperty('--r',((Math.random()*40-20)|0)+'deg');
+      if(i){ s.style.width='11px'; s.style.height='11px'; s.style.animationDelay='.06s'; }
+      document.body.appendChild(s); setTimeout(function(el){ return function(){ el.remove(); }; }(s), 900);
+    }
+  },{passive:true});
 })();
 </script>
 <script>
