@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007045428">
+<meta name="build" content="20261007082405">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -333,7 +333,14 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
   /* REQUEST */
   .req { max-width: 560px; }
-  .req__pic { margin: 0 0 22px; }
+  .req__pic { position: relative; margin: 0 0 22px; }
+  /* 歌のイラストをタップ → ライブの紙吹雪 */
+  .confetti { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 6; pointer-events: none; }
+  .confetti i { position: absolute; left: 0; top: 0; display: block; will-change: transform, opacity; backface-visibility: visible; }
+  .confetti i.rect { width: 7px; height: 11px; border-radius: 1.5px; }
+  .confetti i.strip { width: 4px; height: 15px; border-radius: 2px; }
+  .confetti i.dot { width: 7px; height: 7px; border-radius: 50%; }
+  .confetti i svg { display: block; width: 13px; height: 13px; }
   .req__pic .holo { border-radius: 16px; border: 5px solid var(--white); box-shadow: 6px 6px 0 var(--rose); }
   .req__pic .floater { animation: fuwa-s 5.5s ease-in-out infinite; }
   @keyframes fuwa-s { 0%, 100% { transform: translateY(0) rotate(.4deg); } 50% { transform: translateY(-7px) rotate(-.5deg); } }
@@ -656,7 +663,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   <section class="hero" aria-label="しぃ">
     <div class="hero__in">
       <figure class="hero__photo">
-        <span class="tilt"><span class="floater"><span class="holo"><img src="img/main.webp" fetchpriority="high" alt="ケーキの上に座るメイド服のしぃ" width="900" height="1273"><span class="sig" style="left:57.889%;top:77.219%;width:40.222%;height:21.210%" aria-hidden="true"><span class="sig__ink"></span><svg class="sig__star"><use href="#kira"/></svg><svg class="sig__star s2"><use href="#kira"/></svg></span></span></span></span>
+        <span class="tilt"><span class="floater"><span class="holo"><img src="img/main.webp" fetchpriority="high" alt="ケーキの上に座るメイド服のしぃ" width="900" height="1273"><span class="sig" style="left:57.778%;top:77.219%;width:41.778%;height:22.467%" aria-hidden="true"><span class="sig__ink"></span><svg class="sig__star"><use href="#kira"/></svg><svg class="sig__star s2"><use href="#kira"/></svg></span></span></span></span>
         <p class="bubble" aria-hidden="true">来てくれて<br>ありがとう！</p>
         <span class="floaty f1" aria-hidden="true"><svg><use href="#heart"/></svg></span>
         <span class="floaty f2 floaty--w" aria-hidden="true"><svg><use href="#heart"/></svg></span>
@@ -1018,7 +1025,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     }
     var down=false, ft=null;
     function reset(){ el.classList.remove('is-touch'); el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg'); }
-    function flash(){ clearTimeout(ft); el.classList.remove('is-flash'); void el.offsetWidth; el.classList.add('is-flash'); ft=setTimeout(function(){ el.classList.remove('is-flash'); }, 1700); }
+    function flash(){ clearTimeout(ft); el.classList.remove('is-flash'); void el.offsetWidth; el.classList.add('is-flash'); ft=setTimeout(function(){ el.classList.remove('is-flash'); }, 2700); }
     // 光るのは押している間（指を追う）と、離した瞬間のキラッだけ
     el.addEventListener('pointerdown',function(e){ down=true; move(e); });
     el.addEventListener('pointermove',function(e){ if(down) move(e); });
@@ -1039,6 +1046,42 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     window.scrollTo({top:0, behavior: smooth?'smooth':'auto'});
   });
   upd();
+})();
+</script>
+<script>
+(function(){
+  var fig=document.querySelector('.req__pic'); if(!fig) return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var tilt=fig.querySelector('.tilt'), last=0;
+  var colors=['#ff8fbf','#ffd166','#ffffff','#c3a8ff','#8fdcff','#ff6fa8','#ffe6a3','#ffc2dc'];
+  var shapes=['rect','rect','strip','dot','heart','kira'];
+  function rnd(a,b){ return a+Math.random()*(b-a); }
+  function burst(){
+    var now=Date.now(); if(now-last<450) return; last=now;
+    var w=fig.offsetWidth, h=fig.offsetHeight;
+    var box=document.createElement('span'); box.className='confetti'; fig.appendChild(box);
+    var n=48;
+    for(var i=0;i<n;i++){
+      var left=i%2===0;                     // 左右の下の角から、ライブのキャノンみたいに打ち上げ
+      var sx=left? rnd(0,w*.08) : rnd(w*.92,w), sy=h*rnd(.82,.98);
+      var dx=(left?1:-1)*rnd(w*.15,w*.62), up=h*rnd(.55,1.05), fall=h*rnd(.25,.75);
+      var shape=shapes[Math.floor(Math.random()*shapes.length)], col=colors[Math.floor(Math.random()*colors.length)];
+      var p=document.createElement('i');
+      if(shape==='heart'||shape==='kira'){
+        p.innerHTML='<svg viewBox="0 0 24 22" style="color:'+col+'"><use href="#'+(shape==='heart'?'heart':'kira')+'"/></svg>';
+      } else { p.className=shape; p.style.background=col; if(col==='#ffffff') p.style.boxShadow='0 0 0 1px rgba(224,116,150,.35)'; }
+      box.appendChild(p);
+      var rz=rnd(-720,720), rx=rnd(360,1080), s=rnd(.7,1.25), sway=rnd(-28,28), dur=rnd(1700,2600);
+      p.animate([
+        {transform:'translate('+sx+'px,'+sy+'px) rotate(0) rotateX(0) scale('+s+')', opacity:1},
+        {transform:'translate('+(sx+dx*.55)+'px,'+(sy-up)+'px) rotate('+rz*.4+'deg) rotateX('+rx*.4+'deg) scale('+s+')', opacity:1, offset:.32, easing:'ease-in'},
+        {transform:'translate('+(sx+dx*.8+sway)+'px,'+(sy-up+fall*.5)+'px) rotate('+rz*.75+'deg) rotateX('+rx*.75+'deg) scale('+s+')', opacity:1, offset:.68},
+        {transform:'translate('+(sx+dx-sway)+'px,'+(sy-up+fall)+'px) rotate('+rz+'deg) rotateX('+rx+'deg) scale('+s+')', opacity:0}
+      ],{duration:dur, delay:rnd(0,160), easing:'cubic-bezier(.2,.7,.4,1)', fill:'both'});
+    }
+    setTimeout(function(){ box.remove(); }, 3000);
+  }
+  tilt.addEventListener('pointerdown', burst);
 })();
 </script>
 <script>
