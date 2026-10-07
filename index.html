@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007093651">
+<meta name="build" content="20261007093926">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -17,6 +17,7 @@
 <meta name="application-name" content="しぃ">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&text=1stAnniversary&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Yomogi&text=%E6%9D%A5%E3%81%A6%E3%81%8F%E3%82%8C%E3%81%A6%E3%81%82%E3%82%8A%E3%81%8C%E3%81%A8%E3%81%86%EF%BC%81%E3%81%97%E3%81%83%E3%81%AE%E9%83%A8%E5%B1%8B%E3%81%B8%E3%82%88%E3%81%86%E3%81%93%E3%81%9D&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <script>
@@ -282,12 +283,19 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,.75) 48%, transparent 60%) no-repeat; background-size: 260% 100%; background-position: 140% 0;
     animation: badge-gloss 5s ease-in-out infinite; }
   @keyframes badge-gloss { 0%, 70% { background-position: 140% 0; } 90%, 100% { background-position: -40% 0; } }
-  .badge__b { transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
-    background: radial-gradient(circle at 35% 30%, #fff 0, #FFE3EC 45%, #F7B6CB 100%); border: 4px solid var(--white); outline: 2px solid var(--rose); outline-offset: -8px;
-    color: var(--rose-deep); font-family: var(--maru); font-weight: 700; line-height: 1.1; text-align: center; }
-  .badge__b small { font-size: 9px; letter-spacing: .04em; color: var(--ink-sub); }
-  .badge__b b { font-family: var(--en); font-weight: 500; font-size: 26px; letter-spacing: .02em; color: var(--rose); }
-  .badge__b em { font-style: normal; font-family: var(--en); font-weight: 500; font-size: 10px; letter-spacing: .08em; }
+  .badge__b { transform: rotateY(180deg);
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255,255,255,.95) 0, rgba(255,255,255,0) 45%),
+      conic-gradient(from 200deg, #F7B7CC, #F3C9E6, #E9C8F5, #F9D9C2, #F7B7CC, #F2A9C4, #F7B7CC);
+    border: 3px solid var(--white); }
+  .badge__b svg { display: block; width: 100%; height: 100%; }
+  .badge__b .bg-ring { font-family: var(--en); font-weight: 500; font-size: 10px; fill: #fff; filter: drop-shadow(0 0 1px rgba(200,90,130,.6)); }
+  .badge__b .bg-1st { font-family: "Great Vibes", "Snell Roundhand", cursive; font-size: 62px; stroke: #fff; stroke-width: 2.4px; paint-order: stroke fill; filter: drop-shadow(0 2px 3px rgba(180,80,120,.35)); }
+  .badge__b .bg-ann { font-family: "Great Vibes", "Snell Roundhand", cursive; font-size: 24px; stroke: #fff; stroke-width: 1.6px; paint-order: stroke fill; }
+  .badge__b::after { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+    background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,.7) 48%, transparent 60%) no-repeat; background-size: 260% 100%; background-position: 140% 0; }
+  .badge.is-flip .badge__b::after { animation: badge-shine 1.2s ease-in-out .45s both; }
+  @keyframes badge-shine { from { background-position: 140% 0; } to { background-position: -40% 0; } }
   .badge-spark { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; color: #FFD27A; pointer-events: none; z-index: 2; opacity: 0;
     filter: drop-shadow(0 0 3px rgba(255,200,120,.9)); animation: badge-spark .9s ease-out both; }
   .badge-spark svg { display: block; width: 100%; height: 100%; }
@@ -732,7 +740,18 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <button class="badge" id="badge" type="button" aria-label="アイコンをタップ">
             <span class="badge__in">
               <span class="badge__f"><img class="prof__icon" src="img/icon.webp" alt="" loading="lazy" decoding="async" width="104" height="104"></span>
-              <span class="badge__b" aria-hidden="true"><small>しぃの見守り隊</small><b>1st</b><em>Anniversary</em><small>2026.9.1</small></span>
+              <span class="badge__b" aria-hidden="true"><svg viewBox="0 0 200 200">
+                <defs>
+                  <linearGradient id="bgGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C68A2C"/><stop offset=".4" stop-color="#F3CF83"/><stop offset=".6" stop-color="#E9A84E"/><stop offset="1" stop-color="#D45F8E"/></linearGradient>
+                  <path id="bgRing" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/>
+                </defs>
+                <circle cx="100" cy="100" r="86" fill="none" stroke="#fff" stroke-width="1.2" opacity=".9"/>
+                <circle cx="100" cy="100" r="62" fill="none" stroke="#fff" stroke-width="1" opacity=".8"/>
+                <text class="bg-ring"><textPath href="#bgRing" startOffset="0" textLength="458" lengthAdjust="spacing">♥ SHII ♥ 1ST ANNIVERSARY ♥ 2026.09.01 ♥ THANK YOU</textPath></text>
+                <text class="bg-1st" x="100" y="110" text-anchor="middle" fill="url(#bgGold)">1st</text>
+                <text class="bg-ann" x="100" y="136" text-anchor="middle" fill="url(#bgGold)">Anniversary</text>
+                <path d="M100 66s-6.5-4-6.5-8.1a3.5 3.5 0 0 1 6.5-1.8 3.5 3.5 0 0 1 6.5 1.8c0 4.1-6.5 8.1-6.5 8.1z" fill="#fff"/>
+              </svg></span>
             </span>
           </button>
           <div>
