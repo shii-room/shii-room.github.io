@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007134026">
+<meta name="build" content="20261007134343">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -549,20 +549,24 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .deco--omi::after { left: calc(136.3px - 180px + 360px - 2px - 4px); top: calc(26.1px - 2px - 6px); animation-delay: 4.2s; }
   .omi { text-align: center; }
   .omi .req__lead { text-align: left; }
-  .omi__stage { display: grid; place-items: end center; height: 270px; margin-top: 4px; padding-bottom: 10px; }
-  .omi__box { position: relative; width: 104px; transform-origin: 50% 92%; filter: drop-shadow(0 8px 10px rgba(150,70,95,.25)); }
+  .omi__stage { display: grid; place-items: center; height: 300px; margin-top: 0; }
+  .omi__box { position: relative; width: 104px; transform-origin: 50% 50%; filter: drop-shadow(0 8px 10px rgba(150,70,95,.25)); }
   .omi__box svg { display: block; width: 100%; height: auto; position: relative; z-index: 1; }
   .omi__stick { position: absolute; left: 50%; top: 22px; width: 6px; height: 74px; margin-left: -3px; border-radius: 3px; z-index: 0;
     background: linear-gradient(90deg, #E9C98E, #FFF1D2 50%, #DDB878); box-shadow: inset 0 9px 0 #F0628F; transform: translateY(40px); opacity: 0; }
-  .omi__box.is-shake { animation: omi-shake 1.1s ease-in-out; }
+  /* 引き方：箱をくるっと逆さまにして → シャカシャカ → 穴から棒が下向きに出る → 元に戻す */
+  .omi__box { transition: transform .55s cubic-bezier(.4,1.35,.5,1); }
+  .omi__box.is-flip { transform: rotate(180deg); }
+  .omi__box.is-flip.is-shake { animation: omi-shake 1s ease-in-out; }
   @keyframes omi-shake {
-    0%, 100% { transform: rotate(0); }
-    10% { transform: rotate(-14deg) translateY(-6px); } 22% { transform: rotate(12deg) translateY(-2px); }
-    34% { transform: rotate(-12deg) translateY(-6px); } 46% { transform: rotate(10deg); }
-    58% { transform: rotate(-8deg) translateY(-4px); } 70% { transform: rotate(6deg); } 84% { transform: rotate(-3deg); }
+    0%, 100% { transform: rotate(180deg); }
+    12% { transform: rotate(166deg) translateY(6px); } 26% { transform: rotate(193deg) translateY(2px); }
+    40% { transform: rotate(168deg) translateY(6px); } 54% { transform: rotate(190deg); }
+    68% { transform: rotate(172deg) translateY(4px); } 82% { transform: rotate(186deg); }
   }
-  .omi__box.is-out .omi__stick { animation: omi-stick .6s cubic-bezier(.3,1.5,.5,1) forwards; }
-  @keyframes omi-stick { from { opacity: 1; transform: translateY(40px); } to { opacity: 1; transform: translateY(-50px) rotate(4deg); } }
+  .omi__stick { transition: opacity .25s; }
+  .omi__box.is-draw .omi__stick { animation: omi-stick .55s cubic-bezier(.3,1.5,.5,1) forwards; }
+  @keyframes omi-stick { from { opacity: 1; transform: translateY(40px); } to { opacity: 1; transform: translateY(-52px); } }
   .omi__btn { cursor: pointer; }
   .omi__btn:disabled { opacity: .6; cursor: default; transform: none; box-shadow: 4px 4px 0 var(--white); }
   .omi__res { margin: 26px auto 0; max-width: 360px; padding: 22px 20px 20px; border-radius: 22px; background: var(--white); box-shadow: 0 6px 0 rgba(224,116,150,.4), 0 10px 24px rgba(150,70,95,.15);
@@ -1015,18 +1019,24 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
                 <linearGradient id="omiF" x1="0" x2="1"><stop offset="0" stop-color="#F9BCCF"/><stop offset=".5" stop-color="#FCCCDB"/><stop offset="1" stop-color="#F6B0C6"/></linearGradient>
                 <linearGradient id="omiL" x1="0" x2="1"><stop offset="0" stop-color="#E58DAB"/><stop offset="1" stop-color="#EFA0BB"/></linearGradient>
                 <linearGradient id="omiR" x1="0" x2="1"><stop offset="0" stop-color="#EE9DB8"/><stop offset="1" stop-color="#DB7F9F"/></linearGradient>
+                <radialGradient id="omiT" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#FFFDFB"/><stop offset="1" stop-color="#F7EAE6"/></radialGradient>
+                <linearGradient id="omiC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFDFB"/><stop offset="1" stop-color="#F5E6E1"/></linearGradient>
               </defs>
               <path d="M14 30 L34 38 L34 202 L14 194z" fill="url(#omiL)"/>
               <path d="M106 30 L86 38 L86 202 L106 194z" fill="url(#omiR)"/>
               <rect x="34" y="38" width="52" height="164" fill="url(#omiF)"/>
-              <path d="M40 46 C41.5 90 38.5 140 41 196" stroke="#fff" stroke-opacity=".22" stroke-width="1.2" fill="none"/><path d="M47 46 C48.5 90 45.5 140 48 196" stroke="#fff" stroke-opacity=".22" stroke-width="0.7" fill="none"/><path d="M77 46 C78.5 90 75.5 140 78 196" stroke="#fff" stroke-opacity=".22" stroke-width="1" fill="none"/><path d="M82 46 C83.5 90 80.5 140 83 196" stroke="#fff" stroke-opacity=".22" stroke-width="0.6" fill="none"/>
-              <path d="M14 30 L34 22 L86 22 L106 30 L86 38 L34 38z" fill="#FFF6F0" stroke="#F3D9DE" stroke-width="1"/>
-              <path d="M34 38 V202 M86 38 V202" stroke="#fff" stroke-opacity=".55" stroke-width="1"/>
-              <path d="M36 38 C36 44.0 35.8 48 40 48 C44.2 48 44 44.0 44 38z" fill="#FFF6F0"/><path d="M48 38 C48 47.6 47.8 54 52 54 C56.2 54 56 47.6 56 38z" fill="#FFF6F0"/><path d="M59 38 C59 42.8 58.8 46 63 46 C67.2 46 67 42.8 67 38z" fill="#FFF6F0"/><path d="M70 38 C70 45.8 69.8 51 74 51 C78.2 51 78 45.8 78 38z" fill="#FFF6F0"/><path d="M79 38 C79 42.2 78.8 45 83 45 C87.2 45 87 42.2 87 38z" fill="#FFF6F0"/><path d="M17 32.4 C17 39.6 17 42.4 20 42.4 C23 42.4 23 39.6 23 32.4z" fill="#F4E7E0"/><path d="M25 35.6 C25 45.2 25 49.6 28 49.6 C31 49.6 31 45.2 31 35.6z" fill="#F4E7E0"/><path d="M90 35.2 C90 40.6 90 44.2 93 44.2 C96 44.2 96 40.6 96 35.2z" fill="#F4E7E0"/><path d="M97 32.4 C97 36.0 97 38.4 100 38.4 C103 38.4 103 36.0 103 32.4z" fill="#F4E7E0"/>
-              <rect x="35.5" y="23.6" width="4.6" height="1.6" rx=".8" fill="#FFE68A" transform="rotate(71 37.8 24.4)"/><rect x="81.2" y="33.8" width="4.6" height="1.6" rx=".8" fill="#FFFFFF" transform="rotate(47 83.5 34.6)"/><rect x="85.3" y="33.5" width="4.6" height="1.6" rx=".8" fill="#FFE68A" transform="rotate(144 87.6 34.3)"/><rect x="29.5" y="26.3" width="4.6" height="1.6" rx=".8" fill="#9FE3C7" transform="rotate(156 31.8 27.1)"/><rect x="23.0" y="30.7" width="4.6" height="1.6" rx=".8" fill="#8FD3FF" transform="rotate(121 25.3 31.5)"/><rect x="36.6" y="25.7" width="4.6" height="1.6" rx=".8" fill="#8FD3FF" transform="rotate(50 38.9 26.5)"/><rect x="40.2" y="32.1" width="4.6" height="1.6" rx=".8" fill="#8FD3FF" transform="rotate(56 42.5 32.9)"/><rect x="32.1" y="28.1" width="4.6" height="1.6" rx=".8" fill="#C7B2FF" transform="rotate(52 34.4 28.9)"/><rect x="29.3" y="26.5" width="4.6" height="1.6" rx=".8" fill="#FFFFFF" transform="rotate(146 31.6 27.3)"/><rect x="22.5" y="28.7" width="4.6" height="1.6" rx=".8" fill="#8FD3FF" transform="rotate(180 24.8 29.5)"/><rect x="32.1" y="28.0" width="4.6" height="1.6" rx=".8" fill="#FF8FB1" transform="rotate(36 34.4 28.8)"/><rect x="52.8" y="24.8" width="4.6" height="1.6" rx=".8" fill="#8FD3FF" transform="rotate(78 55.1 25.6)"/><rect x="42.6" y="30.0" width="4.6" height="1.6" rx=".8" fill="#FFFFFF" transform="rotate(163 44.9 30.8)"/><rect x="86.2" y="32.1" width="4.6" height="1.6" rx=".8" fill="#8FD3FF" transform="rotate(50 88.5 32.9)"/><rect x="67.4" y="25.5" width="4.6" height="1.6" rx=".8" fill="#FFE68A" transform="rotate(60 69.7 26.3)"/><rect x="45.7" y="23.4" width="4.6" height="1.6" rx=".8" fill="#9FE3C7" transform="rotate(174 48.0 24.2)"/>
-              <ellipse cx="60" cy="30" rx="6.5" ry="2.6" fill="#7A4A3A"/>
+              <path d="M40 50 C41.5 95 38.5 140 41 196" stroke="#fff" stroke-opacity=".2" stroke-width="1.2" fill="none"/><path d="M47 50 C48.5 95 45.5 140 48 196" stroke="#fff" stroke-opacity=".2" stroke-width="0.7" fill="none"/><path d="M77 50 C78.5 95 75.5 140 78 196" stroke="#fff" stroke-opacity=".2" stroke-width="1" fill="none"/><path d="M82 50 C83.5 95 80.5 140 83 196" stroke="#fff" stroke-opacity=".2" stroke-width="0.6" fill="none"/>
+              <path d="M34 38 V202 M86 38 V202" stroke="#fff" stroke-opacity=".5" stroke-width="1"/>
+              <path d="M14 30 L34 22 L86 22 L106 30 L86 38 L34 38z" fill="url(#omiT)"/>
+              <path d="M14 30 L34 38 L86 38 L106 30 L106 35 Q103.7 37.4 101.5 37.7 L101.5 37.7 C100.2 39.7 100.2 42.5 100.0 44.0 A2.2 2.5 0 0 1 96.0 44.0 C95.8 42.5 95.8 39.7 94.5 37.7 Q87.4 44.0 80.2 42.5 L80.2 42.5 C79.0 44.5 79.0 52.5 78.7 54.6 A3.0 3.3 0 0 1 73.3 54.6 C73.0 52.5 73.0 44.5 71.8 42.5 Q68.8 44.5 65.7 42.5 L65.7 42.5 C64.5 44.5 64.5 48.0 64.2 49.8 A2.5 2.8 0 0 1 59.8 49.8 C59.5 48.0 59.5 44.5 58.3 42.5 Q55.2 44.5 52.2 42.5 L52.2 42.5 C51.0 44.5 51.0 56.5 50.7 58.6 A3.0 3.3 0 0 1 45.3 58.6 C45.0 56.5 45.0 44.5 43.8 42.5 Q36.6 44.5 29.4 39.3 L29.4 39.3 C28.2 41.3 28.2 46.0 28.0 47.6 A2.2 2.5 0 0 1 24.0 47.6 C23.8 46.0 23.8 41.3 22.6 39.3 Q18.3 38.2 14 35 Z" fill="url(#omiC)"/>
+              <path d="M34 38 L86 38" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".9"/>
+              <ellipse cx="60" cy="29.5" rx="6" ry="2.4" fill="#8A5A48"/>
+              <ellipse cx="60" cy="28.9" rx="4.6" ry="1.4" fill="#6E4334"/>
+              <rect x="32.3" y="31.9" width="4.2" height="1.5" rx=".75" fill="#FF8FB1" transform="rotate(23 34.4 32.7)"/><rect x="44.3" y="26.8" width="4.2" height="1.5" rx=".75" fill="#C7B2FF" transform="rotate(103 46.4 27.5)"/><rect x="40.7" y="31.4" width="4.2" height="1.5" rx=".75" fill="#FFFFFF" transform="rotate(68 42.8 32.1)"/><rect x="52.4" y="24.1" width="4.2" height="1.5" rx=".75" fill="#C7B2FF" transform="rotate(147 54.5 24.9)"/><rect x="48.7" y="24.5" width="4.2" height="1.5" rx=".75" fill="#FFFFFF" transform="rotate(12 50.8 25.3)"/><rect x="44.4" y="25.0" width="4.2" height="1.5" rx=".75" fill="#8FD3FF" transform="rotate(170 46.5 25.7)"/><rect x="42.9" y="28.5" width="4.2" height="1.5" rx=".75" fill="#8FD3FF" transform="rotate(80 45.0 29.3)"/><rect x="38.3" y="31.2" width="4.2" height="1.5" rx=".75" fill="#8FD3FF" transform="rotate(24 40.4 31.9)"/><rect x="26.4" y="29.5" width="4.2" height="1.5" rx=".75" fill="#FF8FB1" transform="rotate(126 28.5 30.2)"/>
+              <g transform="translate(83 22) rotate(12)"><path d="M0 -6 C5 -6 7.5 -2 6 2.5 C4.6 6.4 1.6 9 0 9.6 C-1.6 9 -4.6 6.4 -6 2.5 C-7.5 -2 -5 -6 0 -6z" fill="#F0435F"/><path d="M-3.4 -3 C-2 -4.6 0 -4.8 1.4 -4" stroke="#fff" stroke-opacity=".6" stroke-width="1.1" fill="none" stroke-linecap="round"/><ellipse cx="-2.6" cy="0" rx=".45" ry=".75" fill="#FFE08A"/><ellipse cx="0" cy="-1.2" rx=".45" ry=".75" fill="#FFE08A"/><ellipse cx="2.6" cy="0" rx=".45" ry=".75" fill="#FFE08A"/><ellipse cx="-1.4" cy="3" rx=".45" ry=".75" fill="#FFE08A"/><ellipse cx="1.4" cy="3" rx=".45" ry=".75" fill="#FFE08A"/><ellipse cx="0" cy="5.6" rx=".45" ry=".75" fill="#FFE08A"/><ellipse cx="-3.6" cy="2.8" rx=".45" ry=".75" fill="#FFE08A"/><ellipse cx="3.6" cy="2.8" rx=".45" ry=".75" fill="#FFE08A"/><path d="M0 -6 L-4.6 -8 L-2 -5.4 L-3 -9 L0 -6.2 L3 -9 L2 -5.4 L4.6 -8z" fill="#5FB872"/></g>
+              <g transform="translate(22 31.5) scale(0.85)"><circle r="5.2" fill="#FFFDFB" stroke="#F1DCD8" stroke-width=".8"/><path d="M0 -3.4 C2.6 -3.2 3.4 -.6 2 1.4 C.6 3.2 -2.6 2.8 -3 .4 C-3.3 -1.8 -1.2 -2.6 .2 -1.6" fill="none" stroke="#EAD3CF" stroke-width=".9" stroke-linecap="round"/><path d="M-2.2 -2.6 Q0 -4.4 2.2 -2.6" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"/></g><g transform="translate(40 36) scale(0.95)"><circle r="5.2" fill="#FFFDFB" stroke="#F1DCD8" stroke-width=".8"/><path d="M0 -3.4 C2.6 -3.2 3.4 -.6 2 1.4 C.6 3.2 -2.6 2.8 -3 .4 C-3.3 -1.8 -1.2 -2.6 .2 -1.6" fill="none" stroke="#EAD3CF" stroke-width=".9" stroke-linecap="round"/><path d="M-2.2 -2.6 Q0 -4.4 2.2 -2.6" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"/></g><g transform="translate(60 37) scale(1)"><circle r="5.2" fill="#FFFDFB" stroke="#F1DCD8" stroke-width=".8"/><path d="M0 -3.4 C2.6 -3.2 3.4 -.6 2 1.4 C.6 3.2 -2.6 2.8 -3 .4 C-3.3 -1.8 -1.2 -2.6 .2 -1.6" fill="none" stroke="#EAD3CF" stroke-width=".9" stroke-linecap="round"/><path d="M-2.2 -2.6 Q0 -4.4 2.2 -2.6" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"/></g><g transform="translate(80 36) scale(0.95)"><circle r="5.2" fill="#FFFDFB" stroke="#F1DCD8" stroke-width=".8"/><path d="M0 -3.4 C2.6 -3.2 3.4 -.6 2 1.4 C.6 3.2 -2.6 2.8 -3 .4 C-3.3 -1.8 -1.2 -2.6 .2 -1.6" fill="none" stroke="#EAD3CF" stroke-width=".9" stroke-linecap="round"/><path d="M-2.2 -2.6 Q0 -4.4 2.2 -2.6" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"/></g><g transform="translate(98 31.5) scale(0.85)"><circle r="5.2" fill="#FFFDFB" stroke="#F1DCD8" stroke-width=".8"/><path d="M0 -3.4 C2.6 -3.2 3.4 -.6 2 1.4 C.6 3.2 -2.6 2.8 -3 .4 C-3.3 -1.8 -1.2 -2.6 .2 -1.6" fill="none" stroke="#EAD3CF" stroke-width=".9" stroke-linecap="round"/><path d="M-2.2 -2.6 Q0 -4.4 2.2 -2.6" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"/></g>
               <g font-family="Hiragino Mincho ProN, Yu Mincho, Hiragino Maru Gothic ProN, serif" font-size="19" font-weight="700" fill="#8A4F3F" text-anchor="middle">
-                <text x="60" y="80">お</text><text x="60" y="104">み</text><text x="60" y="128">く</text><text x="60" y="152">じ</text>
+                <text x="60" y="84">お</text><text x="60" y="108">み</text><text x="60" y="132">く</text><text x="60" y="156">じ</text>
               </g>
               <path d="M14 168 L34 175 L86 175 L106 168 L106 178 L86 185 L34 185 L14 178z" fill="#E8507F"/>
               <path d="M34 175 H86" stroke="#fff" stroke-opacity=".5" stroke-width=".8" stroke-dasharray="2 2"/>
@@ -1382,18 +1392,19 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     $('omi-share').href='https://x.com/intent/tweet?text='+encodeURIComponent(txt)+'&url='+encodeURIComponent('https://shii-room.github.io/#omikuji');
     var res=$('omi-res'); res.hidden=false; if(!animate) res.style.animation='none';
     btn.disabled=true; btn.textContent='今日はもう引いたよ♡';
-    box.classList.add('is-out');
   }
   var saved=load(); if(saved) show(saved,false);
   btn.addEventListener('click',function(){
     if(load()) return;
     btn.disabled=true; btn.textContent='シャカシャカ…';
-    box.classList.remove('is-out'); void box.offsetWidth; box.classList.add('is-shake');
+    box.classList.add('is-flip');                                   // くるっと逆さまに
+    setTimeout(function(){ box.classList.add('is-shake'); }, 550);  // 振る
+    setTimeout(function(){ box.classList.remove('is-shake'); box.classList.add('is-draw'); }, 1550); // 棒が下向きに出る
+    setTimeout(function(){ box.classList.remove('is-flip'); box.classList.remove('is-draw'); }, 2450); // 元に戻す
     setTimeout(function(){
-      box.classList.remove('is-shake');
       var v=pick(); save(v); show(v,true);
       setTimeout(function(){ $('omi-res').scrollIntoView({behavior:'smooth',block:'center'}); }, 250);
-    }, 1150);
+    }, 2650);
   });
 })();
 </script>
