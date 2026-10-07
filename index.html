@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007092253">
+<meta name="build" content="20261007093651">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -272,6 +272,26 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .prof { display: grid; gap: 28px; }
   .prof__id { display: flex; align-items: center; gap: 18px; }
   .prof__icon { flex: none; width: 104px; height: 104px; }
+  /* アイコン＝缶バッジ：ときどきツヤが走り、タップでクルッと裏返って1周年の記念面に */
+  .badge { position: relative; flex: none; width: 104px; height: 104px; padding: 0; border: 0; background: none; border-radius: 50%; cursor: pointer; perspective: 600px; -webkit-tap-highlight-color: transparent; }
+  .badge__in { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .9s cubic-bezier(.35,1.4,.5,1); }
+  .badge.is-flip .badge__in { transform: rotateY(180deg); }
+  .badge__f, .badge__b { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; box-shadow: 0 4px 10px rgba(150,70,95,.25); }
+  .badge__f img { display: block; width: 100%; height: 100%; }
+  .badge__f::after { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+    background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,.75) 48%, transparent 60%) no-repeat; background-size: 260% 100%; background-position: 140% 0;
+    animation: badge-gloss 5s ease-in-out infinite; }
+  @keyframes badge-gloss { 0%, 70% { background-position: 140% 0; } 90%, 100% { background-position: -40% 0; } }
+  .badge__b { transform: rotateY(180deg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+    background: radial-gradient(circle at 35% 30%, #fff 0, #FFE3EC 45%, #F7B6CB 100%); border: 4px solid var(--white); outline: 2px solid var(--rose); outline-offset: -8px;
+    color: var(--rose-deep); font-family: var(--maru); font-weight: 700; line-height: 1.1; text-align: center; }
+  .badge__b small { font-size: 9px; letter-spacing: .04em; color: var(--ink-sub); }
+  .badge__b b { font-family: var(--en); font-weight: 500; font-size: 26px; letter-spacing: .02em; color: var(--rose); }
+  .badge__b em { font-style: normal; font-family: var(--en); font-weight: 500; font-size: 10px; letter-spacing: .08em; }
+  .badge-spark { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; color: #FFD27A; pointer-events: none; z-index: 2; opacity: 0;
+    filter: drop-shadow(0 0 3px rgba(255,200,120,.9)); animation: badge-spark .9s ease-out both; }
+  .badge-spark svg { display: block; width: 100%; height: 100%; }
+  @keyframes badge-spark { 0% { opacity: 0; transform: rotate(var(--a)) translateY(0) scale(.3); } 30% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--a)) translateY(-74px) scale(1) rotate(180deg); } }
   .prof__name { font-family: var(--maru); font-weight: 700; font-size: 26px; letter-spacing: .08em; }
   .prof__aff { font-family: var(--maru); font-weight: 500; font-size: 13px; letter-spacing: .1em; color: var(--ink-sub); }
   .prof__text { margin-top: 18px; font-size: 16px; letter-spacing: .05em; }
@@ -709,7 +729,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="prof">
       <div>
         <div class="prof__id">
-          <img class="prof__icon" src="img/icon.webp" alt="" loading="lazy" decoding="async" width="104" height="104">
+          <button class="badge" id="badge" type="button" aria-label="アイコンをタップ">
+            <span class="badge__in">
+              <span class="badge__f"><img class="prof__icon" src="img/icon.webp" alt="" loading="lazy" decoding="async" width="104" height="104"></span>
+              <span class="badge__b" aria-hidden="true"><small>しぃの見守り隊</small><b>1st</b><em>Anniversary</em><small>2026.9.1</small></span>
+            </span>
+          </button>
           <div>
             <p class="prof__name">しぃ</p>
             <p class="prof__aff">ほにゃららLIVERS所属</p>
@@ -1092,6 +1117,24 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     setTimeout(function(){ box.remove(); }, 3000);
   }
   tilt.addEventListener('pointerdown', burst);
+})();
+</script>
+<script>
+(function(){
+  var b=document.getElementById('badge'); if(!b) return;
+  var back=null;
+  b.addEventListener('click',function(){
+    clearTimeout(back);
+    b.classList.add('is-flip');
+    for(var i=0;i<10;i++){
+      var s=document.createElement('span'); s.className='badge-spark';
+      s.innerHTML='<svg viewBox="0 0 20 20"><use href="#'+(i%2?'heart':'kira')+'"/></svg>';
+      s.style.setProperty('--a',(i*36)+'deg'); s.style.animationDelay=(.25+(i%3)*.06)+'s';
+      if(i%2) s.style.color='#FF8FBF';
+      b.appendChild(s); setTimeout(function(el){ return function(){ el.remove(); }; }(s), 1500);
+    }
+    back=setTimeout(function(){ b.classList.remove('is-flip'); }, 2600);
+  });
 })();
 </script>
 <script>
