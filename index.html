@@ -1590,6 +1590,14 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var collator=new Intl.Collator('ja',{numeric:true,sensitivity:'base'});
   // UTAEMOの公開マスターから検索用の読みだけを参照する。曲一覧はしぃのデータを維持。
   function searchMatchKey(value){return norm(value).replace(/[〜～~]/g,'~').replace(/[’‘′`]/g,"'").replace(/[‐‑‒–—―−]/g,'-');}
+  function uniqueSongs(data){
+    var seen=Object.create(null);
+    return data.filter(function(s){
+      if(!s||typeof s.title!=='string') return false;
+      var key=JSON.stringify([searchMatchKey(s.title),searchMatchKey(s.artist)]);
+      if(seen[key]) return false; seen[key]=true; return true;
+    });
+  }
   function addUtaemoSearchData(){
     var byTitle=Object.create(null), byArtist=Object.create(null);
     utaemoMaster.forEach(function(m){
@@ -1726,7 +1734,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   });
   $('song-more').addEventListener('click',function(){ shown+=STEP; render(); });
   fetch(SB+'shii_songs_list',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'})
-    .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?d:[]; if(utaemoReady) addUtaemoSearchData(); tags(); render(); })
+    .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?uniqueSongs(d):[]; if(utaemoReady) addUtaemoSearchData(); tags(); render(); })
     .catch(function(){ songs=[]; render(); });
 })();
 </script>
