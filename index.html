@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007043736">
+<meta name="build" content="20261007043956">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -104,14 +104,13 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   .menu.is-open { opacity: 1; visibility: visible; }
   .menu__in { width: var(--wrap); margin-inline: auto; padding-block: 32px 48px; }
-  .menu__main { list-style: none; }
-  .menu__main li { border-bottom: 1px solid var(--rule); }
-  .menu__main a { display: flex; align-items: baseline; gap: 14px; padding-block: 18px; transition: padding .2s; }
-  .menu__main .en { font-family: var(--en); font-size: 30px; letter-spacing: .08em; line-height: 1.2; color: var(--rose); }
-  .menu__main .ja { font-family: var(--maru); font-weight: 500; font-size: 12px; letter-spacing: .14em; color: var(--ink-sub); }
-  .menu__main a:hover { padding-left: 8px; }
-  .menu__sns { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 28px; font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .08em; }
-  .menu__sns a:hover { color: var(--rose); }
+  .menu__label { margin: 4px 0 10px; font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .3em; color: var(--rose-deep); }
+  .menu__label + .quick { margin-top: 0; }
+  .quick--menu { max-width: none; margin-bottom: 28px; }
+  .menu__sns { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
+  .menu__sns a { display: inline-block; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.75); border: 1.5px solid var(--white); box-shadow: 0 3px 0 rgba(224,116,150,.45); font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .06em; transition: transform .15s, box-shadow .15s; }
+  .menu__sns a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); }
+  .menu__top { display: inline-block; margin-top: 26px; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .08em; color: var(--ink-sub); border-bottom: 1.5px solid var(--rose); }
   body.menu-open { overflow: hidden; }
   @media (min-width: 768px) { .header .nav { display: flex; } }
 
@@ -615,15 +614,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
 <nav class="menu" id="menu" aria-label="メニュー">
   <div class="menu__in">
-    <ul class="menu__main">
-      <li><a href="#top"><span class="en">Top</span><span class="ja">トップ</span></a></li>
-      <li><a href="#profile"><span class="en">Profile</span><span class="ja">プロフィール</span></a></li>
-      <li><a href="#schedule"><span class="en">Schedule</span><span class="ja">配信</span></a></li>
-      <li><a href="#request"><span class="en">Request</span><span class="ja">歌のリクエスト</span></a></li>
-      <li><a href="#message"><span class="en">Message</span><span class="ja">匿名メッセージ</span></a></li>
-      <li><a href="#link"><span class="en">Link</span><span class="ja">リンク</span></a></li>
-      <li><a href="#present"><span class="en">Present</span><span class="ja">贈りもの</span></a></li>
-    </ul>
+    <p class="menu__label">MENU</p>
+    <div class="quick quick--menu">
+      <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
+      <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信時間</a>
+      <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
+      <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
+      <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
+      <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
+    </div>
+    <p class="menu__label">SNS</p>
     <ul class="menu__sns">
       <li><a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">Mirrativ</a></li>
       <li><a href="https://x.com/shiitarou210" target="_blank" rel="noopener">X</a></li>
@@ -631,9 +631,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     </ul>
     <div class="hero__btns">
       <a class="btn btn--main" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を見にいく</a>
-      <a class="btn" href="#request">🎤 歌をリクエスト</a>
-      <a class="btn" href="#message">💌 メッセージを送る</a>
     </div>
+    <a class="menu__top" href="#top">↑ トップへ戻る</a>
   </div>
 </nav>
 
