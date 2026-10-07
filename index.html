@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008012800">
+<meta name="build" content="20261008020100">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -549,6 +549,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* SONGS */
   .deco--songs::before { background-image: url(img/drip2.svg); background-position: -110px 0; }
   .deco--songs::after { left: calc(243.1px - 110px - 2px - 4px); top: calc(30.3px - 2px - 6px); animation-delay: 2.2s; }
+  .songs__arrow { font-size:22px; color:var(--rose-deep); }
   .songs__page-link { display:inline-block; margin-bottom:10px; font-size:12px; color:var(--ink-sub); border-bottom:1px solid rgba(142,92,105,.35); }
   .songs__credit { display:flex; flex-wrap:wrap; gap:4px 10px; }
   .songs__credit a { font-size:10px; padding:4px; color:var(--ink-sub); text-decoration:none; }
@@ -865,7 +866,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <a href="#schedule">SCHEDULE</a>
         <a href="#request">REQUEST</a>
         <a href="#message">MESSAGE</a>
-        <a href="#songs">SONGS</a>
+        <a href="songs.html">SONGS</a>
         <a href="#omikuji">OMIKUJI</a>
         <a href="#link">LINK</a>
       </nav>
@@ -885,7 +886,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
       <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
       <a class="quick__half" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
-          <a class="quick__half" href="#songs"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
+          <a class="quick__half" href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
     </div>
     <p class="menu__label">SNS</p>
     <ul class="menu__sns">
@@ -932,7 +933,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
           <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
           <a class="quick__half" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
-          <a class="quick__half" href="#songs"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
+          <a class="quick__half" href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
         </nav>
       </div>
     </div>
@@ -1041,34 +1042,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="sec__head"><h2 class="sec__en">Songs</h2><span class="sec__ja">歌える（かも）リスト</span></div>
     <div class="deco deco--songs">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#note2"/></svg></span>
-      <div class="songs">
-        <a class="songs__page-link" href="songs.html">曲リスト専用ページ ↗</a>
-        <p class="req__lead">しぃが歌えるかも…な曲たち🎤「コピー」を押すとリクエスト用のコメントがコピーされるから、配信のコメント欄に貼ってね♡</p>
-        <div class="songs__modes" role="group" aria-label="検索対象">
-          <button type="button" data-mode="title" aria-pressed="true">曲名から</button><button type="button" data-mode="artist" aria-pressed="false">アーティストから</button>
-        </div>
-        <div class="songs__search">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-          <input id="song-q" type="search" placeholder="曲名・読みでさがす" autocomplete="off" aria-label="曲をさがす">
-        </div>
-        <p class="songs__count songs__credit"><span id="song-search-note" aria-live="polite">ひらがな・英字で検索 ♡</span> <span>データ：UTAEMO <a href="https://utalis.github.io/" target="_blank" rel="noopener" aria-label="UTAEMOを開く（新しいタブ）">↗</a></span></p>
-        <div class="songs__kana" id="song-kana" role="group" aria-label="五十音で絞り込み"></div>
-        <div class="songs__tags" id="song-tags" hidden></div>
-        <div class="songs__tools">
-          <label class="req__hp" for="song-genre">ジャンル</label>
-          <select id="song-genre" aria-label="ジャンル"><option value="">全ジャンル</option><option>J-POP</option><option>アニソン</option><option>ボカロ</option><option>洋楽</option><option>演歌</option><option>その他</option></select>
-          <label class="req__hp" for="song-sort">並び順</label>
-          <select id="song-sort"><option value="original">登録順</option><option value="title">曲名：五十音順</option><option value="reverse">曲名：五十音逆順</option><option value="artist">アーティスト順</option></select>
-          <button class="songs__random" id="song-random" type="button" disabled>おまかせで1曲 ♡</button>
-        </div>
-        <div class="songs__picked" id="song-picked" role="status" hidden></div>
-        <p class="songs__count" id="song-count" aria-live="polite">読み込み中…</p>
-        <button class="acc__btn" id="song-acc" type="button" aria-expanded="false" aria-controls="song-panel">🎤 歌える曲リストを開く<span class="acc__mark" aria-hidden="true"></span></button>
-        <div class="acc__panel" id="song-panel"><div>
-        <ul class="songs__list" id="song-list"></ul>
-        <button class="songs__more" id="song-more" type="button" hidden>もっと見る</button>
-        </div></div>
-      </div>
+      <p class="req__lead">歌える曲をさがして、リクエスト用のコメントをコピーできるよ🎤</p>
+      <a class="acc__btn" href="songs.html">🎤 歌える曲リストを開く<span class="songs__arrow" aria-hidden="true">↗</span></a>
     </div>
   </section>
 
@@ -1581,165 +1556,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   b.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); next(); } });
 })();
 </script>
-<script>
-(function(){
-  // ---- 歌える（かも）リスト ----
-  var list=document.getElementById('song-list'); if(!list) return;
-  var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
-  var $=function(id){return document.getElementById(id);};
-  var songs=[], tag='', q='', mode='title', kana='', genre='', order='original', shown=20, STEP=20;
-  var utaemoMaster=[], utaemoLoading=null, utaemoReady=false;
-  var collator=new Intl.Collator('ja',{numeric:true,sensitivity:'base'});
-  // UTAEMOの公開マスターから検索用の読みだけを参照する。曲一覧はしぃのデータを維持。
-  function searchMatchKey(value){return norm(value).replace(/[〜～~]/g,'~').replace(/[’‘′`]/g,"'").replace(/[‐‑‒–—―−]/g,'-');}
-  function uniqueSongs(data){
-    var seen=Object.create(null);
-    return data.filter(function(s){
-      if(!s||typeof s.title!=='string') return false;
-      var key=JSON.stringify([searchMatchKey(s.title),searchMatchKey(s.artist)]);
-      if(seen[key]) return false; seen[key]=true; return true;
-    });
-  }
-  function addUtaemoSearchData(){
-    var byTitle=Object.create(null), byArtist=Object.create(null);
-    utaemoMaster.forEach(function(m){
-      if(!m||typeof m.t!=='string'||typeof m.a!=='string') return;
-      var t=searchMatchKey(m.t), a=searchMatchKey(m.a);
-      (byTitle[t]||(byTitle[t]=[])).push(m);
-      (byArtist[a]||(byArtist[a]=[])).push(m.y||'');
-    });
-    songs.forEach(function(s){
-      var hits=byTitle[searchMatchKey(s.title)]||[], artist=searchMatchKey(s.artist);
-      var exact=hits.filter(function(m){return searchMatchKey(m.a)===artist;});
-      var match=exact.length===1?exact[0]:null;
-      // 同名曲を取り違えない。タイトルだけ一致する場合は、全候補の読みが一致するときだけ利用。
-      var readings=hits.map(function(m){return m.ty||'';}).filter(Boolean);
-      var titleReading=match?(match.ty||''):(readings.length===hits.length&&readings.every(function(r){return r===readings[0];})?readings[0]:'');
-      var artistReadings=byArtist[artist]||[];
-      s.titleSearch=[s.title,s.title_reading||'',titleReading].join(' ');
-      s.artistSearch=[s.artist||'',s.artist_reading||''].concat(artistReadings).join(' ');
-      s.titleSort=norm(titleReading||s.title_reading||s.title);
-      s.artistSort=norm(artistReadings[0]||s.artist_reading||s.artist);
-      s.titleKana=norm(titleReading||s.title_reading||s.title).charAt(0);
-      s.artistKana=norm(artistReadings[0]||s.artist_reading||s.artist).charAt(0);
-      s.searchGenres=match&&Array.isArray(match.genres)?match.genres:[];
-      s.searchText=[s.title,s.artist||'',s.title_reading||'',s.artist_reading||'',titleReading].concat(artistReadings).join(' ');
-    });
-  }
-  function loadUtaemoSearch(){
-    if(utaemoLoading) return utaemoLoading;
-    var controller=new AbortController(), timer=setTimeout(function(){controller.abort();},12000);
-    $('song-search-note').textContent='UTAEMOの検索データを読み込み中…';
-    utaemoLoading=fetch('https://raw.githubusercontent.com/utalis/utalis.github.io/main/index.html',{signal:controller.signal})
-      .then(function(r){if(!r.ok) throw new Error('master');return r.text();})
-      .then(function(html){
-        var m=html.match(/const MASTER_SONGS = (\[[^\n]*\]);/);
-        if(!m) throw new Error('format');
-        var data=JSON.parse(m[1]); if(!Array.isArray(data)||!data.length) throw new Error('empty');
-        utaemoMaster=data; utaemoReady=true; addUtaemoSearchData();
-        $('song-search-note').textContent='ひらがな・英字で検索 ♡';
-        if(q||kana||genre||order!=='original') render();
-      }).catch(function(){ $('song-search-note').textContent='読みデータを取得できませんでした。曲名・アーティスト名で検索できます'; })
-      .then(function(){clearTimeout(timer);});
-    return utaemoLoading;
-  }
-  function filteredSongs(){
-    var nq=norm(q);
-    var hits=songs.filter(function(s){
-      var text=mode==='artist'?(s.artistSearch||s.artist):(s.titleSearch||s.title);
-      var first=mode==='artist'?(s.artistKana||norm(s.artist).charAt(0)):(s.titleKana||norm(s.title).charAt(0));
-      return (!tag||s.tag===tag)&&(!nq||norm(text).indexOf(nq)>=0)&&(!kana||(kana==='abc'?/^[a-z]/.test(norm(mode==='artist'?s.artist:s.title)):kana.indexOf(first)>=0))&&(!genre||(s.searchGenres||[]).indexOf(genre)>=0||s.tag===genre);
-    });
-    if(order!=='original') hits.sort(function(a,b){
-      if(order==='artist') return collator.compare(a.artistSort||norm(a.artist),b.artistSort||norm(b.artist))||collator.compare(a.titleSort||norm(a.title),b.titleSort||norm(b.title));
-      return collator.compare(a.titleSort||norm(a.title),b.titleSort||norm(b.title))*(order==='reverse'?-1:1);
-    });
-    return hits;
-  }
-  function norm(s){ return String(s||'').toLowerCase().normalize('NFKC').replace(/[\u30a1-\u30f6]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-0x60); }).replace(/\s+/g,''); }
-  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  function render(){
-    var hits=filteredSongs();
-    $('song-random').disabled=!hits.length;
-    $('song-picked').hidden=true;
-    $('song-count').textContent = songs.length ? (q||tag||kana||genre ? hits.length+'曲みつかったよ（全'+songs.length+'曲）' : '全'+songs.length+'曲') : '';
-    list.innerHTML='';
-    if(!songs.length){ list.innerHTML='<li class="songs__empty">リストは準備中だよ♪</li>'; $('song-more').hidden=true; return; }
-    if(!hits.length){ list.innerHTML='<li class="songs__empty">見つからなかった…！リクエストで送ってみてね♡</li>'; $('song-more').hidden=true; return; }
-    hits.slice(0,shown).forEach(function(s,i){
-      var li=document.createElement('li'); li.style.animationDelay=Math.min(i,10)*.03+'s';
-      li.innerHTML='<span class="songs__note"><svg><use href="#note1"/></svg></span><span class="songs__txt"><span class="songs__title">'+esc(s.title)+'</span>'+(s.artist?'<span class="songs__artist">'+esc(s.artist)+'</span>':'')+'</span><button class="songs__req" type="button" aria-label="'+esc(s.title)+'のリクエストコメントをコピー"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 16V5.5A2.5 2.5 0 0 1 7.5 3H15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>コピー</button>';
-      li.querySelector('button').addEventListener('click',function(){ pickSong(s); });
-      list.appendChild(li);
-    });
-    $('song-more').hidden = hits.length<=shown;
-  }
-  // リクエスト用コメントをコピー → 配信のコメント欄に貼ってもらう
-  function copyText(txt){
-    if(navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(txt);
-    return new Promise(function(ok,ng){
-      var ta=document.createElement('textarea'); ta.value=txt; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.opacity='0';
-      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,txt.length);
-      try{ document.execCommand('copy') ? ok() : ng(); }catch(e){ ng(e); } ta.remove();
-    });
-  }
-  var toastT=null;
-  function toast(html){
-    var el=document.getElementById('song-toast');
-    if(!el){ el=document.createElement('div'); el.id='song-toast'; el.className='song-toast'; el.setAttribute('role','status'); document.body.appendChild(el); }
-    el.innerHTML=html; el.classList.remove('is-show'); void el.offsetWidth; el.classList.add('is-show');
-    clearTimeout(toastT); toastT=setTimeout(function(){ el.classList.remove('is-show'); }, 3200);
-  }
-  function pickSong(s){
-    var txt='🎤リクエスト：'+s.title+(s.artist?'／'+s.artist:'');
-    copyText(txt).then(function(){
-      toast('<b>コピーしたよ！</b>配信のコメント欄に貼り付けてね♡<a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を開く</a>');
-    }).catch(function(){
-      toast('<b>コピーできなかったみたい…</b>「'+esc(txt)+'」とコメントしてね');
-    });
-  }
-  function tags(){
-    var t=[]; songs.forEach(function(s){ if(s.tag && t.indexOf(s.tag)<0) t.push(s.tag); });
-    var box=$('song-tags'); if(!t.length){ box.hidden=true; return; }
-    box.hidden=false; box.innerHTML='';
-    [''].concat(t).forEach(function(name){
-      var b=document.createElement('button'); b.type='button'; b.textContent=name||'すべて'; b.setAttribute('aria-pressed', name===tag?'true':'false');
-      b.addEventListener('click',function(){ tag=name; shown=STEP; Array.prototype.forEach.call(box.children,function(c){ c.setAttribute('aria-pressed', c===b?'true':'false'); }); render(); });
-      box.appendChild(b);
-    });
-  }
-  $('song-q').addEventListener('input',function(e){ q=e.target.value; loadUtaemoSearch(); shown=STEP; if(q) openSongList(true); render(); });
-  $('song-q').addEventListener('focus',loadUtaemoSearch);
-  $('song-sort').addEventListener('change',function(e){order=e.target.value; loadUtaemoSearch(); shown=STEP; render();});
-  document.querySelectorAll('[data-mode]').forEach(function(b){b.addEventListener('click',function(){
-    mode=b.dataset.mode; document.querySelectorAll('[data-mode]').forEach(function(c){c.setAttribute('aria-pressed',c===b?'true':'false');});
-    $('song-q').placeholder=(mode==='artist'?'アーティスト名':'曲名')+'・読みでさがす'; loadUtaemoSearch(); shown=STEP; render();
-  });});
-  [['すべて',''],['あ行','あいうえおぁぃぅぇぉ'],['か行','かきくけこがぎぐげご'],['さ行','さしすせそざじずぜぞ'],['た行','たちつてとだぢづでどっ'],['な行','なにぬねの'],['は行','はひふへほばびぶべぼぱぴぷぺぽ'],['ま行','まみむめも'],['や行','やゆよゃゅょ'],['ら行','らりるれろ'],['わ行','わをんゎ'],['ABC','abc']].forEach(function(row){
-    var b=document.createElement('button'); b.type='button'; b.textContent=row[0]; b.setAttribute('aria-pressed',row[1]===''?'true':'false');
-    b.addEventListener('click',function(){kana=row[1]; Array.prototype.forEach.call($('song-kana').children,function(c){c.setAttribute('aria-pressed',c===b?'true':'false');}); loadUtaemoSearch(); shown=STEP; openSongList(true); render();}); $('song-kana').appendChild(b);
-  });
-  $('song-genre').addEventListener('change',function(e){genre=e.target.value; loadUtaemoSearch(); shown=STEP; openSongList(true); render();});
-  var songAcc=$('song-acc'), songPanel=$('song-panel');
-  function openSongList(open){
-    songAcc.setAttribute('aria-expanded',open?'true':'false');
-    songAcc.firstChild.nodeValue=open?'🎤 歌える曲リストを閉じる':'🎤 歌える曲リストを開く';
-    songPanel.classList.toggle('is-open',open); songPanel.inert=!open;
-  }
-  openSongList(false);
-  songAcc.addEventListener('click',function(){openSongList(songAcc.getAttribute('aria-expanded')!=='true');});
-  $('song-random').addEventListener('click',function(){
-    var hits=filteredSongs(); if(!hits.length) return;
-    var s=hits[Math.floor(Math.random()*hits.length)], box=$('song-picked');
-    box.innerHTML='<span>この曲はいかが？ ♡</span><strong class="songs__title">'+esc(s.title)+'</strong><span class="songs__artist">'+esc(s.artist)+'</span><button class="songs__req" type="button">リクエストをコピー</button>';
-    box.querySelector('button').addEventListener('click',function(){pickSong(s);}); box.hidden=false;
-  });
-  $('song-more').addEventListener('click',function(){ shown+=STEP; render(); });
-  fetch(SB+'shii_songs_list',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'})
-    .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?uniqueSongs(d):[]; if(utaemoReady) addUtaemoSearchData(); tags(); render(); })
-    .catch(function(){ songs=[]; render(); });
-})();
-</script>
+
 <script>
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
