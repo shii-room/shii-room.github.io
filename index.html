@@ -549,6 +549,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* SONGS */
   .deco--songs::before { background-image: url(img/drip2.svg); background-position: -110px 0; }
   .deco--songs::after { left: calc(243.1px - 110px - 2px - 4px); top: calc(30.3px - 2px - 6px); animation-delay: 2.2s; }
+  .songs__page-link { display:inline-block; margin-bottom:10px; font-size:12px; color:var(--ink-sub); border-bottom:1px solid rgba(142,92,105,.35); }
   .songs__credit { display:flex; flex-wrap:wrap; gap:4px 10px; }
   .songs__credit a { font-size:10px; padding:4px; color:var(--ink-sub); text-decoration:none; }
   .songs__credit a:hover { color:var(--rose-deep); text-decoration:underline; }
@@ -1041,6 +1042,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="deco deco--songs">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#note2"/></svg></span>
       <div class="songs">
+        <a class="songs__page-link" href="songs.html">曲リスト専用ページ ↗</a>
         <p class="req__lead">しぃが歌えるかも…な曲たち🎤「コピー」を押すとリクエスト用のコメントがコピーされるから、配信のコメント欄に貼ってね♡</p>
         <div class="songs__modes" role="group" aria-label="検索対象">
           <button type="button" data-mode="title" aria-pressed="true">曲名から</button><button type="button" data-mode="artist" aria-pressed="false">アーティストから</button>
