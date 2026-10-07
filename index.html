@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007094542">
+<meta name="build" content="20261007094747">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -435,31 +435,39 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .mbox .btn:disabled { opacity: .55; cursor: default; transform: none; }
 
   /* 動くフレーム（リクエスト：音符／メッセージ：ハートと手紙） */
-  .deco { position: relative; padding: 62px 20px 24px; border-radius: 26px; background: rgba(255,255,255,.28); border: 2px dashed rgba(255,255,255,.95); }
-  /* いちごソースがとろ〜り：枠の上にかかって、ときどき一滴たれる */
-  .deco::before { content: ""; position: absolute; left: -2px; right: -2px; top: -2px; height: 62px; z-index: 0; pointer-events: none;
-    border-radius: 26px 26px 0 0; background: var(--drip) var(--dpos, 0) 0 / 360px 62px repeat-x;
-    filter: drop-shadow(0 2px 2px rgba(200,60,110,.18)); }
-  .deco::after { content: ""; position: absolute; z-index: 0; pointer-events: none;
-    left: calc(var(--dx) - 2px - 5px); top: calc(var(--dy) - 2px - 7px); width: 10px; height: 13px;
+  .deco { position: relative; padding: 40px 20px 24px; border-radius: 26px; background: rgba(255,255,255,.28); border: 2px dashed rgba(255,255,255,.95); }
+  /* いちごソースがとろ〜り（さりげなく）：枠の角のあたりにだけ少しかかって、たまに一滴たれる */
+  .deco::before { content: ""; position: absolute; left: -2px; top: -2px; width: 62%; height: 40px; z-index: 0; pointer-events: none;
+    border-radius: 26px 0 0 0; background: 0 0 / 360px 40px repeat-x;
+    -webkit-mask-image: linear-gradient(to right, #000 55%, transparent 100%); mask-image: linear-gradient(to right, #000 55%, transparent 100%);
+    opacity: .92; }
+  .deco::after { content: ""; position: absolute; z-index: 0; pointer-events: none; width: 8px; height: 10px;
     border-radius: 50% 50% 50% 50% / 38% 38% 62% 62%;
-    background: radial-gradient(circle at 62% 62%, #fff 0 1.4px, transparent 2px), linear-gradient(#F7608F, #DC3570);
+    background: radial-gradient(circle at 62% 62%, #fff 0 1.1px, transparent 1.6px), linear-gradient(#F98AAE, #EE6F9B);
     transform-origin: 50% 0; transform: scale(0); opacity: 0;
-    animation: sauce-drop 6s ease-in var(--ddelay, 0s) infinite; }
+    animation: sauce-drop 10s ease-in infinite; }
   @keyframes sauce-drop {
-    0%, 52% { transform: translateY(-6px) scale(0); opacity: 0; }
-    58% { transform: translateY(-5px) scale(.55, .5); opacity: 1; }
-    70% { transform: translateY(-2px) scale(.9, 1.15); opacity: 1; }
-    74% { transform: translateY(0) scale(1, 1.25); opacity: 1; }
-    92% { transform: translateY(70px) scale(.85, 1.05); opacity: 0; }
-    100% { transform: translateY(70px) scale(.85, 1.05); opacity: 0; }
+    0%, 72% { transform: translateY(-5px) scale(0); opacity: 0; }
+    77% { transform: translateY(-4px) scale(.55, .5); opacity: 1; }
+    85% { transform: translateY(-1px) scale(.9, 1.15); opacity: 1; }
+    88% { transform: translateY(0) scale(1, 1.2); opacity: 1; }
+    98%, 100% { transform: translateY(54px) scale(.85, 1); opacity: 0; }
   }
-  .deco--sweets { --drip: url(img/drip0.svg); --dpos: 0px; --dx: 151.6px; --dy: 47.9px; --ddelay: 0.0s; }
-  .deco--night { --drip: url(img/drip1.svg); --dpos: -40px; --dx: 132.4px; --dy: 48.7px; --ddelay: 0.0s; }
-  .deco--music { --drip: url(img/drip2.svg); --dpos: 0px; --dx: 81.6px; --dy: 46.9px; --ddelay: 0.0s; }
-  .deco--love { --drip: url(img/drip0.svg); --dpos: -120px; --dx: 31.6px; --dy: 47.9px; --ddelay: 0.0s; }
-  .deco--spark { --drip: url(img/drip1.svg); --dpos: 30px; --dx: 202.4px; --dy: 48.7px; --ddelay: 0.0s; }
-  .deco--gift { --drip: url(img/drip2.svg); --dpos: -70px; --dx: 11.6px; --dy: 46.9px; --ddelay: 0.0s; }
+  .deco--sweets::before { background-image: url(img/drip0.svg); }
+  .deco--sweets::after { left: calc(147.9px - 7px); top: calc(25.6px - 9px); animation-delay: 0.0s; }
+  .deco--night::before { background-image: url(img/drip1.svg); }
+  .deco--night::after { right: calc(144.4px - 7px); top: calc(21.8px - 9px); animation-delay: 1.4s; }
+  .deco--night::before { left: auto; right: -2px; transform: scaleX(-1); border-radius: 26px 0 0 0; }
+  .deco--music::before { background-image: url(img/drip2.svg); }
+  .deco--music::after { left: calc(107.0px - 7px); top: calc(20.7px - 9px); animation-delay: 2.8s; }
+  .deco--love::before { background-image: url(img/drip1.svg); }
+  .deco--love::after { left: calc(144.4px - 7px); top: calc(21.8px - 9px); animation-delay: 4.2s; }
+  .deco--spark::before { background-image: url(img/drip2.svg); }
+  .deco--spark::after { right: calc(107.0px - 7px); top: calc(20.7px - 9px); animation-delay: 5.6s; }
+  .deco--spark::before { left: auto; right: -2px; transform: scaleX(-1); border-radius: 26px 0 0 0; }
+  .deco--gift::before { background-image: url(img/drip0.svg); }
+  .deco--gift::after { right: calc(147.9px - 7px); top: calc(25.6px - 9px); animation-delay: 7.0s; }
+  .deco--gift::before { left: auto; right: -2px; transform: scaleX(-1); border-radius: 26px 0 0 0; }
   .deco > :not(.deco__i):not(.deco__rise) { position: relative; z-index: 1; }
   .deco__i { position: absolute; z-index: 1; display: block; pointer-events: none; color: var(--rose); filter: drop-shadow(0 2px 3px rgba(150,70,95,.25)); animation: deco-bob 3s ease-in-out infinite; }
   .deco__i svg { display: block; width: 100%; height: 100%; }
