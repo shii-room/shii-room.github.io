@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007140722">
+<meta name="build" content="20261008010000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -560,6 +560,13 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .songs__tags button { flex: none; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--white); background: rgba(255,255,255,.55);
     font-family: var(--maru); font-weight: 700; font-size: 12px; color: var(--ink-sub); cursor: pointer; }
   .songs__tags button[aria-pressed="true"] { background: var(--rose); color: var(--white); }
+  .songs__tools { display: flex; gap: 10px; margin-top: 12px; }
+  .songs__sort, .songs__random { min-height: 42px; border: 1.5px solid var(--white); border-radius: 999px; background: rgba(255,255,255,.72); color: var(--ink); font: 700 13px var(--maru); }
+  .songs__sort { flex: 1; min-width: 0; padding: 0 34px 0 14px; appearance: auto; cursor: pointer; }
+  .songs__random { flex: none; padding: 0 15px; cursor: pointer; white-space: nowrap; }
+  .songs__sort:focus, .songs__random:focus, .songs__list-toggle:focus, .songs__req:focus { outline: 2px solid var(--rose); outline-offset: 2px; }
+  .songs__random:active { background: var(--rose); color: var(--white); }
+  .songs__random:disabled { opacity: .55; cursor: not-allowed; }
   .songs__count { margin-top: 12px; font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .06em; color: var(--ink-sub); }
   .songs__list { list-style: none; margin-top: 8px; display: grid; gap: 8px; }
   .songs__list li { display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 12px; border-radius: 16px; background: rgba(255,255,255,.78);
@@ -585,6 +592,18 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .songs__empty { padding: 18px; text-align: center; font-size: 14px; color: var(--ink-sub); background: rgba(255,255,255,.5); border-radius: 16px; }
   .songs__more { display: block; margin: 14px auto 0; height: 40px; padding: 0 22px; border-radius: 999px; border: 1.5px solid var(--white); background: rgba(255,255,255,.7);
     font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; }
+  .songs__list-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 44px; margin-top: 12px; padding: 0 15px; border: 1.5px solid var(--white); border-radius: 999px; background: rgba(255,255,255,.64); color: var(--ink); font: 700 13px var(--maru); cursor: pointer; }
+  .songs__list-toggle svg { width: 18px; height: 18px; color: var(--rose); transition: transform .22s ease; }
+  .songs__list-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .songs__list-wrap { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .26s ease, opacity .2s ease; }
+  .songs__list-wrap.is-collapsed { grid-template-rows: 0fr; opacity: 0; }
+  .songs__list-wrap > div { min-height: 0; overflow: hidden; }
+  .songs__random-result { margin-top: 12px; padding: 14px 16px; border: 1.5px solid var(--white); border-radius: 18px; background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,229,238,.86)); box-shadow: 0 2px 0 rgba(224,116,150,.2); }
+  .songs__random-label { margin: 0 0 5px; font-family: var(--maru); font-weight: 700; font-size: 12px; color: var(--rose-deep); }
+  .songs__random-result .songs__title { font-size: 16px; }
+  .songs__random-result .songs__artist { margin-top: 2px; }
+  .songs__random-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+  @media (max-width: 420px) { .songs__tools { flex-direction: column; } .songs__sort, .songs__random { width: 100%; } }
   mark.songs__hit { background: #FFE3EC; color: inherit; border-radius: 4px; padding: 0 1px; }
 
   /* OMIKUJI */
@@ -1032,9 +1051,22 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <input id="song-q" type="search" placeholder="曲名・アーティストでさがす" autocomplete="off" aria-label="曲をさがす">
         </div>
         <div class="songs__tags" id="song-tags" hidden></div>
-        <p class="songs__count" id="song-count">読み込み中…</p>
-        <ul class="songs__list" id="song-list"></ul>
-        <button class="songs__more" id="song-more" type="button" hidden>もっと見る</button>
+        <div class="songs__tools">
+          <select class="songs__sort" id="song-sort" aria-label="曲の並び替え">
+            <option value="recommended">おすすめ順</option>
+            <option value="title">五十音順</option>
+            <option value="title-desc">五十音順（逆）</option>
+            <option value="artist">アーティスト順</option>
+          </select>
+          <button class="songs__random" id="song-random" type="button">🎲 ランダムで1曲</button>
+        </div>
+        <div class="songs__random-result" id="song-random-result" hidden aria-live="polite"></div>
+        <button class="songs__list-toggle" id="song-list-toggle" type="button" aria-expanded="true" aria-controls="song-list-wrap"><span>♪ 曲一覧をしまう</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="songs__list-wrap" id="song-list-wrap"><div>
+          <p class="songs__count" id="song-count">読み込み中…</p>
+          <ul class="songs__list" id="song-list"></ul>
+          <button class="songs__more" id="song-more" type="button" hidden>もっと見る</button>
+        </div></div>
       </div>
     </div>
   </section>
@@ -1554,20 +1586,32 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var list=document.getElementById('song-list'); if(!list) return;
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
   var $=function(id){return document.getElementById(id);};
-  var songs=[], tag='', q='', shown=20, STEP=20;
+  var songs=[], tag='', q='', sort='recommended', shown=20, STEP=20;
   function norm(s){ return String(s||'').toLowerCase().normalize('NFKC').replace(/[\u30a1-\u30f6]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-0x60); }).replace(/\s+/g,''); }
   function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function reading(s,fields){ for(var i=0;i<fields.length;i++){ if(s[fields[i]]) return s[fields[i]]; } return ''; }
+  function titleReading(s){ return reading(s,['title_kana','title_reading','title_yomi','reading','yomi','kana']) || s.title || ''; }
+  function artistReading(s){ return reading(s,['artist_kana','artist_reading','artist_yomi']) || s.artist || ''; }
+  function searchable(s){ return [s.title,s.artist,titleReading(s),artistReading(s)].join(' '); }
+  function compareJa(a,b){ return String(a||'').localeCompare(String(b||''),'ja',{numeric:true,sensitivity:'base'}); }
+  function currentHits(){
+    var nq=norm(q), hits=songs.filter(function(s){ return (!tag||s.tag===tag) && (!nq||norm(searchable(s)).indexOf(nq)>=0); });
+    if(sort==='title') hits.sort(function(a,b){ return compareJa(titleReading(a),titleReading(b)); });
+    else if(sort==='title-desc') hits.sort(function(a,b){ return compareJa(titleReading(b),titleReading(a)); });
+    else if(sort==='artist') hits.sort(function(a,b){ var c=compareJa(artistReading(a),artistReading(b)); return c || compareJa(titleReading(a),titleReading(b)); });
+    return hits;
+  }
   function render(){
-    var nq=norm(q);
-    var hits=songs.filter(function(s){ return (!tag||s.tag===tag) && (!nq||norm(s.title+' '+(s.artist||'')).indexOf(nq)>=0); });
+    var hits=currentHits();
     $('song-count').textContent = songs.length ? (q||tag ? hits.length+'曲みつかったよ（全'+songs.length+'曲）' : '全'+songs.length+'曲') : '';
+    $('song-random').disabled=!hits.length;
     list.innerHTML='';
     if(!songs.length){ list.innerHTML='<li class="songs__empty">リストは準備中だよ♪</li>'; $('song-more').hidden=true; return; }
     if(!hits.length){ list.innerHTML='<li class="songs__empty">見つからなかった…！リクエストで送ってみてね♡</li>'; $('song-more').hidden=true; return; }
     hits.slice(0,shown).forEach(function(s,i){
-      var li=document.createElement('li'); li.style.animationDelay=Math.min(i,10)*.03+'s';
+      var li=document.createElement('li'); li.className='song-card'; li.style.animationDelay=Math.min(i,10)*.03+'s';
       li.innerHTML='<span class="songs__note"><svg><use href="#note1"/></svg></span><span class="songs__txt"><span class="songs__title">'+esc(s.title)+'</span>'+(s.artist?'<span class="songs__artist">'+esc(s.artist)+'</span>':'')+'</span><button class="songs__req" type="button" aria-label="'+esc(s.title)+'のリクエストコメントをコピー"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 16V5.5A2.5 2.5 0 0 1 7.5 3H15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>コピー</button>';
-      li.querySelector('button').addEventListener('click',function(){ pickSong(s); });
+      li.querySelector('.songs__req').addEventListener('click',function(){ pickSong(s); });
       list.appendChild(li);
     });
     $('song-more').hidden = hits.length<=shown;
@@ -1602,11 +1646,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     box.hidden=false; box.innerHTML='';
     [''].concat(t).forEach(function(name){
       var b=document.createElement('button'); b.type='button'; b.textContent=name||'すべて'; b.setAttribute('aria-pressed', name===tag?'true':'false');
-      b.addEventListener('click',function(){ tag=name; shown=STEP; Array.prototype.forEach.call(box.children,function(c){ c.setAttribute('aria-pressed', c===b?'true':'false'); }); render(); });
+      b.addEventListener('click',function(){ tag=name; shown=STEP; clearRandom(); Array.prototype.forEach.call(box.children,function(c){ c.setAttribute('aria-pressed', c===b?'true':'false'); }); render(); });
       box.appendChild(b);
     });
   }
-  $('song-q').addEventListener('input',function(e){ q=e.target.value; shown=STEP; render(); });
+  function clearRandom(){ $('song-random-result').hidden=true; $('song-random-result').innerHTML=''; }
+  function showRandom(s){ var result=$('song-random-result'); result.hidden=false; result.innerHTML='<p class="songs__random-label">🎲 しぃに歌ってほしい今日の1曲</p><span class="songs__title">'+esc(s.title)+'</span>'+(s.artist?'<span class="songs__artist">'+esc(s.artist)+'</span>':'')+'<div class="songs__random-actions"><button class="songs__req" type="button" aria-label="'+esc(s.title)+'のリクエストコメントをコピー">コピー</button></div>'; result.querySelector('button').addEventListener('click',function(){ pickSong(s); }); }
+  $('song-q').addEventListener('input',function(e){ q=e.target.value; shown=STEP; clearRandom(); render(); });
+  $('song-sort').addEventListener('change',function(e){ sort=e.target.value; shown=STEP; render(); });
+  $('song-random').addEventListener('click',function(){ var hits=currentHits(); if(hits.length) showRandom(hits[Math.floor(Math.random()*hits.length)]); });
+  $('song-list-toggle').addEventListener('click',function(){ var btn=this, open=btn.getAttribute('aria-expanded')==='true', wrap=$('song-list-wrap'); btn.setAttribute('aria-expanded',String(!open)); btn.querySelector('span').textContent='♪ 曲一覧を'+(open?'ひらく':'しまう'); wrap.classList.toggle('is-collapsed',open); });
   $('song-more').addEventListener('click',function(){ shown+=STEP; render(); });
   fetch(SB+'shii_songs_list',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'})
     .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?d:[]; tags(); render(); })
