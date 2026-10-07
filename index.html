@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007140329">
+<meta name="build" content="20261007140722">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -572,7 +572,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .songs__artist { display: block; font-size: 12px; line-height: 1.4; color: var(--ink-sub); overflow-wrap: anywhere; }
   .songs__req { flex: none; height: 34px; padding: 0 12px; border-radius: 999px; border: 1.5px solid var(--rose); background: var(--white); color: var(--rose-deep);
     font-family: var(--maru); font-weight: 700; font-size: 11px; cursor: pointer; white-space: nowrap; }
+  .songs__req { display: inline-flex; align-items: center; gap: 4px; }
+  .songs__req svg { width: 13px; height: 13px; }
   .songs__req:active { background: var(--rose); color: var(--white); }
+  .song-toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 92; width: max-content; max-width: calc(100% - 32px);
+    padding: 12px 18px; border-radius: 18px; background: var(--white); border: 2px solid var(--rose); box-shadow: 0 8px 22px rgba(150,70,95,.3);
+    font-family: var(--maru); font-weight: 500; font-size: 13px; line-height: 1.6; color: var(--ink); text-align: center;
+    opacity: 0; visibility: hidden; transform: translate(-50%, 16px) scale(.9); transition: opacity .25s, transform .35s cubic-bezier(.3,1.5,.5,1), visibility .25s; }
+  .song-toast.is-show { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); }
+  .song-toast b { display: block; font-weight: 700; color: var(--rose-deep); }
+  .song-toast a { display: table; margin: 8px auto 0; padding: 4px 14px; border-radius: 999px; background: var(--rose); color: var(--white); font-weight: 700; font-size: 12px; }
   .songs__empty { padding: 18px; text-align: center; font-size: 14px; color: var(--ink-sub); background: rgba(255,255,255,.5); border-radius: 16px; }
   .songs__more { display: block; margin: 14px auto 0; height: 40px; padding: 0 22px; border-radius: 999px; border: 1.5px solid var(--white); background: rgba(255,255,255,.7);
     font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; }
@@ -1017,7 +1026,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="deco deco--songs">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#note2"/></svg></span>
       <div class="songs">
-        <p class="req__lead">しぃが歌えるかも…な曲たち🎤 気になる曲があったら、そのままリクエストしてね♡</p>
+        <p class="req__lead">しぃが歌えるかも…な曲たち🎤「コピー」を押すとリクエスト用のコメントがコピーされるから、配信のコメント欄に貼ってね♡</p>
         <div class="songs__search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
           <input id="song-q" type="search" placeholder="曲名・アーティストでさがす" autocomplete="off" aria-label="曲をさがす">
@@ -1557,17 +1566,35 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     if(!hits.length){ list.innerHTML='<li class="songs__empty">見つからなかった…！リクエストで送ってみてね♡</li>'; $('song-more').hidden=true; return; }
     hits.slice(0,shown).forEach(function(s,i){
       var li=document.createElement('li'); li.style.animationDelay=Math.min(i,10)*.03+'s';
-      li.innerHTML='<span class="songs__note"><svg><use href="#note1"/></svg></span><span class="songs__txt"><span class="songs__title">'+esc(s.title)+'</span>'+(s.artist?'<span class="songs__artist">'+esc(s.artist)+'</span>':'')+'</span><button class="songs__req" type="button">リクエスト</button>';
+      li.innerHTML='<span class="songs__note"><svg><use href="#note1"/></svg></span><span class="songs__txt"><span class="songs__title">'+esc(s.title)+'</span>'+(s.artist?'<span class="songs__artist">'+esc(s.artist)+'</span>':'')+'</span><button class="songs__req" type="button" aria-label="'+esc(s.title)+'のリクエストコメントをコピー"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 16V5.5A2.5 2.5 0 0 1 7.5 3H15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>コピー</button>';
       li.querySelector('button').addEventListener('click',function(){ pickSong(s); });
       list.appendChild(li);
     });
     $('song-more').hidden = hits.length<=shown;
   }
+  // リクエスト用コメントをコピー → 配信のコメント欄に貼ってもらう
+  function copyText(txt){
+    if(navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(txt);
+    return new Promise(function(ok,ng){
+      var ta=document.createElement('textarea'); ta.value=txt; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,txt.length);
+      try{ document.execCommand('copy') ? ok() : ng(); }catch(e){ ng(e); } ta.remove();
+    });
+  }
+  var toastT=null;
+  function toast(html){
+    var el=document.getElementById('song-toast');
+    if(!el){ el=document.createElement('div'); el.id='song-toast'; el.className='song-toast'; el.setAttribute('role','status'); document.body.appendChild(el); }
+    el.innerHTML=html; el.classList.remove('is-show'); void el.offsetWidth; el.classList.add('is-show');
+    clearTimeout(toastT); toastT=setTimeout(function(){ el.classList.remove('is-show'); }, 3200);
+  }
   function pickSong(s){
-    var acc=$('req-acc'); if(acc && acc.getAttribute('aria-expanded')!=='true') acc.click();
-    var f=$('req-form'); if(f && f.hidden){ var again=$('req-again'); if(again) again.click(); }
-    $('req-song').value=s.title; $('req-artist').value=s.artist||'';
-    setTimeout(function(){ document.getElementById('request').scrollIntoView({behavior:'smooth',block:'start'}); setTimeout(function(){ $('req-name').focus({preventScroll:true}); },600); }, 60);
+    var txt='🎤リクエスト：'+s.title+(s.artist?'／'+s.artist:'');
+    copyText(txt).then(function(){
+      toast('<b>コピーしたよ！</b>配信のコメント欄に貼り付けてね♡<a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を開く</a>');
+    }).catch(function(){
+      toast('<b>コピーできなかったみたい…</b>「'+esc(txt)+'」とコメントしてね');
+    });
   }
   function tags(){
     var t=[]; songs.forEach(function(s){ if(s.tag && t.indexOf(s.tag)<0) t.push(s.tag); });
