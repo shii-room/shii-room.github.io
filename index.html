@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007040950">
+<meta name="build" content="20261007043356">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -233,6 +233,19 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .btn--main { background: var(--rose); color: var(--white); border-color: var(--white); box-shadow: 4px 4px 0 var(--white); }
   .btn--main:hover { background: var(--white); color: var(--ink); box-shadow: 1px 1px 0 var(--white); }
   .hero__btns { display: flex; flex-wrap: wrap; gap: 0 18px; }
+  /* ヒーロー下のコンパクトなメニュー（3列×2段） */
+  .quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 26px; max-width: 420px; }
+  .quick a {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    min-height: 74px; padding: 10px 4px 9px; border-radius: 18px;
+    background: rgba(255,255,255,.75); border: 1.5px solid var(--white); box-shadow: 0 3px 0 rgba(224,116,150,.45);
+    font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .04em; color: var(--ink); text-align: center;
+    transition: transform .15s, box-shadow .15s, background-color .15s; -webkit-tap-highlight-color: transparent;
+  }
+  .quick a:hover, .quick a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); background: var(--white); }
+  .quick__i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #FBE3EA; color: var(--rose); }
+  .quick__i svg { width: 20px; height: 20px; }
+  .quick a:nth-child(2) .quick__i svg, .quick a:nth-child(5) .quick__i svg { width: 18px; height: 18px; }
 
   /* セクション共通 */
   .sec { width: var(--wrap); margin-inline: auto; padding-block: 72px; border-top: 1px dashed var(--white); }
@@ -635,9 +648,15 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <p class="hero__talk"><b>面白いこと、楽しいこと、お菓子が大好きな元メイド🍭🍰</b><br>夜22時からほぼ毎日ミラティブで配信中。ぜひ遊びに来てね！</p>
         <div class="hero__btns">
           <a class="btn btn--main" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を見にいく</a>
-          <a class="btn" href="#request">🎤 歌をリクエスト</a>
-          <a class="btn" href="#message">💌 メッセージを送る</a>
         </div>
+        <nav class="quick" aria-label="メニュー">
+          <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
+          <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信時間</a>
+          <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
+          <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
+          <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
+          <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
+        </nav>
       </div>
     </div>
   </section>
