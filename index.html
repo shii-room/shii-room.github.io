@@ -549,6 +549,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* SONGS */
   .deco--songs::before { background-image: url(img/drip2.svg); background-position: -110px 0; }
   .deco--songs::after { left: calc(243.1px - 110px - 2px - 4px); top: calc(30.3px - 2px - 6px); animation-delay: 2.2s; }
+  .songs__modes { display:flex; gap:4px; padding:4px; border-radius:999px; background:rgba(255,255,255,.55); margin-bottom:8px; }
+  .songs__modes button { flex:1; border:0; border-radius:999px; padding:8px 6px; background:transparent; color:var(--ink-sub); font:inherit; font-size:12px; cursor:pointer; }
+  .songs__modes button[aria-pressed="true"] { background:var(--white); color:var(--rose-deep); box-shadow:0 2px 8px rgba(181,100,130,.12); }
+  .songs__kana { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+  .songs__kana button { border:1px solid rgba(181,100,130,.2); border-radius:999px; padding:5px 9px; background:rgba(255,255,255,.65); color:var(--ink-sub); font:inherit; font-size:11px; cursor:pointer; }
+  .songs__kana button[aria-pressed="true"] { background:var(--rose-deep); color:#fff; }
   .songs__tools { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:12px; }
   .songs__tools label { font-size:13px; color:var(--ink-sub); }
   .songs__tools select, .songs__random { max-width:100%; padding:9px 13px; border:1.5px solid var(--white); border-radius:999px; background:rgba(255,255,255,.8); color:var(--rose-deep); font:inherit; font-size:13px; }
@@ -1033,14 +1039,20 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#note2"/></svg></span>
       <div class="songs">
         <p class="req__lead">しぃが歌えるかも…な曲たち🎤「コピー」を押すとリクエスト用のコメントがコピーされるから、配信のコメント欄に貼ってね♡</p>
+        <div class="songs__modes" role="group" aria-label="検索対象">
+          <button type="button" data-mode="title" aria-pressed="true">曲名から</button><button type="button" data-mode="artist" aria-pressed="false">アーティストから</button>
+        </div>
         <div class="songs__search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-          <input id="song-q" type="search" placeholder="曲名・アーティストでさがす" autocomplete="off" aria-label="曲をさがす">
+          <input id="song-q" type="search" placeholder="曲名・読みでさがす" autocomplete="off" aria-label="曲をさがす">
         </div>
-        <p id="song-search-note" class="songs__count" aria-live="polite">曲名・アーティストの読み検索は、うたえものデータを使います</p>
+        <p id="song-search-note" class="songs__count" aria-live="polite">ひらがなでも検索 ♡ 読み・ジャンル：UTAEMO</p>
+        <div class="songs__kana" id="song-kana" role="group" aria-label="五十音で絞り込み"></div>
         <div class="songs__tags" id="song-tags" hidden></div>
         <div class="songs__tools">
-          <label for="song-sort">並び順</label>
+          <label class="req__hp" for="song-genre">ジャンル</label>
+          <select id="song-genre" aria-label="ジャンル"><option value="">全ジャンル</option><option>J-POP</option><option>アニソン</option><option>ボカロ</option><option>洋楽</option><option>演歌</option><option>その他</option></select>
+          <label class="req__hp" for="song-sort">並び順</label>
           <select id="song-sort"><option value="original">登録順</option><option value="title">曲名：五十音順</option><option value="reverse">曲名：五十音逆順</option><option value="artist">アーティスト順</option></select>
           <button class="songs__random" id="song-random" type="button" disabled>おまかせで1曲 ♡</button>
         </div>
@@ -1570,7 +1582,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var list=document.getElementById('song-list'); if(!list) return;
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
   var $=function(id){return document.getElementById(id);};
-  var songs=[], tag='', q='', order='original', shown=20, STEP=20;
+  var songs=[], tag='', q='', mode='title', kana='', genre='', order='original', shown=20, STEP=20;
   var utaemoMaster=[], utaemoLoading=null, utaemoReady=false;
   var collator=new Intl.Collator('ja',{numeric:true,sensitivity:'base'});
   // UTAEMOの公開マスターから検索用の読みだけを参照する。曲一覧はしぃのデータを維持。
@@ -1591,13 +1603,20 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       var readings=hits.map(function(m){return m.ty||'';}).filter(Boolean);
       var titleReading=match?(match.ty||''):(readings.length===hits.length&&readings.every(function(r){return r===readings[0];})?readings[0]:'');
       var artistReadings=byArtist[artist]||[];
+      s.titleSearch=[s.title,s.title_reading||'',titleReading].join(' ');
+      s.artistSearch=[s.artist||'',s.artist_reading||''].concat(artistReadings).join(' ');
+      s.titleSort=norm(titleReading||s.title_reading||s.title);
+      s.artistSort=norm(artistReadings[0]||s.artist_reading||s.artist);
+      s.titleKana=norm(titleReading||s.title_reading||s.title).charAt(0);
+      s.artistKana=norm(artistReadings[0]||s.artist_reading||s.artist).charAt(0);
+      s.searchGenres=match&&Array.isArray(match.genres)?match.genres:[];
       s.searchText=[s.title,s.artist||'',s.title_reading||'',s.artist_reading||'',titleReading].concat(artistReadings).join(' ');
     });
   }
   function loadUtaemoSearch(){
     if(utaemoLoading) return utaemoLoading;
     var controller=new AbortController(), timer=setTimeout(function(){controller.abort();},12000);
-    $('song-search-note').textContent='うたえもの読みデータを読み込み中…';
+    $('song-search-note').textContent='UTAEMOの検索データを読み込み中…';
     utaemoLoading=fetch('https://raw.githubusercontent.com/utalis/utalis.github.io/main/index.html',{signal:controller.signal})
       .then(function(r){if(!r.ok) throw new Error('master');return r.text();})
       .then(function(html){
@@ -1605,18 +1624,22 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         if(!m) throw new Error('format');
         var data=JSON.parse(m[1]); if(!Array.isArray(data)||!data.length) throw new Error('empty');
         utaemoMaster=data; utaemoReady=true; addUtaemoSearchData();
-        $('song-search-note').textContent='うたえもの曲名・アーティストの読みで検索できます';
-        if(q) render();
+        $('song-search-note').textContent='ひらがなでも検索 ♡ 読み・ジャンル：UTAEMO';
+        if(q||kana||genre||order!=='original') render();
       }).catch(function(){ $('song-search-note').textContent='読みデータを取得できませんでした。曲名・アーティスト名で検索できます'; })
       .then(function(){clearTimeout(timer);});
     return utaemoLoading;
   }
   function filteredSongs(){
     var nq=norm(q);
-    var hits=songs.filter(function(s){return (!tag||s.tag===tag)&&(!nq||norm(s.searchText||s.title+' '+(s.artist||'')).indexOf(nq)>=0);});
+    var hits=songs.filter(function(s){
+      var text=mode==='artist'?(s.artistSearch||s.artist):(s.titleSearch||s.title);
+      var first=mode==='artist'?(s.artistKana||norm(s.artist).charAt(0)):(s.titleKana||norm(s.title).charAt(0));
+      return (!tag||s.tag===tag)&&(!nq||norm(text).indexOf(nq)>=0)&&(!kana||kana.indexOf(first)>=0)&&(!genre||(s.searchGenres||[]).indexOf(genre)>=0||s.tag===genre);
+    });
     if(order!=='original') hits.sort(function(a,b){
-      if(order==='artist') return collator.compare(norm(a.artist),norm(b.artist))||collator.compare(norm(a.title),norm(b.title));
-      return collator.compare(norm(a.title),norm(b.title))*(order==='reverse'?-1:1);
+      if(order==='artist') return collator.compare(a.artistSort||norm(a.artist),b.artistSort||norm(b.artist))||collator.compare(a.titleSort||norm(a.title),b.titleSort||norm(b.title));
+      return collator.compare(a.titleSort||norm(a.title),b.titleSort||norm(b.title))*(order==='reverse'?-1:1);
     });
     return hits;
   }
@@ -1626,7 +1649,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var hits=filteredSongs();
     $('song-random').disabled=!hits.length;
     $('song-picked').hidden=true;
-    $('song-count').textContent = songs.length ? (q||tag ? hits.length+'曲みつかったよ（全'+songs.length+'曲）' : '全'+songs.length+'曲') : '';
+    $('song-count').textContent = songs.length ? (q||tag||kana||genre ? hits.length+'曲みつかったよ（全'+songs.length+'曲）' : '全'+songs.length+'曲') : '';
     list.innerHTML='';
     if(!songs.length){ list.innerHTML='<li class="songs__empty">リストは準備中だよ♪</li>'; $('song-more').hidden=true; return; }
     if(!hits.length){ list.innerHTML='<li class="songs__empty">見つからなかった…！リクエストで送ってみてね♡</li>'; $('song-more').hidden=true; return; }
@@ -1674,7 +1697,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   $('song-q').addEventListener('input',function(e){ q=e.target.value; loadUtaemoSearch(); shown=STEP; if(q) openSongList(true); render(); });
   $('song-q').addEventListener('focus',loadUtaemoSearch);
-  $('song-sort').addEventListener('change',function(e){order=e.target.value; shown=STEP; render();});
+  $('song-sort').addEventListener('change',function(e){order=e.target.value; loadUtaemoSearch(); shown=STEP; render();});
+  document.querySelectorAll('[data-mode]').forEach(function(b){b.addEventListener('click',function(){
+    mode=b.dataset.mode; document.querySelectorAll('[data-mode]').forEach(function(c){c.setAttribute('aria-pressed',c===b?'true':'false');});
+    $('song-q').placeholder=(mode==='artist'?'アーティスト名':'曲名')+'・読みでさがす'; loadUtaemoSearch(); shown=STEP; render();
+  });});
+  [['すべて',''],['あ行','あいうえおぁぃぅぇぉ'],['か行','かきくけこがぎぐげご'],['さ行','さしすせそざじずぜぞ'],['た行','たちつてとだぢづでどっ'],['な行','なにぬねの'],['は行','はひふへほばびぶべぼぱぴぷぺぽ'],['ま行','まみむめも'],['や行','やゆよゃゅょ'],['ら行','らりるれろ'],['わ行','わをんゎ']].forEach(function(row){
+    var b=document.createElement('button'); b.type='button'; b.textContent=row[0]; b.setAttribute('aria-pressed',row[1]===''?'true':'false');
+    b.addEventListener('click',function(){kana=row[1]; Array.prototype.forEach.call($('song-kana').children,function(c){c.setAttribute('aria-pressed',c===b?'true':'false');}); loadUtaemoSearch(); shown=STEP; openSongList(true); render();}); $('song-kana').appendChild(b);
+  });
+  $('song-genre').addEventListener('change',function(e){genre=e.target.value; loadUtaemoSearch(); shown=STEP; openSongList(true); render();});
   var songAcc=$('song-acc'), songPanel=$('song-panel');
   function openSongList(open){
     songAcc.setAttribute('aria-expanded',open?'true':'false');
