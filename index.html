@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008230349">
+<meta name="build" content="20261008235911">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -334,6 +334,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .quick a.quick__omikuji { grid-column: 1 / -1; flex-direction: row; gap: 10px; min-height: 58px; font-size: 14px; background: linear-gradient(110deg, #F7F2FC, #EEE4F7); border-color: #D5C1E8; box-shadow: 0 3px 0 #C2A8DC; color: #765591; }
   .quick a.quick__omikuji:hover, .quick a.quick__omikuji:active { background: #F7F2FC; box-shadow: 0 1px 0 #C2A8DC; }
   .quick__omikuji .quick__i { background: #E6D7F1; color: #916DB0; }
+  .quick a.quick__omikuji, .quick a.quick__stamp { grid-column: span 3; }
+  .quick a.quick__stamp { flex-direction: row; gap: 10px; min-height: 58px; font-size: 14px; background: linear-gradient(110deg, #FFF8EC, #FDEBD6); border-color: #F2D2A8; box-shadow: 0 3px 0 #E7BE86; color: #9A6A2E; }
+  .quick a.quick__stamp::after { color: #D49A4C; }
+  .quick__stamp .quick__i { background: #FBE2C2; color: #E59A3A; }
+  .quick__dot { position: absolute; top: 8px; left: 10px; width: 9px; height: 9px; border-radius: 50%; background: #FF6F9C; box-shadow: 0 0 0 2px #fff; animation: dot-pulse 1.4s ease-in-out infinite; }
+  @keyframes dot-pulse { 50% { transform: scale(1.35); } }
   .quick__wide small { font-family: var(--maru); font-weight: 500; font-size: 11px; color: var(--ink-sub); padding: 2px 8px; border-radius: 999px; background: #FBE3EA; }
   .quick__i { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(145deg, #FDE9F0, #F5CADB); color: var(--rose); box-shadow: inset 0 1px 0 #fff, 0 0 0 3px rgba(255,255,255,.65); }
   .quick__i svg { width: 22px; height: 22px; }
@@ -658,6 +664,46 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; }
   mark.songs__hit { background: #FFE3EC; color: inherit; border-radius: 4px; padding: 0 1px; }
 
+  /* STAMP */
+  .deco--stamp::before { background-image: url(img/drip0.svg); background-position: -40px 0; }
+  .deco--stamp::after { left: calc(158.1px - 40px - 2px - 4px); top: calc(30.5px - 2px - 6px); animation-delay: 6.2s; }
+  .stamp { text-align: center; }
+  .stamp .req__lead { text-align: left; }
+  .stamp__card { position: relative; margin: 18px auto 0; max-width: 380px; padding: 16px 16px 14px; border-radius: 20px; background:
+      radial-gradient(circle at 1px 1px, rgba(224,116,150,.12) 1.2px, transparent 1.6px) 0 0 / 14px 14px, #FFFBF7;
+    border: 2px solid #fff; box-shadow: 0 0 0 2px #F6C9D7, 0 6px 0 rgba(224,116,150,.35), 0 10px 22px rgba(150,70,95,.15); }
+  .stamp__card::before { content: ""; position: absolute; inset: 7px; border: 1.5px dashed #F3B7CA; border-radius: 14px; pointer-events: none; }
+  .stamp__top { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 2px 4px 10px; }
+  .stamp__ttl { text-align: left; font-family: var(--maru); font-weight: 700; font-size: 12px; line-height: 1.3; color: var(--ink-sub); }
+  .stamp__ttl b { font-family: var(--en); font-weight: 500; font-size: 20px; letter-spacing: .14em; color: var(--rose); }
+  .stamp__no { flex: none; padding: 4px 12px; border-radius: 999px; background: var(--rose); color: #fff; font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .1em; }
+  .stamp__grid { position: relative; list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 4px; }
+  .stamp__grid li { position: relative; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; border: 2px dashed #F3B7CA; background: #fff;
+    font-family: var(--en); font-weight: 500; font-size: 14px; color: #F0A9C0; }
+  .stamp__grid li.is-on { border: 0; background: radial-gradient(circle at 35% 30%, #FFB3CC, #EE6F9B); color: #fff; transform: rotate(var(--rot, -8deg));
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,.55), 0 2px 0 rgba(200,70,110,.35); }
+  .stamp__grid li.is-on svg { width: 58%; height: 58%; filter: drop-shadow(0 1px 0 rgba(160,40,80,.25)); }
+  .stamp__grid li.is-gold { background: radial-gradient(circle at 35% 30%, #FFF1C2, #E7AE4A); }
+  .stamp__grid li.is-goal:not(.is-on) { border-color: #E7BE86; color: #D9A04E; }
+  .stamp__grid li.is-goal:not(.is-on)::after { content: "🎁"; position: absolute; right: -6px; top: -8px; font-size: 14px; }
+  .stamp__grid li.is-today { animation: stamp-pon .6s cubic-bezier(.3,1.6,.5,1) both; }
+  @keyframes stamp-pon { 0% { transform: scale(2.2) rotate(-30deg); opacity: 0; } 55% { transform: scale(.88) rotate(var(--rot, -8deg)); opacity: 1; } 100% { transform: scale(1) rotate(var(--rot, -8deg)); } }
+  .stamp__count { position: relative; margin-top: 10px; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink-sub); }
+  .stamp__count b { color: var(--rose); font-size: 18px; }
+  .stamp__count small { font-size: 11px; font-weight: 500; }
+  .stamp__btn { cursor: pointer; }
+  .stamp__btn:disabled { opacity: .6; cursor: default; transform: none; box-shadow: 4px 4px 0 var(--white); }
+  .stamp__note { margin-top: 10px; min-height: 1.6em; font-size: 12px; color: var(--ink-sub); }
+  .stamp__reward-open { margin-top: 4px; padding: 6px 14px; border: 0; border-radius: 999px; background: #FDEBD6; color: #9A6A2E; font-family: var(--maru); font-weight: 700; font-size: 12px; cursor: pointer; }
+  .stamp-modal { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: 20px; background: rgba(94,53,64,.5); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .stamp-modal__in { width: min(360px, 100%); max-height: 100%; overflow: auto; padding: 20px 18px 16px; border-radius: 24px; background: #FFF8FA; text-align: center; animation: omi-pop .6s cubic-bezier(.3,1.6,.5,1) both; }
+  .stamp-modal__ttl { font-family: var(--en); font-weight: 500; font-size: 20px; letter-spacing: .18em; background: linear-gradient(110deg, #E6AD4A, #FF8FBF 50%, #E6AD4A); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stamp-modal__sub { margin-top: 6px; font-family: var(--maru); font-weight: 700; font-size: 14px; line-height: 1.7; color: var(--ink); }
+  .stamp-modal__img { display: block; width: 62%; margin: 14px auto 0; border-radius: 14px; box-shadow: 0 6px 18px rgba(150,70,95,.25); background: #F6E4E9; aspect-ratio: 9 / 19.5; object-fit: cover; }
+  .stamp-modal__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 12px; }
+  .stamp-modal__btns .btn { min-width: 0; height: 46px; padding-inline: 22px; font-size: 14px; cursor: pointer; }
+  .stamp-modal__hint { margin-top: 10px; font-size: 11px; color: var(--ink-sub); }
+
   /* OMIKUJI */
   .deco--omi::before { background-image: url(img/drip1.svg); background-position: -180px 0; }
   .deco--omi::after { left: calc(136.3px - 180px + 360px - 2px - 4px); top: calc(26.1px - 2px - 6px); animation-delay: 4.2s; }
@@ -886,11 +932,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__sns { margin-inline: auto; width: 100%; }
     .quick { max-width: none; gap: 12px; }
     .quick a { min-height: 88px; }
-    .quick a.quick__omikuji { min-height: 60px; }
+    .quick a.quick__omikuji, .quick a.quick__stamp { min-height: 60px; }
     .menu__in { width: min(760px, 100% - 192px); padding-block: 36px 64px; }
     .quick--menu { max-width: none; margin-top: 0; gap: 16px; }
     .quick--menu a { min-height: 104px; font-size: 15px; }
-    .quick--menu a.quick__omikuji { min-height: 72px; font-size: 15px; }
+    .quick--menu a.quick__omikuji, .quick--menu a.quick__stamp { min-height: 72px; font-size: 15px; }
     .menu__sns a, .menu__top { min-height: 44px; display: inline-flex; align-items: center; }
     .prof { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
     .prof__side { gap: 16px; }
@@ -978,6 +1024,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
       <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
       <a class="quick__omikuji" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
+          <a class="quick__stamp" href="#stamp"><span class="quick__i"><svg><use href="#heart"/></svg></span>スタンプカード<i class="quick__dot" hidden></i></a>
     </div>
     <p class="menu__label">外部リンク</p>
     <ul class="menu__sns" aria-label="外部リンク">
@@ -1032,6 +1079,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
           <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
           <a class="quick__omikuji" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
+          <a class="quick__stamp" href="#stamp"><span class="quick__i"><svg><use href="#heart"/></svg></span>スタンプカード<i class="quick__dot" hidden></i></a>
         </nav>
         <div class="hero__external" id="link">
         <p class="menu__label">外部リンク</p>
@@ -1241,6 +1289,40 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     </div>
   </section>
 
+
+  <section class="sec" id="stamp">
+    <div class="sec__head"><h2 class="sec__en">Stamp</h2><span class="sec__ja">見守り隊スタンプカード</span></div>
+    <div class="deco deco--stamp">
+      <span class="deco__i p1" aria-hidden="true"><svg><use href="#lolli"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#cake"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#bow"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#kira"/></svg></span>
+      <div class="stamp">
+        <p class="req__lead">1日1回、遊びに来たらスタンプを押してね🍭 10個たまると、特別なしぃの壁紙がもらえるよ♡</p>
+        <div class="stamp__card">
+          <div class="stamp__top">
+            <span class="stamp__ttl">しぃの見守り隊<br><b>STAMP CARD</b></span>
+            <span class="stamp__no" id="stamp-no">No.1</span>
+          </div>
+          <ol class="stamp__grid" id="stamp-grid" aria-label="スタンプ"></ol>
+          <p class="stamp__count" id="stamp-count"></p>
+        </div>
+        <button class="btn btn--main stamp__btn" id="stamp-btn" type="button">今日のスタンプを押す</button>
+        <p class="stamp__note" id="stamp-note"></p>
+        <button class="stamp__reward-open" id="stamp-reward-open" type="button" hidden>🎁 もらった壁紙をもう一度見る</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="stamp-modal" id="stamp-modal" hidden role="dialog" aria-modal="true" aria-label="スタンプ10個達成">
+    <div class="stamp-modal__in">
+      <p class="stamp-modal__ttl">CONGRATULATIONS!</p>
+      <p class="stamp-modal__sub">スタンプ10個たまったよ！<br>いつも来てくれてありがとう♡</p>
+      <img class="stamp-modal__img" id="stamp-wall" alt="しぃの特別壁紙">
+      <div class="stamp-modal__btns">
+        <button class="btn btn--main" id="stamp-save" type="button">壁紙を保存する</button>
+        <button class="btn" id="stamp-close" type="button">とじる</button>
+      </div>
+      <p class="stamp-modal__hint">画像を長押ししても保存できます</p>
+    </div>
+  </div>
 
   <section class="sec" id="present">
     <div class="sec__head"><h2 class="sec__en">Present</h2><span class="sec__ja">贈りもの</span></div>
@@ -1723,6 +1805,85 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 })();
 </script>
 
+<script>
+(function(){
+  // ---- 見守り隊スタンプカード（1日1回・この端末に保存） ----
+  var $=function(id){return document.getElementById(id);};
+  var grid=$('stamp-grid'); if(!grid) return;
+  var KEY='shii_stamp', ICONS=['heart','lolli','cake','bow','star','gift','note1','kira','moon','star'];
+  var ROT=[-8,6,-4,10,-10,4,-6,8,-2,0];
+  function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'null'); if(v&&Array.isArray(v.d)) return v; }catch(e){} return {d:[],cards:0,total:0,reward:false}; }
+  function save(v){ try{ localStorage.setItem(KEY,JSON.stringify(v)); }catch(e){} }
+  var st=load();
+  function done(){ return st.last===today(); }
+  function render(pon){
+    grid.innerHTML='';
+    for(var i=0;i<10;i++){
+      var li=document.createElement('li'); li.style.setProperty('--rot',ROT[i]+'deg');
+      if(i===9) li.classList.add('is-goal');
+      if(i<st.d.length){
+        li.classList.add('is-on'); if(i===9) li.classList.add('is-gold');
+        li.innerHTML='<svg viewBox="0 0 24 24"><use href="#'+ICONS[i]+'"/></svg>';
+        li.setAttribute('aria-label',(i+1)+'個目 '+st.d[i].replace(/^\d+-/,'').replace('-','/'));
+        if(pon && i===st.d.length-1) li.classList.add('is-today');
+      } else { li.textContent=i+1; li.setAttribute('aria-label',(i+1)+'個目 まだ'); }
+      grid.appendChild(li);
+    }
+    $('stamp-no').textContent='No.'+(st.cards+1);
+    $('stamp-count').innerHTML='いま <b>'+st.d.length+'</b> / 10 個'+(st.total?'<br><small>これまで '+st.total+' 回来てくれたよ♡</small>':'');
+    var b=$('stamp-btn'); b.disabled=done(); b.textContent=done()?'今日はもう押したよ♡':'今日のスタンプを押す';
+    $('stamp-note').textContent=done()?'また明日来てね！':'';
+    $('stamp-reward-open').hidden=!st.reward;
+    document.querySelectorAll('.quick__dot').forEach(function(d){ d.hidden=done(); });
+  }
+  // ---- ごほうび壁紙（スマホの待ち受けサイズ） ----
+  function loadImg(src){ return new Promise(function(ok,ng){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=ng; i.src=src; }); }
+  var wallURL=null, wallBlob=null;
+  function makeWall(){
+    if(wallURL) return Promise.resolve(wallURL);
+    return Promise.all([loadImg('img/menu-candy-transparent.webp'),loadImg('img/logo.webp')]).then(function(im){
+      var W=1170,H=2532,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
+      var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#FBE7EE'); g.addColorStop(.55,'#F4CFDC'); g.addColorStop(1,'#EBB7CA'); x.fillStyle=g; x.fillRect(0,0,W,H);
+      x.fillStyle='rgba(255,255,255,.55)'; for(var yy=20;yy<H;yy+=46) for(var xx=20+(yy/46%2)*23;xx<W;xx+=46){ x.beginPath(); x.arc(xx,yy,3.2,0,7); x.fill(); }
+      x.save(); x.globalAlpha=.9; x.fillStyle='#fff'; x.beginPath(); x.arc(W/2,H*.58,W*.47,0,7); x.fill(); x.restore();
+      x.strokeStyle='rgba(224,116,150,.35)'; x.lineWidth=6; x.setLineDash([22,16]); x.beginPath(); x.arc(W/2,H*.58,W*.47+26,0,7); x.stroke(); x.setLineDash([]);
+      var ch=im[0], ch_h=H*.62, ch_w=ch.width*ch_h/ch.height; x.drawImage(ch,(W-ch_w)/2,H*.3,ch_w,ch_h);
+      var lg=im[1], lw=W*.66, lh=lg.height*lw/lg.width; x.drawImage(lg,(W-lw)/2,H*.13,lw,lh);
+      function heart(cx,cy,s,col){ x.save(); x.translate(cx,cy); x.scale(s/24,s/24); x.fillStyle=col; x.beginPath(); x.moveTo(12,21.5); x.bezierCurveTo(0,14.2,0,10,0,6.6); x.bezierCurveTo(0,3,2.8,.3,6.3,.3); x.bezierCurveTo(8.7,.3,10.8,1.7,12,3.9); x.bezierCurveTo(13.2,1.7,15.3,.3,17.7,.3); x.bezierCurveTo(21.2,.3,24,3,24,6.6); x.bezierCurveTo(24,10,24,14.2,12,21.5); x.fill(); x.restore(); }
+      [[140,520,70,'#FF8FB1'],[1010,470,54,'#fff'],[120,1500,48,'#fff'],[1050,1350,64,'#FF8FB1'],[200,2180,56,'#FF8FB1'],[980,2120,44,'#fff']].forEach(function(h){ heart(h[0],h[1],h[2],h[3]); });
+      x.textAlign='center'; x.fillStyle='#C9557B'; x.font='700 60px "Hiragino Maru Gothic ProN","Zen Maru Gothic",sans-serif';
+      x.fillText('しぃの見守り隊 ♡ COMPLETE',W/2,H*.935);
+      x.fillStyle='rgba(142,92,105,.85)'; x.font='500 42px "Hiragino Maru Gothic ProN","Zen Maru Gothic",sans-serif'; x.fillText('いつも来てくれてありがとう',W/2,H*.962);
+      return new Promise(function(ok){ c.toBlob(function(b){ wallBlob=b; wallURL=URL.createObjectURL(b); ok(wallURL); },'image/png'); });
+    });
+  }
+  function openReward(){
+    var m=$('stamp-modal'); m.hidden=false; document.body.classList.add('menu-open');
+    makeWall().then(function(u){ $('stamp-wall').src=u; }).catch(function(){ $('stamp-wall').src='img/menu-large.jpg'; });
+  }
+  function closeReward(){ $('stamp-modal').hidden=true; document.body.classList.remove('menu-open'); }
+  $('stamp-close').addEventListener('click',closeReward);
+  $('stamp-modal').addEventListener('click',function(e){ if(e.target.id==='stamp-modal') closeReward(); });
+  $('stamp-reward-open').addEventListener('click',openReward);
+  $('stamp-save').addEventListener('click',function(){
+    makeWall().then(function(u){
+      var file=wallBlob&&new File([wallBlob],'shii-wallpaper.png',{type:'image/png'});
+      if(file && navigator.canShare && navigator.canShare({files:[file]})){ navigator.share({files:[file]}).catch(function(){}); return; }
+      var a=document.createElement('a'); a.href=u; a.download='shii-wallpaper.png'; document.body.appendChild(a); a.click(); a.remove();
+    });
+  });
+  $('stamp-btn').addEventListener('click',function(){
+    if(done()) return;
+    if(st.d.length>=10){ st.d=[]; st.cards++; }       // 前のカードがいっぱいなら新しいカードへ
+    st.d.push(today()); st.last=today(); st.total=(st.total||0)+1;
+    var complete=st.d.length===10; if(complete) st.reward=true;
+    save(st); render(true);
+    if(complete) setTimeout(openReward,900);
+  });
+  render(false);
+})();
+</script>
 <script>
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261008230349">
+<meta name="build" content="20261008235911">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -94,6 +94,22 @@
   .hint{margin-top:8px;font-size:12px;color:var(--sub);line-height:1.6}
   .tabs{flex-wrap:wrap}
   .tab{flex:1 1 calc(50% - 8px)}
+  .opt{font-family:var(--sans);font-weight:400;font-size:11px;color:var(--sub);margin-left:6px}
+  input[type=date]{-webkit-appearance:none;appearance:none}
+  .sch{display:grid;gap:8px;margin-top:18px}
+  .schRow{display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:start;padding:10px;border-radius:12px;background:rgba(255,255,255,.55);border:1.5px solid var(--rule)}
+  .schDay{display:grid;place-items:center;height:52px;border-radius:10px;background:var(--white);font-family:var(--maru);font-weight:700;font-size:15px;line-height:1.15;text-align:center;color:var(--ink)}
+  .schDay small{display:block;font-size:11px;color:var(--sub)}
+  .schDay.sat{color:#5B7FD6}.schDay.sun{color:#D9476E}
+  .schF{display:grid;gap:6px}
+  .schF input[type=text]{height:40px;font-size:15px}
+  .schTop{display:flex;gap:6px;align-items:center}
+  .schTop input{flex:1}
+  .schOff{flex:none;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--sub);margin:0;font-family:var(--sans);letter-spacing:0}
+  .schOff input{width:18px;height:18px;margin:0;accent-color:var(--peri)}
+  .schRow.is-off .schF input[type=text]{opacity:.4}
+  .schOut{margin-top:20px}
+  .schOut img{display:block;width:100%;border-radius:12px;box-shadow:0 6px 18px rgba(94,53,64,.2)}
   .song{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .song b{display:block;font-weight:700}
   .song small{display:block;color:var(--sub);font-size:12px}
@@ -118,6 +134,7 @@
       <button class="tab" id="tabMsg" role="tab" aria-selected="false" type="button">メッセージ<b id="msgCount"></b></button>
       <button class="tab" id="tabPost" role="tab" aria-selected="false" type="button">X のポスト</button>
       <button class="tab" id="tabSong" role="tab" aria-selected="false" type="button">歌リスト</button>
+      <button class="tab" id="tabSch" role="tab" aria-selected="false" type="button">予定表画像</button>
     </div>
 
     <div id="reqView">
@@ -142,6 +159,26 @@
       <h2 style="margin-top:20px">届いたメッセージ（新しい順）</h2>
       <ul id="mList"><li class="empty">読み込み中…</li></ul>
       <button class="reload" id="mReload" type="button">最新にする</button>
+    </div>
+
+    <div id="schView" hidden>
+      <div class="card">
+        <label for="schStart">はじまりの日</label>
+        <input id="schStart" type="date">
+        <p class="hint">選んだ日から7日分の予定表になります。</p>
+      </div>
+      <div class="sch" id="schRows"></div>
+      <div class="card">
+        <label for="schNote">ひとこと<small class="opt">なしでもOK</small></label>
+        <input id="schNote" type="text" maxlength="40" placeholder="例）今週は歌枠多めだよ🎤">
+      </div>
+      <div class="row"><button class="primary" id="schMake" type="button">予定表の画像をつくる</button></div>
+      <p class="msg" id="schMsg"></p>
+      <div class="schOut" id="schOut" hidden>
+        <img id="schImg" alt="予定表の画像">
+        <div class="row"><button class="ghost" id="schAgain" type="button">直す</button><button class="primary" id="schShare" type="button">保存・Xに投稿</button></div>
+        <p class="hint">画像を長押ししても保存できます。入力した内容はこのスマホに残ります。</p>
+      </div>
     </div>
 
     <div id="songView" hidden>
@@ -295,7 +332,7 @@
   $('reqReload').onclick=loadReq;
 
   function showTab(name){
-    [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView'],['song','tabSong','songView']].forEach(function(x){
+    [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView'],['song','tabSong','songView'],['sch','tabSch','schView']].forEach(function(x){
       var on=x[0]===name; $(x[1]).setAttribute('aria-selected',on?'true':'false'); $(x[2]).hidden=!on;
     });
   }
@@ -303,6 +340,93 @@
   $('tabMsg').onclick=function(){ showTab('msg'); };
   $('tabPost').onclick=function(){ showTab('post'); };
   $('tabSong').onclick=function(){ showTab('song'); };
+  $('tabSch').onclick=function(){ showTab('sch'); };
+
+  // ---- 予定表画像メーカー（入力はこのスマホに保存。サーバーは使わない） ----
+  (function(){
+    var KEY='shii_sch', WD=['日','月','火','水','木','金','土'];
+    var st={start:'',note:'',days:{}};
+    try{ var s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s) st=s; }catch(e){}
+    function saveSt(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
+    function ymd(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+    function parse(s){ var p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+    function monday(){ var d=new Date(); var w=(d.getDay()+6)%7; d.setDate(d.getDate()-w); return d; }
+    if(!st.start) st.start=ymd(monday());
+    $('schStart').value=st.start; $('schNote').value=st.note||'';
+    function dates(){ var b=parse(st.start), out=[]; for(var i=0;i<7;i++){ var d=new Date(b); d.setDate(b.getDate()+i); out.push(d); } return out; }
+    function day(k){ return st.days[k]||(st.days[k]={time:'22:00',what:'',off:false}); }
+    function rows(){
+      var box=$('schRows'); box.innerHTML='';
+      dates().forEach(function(d){
+        var k=ymd(d), v=day(k), w=d.getDay();
+        var row=document.createElement('div'); row.className='schRow'+(v.off?' is-off':'');
+        row.innerHTML='<div class="schDay'+(w===6?' sat':w===0?' sun':'')+'">'+(d.getMonth()+1)+'/'+d.getDate()+'<small>'+WD[w]+'</small></div>'+
+          '<div class="schF"><div class="schTop"><input type="text" class="t" maxlength="12" placeholder="22:00〜"><label class="schOff"><input type="checkbox" class="o">お休み</label></div>'+
+          '<input type="text" class="w" maxlength="24" placeholder="内容（雑談・歌枠・ゲームなど）"></div>';
+        var ti=row.querySelector('.t'), wi=row.querySelector('.w'), oi=row.querySelector('.o');
+        ti.value=v.time; wi.value=v.what; oi.checked=!!v.off;
+        ti.oninput=function(){ v.time=ti.value; saveSt(); };
+        wi.oninput=function(){ v.what=wi.value; saveSt(); };
+        oi.onchange=function(){ v.off=oi.checked; row.classList.toggle('is-off',v.off); saveSt(); };
+        box.appendChild(row);
+      });
+    }
+    $('schStart').onchange=function(){ if(this.value){ st.start=this.value; saveSt(); rows(); } };
+    $('schNote').oninput=function(){ st.note=this.value; saveSt(); };
+    rows();
+
+    function img(src){ return new Promise(function(ok){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=function(){ok(null);}; i.src=src; }); }
+    function rr(x,X,Y,W,H,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+W,Y,X+W,Y+H,r); x.arcTo(X+W,Y+H,X,Y+H,r); x.arcTo(X,Y+H,X,Y,r); x.arcTo(X,Y,X+W,Y,r); x.closePath(); }
+    function fit(x,txt,max){ var s=txt; while(s.length>1 && x.measureText(s).width>max) s=s.slice(0,-1); return s===txt?s:s.slice(0,-1)+'…'; }
+    var blob=null;
+    function draw(){
+      var F='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
+      return Promise.all([img('../img/logo.webp'),img('../img/chibi-a.webp'),img('../img/drip0.svg')]).then(function(im){
+        var W=1080,H=1350,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
+        var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#FBE7EE'); g.addColorStop(1,'#EFC3D2'); x.fillStyle=g; x.fillRect(0,0,W,H);
+        x.fillStyle='rgba(255,255,255,.6)'; for(var y=18;y<H;y+=36) for(var xx=18+(y/36%2)*18;xx<W;xx+=36){ x.beginPath(); x.arc(xx,y,2.6,0,7); x.fill(); }
+        if(im[2]){ for(var dx=0;dx<W;dx+=360*1.6) x.drawImage(im[2],dx,0,360*1.6,50*1.6); }
+        if(im[0]){ var lw=380, lh=im[0].height*lw/im[0].width; x.drawImage(im[0],60,82,lw,lh); }
+        var ds=dates(), a=ds[0], b=ds[6];
+        x.textAlign='right'; x.fillStyle='#E07496'; x.font='500 64px "Quicksand","Avenir Next",'+F; x.fillText('WEEKLY',W-64,170);
+        x.fillText('SCHEDULE',W-64,236);
+        x.fillStyle='#8E5C69'; x.font='700 36px '+F; x.fillText((a.getMonth()+1)+'/'+a.getDate()+' 〜 '+(b.getMonth()+1)+'/'+b.getDate(),W-64,292);
+        var top=326, rh=106, gap=12, X=60, RW=W-120;
+        ds.forEach(function(d,i){
+          var v=day(ymd(d)), Y=top+i*(rh+gap), w=d.getDay();
+          x.save(); x.shadowColor='rgba(200,80,120,.18)'; x.shadowOffsetY=6; x.shadowBlur=0;
+          x.fillStyle=v.off?'rgba(255,255,255,.55)':'#fff'; rr(x,X,Y,RW,rh,30); x.fill(); x.restore();
+          x.fillStyle=v.off?'#E5D6EF':(w===0?'#EC6F98':w===6?'#86A6E8':'#F08DB0'); rr(x,X+14,Y+14,150,rh-28,22); x.fill();
+          x.textAlign='center'; x.fillStyle='#fff'; x.font='700 38px '+F; x.fillText((d.getMonth()+1)+'/'+d.getDate(),X+89,Y+57);
+          x.font='700 24px '+F; x.fillText(WD[w],X+89,Y+86);
+          x.textAlign='left';
+          if(v.off){ x.fillStyle='#A28AB8'; x.font='700 42px '+F; x.fillText('おやすみ 💤',X+200,Y+68); }
+          else{
+            x.fillStyle='#E07496'; x.font='700 46px "Quicksand","Avenir Next",'+F; var tt=fit(x,v.time||'',260); x.fillText(tt,X+196,Y+70);
+            var tw=Math.max(170,x.measureText(tt).width+24);
+            x.fillStyle='#5E3540'; x.font='700 38px '+F; x.fillText(fit(x,v.what||'配信',RW-196-tw-30),X+196+tw,Y+68);
+          }
+        });
+        var by=top+7*(rh+gap)+8;
+        if(st.note){ x.fillStyle='#fff'; rr(x,X,by,RW-220,74,37); x.fill(); x.fillStyle='#C9557B'; x.font='700 34px '+F; x.textAlign='left'; x.fillText(fit(x,'♡ '+st.note,RW-280),X+30,by+49); }
+        x.textAlign='left'; x.fillStyle='#8E5C69'; x.font='700 28px '+F; x.fillText('Mirrativ ／ X @shiitarou210',X+4,H-34);
+        if(im[1]){ var ch=190, cw=im[1].width*ch/im[1].height; x.drawImage(im[1],W-cw-40,H-ch-16,cw,ch); }
+        return new Promise(function(ok){ c.toBlob(function(bb){ blob=bb; ok(URL.createObjectURL(bb)); },'image/png'); });
+      });
+    }
+    $('schMake').onclick=function(){
+      var btn=this; btn.disabled=true; say($('schMsg'),'つくっています…');
+      draw().then(function(u){ var i=$('schImg'); if(i.dataset.u) URL.revokeObjectURL(i.dataset.u); i.src=u; i.dataset.u=u; $('schOut').hidden=false; say($('schMsg'),'できました！'); setTimeout(function(){ $('schOut').scrollIntoView({behavior:'smooth',block:'start'}); },100); })
+        .catch(function(){ say($('schMsg'),'画像をつくれませんでした。もう一度押してね',true); }).then(function(){ btn.disabled=false; });
+    };
+    $('schAgain').onclick=function(){ $('schOut').hidden=true; window.scrollTo({top:0,behavior:'smooth'}); };
+    $('schShare').onclick=function(){
+      if(!blob) return;
+      var f=new File([blob],'shii-schedule.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[f]})){ navigator.share({files:[f],text:'今週の配信予定だよ♡ #しぃの見守り隊'}).catch(function(){}); return; }
+      var a=document.createElement('a'); a.href=$('schImg').src; a.download='shii-schedule.png'; document.body.appendChild(a); a.click(); a.remove();
+    };
+  })();
 
   // ---- 歌える（かも）リスト ----
   var songs=[];
