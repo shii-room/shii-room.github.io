@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008115500">
+<meta name="build" content="20261008122000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -167,7 +167,10 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* Hero */
   .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 80px; display: grid; gap: 28px; }
   .hero__identity { display: contents; }
-  .hero__sns { margin-top: 18px; margin-bottom: 0; }
+  .hero__external { margin-top: 18px; }
+  .hero__external .menu__label { font-family: var(--maru); letter-spacing: .1em; }
+  .hero__sns { margin-top: 0; margin-bottom: 0; display: grid; grid-template-columns: 1fr .65fr 1.8fr; max-width: 420px; gap: 8px; }
+  .hero__sns a { width: 100%; justify-content: center; padding-inline: 8px; font-size: 12px; letter-spacing: .02em; white-space: nowrap; }
   .hero__sns a { display: inline-flex; align-items: center; min-height: 44px; }
   .hero__photo { position: relative; justify-self: center; width: min(100%, 420px); }
   .hero__photo .holo { border-radius: 16px; border: 6px solid var(--white); box-shadow: 8px 8px 0 var(--rose); }
@@ -319,6 +322,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .quick a { grid-column: span 2; }
   .quick a.quick__half { grid-column: span 3; flex-direction: row; gap: 8px; min-height: 54px; font-size: 13px;
     background: linear-gradient(90deg, rgba(255,255,255,.85), rgba(255,236,242,.9)); }
+  .quick a.quick__omikuji { grid-column: 1 / -1; flex-direction: row; gap: 10px; min-height: 58px; font-size: 14px; background: linear-gradient(110deg, #F7F2FC, #EEE4F7); border-color: #D5C1E8; box-shadow: 0 3px 0 #C2A8DC; color: #765591; }
+  .quick a.quick__omikuji:hover, .quick a.quick__omikuji:active { background: #F7F2FC; box-shadow: 0 1px 0 #C2A8DC; }
+  .quick__omikuji .quick__i { background: #E6D7F1; color: #916DB0; }
   .quick__wide small { font-family: var(--maru); font-weight: 500; font-size: 11px; color: var(--ink-sub); padding: 2px 8px; border-radius: 999px; background: #FBE3EA; }
   .quick__i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #FBE3EA; color: var(--rose); }
   .quick__i svg { width: 20px; height: 20px; }
@@ -865,14 +871,15 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__talk { grid-area: talk; margin-top: 0; font-size: 15px; text-align: center; }
     .hero__text > .hero__btns { grid-area: cta; justify-content: center; }
     .hero__text > .quick { grid-area: quick; margin-top: 0; }
-    .hero__text > .hero__sns { grid-area: social; margin-top: 0; justify-content: center; }
+    .hero__text > .hero__external { grid-area: social; margin-top: 0; text-align: center; }
+    .hero__sns { margin-inline: auto; width: 100%; }
     .quick { max-width: none; gap: 12px; }
     .quick a { min-height: 88px; }
-    .quick a.quick__half { min-height: 60px; }
+    .quick a.quick__omikuji { min-height: 60px; }
     .menu__in { width: min(760px, 100% - 192px); padding-block: 36px 64px; }
     .quick--menu { max-width: none; margin-top: 0; gap: 16px; }
     .quick--menu a { min-height: 104px; font-size: 15px; }
-    .quick--menu a.quick__half { min-height: 72px; font-size: 15px; }
+    .quick--menu a.quick__omikuji { min-height: 72px; font-size: 15px; }
     .menu__sns a, .menu__top { min-height: 44px; display: inline-flex; align-items: center; }
     .prof { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
     .prof__side { gap: 16px; }
@@ -902,7 +909,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   <symbol id="star" viewBox="0 0 24 24"><path fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="m12 3 2.6 5.6 6.1.7-4.5 4.1 1.2 6L12 16.4l-5.4 3 1.2-6-4.5-4.1 6.1-.7z"/></symbol>
   <symbol id="moon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5z"/></symbol>
   <symbol id="gift" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2" fill="#fff" stroke="currentColor" stroke-width="1.6"/><rect x="2" y="6" width="20" height="4" rx="1.5" fill="currentColor"/><path d="M12 6v15" stroke="currentColor" stroke-width="2.4"/><path d="M12 6c-1.5-3-5.5-3.5-5.5-1.2S12 6 12 6zm0 0c1.5-3 5.5-3.5 5.5-1.2S12 6 12 6z" fill="currentColor"/></symbol>
-  <symbol id="omi" viewBox="0 0 24 24"><g fill="currentColor"><rect x="10.6" y="1.5" width="2.8" height="7" rx="1.2" transform="rotate(14 12 5)"/><path d="M6 7.5h12l-1.4 13.2a1.6 1.6 0 0 1-1.6 1.4H9a1.6 1.6 0 0 1-1.6-1.4z"/></g><path d="M9.2 13.2s1.1-.9 2.8-.9 2.8.9 2.8.9M10 16.5h4" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="omi" viewBox="0 0 24 24"><path d="m13 2-1 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="m5 9 7-2 7 2v11l-7 2-7-2Z" fill="currentColor"/><path d="m5 9 7 2 7-2M12 11v11" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.1" stroke-linejoin="round"/><path d="M8 13v4m-1-2h2" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></symbol>
   <symbol id="pumpkin" viewBox="0 0 24 24"><path fill="#F59A3C" d="M12 7c-5 0-9 3-9 7.3S7 21 12 21s9-2.4 9-6.7S17 7 12 7z"/><path d="M12 7c-2 0-3.2 3-3.2 7s1.2 7 3.2 7 3.2-3 3.2-7S14 7 12 7z" fill="#FFB65C"/><path d="M12 7V4.2c0-.9.8-1.5 1.8-1.3" stroke="#7A5A3A" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M13 5.5c1.5-1.8 3.8-1.6 4.5-.7-1.3.9-2.8 1.2-4.5.7z" fill="#7CC48A"/><path d="M8.5 12.5l1.5 1.5 1.5-1.5M12.5 12.5l1.5 1.5 1.5-1.5M9 16.5c1.8 1.2 4.2 1.2 6 0" stroke="#7A3E1E" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="ghost" viewBox="0 0 24 24"><path fill="#fff" stroke="#E7B9CB" stroke-width="1" d="M12 2.5c-4.4 0-7.5 3.3-7.5 7.8V21l2.5-1.8 2.5 1.8 2.5-1.8 2.5 1.8 2.5-1.8 2.5 1.8V10.3c0-4.5-3.1-7.8-7.5-7.8z"/><circle cx="9.5" cy="10.5" r="1.3" fill="#5E3540"/><circle cx="14.5" cy="10.5" r="1.3" fill="#5E3540"/><ellipse cx="8" cy="13.2" rx="1.2" ry=".7" fill="#FFB3C9"/><ellipse cx="16" cy="13.2" rx="1.2" ry=".7" fill="#FFB3C9"/></symbol>
   <symbol id="bat" viewBox="0 0 32 16"><path fill="#8A6A98" d="M16 4c1.3 0 2 1.2 2 2.3 2-2 5.5-4.5 8.8-4.3-1.3 1.3-1.6 3-1.2 4.8-1.7-.6-3.5-.4-4.6.8-1.4-.8-3 .2-3.2 1.7-.6-.4-1.2-.6-1.8-.6s-1.2.2-1.8.6c-.2-1.5-1.8-2.5-3.2-1.7-1.1-1.2-2.9-1.4-4.6-.8.4-1.8.1-3.5-1.2-4.8C8.5 1.8 12 4.3 14 6.3 14 5.2 14.7 4 16 4z"/></symbol>
@@ -957,13 +964,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信時間</a>
       <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
       <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
-      <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
+      <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
       <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
-      <a class="quick__half" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
-          <a class="quick__half" href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
+      <a class="quick__omikuji" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
     </div>
-    <p class="menu__label">SNS</p>
-    <ul class="menu__sns">
+    <p class="menu__label">外部リンク</p>
+    <ul class="menu__sns" aria-label="外部リンク">
       <li><a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">Mirrativ</a></li>
       <li><a href="https://x.com/shiitarou210" target="_blank" rel="noopener">X</a></li>
       <li><a href="https://honyararalivers.jp/" target="_blank" rel="noopener">ほにゃららLIVERS</a></li>
@@ -1011,15 +1017,18 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信時間</a>
           <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
           <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
-          <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
+          <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
           <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
-          <a class="quick__half" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
-          <a class="quick__half" href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
+          <a class="quick__omikuji" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
         </nav>
-        <ul class="menu__sns hero__sns" aria-label="SNSリンク">
+        <div class="hero__external">
+        <p class="menu__label">外部リンク</p>
+        <ul class="menu__sns hero__sns" aria-label="外部リンク">
           <li><a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">Mirrativ</a></li>
           <li><a href="https://x.com/shiitarou210" target="_blank" rel="noopener">X</a></li>
+          <li><a href="https://honyararalivers.jp/" target="_blank" rel="noopener">ほにゃららLIVERS</a></li>
         </ul>
+        </div>
       </div>
     </div>
   </section>
