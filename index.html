@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008113500">
+<meta name="build" content="20261008114500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -166,6 +166,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
   /* Hero */
   .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 80px; display: grid; gap: 28px; }
+  .hero__identity { display: contents; }
   .hero__photo { position: relative; justify-self: center; width: min(100%, 420px); }
   .hero__photo .holo { border-radius: 16px; border: 6px solid var(--white); box-shadow: 8px 8px 0 var(--rose); }
   .bubble {
@@ -853,10 +854,15 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) {
     :root { --wrap: min(1040px, 100% - 64px); }
     .header .nav { display: none; }
-    .hero__in { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 32px; padding-block: 48px 72px; min-height: auto; }
-    .hero__text { min-width: 0; }
-    .hero__photo { width: min(100%, 360px); }
-    .hero__talk { font-size: 15px; }
+    .hero__in { max-width: 900px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "identity photo" "talk talk" "cta cta" "quick quick"; gap: 18px 28px; align-items: center; padding-block: 32px 48px; min-height: auto; }
+    .hero__text { display: contents; }
+    .hero__identity { display: block; grid-area: identity; min-width: 0; text-align: center; }
+    .hero__logo { margin-inline: 0; }
+    .hero__logo img { width: min(100%, 320px); margin-inline: auto; }
+    .hero__photo { grid-area: photo; order: 0; width: min(100%, 300px); }
+    .hero__talk { grid-area: talk; margin-top: 0; font-size: 15px; text-align: center; }
+    .hero__text > .hero__btns { grid-area: cta; justify-content: center; }
+    .hero__text > .quick { grid-area: quick; margin-top: 0; }
     .quick { max-width: none; gap: 12px; }
     .quick a { min-height: 88px; }
     .quick a.quick__half { min-height: 60px; }
@@ -875,10 +881,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .acc__btn { min-height: 56px; }
   }
   @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) and (orientation: portrait) {
-    .hero__in { grid-template-columns: 1fr; gap: 24px; padding-block: 28px 48px; }
-    .hero__photo { order: 0; width: min(100%, 280px); }
-    .hero__logo img { width: min(100%, 300px); }
-    .hero__text { max-width: 560px; width: 100%; justify-self: center; }
+    .hero__in { gap: 18px 20px; padding-block: 28px 40px; }
     .prof { grid-template-columns: 1fr; gap: 28px; max-width: 680px; }
   }
 </style>
@@ -990,10 +993,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <span class="kira k3" aria-hidden="true"><svg><use href="#kira"/></svg></span>
       </figure>
       <div class="hero__text">
+        <div class="hero__identity">
         <p class="hero__en" id="hero-en">SHII</p>
         <p class="hero__welcome">しぃの部屋へようこそ</p>
         <h1 class="hero__logo"><img src="img/logo.webp" alt="しぃ" width="900" height="558"></h1>
         <p class="hero__tag">🌈 ほにゃららLIVERS所属</p>
+        </div>
         <p class="hero__talk"><b>面白いこと、楽しいこと、お菓子が大好きな元メイド🍭🍰</b><br>夜22時からほぼ毎日ミラティブで配信中。ぜひ遊びに来てね！</p>
         <div class="hero__btns">
           <a class="btn btn--main" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を見にいく</a>
