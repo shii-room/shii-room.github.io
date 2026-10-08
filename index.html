@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261007184712">
+<meta name="build" content="20261008111500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -848,6 +848,37 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     * { transition: none !important; animation: none !important; }
     .bubble { transform: rotate(8deg); }
     .floaty, .kira { display: none; }
+  }
+  /* Tablet layout: keep phone portrait and landscape rules unchanged. */
+  @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) {
+    :root { --wrap: min(1040px, 100% - 64px); }
+    .header .nav { display: none; }
+    .hero__in { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 32px; padding-block: 48px 72px; min-height: auto; }
+    .hero__text { min-width: 0; }
+    .hero__photo { width: min(100%, 360px); }
+    .hero__talk { font-size: 15px; }
+    .quick { max-width: none; gap: 12px; }
+    .quick a { min-height: 88px; }
+    .quick a.quick__half { min-height: 60px; }
+    .menu__in { width: min(760px, 100% - 80px); padding-block: 36px 64px; }
+    .quick--menu { max-width: none; margin-top: 0; gap: 16px; }
+    .quick--menu a { min-height: 104px; font-size: 15px; }
+    .quick--menu a.quick__half { min-height: 72px; font-size: 15px; }
+    .menu__sns a, .menu__top { min-height: 44px; display: inline-flex; align-items: center; }
+    .prof { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+    .prof__side { gap: 16px; }
+    .prof__meta { min-width: 0; }
+    .prof__meta dd { overflow-wrap: anywhere; }
+    .prof__chibi { width: 96px; }
+    .req { max-width: 680px; }
+    .sec { padding-block: 60px; }
+    .acc__btn { min-height: 56px; }
+  }
+  @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) and (orientation: portrait) {
+    .hero__in { grid-template-columns: 1fr; gap: 36px; padding-block: 40px 64px; }
+    .hero__photo { order: 0; width: min(100%, 340px); }
+    .hero__text { max-width: 560px; width: 100%; justify-self: center; }
+    .prof { grid-template-columns: 1fr; gap: 28px; max-width: 680px; }
   }
 </style>
 </head>

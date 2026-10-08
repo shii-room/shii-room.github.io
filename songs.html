@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261007184712"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261008111500"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -793,6 +793,30 @@
 .songs__roulette .songs__random:focus-visible { border-radius:999px; }
 .songs__roulette .songs__picked { border:1px solid rgba(224,116,150,.45); background:var(--white); }
 .songs__memo{display:block;margin-top:4px;color:var(--ink-sub);font-size:12px;line-height:1.5;font-weight:400;}
+/* Tablet controls retain the compact phone layout below 768px. */
+@media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) {
+  .menu__in { width: min(760px, 100% - 80px); padding-block: 36px 64px; }
+  .quick--menu { max-width: none; margin-top: 0; gap: 16px; }
+  .quick--menu a { min-height: 104px; font-size: 15px; }
+  .quick--menu a.quick__half { min-height: 72px; font-size: 15px; }
+  .menu__sns a, .menu__top { min-height: 44px; display: inline-flex; align-items: center; }
+  :root { --wrap: min(760px, 100% - 64px); }
+  .sec { padding-block: 40px 56px; }
+  .songs__modes button, .songs__kana button, .songs__tags button,
+  .songs__tools select, .songs__req, .songs__more, .songs__page-link,
+  .header__home { min-height: 44px; }
+  .songs__modes button { font-size: 14px; }
+  .songs__kana { gap: 8px; }
+  .songs__kana button { min-width: 44px; padding-inline: 12px; font-size: 13px; }
+  .songs__tags { flex-wrap: wrap; overflow-x: visible; }
+  .songs__tags button { font-size: 13px; }
+  .songs__tools { gap: 10px; }
+  .songs__tools select { font-size: 16px; }
+  .songs__list li { padding: 14px 16px; gap: 14px; }
+  .songs__title { font-size: 16px; }
+  .songs__req { font-size: 12px; padding-inline: 16px; }
+  .songs__page-link, .header__home { display: inline-flex; align-items: center; }
+}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="heart" viewBox="0 0 24 22"><path fill="currentColor" d="M12 21.5S0 14.2 0 6.6A6.3 6.3 0 0 1 12 3.9 6.3 6.3 0 0 1 24 6.6c0 7.6-12 14.9-12 14.9z"/></symbol>
   <symbol id="kira" viewBox="0 0 20 20"><path fill="currentColor" d="M10 0c.6 5.2 4.8 9.4 10 10-5.2.6-9.4 4.8-10 10-.6-5.2-4.8-9.4-10-10C5.2 9.4 9.4 5.2 10 0z"/></symbol>
