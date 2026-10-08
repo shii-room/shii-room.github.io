@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008124500">
+<meta name="build" content="20261008124600">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1655,12 +1655,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 </script>
 <script>
 (function(){
-  // ---- どこをタップしても小さなハート ----
+  // ---- 背景をタップすると小さなハート ----
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var last=0;
   document.addEventListener('pointerdown',function(e){
     if(document.documentElement.classList.contains('op')) return;
-    if(e.target.closest('input, textarea, select')) return;
+    if(e.target.closest('a, button, input, textarea, select, label, p, h1, h2, h3, dt, dd, .quick, .hero__external')) return;
     var now=Date.now(); if(now-last<70) return; last=now;
     for(var i=0;i<2;i++){
       var s=document.createElement('span'); s.className='tap-fx'+(i?' w':'');
