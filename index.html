@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008122000">
+<meta name="build" content="20261008123000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -167,6 +167,10 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* Hero */
   .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 80px; display: grid; gap: 28px; }
   .hero__identity { display: contents; }
+  .hero__menu-title { display: flex; align-items: center; gap: 9px; margin: 26px 0 12px; max-width: 420px; color: var(--rose-deep); font-family: var(--maru); font-weight: 700; font-size: 15px; letter-spacing: .12em; }
+  .hero__menu-title svg { width: 20px; height: 20px; flex: none; color: var(--rose); }
+  .hero__menu-title::after { content: ""; flex: 1; border-top: 1px dashed rgba(224,116,150,.45); margin-left: 5px; }
+  .hero__menu-title + .quick { margin-top: 0; }
   .hero__external { margin-top: 18px; }
   .hero__external .menu__label { font-family: var(--maru); letter-spacing: .1em; }
   .hero__sns { margin-top: 0; margin-bottom: 0; display: grid; grid-template-columns: 1fr .65fr 1.8fr; max-width: 420px; gap: 8px; }
@@ -311,13 +315,17 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* ヒーロー下のコンパクトなメニュー（3列×2段） */
   .quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 26px; max-width: 420px; }
   .quick a {
+    position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
     min-height: 74px; padding: 10px 4px 9px; border-radius: 18px;
-    background: rgba(255,255,255,.75); border: 1.5px solid var(--white); box-shadow: 0 3px 0 rgba(224,116,150,.45);
+    background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid var(--white); box-shadow: 0 4px 0 #E6A6BE, 0 7px 12px rgba(174,92,120,.08);
     font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .04em; color: var(--ink); text-align: center;
     transition: transform .15s, box-shadow .15s, background-color .15s; -webkit-tap-highlight-color: transparent;
   }
   .quick a:hover, .quick a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); background: var(--white); }
+  .quick a::before { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(255,255,255,.9); border-radius: 12px; pointer-events: none; }
+  .quick a::after { content: "♡"; position: absolute; top: 7px; right: 10px; font-size: 12px; line-height: 1; color: var(--rose); opacity: .5; pointer-events: none; }
+  .quick a.quick__omikuji::after { color: #916DB0; }
   .quick { grid-template-columns: repeat(6, 1fr); }
   .quick a { grid-column: span 2; }
   .quick a.quick__half { grid-column: span 3; flex-direction: row; gap: 8px; min-height: 54px; font-size: 13px;
@@ -326,7 +334,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .quick a.quick__omikuji:hover, .quick a.quick__omikuji:active { background: #F7F2FC; box-shadow: 0 1px 0 #C2A8DC; }
   .quick__omikuji .quick__i { background: #E6D7F1; color: #916DB0; }
   .quick__wide small { font-family: var(--maru); font-weight: 500; font-size: 11px; color: var(--ink-sub); padding: 2px 8px; border-radius: 999px; background: #FBE3EA; }
-  .quick__i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #FBE3EA; color: var(--rose); }
+  .quick__i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(145deg, #FDE9F0, #F5CADB); color: var(--rose); box-shadow: inset 0 1px 0 #fff, 0 0 0 3px rgba(255,255,255,.65); }
   .quick__i svg { width: 20px; height: 20px; }
   .quick a:nth-child(2) .quick__i svg, .quick a:nth-child(5) .quick__i svg { width: 18px; height: 18px; }
 
@@ -862,7 +870,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) {
     :root { --wrap: min(1040px, 100% - 64px); }
     .header .nav { display: none; }
-    .hero__in { max-width: 900px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "identity photo" "talk talk" "cta cta" "quick quick" "social social"; gap: 18px 28px; align-items: center; padding-block: 32px 48px; min-height: auto; }
+    .hero__in { max-width: 900px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "identity photo" "talk talk" "cta cta" "menuheading menuheading" "quick quick" "social social"; gap: 18px 28px; align-items: center; padding-block: 32px 48px; min-height: auto; }
     .hero__text { display: contents; }
     .hero__identity { display: block; grid-area: identity; min-width: 0; text-align: center; }
     .hero__logo { margin-inline: 0; }
@@ -870,6 +878,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__photo { grid-area: photo; order: 0; width: min(100%, 300px); }
     .hero__talk { grid-area: talk; margin-top: 0; font-size: 15px; text-align: center; }
     .hero__text > .hero__btns { grid-area: cta; justify-content: center; }
+    .hero__menu-title { grid-area: menuheading; margin: 4px 0 -6px; max-width: none; }
     .hero__text > .quick { grid-area: quick; margin-top: 0; }
     .hero__text > .hero__external { grid-area: social; margin-top: 0; text-align: center; }
     .hero__sns { margin-inline: auto; width: 100%; }
@@ -958,7 +967,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
 <nav class="menu" id="menu" aria-label="メニュー">
   <div class="menu__in">
-    <p class="menu__label">MENU</p>
+    <p class="menu__label">メニュー</p>
     <div class="quick quick--menu">
       <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
       <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信時間</a>
@@ -1012,6 +1021,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <div class="hero__btns">
           <a class="btn btn--main" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を見にいく</a>
         </div>
+        <h2 class="hero__menu-title"><svg aria-hidden="true"><use href="#bow"/></svg>メニュー</h2>
         <nav class="quick" aria-label="メニュー">
           <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
           <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信時間</a>
