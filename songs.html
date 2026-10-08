@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261008123000"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261008124500"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -85,7 +85,8 @@
   .menu__label + .quick { margin-top: 0; }
   .quick--menu { max-width: none; margin-bottom: 28px; }
   .menu__sns { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
-  .menu__sns a { display: inline-block; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.75); border: 1.5px solid var(--white); box-shadow: 0 3px 0 rgba(224,116,150,.45); font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .06em; transition: transform .15s, box-shadow .15s; }
+  .menu__sns a { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 16px; border-radius: 999px; background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid var(--white); box-shadow: 0 3px 0 #E6A6BE; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .06em; transition: transform .15s, box-shadow .15s; }
+  .menu__sns a::before { content: ""; position: absolute; inset: 3px; border: 1px solid rgba(255,255,255,.9); border-radius: inherit; pointer-events: none; }
   .menu__sns a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); }
   .menu__top { display: inline-block; margin-top: 26px; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .08em; color: var(--ink-sub); border-bottom: 1.5px solid var(--rose); }
   body.menu-open { overflow: hidden; }
@@ -234,9 +235,9 @@
   .quick a {
     position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-    min-height: 74px; padding: 10px 4px 9px; border-radius: 18px;
+    min-height: 84px; padding: 11px 4px 10px; border-radius: 18px;
     background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid var(--white); box-shadow: 0 4px 0 #E6A6BE, 0 7px 12px rgba(174,92,120,.08);
-    font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .04em; color: var(--ink); text-align: center;
+    font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink); text-align: center;
     transition: transform .15s, box-shadow .15s, background-color .15s; -webkit-tap-highlight-color: transparent;
   }
   .quick a:hover, .quick a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); background: var(--white); }
@@ -251,9 +252,9 @@
   .quick a.quick__omikuji:hover, .quick a.quick__omikuji:active { background: #F7F2FC; box-shadow: 0 1px 0 #C2A8DC; }
   .quick__omikuji .quick__i { background: #E6D7F1; color: #916DB0; }
   .quick__wide small { font-family: var(--maru); font-weight: 500; font-size: 11px; color: var(--ink-sub); padding: 2px 8px; border-radius: 999px; background: #FBE3EA; }
-  .quick__i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(145deg, #FDE9F0, #F5CADB); color: var(--rose); box-shadow: inset 0 1px 0 #fff, 0 0 0 3px rgba(255,255,255,.65); }
-  .quick__i svg { width: 20px; height: 20px; }
-  .quick a:nth-child(2) .quick__i svg, .quick a:nth-child(5) .quick__i svg { width: 18px; height: 18px; }
+  .quick__i { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(145deg, #FDE9F0, #F5CADB); color: var(--rose); box-shadow: inset 0 1px 0 #fff, 0 0 0 3px rgba(255,255,255,.65); }
+  .quick__i svg { width: 22px; height: 22px; }
+  .quick a:nth-child(2) .quick__i svg, .quick a:nth-child(5) .quick__i svg { width: 20px; height: 20px; }
 
   /* セクション共通 */
   .sec { width: var(--wrap); margin-inline: auto; padding-block: 72px; border-top: 1px dashed var(--white); }
@@ -622,7 +623,7 @@
     100% { opacity: 0; transform: translate(var(--x), -38px) scale(.7) rotate(var(--r)); } }
 
   /* 季節のきせかえ */
-  .season-fx { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .season-fx { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; -webkit-mask-image: linear-gradient(to right, #000 0 var(--season-edge,14px), transparent var(--season-edge,14px) calc(100% - var(--season-edge,14px)), #000 calc(100% - var(--season-edge,14px))); mask-image: linear-gradient(to right, #000 0 var(--season-edge,14px), transparent var(--season-edge,14px) calc(100% - var(--season-edge,14px)), #000 calc(100% - var(--season-edge,14px))); }
   .season-fx i { position: absolute; top: -40px; display: block; opacity: .85; will-change: transform; animation: sfx-fall linear infinite; }
   .season-fx i svg { display: block; width: 100%; height: 100%; }
   html[data-season="xmas"] .season-fx i svg, html[data-season="newyear"] .season-fx i svg { filter: drop-shadow(0 0 2px rgba(190,110,140,.55)); }

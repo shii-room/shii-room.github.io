@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008123000">
+<meta name="build" content="20261008124500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -133,7 +133,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .menu__label + .quick { margin-top: 0; }
   .quick--menu { max-width: none; margin-bottom: 28px; }
   .menu__sns { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
-  .menu__sns a { display: inline-block; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.75); border: 1.5px solid var(--white); box-shadow: 0 3px 0 rgba(224,116,150,.45); font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .06em; transition: transform .15s, box-shadow .15s; }
+  .menu__sns a { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 16px; border-radius: 999px; background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid var(--white); box-shadow: 0 3px 0 #E6A6BE; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .06em; transition: transform .15s, box-shadow .15s; }
+  .menu__sns a::before { content: ""; position: absolute; inset: 3px; border: 1px solid rgba(255,255,255,.9); border-radius: inherit; pointer-events: none; }
   .menu__sns a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); }
   .menu__top { display: inline-block; margin-top: 26px; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .08em; color: var(--ink-sub); border-bottom: 1.5px solid var(--rose); }
   body.menu-open { overflow: hidden; }
@@ -165,7 +166,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @media(prefers-reduced-motion:reduce){.menu-confetti__piece{animation:shii-heart-fade 3s ease-out both;}@keyframes shii-heart-fade{0%,100%{opacity:1;}}}
 
   /* Hero */
-  .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 80px; display: grid; gap: 28px; }
+  .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 32px; display: grid; gap: 28px; }
   .hero__identity { display: contents; }
   .hero__menu-title { display: flex; align-items: center; gap: 9px; margin: 26px 0 12px; max-width: 420px; color: var(--rose-deep); font-family: var(--maru); font-weight: 700; font-size: 15px; letter-spacing: .12em; }
   .hero__menu-title svg { width: 20px; height: 20px; flex: none; color: var(--rose); }
@@ -173,8 +174,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .hero__menu-title + .quick { margin-top: 0; }
   .hero__external { margin-top: 18px; }
   .hero__external .menu__label { font-family: var(--maru); letter-spacing: .1em; }
-  .hero__sns { margin-top: 0; margin-bottom: 0; display: grid; grid-template-columns: 1fr .65fr 1.8fr; max-width: 420px; gap: 8px; }
-  .hero__sns a { width: 100%; justify-content: center; padding-inline: 8px; font-size: 12px; letter-spacing: .02em; white-space: nowrap; }
+  .hero__sns { margin-top: 0; margin-bottom: 0; display: grid; grid-template-columns: 1fr .6fr 1.9fr; max-width: 420px; gap: 8px; }
+  .hero__sns a { width: 100%; justify-content: center; padding-inline: 6px; font-size: 13px; letter-spacing: 0; white-space: nowrap; }
   .hero__sns a { display: inline-flex; align-items: center; min-height: 44px; }
   .hero__photo { position: relative; justify-self: center; width: min(100%, 420px); }
   .hero__photo .holo { border-radius: 16px; border: 6px solid var(--white); box-shadow: 8px 8px 0 var(--rose); }
@@ -317,9 +318,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .quick a {
     position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-    min-height: 74px; padding: 10px 4px 9px; border-radius: 18px;
+    min-height: 84px; padding: 11px 4px 10px; border-radius: 18px;
     background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid var(--white); box-shadow: 0 4px 0 #E6A6BE, 0 7px 12px rgba(174,92,120,.08);
-    font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .04em; color: var(--ink); text-align: center;
+    font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink); text-align: center;
     transition: transform .15s, box-shadow .15s, background-color .15s; -webkit-tap-highlight-color: transparent;
   }
   .quick a:hover, .quick a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); background: var(--white); }
@@ -334,12 +335,13 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .quick a.quick__omikuji:hover, .quick a.quick__omikuji:active { background: #F7F2FC; box-shadow: 0 1px 0 #C2A8DC; }
   .quick__omikuji .quick__i { background: #E6D7F1; color: #916DB0; }
   .quick__wide small { font-family: var(--maru); font-weight: 500; font-size: 11px; color: var(--ink-sub); padding: 2px 8px; border-radius: 999px; background: #FBE3EA; }
-  .quick__i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(145deg, #FDE9F0, #F5CADB); color: var(--rose); box-shadow: inset 0 1px 0 #fff, 0 0 0 3px rgba(255,255,255,.65); }
-  .quick__i svg { width: 20px; height: 20px; }
-  .quick a:nth-child(2) .quick__i svg, .quick a:nth-child(5) .quick__i svg { width: 18px; height: 18px; }
+  .quick__i { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(145deg, #FDE9F0, #F5CADB); color: var(--rose); box-shadow: inset 0 1px 0 #fff, 0 0 0 3px rgba(255,255,255,.65); }
+  .quick__i svg { width: 22px; height: 22px; }
+  .quick a:nth-child(2) .quick__i svg, .quick a:nth-child(5) .quick__i svg { width: 20px; height: 20px; }
 
   /* セクション共通 */
   .sec { width: var(--wrap); margin-inline: auto; padding-block: 72px; border-top: 1px dashed var(--white); }
+  #profile { padding-top: 40px; }
   .sec__head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 32px; }
   .sec__en { font-family: var(--en); font-weight: 500; font-size: clamp(34px, 8vw, 52px); letter-spacing: .08em; line-height: 1; color: var(--rose); }
   .sec__ja { font-family: var(--maru); font-weight: 500; font-size: 13px; letter-spacing: .14em; color: var(--ink-sub); }
@@ -706,7 +708,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     100% { opacity: 0; transform: translate(var(--x), -38px) scale(.7) rotate(var(--r)); } }
 
   /* 季節のきせかえ */
-  .season-fx { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+  .season-fx { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; -webkit-mask-image: linear-gradient(to right, #000 0 var(--season-edge,14px), transparent var(--season-edge,14px) calc(100% - var(--season-edge,14px)), #000 calc(100% - var(--season-edge,14px))); mask-image: linear-gradient(to right, #000 0 var(--season-edge,14px), transparent var(--season-edge,14px) calc(100% - var(--season-edge,14px)), #000 calc(100% - var(--season-edge,14px))); }
   .season-fx i { position: absolute; top: -40px; display: block; opacity: .85; will-change: transform; animation: sfx-fall linear infinite; }
   .season-fx i svg { display: block; width: 100%; height: 100%; }
   html[data-season="xmas"] .season-fx i svg, html[data-season="newyear"] .season-fx i svg { filter: drop-shadow(0 0 2px rgba(190,110,140,.55)); }
@@ -958,7 +960,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <a href="#message">MESSAGE</a>
         <a href="songs.html">SONGS</a>
         <a href="#omikuji">OMIKUJI</a>
-        <a href="#link">LINK</a>
+        <a href="#link">外部リンク</a>
       </nav>
       <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
     </div>
@@ -1031,7 +1033,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
           <a class="quick__omikuji" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
         </nav>
-        <div class="hero__external">
+        <div class="hero__external" id="link">
         <p class="menu__label">外部リンク</p>
         <ul class="menu__sns hero__sns" aria-label="外部リンク">
           <li><a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">Mirrativ</a></li>
@@ -1239,17 +1241,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     </div>
   </section>
 
-  <section class="sec" id="link">
-    <div class="sec__head"><h2 class="sec__en">Link</h2><span class="sec__ja">リンク</span></div>
-    <div class="deco deco--spark">
-      <span class="deco__i p1" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p2" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p3 w" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p4" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p5 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p6" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#heart"/></svg></span>
-    <ul class="links">
-      <li><a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-play"/></svg><span><span class="links__name">Mirrativ</span><span class="links__sub">配信はここ</span></span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://x.com/shiitarou210" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-bell"/></svg><span><span class="links__name">X</span><span class="links__sub">日常や更新のお知らせ</span></span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://honyararalivers.jp/" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-house"/></svg><span><span class="links__name ja">ほにゃららLIVERS</span><span class="links__sub">所属事務所</span></span></span><span class="links__go">↗</span></a></li>
-    </ul>
-    </div>
-  </section>
 
   <section class="sec" id="present">
     <div class="sec__head"><h2 class="sec__en">Present</h2><span class="sec__ja">贈りもの</span></div>
@@ -1700,16 +1691,22 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   window.SHII_BUBBLE=T.bubble;
   window.SHII_TAP=T.tap;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var fx=document.getElementById('season-fx'), n=window.innerWidth<600?12:18;
+  var fx=document.getElementById('season-fx'), n=window.innerWidth<600?8:12;
+  function setSeasonEdges(){
+    var content=document.querySelector('.sec'), edge=content?content.getBoundingClientRect().left:20;
+    fx.style.setProperty('--season-edge',Math.max(0,edge-6)+'px');
+  }
+  setSeasonEdges(); window.addEventListener('resize',setSeasonEdges);
+
   function r(a,b){ return a+Math.random()*(b-a); }
   for(var i=0;i<n;i++){
     var it=T.items[i%T.items.length], el=document.createElement('i'), size=it[1]*r(.8,1.25);
     el.innerHTML='<svg viewBox="0 0 '+(it[0]==='bat'?'32 16':'24 24')+'"><use href="#'+it[0]+'"/></svg>';
     el.style.width=(it[0]==='bat'?size*1.6:size)+'px'; el.style.height=(it[0]==='bat'?size*.8:size)+'px';
     if(T.color) el.style.color=T.color;
-    if(it[2]==='fly'){ el.className='fly'; el.style.setProperty('--y',r(8,70)+'vh'); el.style.animationDuration=r(14,22)+'s'; el.style.animationDelay=(-r(0,20))+'s'; }
-    else if(s==='halloween' && it[0]==='ghost'){ el.className='bob'; el.style.left=r(4,92)+'vw'; el.style.setProperty('--y',r(15,85)+'vh'); el.style.animationDuration=r(5,8)+'s'; el.style.animationDelay=(-r(0,8))+'s'; }
-    else { el.style.left=r(0,96)+'vw'; el.style.setProperty('--sw',r(-24,24)+'px'); el.style.setProperty('--rot',r(-360,360)+'deg'); el.style.animationDuration=r(12,24)+'s'; el.style.animationDelay=(-r(0,24))+'s'; }
+    if(it[2]==='fly'){ el.className='bob'; el.style[i%2?'right':'left']='0px'; el.style.setProperty('--y',r(8,70)+'vh'); el.style.animationDuration=r(14,22)+'s'; el.style.animationDelay=(-r(0,20))+'s'; }
+    else if(s==='halloween' && it[0]==='ghost'){ el.className='bob'; el.style[i%2?'right':'left']=r(0,3)+'px'; el.style.setProperty('--y',r(15,85)+'vh'); el.style.animationDuration=r(5,8)+'s'; el.style.animationDelay=(-r(0,8))+'s'; }
+    else { el.style[i%2?'right':'left']=r(0,3)+'px'; el.style.setProperty('--sw',r(-3,3)+'px'); el.style.setProperty('--rot',r(-360,360)+'deg'); el.style.animationDuration=r(12,24)+'s'; el.style.animationDelay=(-r(0,24))+'s'; }
     fx.appendChild(el);
   }
 })();
