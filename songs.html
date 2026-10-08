@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261008124600"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261008132500"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -926,6 +926,25 @@
   // 公開マスターと照合。元の入力は検索用に残し、確定できる候補だけ補完する。
   function searchMatchKey(value){return norm(value).replace(/[〜～~]/g,'~').replace(/[’‘′`]/g,"'").replace(/[‐‑‒–—―−]/g,'-');}
   function catalogKey(value){return searchMatchKey(value).replace(/[^\p{L}\p{N}]/gu,'');}
+  function matchesQuery(text,query){
+    if(!query) return true;
+    if(searchMatchKey(text).indexOf(searchMatchKey(query))>=0) return true;
+    var compact=catalogKey(query);
+    return !!compact&&catalogKey(text).indexOf(compact)>=0;
+  }
+  // マスターに欠けている読みを補う。表示・照合に使う曲名とは分けて保持。
+  var extraTitleReadings={
+    'Beautiful World':'びゅーてぃふるわーるど',
+    'Bling-Bang-Bang-Born':'ぶりんばんばんぼーん ぶりんぐばんばんぼーん',
+    'Butter-Fly':'ばたふらい',
+    'Los!Los!Los!':'ろすろすろす',
+    'もぎゅっと"love"で接近中！':'もぎゅっとらぶでせっきんちゅう',
+    '愛・おぼえていますか＜デカルチャーエディションsize＞':'あいおぼえていますか',
+    '檄!帝国華撃団':'げきていこくかげきだん',
+    '心壊サミット':'しんかいさみっと',
+    '心做し':'こころなし',
+    '恋は混沌の隷也':'こいはかおすのしもべなり'
+  };
   function prepareSong(s){
     s.originalTitle=s.originalTitle||s.title; s.originalArtist=s.originalArtist||s.artist||'';
     var notes=[];
@@ -989,11 +1008,17 @@
         if(match.t!=='GO!!') s.title=match.t;
         if(match.a!=='超ときめき･宣伝部') s.artist=match.a;
       }
+      if(s.title==='もぎゅっと゛love゛で接近中！'&&catalogKey(s.artist)===catalogKey("μ's")) s.title='もぎゅっと"love"で接近中！';
+      if(match&&match.id===542&&catalogKey(s.originalArtist)===catalogKey('Creepy Nuts')) s.artist='Creepy Nuts';
       // 同名・別アーティストは変更しない。マスターにない曲は元の表記を維持。
       var readings=hits.map(function(m){return m.ty||'';}).filter(Boolean);
       var titleReading=match?(match.ty||''):(readings.length===hits.length&&readings.every(function(r){return r===readings[0];})?readings[0]:'');
       var artistReadings=byArtist[catalogKey(s.artist)]||[];
-      s.titleSearch=[s.title,s.originalTitle,s.title_reading||'',titleReading].join(' ');
+      if(match&&match.y&&artistReadings.indexOf(match.y)<0) artistReadings=artistReadings.concat(match.y);
+      if(s.artist==='浦島坂田船') artistReadings=artistReadings.concat('うらしまさかたせん');
+      var extraReading=extraTitleReadings[s.title]||'';
+      if(extraReading) titleReading=extraReading.split(' ')[0];
+      s.titleSearch=[s.title,s.originalTitle,s.title_reading||'',titleReading,extraReading].join(' ');
       s.artistSearch=[s.artist||'',s.originalArtist,s.artist_reading||''].concat(artistReadings).join(' ');
       s.titleSort=norm(titleReading||s.title_reading||s.title);
       s.artistSort=norm(artistReadings[0]||s.artist_reading||s.artist);
@@ -1027,7 +1052,7 @@
     var hits=songs.filter(function(s){
       var text=mode==='artist'?(s.artistSearch||s.artist):(s.titleSearch||s.title);
       var first=mode==='artist'?(s.artistKana||norm(s.artist).charAt(0)):(s.titleKana||norm(s.title).charAt(0));
-      return (!tag||s.tag===tag)&&(!nq||norm(text).indexOf(nq)>=0)&&(!kana||(kana==='abc'?/^[a-z]/.test(norm(mode==='artist'?s.artist:s.title)):kana.indexOf(first)>=0))&&(!genre||(s.searchGenres||[]).indexOf(genre)>=0||s.tag===genre);
+      return (!tag||s.tag===tag)&&matchesQuery(text,nq)&&(!kana||(kana==='abc'?/^[a-z]/.test(norm(mode==='artist'?s.artist:s.title)):kana.indexOf(first)>=0))&&(!genre||(s.searchGenres||[]).indexOf(genre)>=0||s.tag===genre);
     });
     if(order!=='original') hits.sort(function(a,b){
       if(order==='artist') return collator.compare(a.artistSort||norm(a.artist),b.artistSort||norm(b.artist))||collator.compare(a.titleSort||norm(a.title),b.titleSort||norm(b.title));
