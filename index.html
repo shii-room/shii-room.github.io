@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008133000">
+<meta name="build" content="20261008230349">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -708,8 +708,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     100% { opacity: 0; transform: translate(var(--x), -38px) scale(.7) rotate(var(--r)); } }
 
   /* 季節のきせかえ */
-  .season-fx { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; -webkit-mask-image: linear-gradient(to right, #000 0 var(--season-edge,14px), transparent var(--season-edge,14px) calc(100% - var(--season-edge,14px)), #000 calc(100% - var(--season-edge,14px))); mask-image: linear-gradient(to right, #000 0 var(--season-edge,14px), transparent var(--season-edge,14px) calc(100% - var(--season-edge,14px)), #000 calc(100% - var(--season-edge,14px))); }
-  .season-fx i { position: absolute; top: -40px; display: block; opacity: .85; will-change: transform; animation: sfx-fall linear infinite; }
+  .season-fx { position: fixed; inset: 0; z-index: 8; pointer-events: none; overflow: hidden; }
+  .season-fx i { position: absolute; top: -40px; display: block; opacity: .9; filter: drop-shadow(0 2px 3px rgba(120,60,90,.18)); will-change: transform; animation: sfx-fall linear infinite; }
   .season-fx i svg { display: block; width: 100%; height: 100%; }
   html[data-season="xmas"] .season-fx i svg, html[data-season="newyear"] .season-fx i svg { filter: drop-shadow(0 0 2px rgba(190,110,140,.55)); }
   @keyframes sfx-fall {
@@ -1679,7 +1679,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // ---- 季節のきせかえ ----
   var s=document.documentElement.getAttribute('data-season'); if(!s) return;
   var T={
-    halloween:{label:'HAPPY HALLOWEEN 🎃', bubble:'Trick or<br>Treat！🎃', items:[['pumpkin',20],['ghost',20],['bat',30,'fly'],['pumpkin',16],['ghost',16]], tap:'pumpkin'},
+    halloween:{label:'HAPPY HALLOWEEN 🎃', bubble:'Trick or<br>Treat！🎃', items:[['pumpkin',26],['ghost',24],['bat',34,'fly'],['pumpkin',20],['ghost',20]], tap:'pumpkin'},
     xmas:{label:'MERRY CHRISTMAS 🎄', bubble:'メリー<br>クリスマス！', items:[['snow',14],['snow',10],['snow',18],['kira',12]], tap:'snow', color:'#fff'},
     newyear:{label:'HAPPY NEW YEAR 🎍', bubble:'あけまして<br>おめでとう！', items:[['kira',14],['kira',10],['heart',12]], tap:'kira', color:'#F3C25B'},
     valentine:{label:'HAPPY VALENTINE ♡', bubble:'ハッピー<br>バレンタイン♡', items:[['heart',14],['heart',10],['heart',18]], tap:'heart', color:'#C9557B'},
@@ -1691,12 +1691,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   window.SHII_BUBBLE=T.bubble;
   window.SHII_TAP=T.tap;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var fx=document.getElementById('season-fx'), n=window.innerWidth<600?8:12;
-  function setSeasonEdges(){
-    var content=document.querySelector('.sec'), edge=content?content.getBoundingClientRect().left:20;
-    fx.style.setProperty('--season-edge',Math.max(0,edge-6)+'px');
-  }
-  setSeasonEdges(); window.addEventListener('resize',setSeasonEdges);
+  var fx=document.getElementById('season-fx'), n=window.innerWidth<600?10:14;
 
   function r(a,b){ return a+Math.random()*(b-a); }
   for(var i=0;i<n;i++){
@@ -1704,9 +1699,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     el.innerHTML='<svg viewBox="0 0 '+(it[0]==='bat'?'32 16':'24 24')+'"><use href="#'+it[0]+'"/></svg>';
     el.style.width=(it[0]==='bat'?size*1.6:size)+'px'; el.style.height=(it[0]==='bat'?size*.8:size)+'px';
     if(T.color) el.style.color=T.color;
-    if(it[2]==='fly'){ el.className='bob'; el.style[i%2?'right':'left']='0px'; el.style.setProperty('--y',r(8,70)+'vh'); el.style.animationDuration=r(14,22)+'s'; el.style.animationDelay=(-r(0,20))+'s'; }
-    else if(s==='halloween' && it[0]==='ghost'){ el.className='bob'; el.style[i%2?'right':'left']=r(0,3)+'px'; el.style.setProperty('--y',r(15,85)+'vh'); el.style.animationDuration=r(5,8)+'s'; el.style.animationDelay=(-r(0,8))+'s'; }
-    else { el.style[i%2?'right':'left']=r(0,3)+'px'; el.style.setProperty('--sw',r(-3,3)+'px'); el.style.setProperty('--rot',r(-360,360)+'deg'); el.style.animationDuration=r(12,24)+'s'; el.style.animationDelay=(-r(0,24))+'s'; }
+    if(it[2]==='fly'){ el.className='fly'; el.style.setProperty('--y',r(10,70)+'vh'); el.style.animationDuration=r(16,24)+'s'; el.style.animationDelay=(-r(0,20))+'s'; }
+    else if(s==='halloween' && it[0]==='ghost'){ el.className='bob'; el.style.left=r(4,90)+'vw'; el.style.setProperty('--y',r(15,85)+'vh'); el.style.animationDuration=r(5,8)+'s'; el.style.animationDelay=(-r(0,8))+'s'; }
+    else { el.style.left=r(0,94)+'vw'; el.style.setProperty('--sw',r(-22,22)+'px'); el.style.setProperty('--rot',r(-360,360)+'deg'); el.style.animationDuration=r(12,22)+'s'; el.style.animationDelay=(-r(0,22))+'s'; }
     fx.appendChild(el);
   }
 })();

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261008133000"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261008230349"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -627,8 +627,8 @@
     100% { opacity: 0; transform: translate(var(--x), -38px) scale(.7) rotate(var(--r)); } }
 
   /* 季節のきせかえ */
-  .season-fx { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; -webkit-mask-image: linear-gradient(to right, #000 0 var(--season-edge,14px), transparent var(--season-edge,14px) calc(100% - var(--season-edge,14px)), #000 calc(100% - var(--season-edge,14px))); mask-image: linear-gradient(to right, #000 0 var(--season-edge,14px), transparent var(--season-edge,14px) calc(100% - var(--season-edge,14px)), #000 calc(100% - var(--season-edge,14px))); }
-  .season-fx i { position: absolute; top: -40px; display: block; opacity: .85; will-change: transform; animation: sfx-fall linear infinite; }
+  .season-fx { position: fixed; inset: 0; z-index: 8; pointer-events: none; overflow: hidden; }
+  .season-fx i { position: absolute; top: -40px; display: block; opacity: .78; will-change: transform; animation: sfx-fall linear infinite; }
   .season-fx i svg { display: block; width: 100%; height: 100%; }
   html[data-season="xmas"] .season-fx i svg, html[data-season="newyear"] .season-fx i svg { filter: drop-shadow(0 0 2px rgba(190,110,140,.55)); }
   @keyframes sfx-fall {
