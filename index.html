@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009220622">
+<meta name="build" content="20261009222246">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -378,7 +378,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .watch__play svg { width: 26px; height: 26px; fill: currentColor; stroke: currentColor; stroke-width: 3.2; stroke-linejoin: round; }
   @keyframes watch-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.75); } 70%,100% { box-shadow: 0 0 0 12px rgba(255,255,255,0); } }
   .watch__t { flex: 1; min-width: 0; font-family: var(--maru); font-weight: 700; font-size: 17px; letter-spacing: .1em; line-height: 1.3; text-shadow: 0 1px 0 rgba(180,60,100,.35); }
-  .watch__sub { display: block; margin-top: 2px; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: rgba(255,255,255,.92); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .watch__sub { display: block; margin-top: 2px; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: rgba(255,255,255,.92); white-space: nowrap; overflow: hidden; }
+  .watch__sub-text { display: inline-block; white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .watch__sub { white-space: normal; overflow: visible; } .watch__sub-text { white-space: normal; overflow-wrap: anywhere; } }
   .watch__go { flex: none; display: grid; place-items: center; width: 30px; height: 30px; margin-right: 14px; border-radius: 50%; background: rgba(255,255,255,.3); font-size: 22px; line-height: 1; padding-bottom: 3px; }
   @media (prefers-reduced-motion: reduce) { .watch__play { animation: none; } }
   .hero__btns { display: flex; flex-wrap: wrap; gap: 0 18px; }
@@ -2184,11 +2186,46 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 </script>
 <script>
 (function(){
-  // 配信ボタンの下の小さい文字に、今日の予定を出す
+  // Long stream subtitles move slowly, with a reading pause at both ends.
+  var motion=matchMedia('(prefers-reduced-motion: reduce)'), rows=[];
+  document.querySelectorAll('.watch__sub').forEach(function(el){
+    var text=document.createElement('span'); text.className='watch__sub-text'; text.textContent=el.textContent;
+    el.replaceChildren(text); rows.push({el:el,text:text,animation:null});
+  });
+  function pause(row){
+    if(!row.animation) return;
+    if(row.el.closest('.watch').matches(':hover, :focus-within')) row.animation.pause(); else row.animation.play();
+  }
+  function refresh(){
+    rows.forEach(function(row){
+      if(row.animation){ row.animation.cancel(); row.animation=null; }
+      if(motion.matches||!row.el.clientWidth) return;
+      var distance=row.text.scrollWidth-row.el.clientWidth;
+      if(distance<=1) return;
+      var travel=distance/24, duration=travel*2+4;
+      row.animation=row.text.animate([
+        {transform:'translateX(0)',offset:0},
+        {transform:'translateX(0)',offset:2/duration},
+        {transform:'translateX(-'+distance+'px)',offset:(2+travel)/duration},
+        {transform:'translateX(-'+distance+'px)',offset:(4+travel)/duration},
+        {transform:'translateX(0)',offset:1}
+      ],{duration:duration*1000,iterations:Infinity,easing:'linear'});
+      pause(row);
+    });
+  }
+  rows.forEach(function(row){
+    var link=row.el.closest('.watch');
+    ['mouseenter','mouseleave','focusin','focusout'].forEach(function(name){ link.addEventListener(name,function(){ requestAnimationFrame(function(){ pause(row); }); }); });
+  });
   function set(v){ if(!v) return; var t=v.off?'今日はおやすみ 💤 また明日ね':'今日は '+(v.time||'')+' から'+(v.what?'・'+v.what:'')+' ♪';
-    document.querySelectorAll('.watch__sub').forEach(function(e){ e.textContent=t; }); }
+    rows.forEach(function(row){ row.text.textContent=t; }); refresh(); }
   document.addEventListener('shii:today',function(e){ set(e.detail); });
-  if(window.shiiToday) set(window.shiiToday);
+  if(window.shiiToday) set(window.shiiToday); else refresh();
+  if(document.fonts) document.fonts.ready.then(refresh);
+  var observer=new ResizeObserver(refresh); rows.forEach(function(row){ observer.observe(row.el); });
+  motion.addEventListener('change',refresh);
+  new MutationObserver(refresh).observe(document.getElementById('menu'),{attributes:true,attributeFilter:['class']});
+
 })();
 </script>
 </body>
