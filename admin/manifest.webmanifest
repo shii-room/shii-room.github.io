@@ -1,0 +1,13 @@
+{
+  "name": "しぃ管理",
+  "short_name": "しぃ管理",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F6E4E9",
+  "theme_color": "#F6E4E9",
+  "icons": [
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -3,13 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261007140722">
+<meta name="build" content="20261009081812">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="しぃ管理">
-<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>しぃ管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Hachi+Maru+Pop&family=Mochiy+Pop+One&family=Yusei+Magic&family=Kiwi+Maru:wght@500&family=Potta+One&display=swap" rel="stylesheet">
 <style>
   :root {
     --sky-top:#F6E4E9; --sky:#ECCDD6; --lilac:#E2B9C6; --peri:#E07496;
@@ -78,6 +83,10 @@
   .sheet__in img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 4px 16px rgba(94,53,64,.2)}
   .sheet__hint{margin-top:10px;font-size:12px;color:var(--sub);text-align:center}
   .sheet .row button{flex:1}
+  .sheet__ttl{font-family:var(--maru);font-weight:700;font-size:17px;color:var(--peri);margin-bottom:10px}
+  .sheet__lbl{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+  .sheet textarea{font-size:16px}
+  .card-btn{height:36px;padding:0 12px;font-size:13px;background:var(--peri);color:var(--white);border-color:var(--peri)}
 
   /* 更新のお知らせ */
   .upd { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 90; transform: translate(-50%, 160%);
@@ -94,6 +103,71 @@
   .hint{margin-top:8px;font-size:12px;color:var(--sub);line-height:1.6}
   .tabs{flex-wrap:wrap}
   .tab{flex:1 1 calc(50% - 8px)}
+  .opt{font-family:var(--sans);font-weight:400;font-size:11px;color:var(--sub);margin-left:6px}
+  input[type=date]{-webkit-appearance:none;appearance:none}
+  .sch{display:grid;gap:8px;margin-top:18px}
+  .schRow{display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:start;padding:10px;border-radius:12px;background:rgba(255,255,255,.55);border:1.5px solid var(--rule)}
+  .schDay{display:grid;place-items:center;height:52px;border-radius:10px;background:var(--white);font-family:var(--maru);font-weight:700;font-size:15px;line-height:1.15;text-align:center;color:var(--ink)}
+  .schDay small{display:block;font-size:11px;color:var(--sub)}
+  .schDay.sat{color:#5B7FD6}.schDay.sun{color:#D9476E}
+  .schF{display:grid;gap:6px}
+  .schF input[type=text]{height:40px;font-size:15px}
+  .schTop{display:flex;gap:6px;align-items:center}
+  .schTop input{flex:1}
+  .schOff{flex:none;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--sub);margin:0;font-family:var(--sans);letter-spacing:0}
+  .schOff input{width:18px;height:18px;margin:0;accent-color:var(--peri)}
+  .schRow.is-off .schF input[type=text]{opacity:.4}
+  .schOut{margin-top:20px}
+  .schNow{margin-top:20px;padding:14px 16px;border-radius:14px;background:var(--white);border:1.5px solid var(--rule)}
+  .schNow__lbl{font-size:12px;font-weight:700;color:var(--sub)}
+  .schNow__val{margin-top:2px;font-family:var(--maru);font-weight:700;font-size:16px}
+  .schNow__val small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--sub)}
+  .schNow.is-empty .schNow__val{color:var(--sub);font-size:14px}
+  .schNow__del{margin-top:12px;width:100%;height:44px;border-radius:999px;border:1.5px solid #E58AA5;background:#FFF2F6;color:#B3264A;font-size:14px}
+  .wallFile{height:auto;padding:12px;font-size:14px}
+  .acc{margin-top:12px;border-radius:18px;background:rgba(255,255,255,.55);border:1.5px solid var(--rule);overflow:hidden}
+  .acc[open]{background:rgba(255,255,255,.75);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
+  .acc summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 46px 10px 14px;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
+  .acc summary::-webkit-details-marker{display:none}
+  .acc summary::after{content:"";position:absolute;right:20px;top:50%;width:9px;height:9px;border-right:2.5px solid var(--peri);border-bottom:2.5px solid var(--peri);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+  .acc[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+  .acc__i{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#fff;font-size:18px}
+  .acc__t{display:block;font-family:var(--maru);font-weight:700;font-size:15px;letter-spacing:.06em}
+  .acc__v{display:block;margin-top:2px;font-family:var(--sans);font-weight:400;font-size:12px;letter-spacing:0;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}
+  .acc__b{padding:4px 16px 18px}
+  .acc__sep{height:1px;margin:18px 0 16px;background:var(--rule)}
+  .seg{display:flex;flex-wrap:wrap;gap:8px}
+  .seg button{flex:1 1 auto;height:42px;padding:0 14px;border-radius:999px;font-size:13px;background:rgba(255,255,255,.6);color:var(--ink);border-color:var(--rule)}
+  .seg button[aria-pressed="true"]{background:var(--white);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
+  .seg--color button{background:var(--c)}
+  .seg--color button[aria-pressed="true"]{background:var(--c)}
+  .wallPos{margin-top:14px}
+  .wallPos .sub{font-size:12px;color:var(--sub)}
+  .wallPos input{width:100%;height:auto;padding:0;border:0;background:none;accent-color:var(--peri)}
+  .wallPrev{display:grid;place-items:center;margin-top:10px}
+  .wallPrev--top{margin-top:18px}
+  .wallPrev--top canvas{width:min(52%,210px)}
+  .wallMini{position:fixed;right:10px;top:calc(10px + env(safe-area-inset-top,0px));z-index:15;width:106px;height:auto;padding:0;border:3px solid #fff;border-radius:14px;overflow:hidden;background:#fff;
+    box-shadow:0 6px 18px rgba(94,53,64,.35);opacity:0;visibility:hidden;transform:translateY(-12px) scale(.9);transition:opacity .2s,transform .25s,visibility .2s}
+  .wallMini.is-show{opacity:1;visibility:visible;transform:none}
+  .wallMini canvas{display:block;width:100%;height:auto}
+  .wallMini span{position:absolute;left:0;right:0;bottom:0;padding:3px 0;background:rgba(240,98,143,.9);color:#fff;font-size:11px;font-weight:700;text-align:center;letter-spacing:.04em}
+  .wallRand{display:block;margin:12px auto 0;height:40px;padding:0 18px;border-radius:999px;font-size:13px;background:var(--white);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
+  .swatch{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .swatch button{height:auto;padding:6px 0 4px;border-radius:12px;font-size:10px;font-weight:700;background:rgba(255,255,255,.55);border-color:var(--rule);display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:0}
+  .swatch button i{width:30px;height:30px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 2px #fff}
+  .swatch button[aria-pressed="true"]{background:var(--white);border-color:var(--peri);box-shadow:2px 2px 0 var(--peri)}
+  .segIco button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1 1 30%;height:64px;font-size:12px}
+  .segIco svg{width:26px;height:26px;fill:#fff;stroke:var(--peri);stroke-width:1.4}
+  .segIco svg .fg{fill:#F7B6CB;stroke:none}
+  .segIco svg .ln{fill:none}
+  .fontLbl{display:block;margin-top:14px;font-size:13px;font-weight:700}
+  .fontSeg button{flex:1 1 30%;height:44px;font-size:14px;font-weight:400;letter-spacing:0}
+  .linkBtn{display:inline;height:auto;padding:0;margin-left:6px;border:0;background:none;font-size:12px;color:var(--peri);text-decoration:underline}
+  .wallPrev canvas{width:min(62%,240px);height:auto;border-radius:22px;box-shadow:0 8px 22px rgba(94,53,64,.25);background:#fff}
+  .schSync{display:flex;align-items:center;gap:8px;margin:18px 0 0;font-size:13px;font-weight:700}
+  .schSync input{width:20px;height:20px;margin:0;accent-color:var(--peri)}
+  .schOut img{display:block;width:100%;border-radius:12px;box-shadow:0 6px 18px rgba(94,53,64,.2)}
   .song{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .song b{display:block;font-weight:700}
   .song small{display:block;color:var(--sub);font-size:12px}
@@ -118,6 +192,8 @@
       <button class="tab" id="tabMsg" role="tab" aria-selected="false" type="button">メッセージ<b id="msgCount"></b></button>
       <button class="tab" id="tabPost" role="tab" aria-selected="false" type="button">X のポスト</button>
       <button class="tab" id="tabSong" role="tab" aria-selected="false" type="button">歌リスト</button>
+      <button class="tab" id="tabSch" role="tab" aria-selected="false" type="button">予定表画像</button>
+      <button class="tab" id="tabWall" role="tab" aria-selected="false" type="button">ごほうび壁紙</button>
     </div>
 
     <div id="reqView">
@@ -142,6 +218,138 @@
       <h2 style="margin-top:20px">届いたメッセージ（新しい順）</h2>
       <ul id="mList"><li class="empty">読み込み中…</li></ul>
       <button class="reload" id="mReload" type="button">最新にする</button>
+    </div>
+
+    <div id="schView" hidden>
+      <div class="schNow" id="schNow">
+        <p class="schNow__lbl">いまHPに載っている予定</p>
+        <p class="schNow__val" id="schNowVal">確認中…</p>
+        <button class="schNow__del" id="schClear" type="button" hidden>🗑 HPから予定を消す</button>
+      </div>
+      <div class="card">
+        <label for="schStart">はじまりの日</label>
+        <input id="schStart" type="date">
+        <p class="hint">選んだ日から7日分の予定表になります。</p>
+      </div>
+      <div class="sch" id="schRows"></div>
+      <div class="card">
+        <label for="schNote">ひとこと<small class="opt">なしでもOK</small></label>
+        <input id="schNote" type="text" maxlength="40" placeholder="例）今週は歌枠多めだよ🎤">
+        <label class="fontLbl">文字のフォント</label><div class="seg fontSeg"></div>
+      </div>
+      <label class="schSync"><input type="checkbox" id="schSync" checked>HPの「Schedule」にも反映する</label>
+      <div class="row"><button class="primary" id="schMake" type="button">予定表の画像をつくる</button></div>
+      <p class="msg" id="schMsg"></p>
+      <div class="schOut" id="schOut" hidden>
+        <img id="schImg" alt="予定表の画像">
+        <div class="row"><button class="ghost" id="schAgain" type="button">直す</button><button class="primary" id="schShare" type="button">保存・Xに投稿</button></div>
+        <p class="hint">画像を長押ししても保存できます。入力した内容はこのスマホに残ります。</p>
+      </div>
+    </div>
+
+    <div id="wallView" hidden>
+      <div class="schNow" id="wallNow">
+        <p class="schNow__lbl">いまのごほうび壁紙（その月にスタンプ20個たまった人に配られる）</p>
+        <p class="schNow__val" id="wallNowVal">確認中…</p>
+        <button class="schNow__del" id="wallClear" type="button" hidden>標準の壁紙に戻す</button>
+      </div>
+      <div class="wallPrev wallPrev--top" id="wallTop"><canvas id="wallCv" width="1170" height="2532"></canvas></div>
+      <button class="wallMini" id="wallMini" type="button" aria-label="見本を大きく見る"><canvas id="wallMiniCv" width="320" height="692"></canvas><span>見本 ▲</span></button>
+      <button class="wallRand" id="wallRand" type="button">🎲 おまかせで組み合わせる</button>
+
+      <p class="hint" style="text-align:center;margin-top:18px">タップで開きます・変えるとすぐ見本に反映</p>
+      <details class="acc" name="wallAcc" data-acc="ill">
+        <summary><span class="acc__i" aria-hidden="true">🎀</span><span class="acc__t">イラスト・かざり方<small class="acc__v" id="accV_ill"></small></span></summary>
+        <div class="acc__b">
+        <label for="wallFile">イラスト</label>
+        <input id="wallFile" type="file" accept="image/*" class="wallFile">
+        <p class="hint">選ばない時は、キャンディを持ったしぃで作れます。<button class="linkBtn" id="wallReset" type="button">標準のイラストに戻す</button></p>
+        <div class="acc__sep"></div>
+        <label>かざり方</label>
+        <div class="seg segIco" id="wallMode">
+          <button type="button" data-v="standard"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="7"/><path d="M12 4v13" class="ln"/><circle cx="12" cy="7" r="3" class="fg"/></svg>ふつう</button>
+          <button type="button" data-v="card"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="3"/><circle cx="12" cy="11" r="3.5" class="fg"/></svg>カード</button>
+          <button type="button" data-v="polaroid"><svg viewBox="0 0 24 24"><g transform="rotate(-6 12 12)"><rect x="5" y="3" width="14" height="18" rx="1"/><rect x="7" y="5" width="10" height="10" class="fg"/></g></svg>チェキ風</button>
+          <button type="button" data-v="circle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5.5" class="fg"/></svg>まる</button>
+          <button type="button" data-v="heart"><svg viewBox="0 0 24 24"><path d="M12 20s-8-5-8-10.5A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 8 2.5C20 15 12 20 12 20z"/><path d="M12 16.5s-4.7-3-4.7-6.3A2.5 2.5 0 0 1 12 9.2a2.5 2.5 0 0 1 4.7 1c0 3.3-4.7 6.3-4.7 6.3z" class="fg"/></svg>ハート</button>
+          <button type="button" data-v="full"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2" class="fg"/></svg>全面</button>
+        </div>
+        <p class="hint" id="wallModeHint"></p>
+        <div class="wallPos" id="wallPosBox">
+          <label for="wallPos" class="sub">イラストの位置（上〜下）</label>
+          <input id="wallPos" type="range" min="0" max="100" value="45">
+          <label for="wallZoom" class="sub">イラストの大きさ</label>
+          <input id="wallZoom" type="range" min="70" max="130" value="100">
+        </div>
+        </div>
+      </details>
+      <details class="acc" name="wallAcc" data-acc="color">
+        <summary><span class="acc__i" aria-hidden="true">🎨</span><span class="acc__t">色・背景のもよう<small class="acc__v" id="accV_color"></small></span></summary>
+        <div class="acc__b">
+        <label>色</label>
+        <div class="swatch" id="wallColor"></div>
+        <div class="acc__sep"></div>
+        <label>背景のもよう</label>
+        <div class="seg" id="wallPattern">
+          <button type="button" data-v="dot">水玉</button>
+          <button type="button" data-v="heart">ハート柄</button>
+          <button type="button" data-v="gingham">ギンガム</button>
+          <button type="button" data-v="stripe">ストライプ</button>
+          <button type="button" data-v="star">星空</button>
+          <button type="button" data-v="plain">なし</button>
+        </div>
+        </div>
+      </details>
+      <details class="acc" name="wallAcc" data-acc="deco">
+        <summary><span class="acc__i" aria-hidden="true">✨</span><span class="acc__t">かざり・名前ロゴ<small class="acc__v" id="accV_deco"></small></span></summary>
+        <div class="acc__b">
+        <label>まわりのかざり</label>
+        <div class="seg" id="wallDeco">
+          <button type="button" data-v="heart">ハート</button>
+          <button type="button" data-v="sparkle">キラキラ</button>
+          <button type="button" data-v="sweets">お菓子</button>
+          <button type="button" data-v="ribbon">リボン</button>
+          <button type="button" data-v="music">音符</button>
+          <button type="button" data-v="none">なし</button>
+        </div>
+        <label class="schSync" style="margin-top:14px"><input type="checkbox" id="wallIcing">画面の上にクリームのたれ（アイシング）</label>
+        <p class="hint" style="margin-top:4px">壁紙のいちばん上に、クリームがとろ〜りたれたようなかざりが付きます（全面モードでは付きません）</p>
+        <div class="acc__sep"></div>
+        <label>名前ロゴ</label>
+        <div class="seg" id="wallLogo">
+          <button type="button" data-v="top">上</button>
+          <button type="button" data-v="bottom">下</button>
+          <button type="button" data-v="none">なし</button>
+        </div>
+        </div>
+      </details>
+      <details class="acc" name="wallAcc" data-acc="cal">
+        <summary><span class="acc__i" aria-hidden="true">📅</span><span class="acc__t">カレンダー<small class="acc__v" id="accV_cal"></small></span></summary>
+        <div class="acc__b">
+        <div class="seg" id="wallCal" style="margin-top:4px">
+          <button type="button" data-v="on">あり</button>
+          <button type="button" data-v="none">なし</button>
+        </div>
+        <label for="wallCalMarks" class="sub" style="margin-top:12px">♡をつける日<small class="opt">なしでもOK・数字を「,」で区切る</small></label>
+        <input id="wallCalMarks" type="text" inputmode="numeric" maxlength="60" placeholder="例）3, 15, 24">
+        <p class="hint" id="wallCalHint">日曜・祝日はピンク、土曜は水色になります。記念日や特別な配信の日に♡をつけられます。</p>
+        </div>
+      </details>
+      <details class="acc" name="wallAcc" data-acc="msg">
+        <summary><span class="acc__i" aria-hidden="true">💬</span><span class="acc__t">ひとこと・フォント<small class="acc__v" id="accV_msg"></small></span></summary>
+        <div class="acc__b">
+        <label for="wallMsg">ひとこと<small class="opt">なしでもOK・2行まで</small></label>
+        <textarea id="wallMsg" rows="2" maxlength="40" placeholder="いつも来てくれてありがとう♡"></textarea>
+        <div class="seg" id="wallMsgStyle" style="margin-top:10px">
+          <button type="button" data-v="plain">ふつう</button>
+          <button type="button" data-v="bubble">ふきだし</button>
+          <button type="button" data-v="ribbon">リボン帯</button>
+        </div>
+        <label class="fontLbl">文字のフォント</label><div class="seg fontSeg"></div>
+        </div>
+      </details>
+      <div class="row"><button class="ghost" id="wallSave" type="button">スマホに保存</button><button class="primary" id="wallSet" type="button">ごほうびに設定</button></div>
+      <p class="msg" id="wallMsgOut"></p>
     </div>
 
     <div id="songView" hidden>
@@ -179,17 +387,41 @@
 </main>
 <div class="sheet" id="sheet" hidden>
   <div class="sheet__in">
-    <img id="sheetImg" alt="メッセージの画像">
-    <p class="sheet__hint">画像を長押しして保存もできます</p>
+    <p class="sheet__ttl" id="sheetTtl">お返事してXに投稿</p>
+    <label for="replyTxt" class="sheet__lbl">しぃからのお返事<small class="opt">なしでもOK</small></label>
+    <textarea id="replyTxt" rows="3" maxlength="140" placeholder="例）ありがとう〜！次の歌枠で歌うね🎤"></textarea>
+    <label class="fontLbl">文字のフォント</label><div class="seg fontSeg"></div>
+    <p class="sheet__lbl" style="margin-top:12px">投稿される画像</p>
+    <img id="sheetImg" alt="お返事の画像">
+    <label for="postTxt" class="sheet__lbl" style="margin-top:12px">投稿の文章</label>
+    <textarea id="postTxt" rows="2" maxlength="200"></textarea>
     <div class="row">
       <button class="ghost" id="sheetClose" type="button">閉じる</button>
-      <button class="primary" id="sheetShare" type="button">保存・シェア</button>
+      <button class="primary" id="sheetShare" type="button">Xに投稿する</button>
     </div>
+    <p class="sheet__hint">「Xに投稿する」→ 出てきた一覧から X を選ぶと、画像つきで投稿画面が開きます。<br>X が出ない時は、画像を長押しで保存してから X で投稿してね。</p>
   </div>
 </div>
 <script>
 (function(){
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', SBKEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
+  // ---- 画像に使うフォント（壁紙・予定表・お返事画像で共通。選んだものはこのスマホに残る） ----
+  var FONTS={ maru:{n:'まるゴシック',f:'"Zen Maru Gothic"'}, hachi:{n:'はちまるポップ',f:'"Hachi Maru Pop"'}, mochiy:{n:'もっちりポップ',f:'"Mochiy Pop One"'},
+              yusei:{n:'ゆせいマジック',f:'"Yusei Magic"'}, kiwi:{n:'キウイ丸',f:'"Kiwi Maru"'}, potta:{n:'ポッタ',f:'"Potta One"'} };
+  var fontKey='maru'; try{ var fk=localStorage.getItem('shii_font'); if(FONTS[fk]) fontKey=fk; }catch(e){}
+  var fontListeners=[];
+  function FF(){ return FONTS[fontKey].f+',"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif'; }
+  function fontReady(){ if(!document.fonts||!document.fonts.load) return Promise.resolve(); return Promise.all([document.fonts.load('400 40px '+FONTS[fontKey].f,'あア亜Aa1♡'),document.fonts.load('700 40px '+FONTS[fontKey].f,'あア亜Aa1♡')]).catch(function(){}); }
+  function initFontSegs(){
+    document.querySelectorAll('.fontSeg').forEach(function(box){
+      box.innerHTML='';
+      Object.keys(FONTS).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.textContent=FONTS[k].n; b.style.fontFamily=FONTS[k].f+',sans-serif'; b.setAttribute('aria-pressed',k===fontKey?'true':'false');
+        b.onclick=function(){ fontKey=k; try{ localStorage.setItem('shii_font',k); }catch(e){}
+          document.querySelectorAll('.fontSeg button').forEach(function(c){ c.setAttribute('aria-pressed',c.dataset.v===k?'true':'false'); });
+          fontReady().then(function(){ fontListeners.forEach(function(fn){ fn(); }); }); };
+        box.appendChild(b); });
+    });
+  }
   var PASS='shii_admin_pass';
   var $=function(id){return document.getElementById(id);};
   var posts=[], req={items:[],open:true};
@@ -278,7 +510,9 @@
         rcall('delete',it.id).then(function(){ req.items=req.items.filter(function(x){return x.id!==it.id;}); renderReq(); })
           .catch(function(e){ d.disabled=false; fail(e,$('reqMsg')); });
       };
-      acts.appendChild(s); acts.appendChild(d);
+      var x=document.createElement('button'); x.className='card-btn'; x.type='button'; x.textContent='返信してXへ';
+      x.onclick=function(){ openReply({kind:'req',item:it}); };
+      acts.appendChild(x); acts.appendChild(s); acts.appendChild(d);
       li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
     });
   }
@@ -295,7 +529,7 @@
   $('reqReload').onclick=loadReq;
 
   function showTab(name){
-    [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView'],['song','tabSong','songView']].forEach(function(x){
+    [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView'],['song','tabSong','songView'],['sch','tabSch','schView'],['wall','tabWall','wallView']].forEach(function(x){
       var on=x[0]===name; $(x[1]).setAttribute('aria-selected',on?'true':'false'); $(x[2]).hidden=!on;
     });
   }
@@ -303,6 +537,406 @@
   $('tabMsg').onclick=function(){ showTab('msg'); };
   $('tabPost').onclick=function(){ showTab('post'); };
   $('tabSong').onclick=function(){ showTab('song'); };
+  $('tabSch').onclick=function(){ showTab('sch'); };
+  $('tabWall').onclick=function(){ showTab('wall'); };
+
+  // ---- ごほうび壁紙メーカー ----
+  (function(){
+    var cv=$('wallCv'), x=cv.getContext('2d'), W=1170, H=2532;
+    var KEY='shii_wall2', st={mode:'standard',color:'pink',pattern:'dot',deco:'heart',icing:true,logo:'top',msg:'',msgStyle:'plain',pos:45,zoom:100,cal:'on',calMarks:''};
+    try{ var s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s) for(var k in s) st[k]=s[k]; }catch(e){}
+    if(st.cal!=='none') st.cal='on';
+    function saveSt(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
+    // 色：[上, 中, 下, 文字・アクセント, もよう, かざり1, かざり2, アイシング]
+    var THEME={
+      pink:  {n:'いちご',   c:['#FBE7EE','#F4CFDC','#EBB7CA','#C9557B','rgba(255,255,255,.55)','#FF8FB1','#FFFFFF','#FC9BBC']},
+      sakura:{n:'さくら',   c:['#FFF3F6','#FBE0E8','#F6C9D7','#D06A8E','rgba(255,255,255,.7)','#FFB3C9','#FFFFFF','#FFC2D4']},
+      peach: {n:'ピーチ',   c:['#FFF1EA','#FFD9C9','#FBC0AA','#D2694B','rgba(255,255,255,.6)','#FF9E86','#FFFFFF','#FFB59C']},
+      lemon: {n:'レモン',   c:['#FFFBEA','#FFF0BF','#FFE199','#C98A1E','rgba(255,255,255,.65)','#FFC94D','#FFFFFF','#FFE07A']},
+      mint:  {n:'ミント',   c:['#EEF9F4','#D3EFE4','#B7E3D2','#3F8C72','rgba(255,255,255,.6)','#7FD6B6','#FFFFFF','#A6E6CF']},
+      soda:  {n:'ソーダ',   c:['#EEF8FF','#D3ECFB','#B5DCF5','#3A7FB0','rgba(255,255,255,.6)','#7CC6F2','#FFFFFF','#A9DBF7']},
+      lav:   {n:'ラベンダー',c:['#F3EDFB','#E2D6F3','#CDBCE8','#7A5A9E','rgba(255,255,255,.55)','#B79BE0','#FFFFFF','#CDB6F0']},
+      choco: {n:'チョコ',   c:['#F7EEE8','#E6D0C2','#CFAE99','#7A4A35','rgba(255,255,255,.45)','#F08DB0','#FFFFFF','#8B5A44']},
+      milk:  {n:'ミルク',   c:['#FFFFFF','#FFF7F9','#FCEBF1','#C9557B','rgba(240,141,176,.18)','#FFB3CC','#F7D774','#FFFFFF']},
+      night: {n:'夜空',     c:['#2B2350','#3D3466','#5B4A8A','#FFD6E6','rgba(255,255,255,.3)','#FFD27A','#FFB3CC','#FFC2D9']}
+    };
+    var imgs={}, userImg=null;
+    function load(src){ return new Promise(function(ok){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=function(){ok(null);}; i.src=src; }); }
+    var ready=Promise.all([load('../img/menu-candy-transparent.webp'),load('../img/logo.webp')]).then(function(r){ imgs.def=r[0]; imgs.logo=r[1]; });
+    // ---- かたち ----
+    function rr(X,Y,w,h,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
+    function heartPath(cx,cy,s){ x.beginPath(); x.moveTo(cx,cy+s*.42); x.bezierCurveTo(cx-s*.62,cy-s*.02,cx-s*.55,cy-s*.58,cx,cy-s*.3); x.bezierCurveTo(cx+s*.55,cy-s*.58,cx+s*.62,cy-s*.02,cx,cy+s*.42); x.closePath(); }
+    function heart(cx,cy,s,col){ x.fillStyle=col; heartPath(cx,cy,s); x.fill(); }
+    function sparkle(cx,cy,s,col){ x.fillStyle=col; x.beginPath(); x.moveTo(cx,cy-s); x.quadraticCurveTo(cx+s*.12,cy-s*.12,cx+s,cy); x.quadraticCurveTo(cx+s*.12,cy+s*.12,cx,cy+s); x.quadraticCurveTo(cx-s*.12,cy+s*.12,cx-s,cy); x.quadraticCurveTo(cx-s*.12,cy-s*.12,cx,cy-s); x.fill(); }
+    function star(cx,cy,s,col){ x.fillStyle=col; x.beginPath(); for(var i=0;i<10;i++){ var r=i%2?s*.45:s, a=-Math.PI/2+i*Math.PI/5; x.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a)); } x.closePath(); x.fill(); }
+    function note(cx,cy,s,col){ x.fillStyle=col; x.save(); x.translate(cx,cy); x.rotate(-.35); x.beginPath(); x.ellipse(-s*.25,s*.35,s*.32,s*.24,0,0,7); x.fill(); x.restore(); x.fillRect(cx-s*.02,cy-s*.7,s*.12,s*1.05); x.beginPath(); x.moveTo(cx+s*.1,cy-s*.7); x.quadraticCurveTo(cx+s*.6,cy-s*.5,cx+s*.45,cy-s*.1); x.quadraticCurveTo(cx+s*.4,cy-s*.4,cx+s*.1,cy-s*.42); x.fill(); }
+    function bow(cx,cy,s,col){ x.fillStyle=col; x.beginPath(); x.moveTo(cx,cy); x.bezierCurveTo(cx-s*.4,cy-s*.55,cx-s,cy-s*.45,cx-s*.9,cy); x.bezierCurveTo(cx-s,cy+s*.45,cx-s*.4,cy+s*.55,cx,cy); x.bezierCurveTo(cx+s*.4,cy-s*.55,cx+s,cy-s*.45,cx+s*.9,cy); x.bezierCurveTo(cx+s,cy+s*.45,cx+s*.4,cy+s*.55,cx,cy); x.fill(); x.beginPath(); x.arc(cx,cy,s*.2,0,7); x.fill(); x.beginPath(); x.moveTo(cx-s*.1,cy+s*.1); x.lineTo(cx-s*.4,cy+s*.85); x.lineTo(cx-s*.15,cy+s*.75); x.lineTo(cx,cy+s*.1); x.moveTo(cx+s*.1,cy+s*.1); x.lineTo(cx+s*.4,cy+s*.85); x.lineTo(cx+s*.15,cy+s*.75); x.lineTo(cx,cy+s*.1); x.fill(); }
+    function candy(cx,cy,s,col){ x.fillStyle=col; x.beginPath(); x.moveTo(cx-s*.45,cy); x.lineTo(cx-s,cy-s*.4); x.lineTo(cx-s,cy+s*.4); x.closePath(); x.moveTo(cx+s*.45,cy); x.lineTo(cx+s,cy-s*.4); x.lineTo(cx+s,cy+s*.4); x.closePath(); x.fill(); x.beginPath(); x.arc(cx,cy,s*.5,0,7); x.fill(); x.strokeStyle='rgba(255,255,255,.8)'; x.lineWidth=s*.1; x.beginPath(); x.arc(cx,cy,s*.28,.4,2.6); x.stroke(); }
+    function lolli(cx,cy,s,col){ x.fillStyle='#fff'; x.fillRect(cx-s*.06,cy,s*.12,s*1.1); x.fillStyle=col; x.beginPath(); x.arc(cx,cy,s*.55,0,7); x.fill(); x.strokeStyle='rgba(255,255,255,.85)'; x.lineWidth=s*.09; x.beginPath(); for(var t=0;t<11;t+=.2){ var r=s*.05*t; x.lineTo(cx+r*Math.cos(t),cy+r*Math.sin(t)); } x.stroke(); }
+    function shapeFor(set,i){
+      return {heart:[heart,heart,sparkle],sparkle:[sparkle,star,sparkle],sweets:[lolli,candy,heart],ribbon:[bow,heart,bow],music:[note,note,sparkle]}[set][i%3];
+    }
+    // ---- 背景 ----
+    function bg(T){
+      var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,T[0]); g.addColorStop(.55,T[1]); g.addColorStop(1,T[2]); x.fillStyle=g; x.fillRect(0,0,W,H);
+      x.fillStyle=T[4]; x.strokeStyle=T[4];
+      if(st.pattern==='dot'){ for(var y=20;y<H;y+=46) for(var xx=20+(y/46%2)*23;xx<W;xx+=46){ x.beginPath(); x.arc(xx,y,3.4,0,7); x.fill(); } }
+      else if(st.pattern==='heart'){ for(var y2=40;y2<H;y2+=110) for(var x2=40+(Math.round(y2/110)%2)*55;x2<W;x2+=110) heart(x2,y2,30,T[4]); }
+      else if(st.pattern==='gingham'){ for(var gx=0;gx<W;gx+=90) x.fillRect(gx,0,45,H); for(var gy=0;gy<H;gy+=90) x.fillRect(0,gy,W,45); }
+      else if(st.pattern==='stripe'){ x.save(); x.translate(W/2,H/2); x.rotate(-Math.PI/8); for(var sx=-H;sx<H;sx+=80) x.fillRect(sx,-H,34,H*2); x.restore(); }
+      else if(st.pattern==='star'){ var R=mulberry(7); for(var i=0;i<140;i++){ var px=R()*W, py=R()*H, sz=4+R()*14; i%4?(x.beginPath(),x.arc(px,py,sz*.3,0,7),x.fill()):sparkle(px,py,sz,T[4]); } }
+    }
+    function mulberry(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+    function icing(col,acc){
+      // 画面の上から、クリームがとろ〜りたれているかざり（大きめ・影つきで分かりやすく）
+      var base=150, drips=[[70,90],[230,170],[400,70],[560,210],[720,110],[880,180],[1050,95]], dw=30;
+      function path(){ x.beginPath(); x.moveTo(0,0); x.lineTo(W,0); x.lineTo(W,base);
+        var pts=drips.slice().reverse(), px=W;
+        pts.forEach(function(d){ var c=d[0], L=d[1];
+          x.quadraticCurveTo((px+c+dw)/2,base+26,c+dw,base);
+          x.lineTo(c+dw,base+L-dw); x.arc(c,base+L-dw,dw,0,Math.PI); x.lineTo(c-dw,base); px=c-dw; });
+        x.quadraticCurveTo(px/2,base+26,0,base); x.closePath(); }
+      x.save(); x.shadowColor='rgba(120,50,75,.28)'; x.shadowBlur=22; x.shadowOffsetY=10; x.fillStyle=col; path(); x.fill(); x.restore();
+      x.save(); path(); x.clip();
+      var g=x.createLinearGradient(0,0,0,base+220); g.addColorStop(0,'rgba(255,255,255,.35)'); g.addColorStop(.5,'rgba(255,255,255,0)'); g.addColorStop(1,'rgba(0,0,0,.06)'); x.fillStyle=g; x.fillRect(0,0,W,base+240);
+      x.restore();
+      x.fillStyle='rgba(255,255,255,.7)'; drips.forEach(function(d){ x.beginPath(); x.ellipse(d[0]-10,base+d[1]-dw-6,7,13,-.2,0,7); x.fill(); });
+      
+      var R=mulberry(3), cols=['#FFFFFF','#FFE68A','#9FE3C7','#C7B2FF','#8FD3FF',acc];
+      for(var i=0;i<48;i++){ var sx=R()*W, sy=18+R()*(base-40), an=R()*3; x.save(); x.translate(sx,sy); x.rotate(an); x.fillStyle=cols[i%cols.length]; rr(-14,-4.5,28,9,4.5); x.fill(); x.restore(); }
+    }
+    // ---- イラスト ----
+    function drawIllust(T){
+      var im=userImg||imgs.def; if(!im) return {top:H*.33,bottom:H*.85};
+      var z=st.zoom/100, posY=st.pos/100;
+      if(!userImg && st.mode==='standard'){
+        // 標準イラスト（切り抜き）：まるい台の上に立たせる
+        var cy=H*(.5+posY*.16);
+        x.save(); x.globalAlpha=st.color==='night'?.22:.88; x.fillStyle='#fff'; x.beginPath(); x.arc(W/2,cy,W*.45*z,0,7); x.fill(); x.restore();
+        x.save(); x.setLineDash([22,16]); x.lineWidth=6; x.strokeStyle='rgba(255,255,255,.8)'; x.beginPath(); x.arc(W/2,cy,W*.45*z+26,0,7); x.stroke(); x.restore();
+        var hh=H*.56*z, ww=im.width*hh/im.height, ty=cy-hh*.48; x.drawImage(im,(W-ww)/2,ty,ww,hh); return {top:ty,bottom:ty+hh};
+      }
+      if(st.mode==='full'){
+        if(!userImg){ var fh=H*.82*z, fw=im.width*fh/im.height; x.drawImage(im,(W-fw)/2,H-fh+H*.06-(posY-.45)*H*.3,fw,fh); return {top:H*.2,bottom:H*.84}; }
+        var s=Math.max(W/im.width,H/im.height)*z, w=im.width*s, h=im.height*s; x.drawImage(im,(W-w)/2,(H-h)*posY,w,h);
+        var sh=x.createLinearGradient(0,H*.76,0,H); sh.addColorStop(0,'rgba(255,255,255,0)'); sh.addColorStop(1,st.color==='night'?'rgba(20,10,40,.6)':'rgba(255,255,255,.65)'); x.fillStyle=sh; x.fillRect(0,H*.76,W,H*.24);
+        return {top:0,bottom:H*.84};
+      }
+      var maxW=W*.78*z, maxH=H*.5*z, r=userImg?im.width/im.height:.78, iw=Math.min(maxW,maxH*r), ih=iw/r;
+      if(st.mode==='circle'||st.mode==='heart'){ iw=ih=Math.min(maxW,maxH); }
+      var X=(W-iw)/2, Y=H*(.28+posY*.18);
+      // 枠の中に絵を入れる。標準イラスト（切り抜き）の時は、枠の中をやさしい色で塗ってから顔まわりを大きめに入れる
+      function cover(dx,dy,dw,dh){
+        if(!userImg){
+          var gg=x.createLinearGradient(0,dy,0,dy+dh); gg.addColorStop(0,'#FFFFFF'); gg.addColorStop(1,T[1]); x.fillStyle=gg; x.fillRect(dx,dy,dw,dh);
+          x.fillStyle=T[4]==='rgba(255,255,255,.55)'?'rgba(240,141,176,.14)':T[4]; for(var yy=dy+16;yy<dy+dh;yy+=34) for(var xx=dx+16+((yy-dy)/34%2)*17;xx<dx+dw;xx+=34){ x.beginPath(); x.arc(xx,yy,2.6,0,7); x.fill(); }
+          var s3=Math.max(dw/im.width,dh/im.height)*1.25, w3=im.width*s3, h3=im.height*s3; x.drawImage(im,dx+(dw-w3)/2,dy-h3*.04,w3,h3); return;
+        }
+        var s2=Math.max(dw/im.width,dh/im.height), w2=im.width*s2, h2=im.height*s2; x.drawImage(im,dx+(dw-w2)/2,dy+(dh-h2)/2,w2,h2); }
+      x.save(); x.shadowColor='rgba(150,70,95,.3)'; x.shadowBlur=40; x.shadowOffsetY=16; x.fillStyle='#fff';
+      if(st.mode==='card'){ rr(X-22,Y-22,iw+44,ih+44,56); x.fill(); x.restore(); x.save(); rr(X,Y,iw,ih,40); x.clip(); cover(X,Y,iw,ih); x.restore(); return {top:Y-22,bottom:Y+ih+22}; }
+      if(st.mode==='polaroid'){ x.translate(W/2,Y+ih/2); x.rotate(-.04); x.fillRect(-iw/2-34,-ih/2-34,iw+68,ih+190); x.restore();
+        x.save(); x.translate(W/2,Y+ih/2); x.rotate(-.04); x.beginPath(); x.rect(-iw/2,-ih/2,iw,ih); x.clip(); cover(-iw/2,-ih/2,iw,ih); x.restore();
+        x.save(); x.translate(W/2,Y-20); x.rotate(.08); x.fillStyle='rgba(255,182,206,.75)'; x.fillRect(-90,-26,180,52); x.restore();
+        return {top:Y-34,bottom:Y+ih+150}; }
+      if(st.mode==='circle'){ x.beginPath(); x.arc(W/2,Y+ih/2,iw/2+22,0,7); x.fill(); x.restore(); x.save(); x.beginPath(); x.arc(W/2,Y+ih/2,iw/2,0,7); x.clip(); cover(X,Y,iw,ih); x.restore(); return {top:Y-22,bottom:Y+ih+22}; }
+      if(st.mode==='heart'){ var S=iw*1.25, cx=W/2, cy2=Y+ih*.48; heartPath(cx,cy2,S+60); x.fill(); x.restore(); x.save(); heartPath(cx,cy2,S); x.clip(); cover(cx-S*.62,cy2-S*.58,S*1.24,S*1.0); x.restore(); return {top:cy2-S*.6,bottom:cy2+S*.48}; }
+      x.restore(); return {top:Y,bottom:Y+ih};
+    }
+    // ---- カレンダー（日本の祝日つき） ----
+    function nthMon(y,m,n){ var d=new Date(y,m-1,1).getDay(); return 1+((8-d)%7)+(n-1)*7; }
+    function jpHol(y,m){
+      var h={}, add=function(mm,dd){ if(mm===m) h[dd]=1; };
+      [[1,1],[2,11],[2,23],[4,29],[5,3],[5,4],[5,5],[8,11],[11,3],[11,23]].forEach(function(a){ add(a[0],a[1]); });
+      add(1,nthMon(y,1,2)); add(7,nthMon(y,7,3)); add(9,nthMon(y,9,3)); add(10,nthMon(y,10,2));
+      var q=Math.floor((y-1980)/4); add(3,Math.floor(20.8431+.242194*(y-1980)-q)); add(9,Math.floor(23.2488+.242194*(y-1980)-q));
+      var last=new Date(y,m,0).getDate();
+      for(var d=1;d<=last;d++){ // 振替休日
+        if(h[d]&&new Date(y,m-1,d).getDay()===0){ var e=d+1; while(h[e]) e++; if(e<=last) h[e]=1; }
+      }
+      for(var d2=2;d2<last;d2++){ if(m===9&&h[d2-1]&&h[d2+1]&&!h[d2]&&new Date(y,m-1,d2).getDay()!==0) h[d2]=1; } // 国民の休日（9月）
+      return h;
+    }
+    var EN=['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+    function calInfo(){
+      var n=new Date(), y=n.getFullYear(), m=n.getMonth();
+      var first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate();
+      return {y:y,m:m,first:first,days:days,rows:Math.ceil((first+days)/7)};
+    }
+    function calHeight(msg){ var c=calInfo(); return 150+70+c.rows*82+(msg?96:40); }
+    function hexA(h,a){ h=h.replace('#',''); return 'rgba('+parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16)+','+a+')'; }
+    function drawCal(T,F,msg){
+      var c=calInfo(), night=st.color==='night', hol=jpHol(c.y,c.m+1), marks={};
+      String(st.calMarks||'').replace(/[０-９]/g,function(d){ return String.fromCharCode(d.charCodeAt(0)-65248); }).split(/[^0-9]+/).forEach(function(v){ if(v) marks[+v]=1; });
+      var cw=W*.88, cx0=(W-cw)/2, ch=calHeight(msg), bottom=H*.945, top=bottom-ch, R=58;
+      // ① なじませ：カレンダーの少し上から、背景の色へふんわりフェード（イラストの足もとが自然に溶ける）
+      var fade=320, g=x.createLinearGradient(0,top-fade,0,top+ch*.4);
+      g.addColorStop(0,hexA(T[2],0)); g.addColorStop(1,hexA(T[2],night?.6:.5)); x.fillStyle=g; x.fillRect(0,top-fade,W,H-top+fade);
+      // ② すりガラス：下の絵をぼかして透かす
+      var s1=document.createElement('canvas'), s2=document.createElement('canvas');
+      s1.width=Math.ceil(cw/5); s1.height=Math.ceil(ch/5); s2.width=Math.ceil(cw/18); s2.height=Math.ceil(ch/18);
+      var c1=s1.getContext('2d'), c2=s2.getContext('2d'); c1.imageSmoothingQuality=c2.imageSmoothingQuality='high';
+      c1.drawImage(cv,cx0,top,cw,ch,0,0,s1.width,s1.height); c2.drawImage(s1,0,0,s2.width,s2.height);
+      x.save(); x.shadowColor=night?'rgba(10,5,30,.45)':'rgba(150,70,95,.25)'; x.shadowBlur=44; x.shadowOffsetY=14; x.fillStyle=night?'#2B2350':'#fff'; rr(cx0,top,cw,ch,R); x.fill(); x.restore();
+      x.save(); rr(cx0,top,cw,ch,R); x.clip(); x.imageSmoothingQuality='high'; x.drawImage(s2,cx0-20,top-20,cw+40,ch+40);
+      x.fillStyle=night?'rgba(35,28,70,.72)':'rgba(255,255,255,.76)'; x.fillRect(cx0,top,cw,ch); x.restore();
+      x.save(); x.lineWidth=5; x.strokeStyle=night?'rgba(255,214,230,.35)':'rgba(255,255,255,.95)'; rr(cx0+2.5,top+2.5,cw-5,ch-5,R-2); x.stroke();
+      x.setLineDash([14,10]); x.lineWidth=3; x.strokeStyle=night?'rgba(255,214,230,.4)':hexA(T[3],.35); rr(cx0+18,top+18,cw-36,ch-36,R-16); x.stroke(); x.restore();
+      // ③ 見出し：「10月 OCTOBER」
+      x.textAlign='left'; x.textBaseline='alphabetic';
+      var numT=String(c.m+1), f1='700 100px '+F, f2='700 54px '+F, f3='700 36px '+F;
+      x.font=f1; var w1=x.measureText(numT).width; x.font=f2; var w2=x.measureText('月').width; x.font=f3; var w3=x.measureText(EN[c.m]).width+EN[c.m].length*5;
+      var tot=w1+8+w2+28+w3, sx=W/2-tot/2, base=top+118;
+      x.fillStyle=night?'#FFD6E6':T[3]; x.font=f1; x.fillText(numT,sx,base); x.font=f2; x.fillText('月',sx+w1+8,base);
+      x.font=f3; x.globalAlpha=.7; var ex=sx+w1+8+w2+28; EN[c.m].split('').forEach(function(ch2){ x.fillText(ch2,ex,base-6); ex+=x.measureText(ch2).width+5; }); x.globalAlpha=1;
+      heart(sx-58,base-46,44,night?'#FFB3CC':T[5]); sparkle(sx+tot+44,base-50,34,night?'#FFD27A':T[5]);
+      // ④ 曜日の帯
+      var SUN=night?'#FF9EC0':'#E0457B', SAT=night?'#8CCBF5':'#3A82C4', INK=night?'#FFFFFF':'#4A2A35';
+      var gx=cx0+40, gw=(cw-80)/7, wy=top+150+30;
+      x.fillStyle=night?'rgba(255,255,255,.1)':hexA(T[1],.9); rr(gx,wy-30,gw*7,60,30); x.fill();
+      x.textAlign='center'; x.textBaseline='middle'; x.font='700 36px '+F;
+      ['日','月','火','水','木','金','土'].forEach(function(w,i){ x.fillStyle=i===0?SUN:i===6?SAT:(night?'rgba(255,255,255,.85)':'rgba(74,42,53,.75)'); x.fillText(w,gx+gw*(i+.5),wy+1); });
+      // ⑤ 日付
+      x.font='700 50px '+F;
+      for(var d=1;d<=c.days;d++){
+        var p=c.first+d-1, col=p%7, row=Math.floor(p/7), cx=gx+gw*(col+.5), cy=top+150+70+row*82+41;
+        if(row>0 && col===0 && d>1){ x.save(); x.strokeStyle=night?'rgba(255,255,255,.08)':hexA(T[3],.1); x.lineWidth=2; x.beginPath(); x.moveTo(gx+12,cy-41); x.lineTo(gx+gw*7-12,cy-41); x.stroke(); x.restore(); }
+        var color=(col===0||hol[d])?SUN:col===6?SAT:INK;
+        if(marks[d]){ heart(cx,cy+3,84,night?'#FF8FB1':T[5]); color='#fff'; }
+        x.fillStyle=color; x.fillText(String(d),cx,cy+(marks[d]?-2:1));
+      }
+      if(msg){ x.font='700 42px '+F; x.fillStyle=night?'#FFD6E6':T[3]; x.fillText(msg,W/2,bottom-58); }
+      x.textBaseline='alphabetic';
+      return top;
+    }
+    function draw(){
+      var T=(THEME[st.color]||THEME.pink).c, F=FF();
+      x.setTransform(1,0,0,1,0,0); x.globalAlpha=1;
+      bg(T);
+      var CAL=st.cal!=='none', msgOne=(st.msg||'').split(/\n/).filter(Boolean).slice(0,2).join(' ');
+      var box=drawIllust(T);  // カレンダーありでもイラストはそのまま。カレンダーはイラストの上にすりガラスで重ねる
+      if(st.icing && st.mode!=='full') icing(T[7],T[5]);
+      if(st.deco!=='none'){
+        var P=[[125,600,96],[1040,500,80],[100,1260,72],[1070,1120,90],[150,1960,80],[1020,1890,72],[520,330,50],[300,2170,46],[880,2210,54]];
+        P.forEach(function(p,i){ shapeFor(st.deco,i)(p[0],p[1],p[2],i%2?T[6]:T[5]); });
+      }
+      if(CAL) var cTop=H*.945-calHeight(msgOne);
+      if(st.logo!=='none' && imgs.logo){ var lw=W*.58, lh=imgs.logo.height*lw/imgs.logo.width, ly=st.logo==='top'?H*.13:Math.min(box.bottom+30,H*.8-lh*.2);
+        if(CAL && st.logo==='bottom'){ ly=Math.min(ly,cTop-lh-10); }
+        x.drawImage(imgs.logo,(W-lw)/2,ly,lw,lh); if(st.logo==='bottom') box.bottom=ly+lh; }
+      if(CAL){ drawCal(T,F,msgOne); return; }
+      var lines=(st.msg||'').split(/\n/).filter(Boolean).slice(0,2);
+      if(lines.length){
+        x.textAlign='center'; x.textBaseline='middle'; x.font='700 56px '+F;
+        var lh2=72, ty=Math.min(Math.max(box.bottom+110,H*.86),H*.95-(lines.length-1)*lh2), tw=Math.max.apply(null,lines.map(function(l){ return x.measureText(l).width; }));
+        var bh=lines.length*lh2+50, by=ty-lh2/2-25;
+        if(st.msgStyle==='bubble'){ x.save(); x.shadowColor='rgba(150,70,95,.2)'; x.shadowBlur=20; x.shadowOffsetY=8; x.fillStyle='#fff'; rr(W/2-tw/2-60,by,tw+120,bh,bh/2>60?50:bh/2); x.fill(); x.beginPath(); x.moveTo(W/2-30,by+2); x.lineTo(W/2,by-34); x.lineTo(W/2+30,by+2); x.fill(); x.restore(); }
+        if(st.msgStyle==='ribbon'){ x.fillStyle=T[5]; x.beginPath(); x.moveTo(W/2-tw/2-120,by); x.lineTo(W/2+tw/2+120,by); x.lineTo(W/2+tw/2+80,by+bh/2); x.lineTo(W/2+tw/2+120,by+bh); x.lineTo(W/2-tw/2-120,by+bh); x.lineTo(W/2-tw/2-80,by+bh/2); x.closePath(); x.fill(); }
+        lines.forEach(function(l,i){ var yy=ty+i*lh2;
+          if(st.msgStyle==='plain'){ x.lineWidth=12; x.strokeStyle=st.color==='night'?'rgba(43,35,80,.85)':'rgba(255,255,255,.92)'; x.strokeText(l,W/2,yy); }
+          x.fillStyle=st.msgStyle==='ribbon'?'#fff':T[3]; if(st.msgStyle==='bubble'&&st.color==='night') x.fillStyle='#7A5A9E';
+          x.fillText(l,W/2,yy); });
+        x.textBaseline='alphabetic';
+      }
+    }
+    var mini=$('wallMiniCv'), mx=mini.getContext('2d');
+    var HINT={standard:'イラストを白いまるの上にそのまま立たせます（標準のイラスト向き）',card:'白フチの角まるカードに入れます',polaroid:'チェキ（インスタントカメラの写真）風。少し傾けて、上にマステを貼ります',circle:'まるく切り抜いて白フチを付けます',heart:'ハートの形に切り抜きます',full:'画面いっぱいにイラストを広げます'};
+    function hint(){ $('wallModeHint').textContent=HINT[st.mode]||''; }
+    function redraw(){ hint(); if(typeof accSum==='function') accSum(); ready.then(fontReady).then(draw).then(function(){ mx.drawImage(cv,0,0,mini.width,mini.height); }); }
+    // 見本が画面から外れたら、右下に小さな見本を出す（タップで上に戻る）
+    (function(){
+      var top=$('wallTop'), btn=$('wallMini'), vis=true;
+      function upd(){ btn.classList.toggle('is-show', !$('wallView').hidden && !vis); }
+      if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ vis=es[0].isIntersecting; upd(); },{threshold:.15}).observe(top); }
+      document.addEventListener('click',function(){ setTimeout(upd,0); });
+      btn.onclick=function(e){ e.stopPropagation(); top.scrollIntoView({behavior:'smooth',block:'center'}); };
+    })();
+    fontListeners.push(redraw);
+    // ---- 入力 ----
+    var sw=$('wallColor'); Object.keys(THEME).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.style.setProperty('--c',THEME[k].c[1]); b.innerHTML='<i></i>'+THEME[k].n; sw.appendChild(b); });
+    var SEGS=[['wallMode','mode'],['wallColor','color'],['wallPattern','pattern'],['wallDeco','deco'],['wallLogo','logo'],['wallMsgStyle','msgStyle'],['wallCal','cal']];
+    // アコーディオン：1つ開くと他は閉じる。見出しに今の設定を小さく出す
+    var accs=document.querySelectorAll('#wallView .acc');
+    Array.prototype.forEach.call(accs,function(d){ d.addEventListener('toggle',function(){ if(!d.open) return;
+      Array.prototype.forEach.call(accs,function(o){ if(o!==d) o.open=false; });
+      setTimeout(function(){ var r=d.getBoundingClientRect(); if(r.top<0||r.top>innerHeight*.6) d.scrollIntoView({behavior:'smooth',block:'start'}); },60); }); });
+    function segTxt(id){ var b=document.querySelector('#'+id+' [aria-pressed="true"]'); return b?b.textContent.trim():''; }
+    function accSum(){
+      var set=function(k,t){ var e=$('accV_'+k); if(e) e.textContent=t; };
+      set('ill',(userImg?'選んだイラスト':'標準のイラスト')+'・'+segTxt('wallMode'));
+      set('color',segTxt('wallColor')+'・'+segTxt('wallPattern'));
+      set('deco',segTxt('wallDeco')+(st.icing?'・アイシング':'')+'・ロゴ '+segTxt('wallLogo'));
+      set('cal',st.cal==='none'?'なし':'あり'+(st.calMarks?'・♡ '+st.calMarks:''));
+      set('msg',(st.msg?st.msg.replace(/\n/g,' '):'なし')+'・'+(segTxt('wallMsgStyle')));
+    }
+    function syncUI(){
+      SEGS.forEach(function(p){ Array.prototype.forEach.call($(p[0]).children,function(b){ b.setAttribute('aria-pressed',b.dataset.v===st[p[1]]?'true':'false'); }); });
+      $('wallIcing').checked=!!st.icing; $('wallMsg').value=st.msg||''; $('wallCalMarks').value=st.calMarks||''; calHint(); $('wallPos').value=st.pos; $('wallZoom').value=st.zoom;
+    }
+    SEGS.forEach(function(p){ Array.prototype.forEach.call($(p[0]).children,function(b){ b.onclick=function(){ st[p[1]]=b.dataset.v; saveSt(); syncUI(); redraw(); }; }); });
+    $('wallIcing').onchange=function(){ st.icing=this.checked; saveSt(); redraw(); };
+    $('wallMsg').oninput=function(){ st.msg=this.value; saveSt(); redraw(); };
+    $('wallCalMarks').oninput=function(){ st.calMarks=this.value; saveSt(); redraw(); };
+    function calHint(){ var on=st.cal!=='none', c=calInfo();
+      $('wallCalMarks').disabled=!on;
+      $('wallCalHint').textContent=!on?'カレンダーなしの壁紙になります。':(c.m+1)+'月のカレンダーが、イラストの上にすりガラス風に重なります。日曜・祝日はピンク、土曜は水色。ひとことはカレンダーの中に1行で入ります。'; }
+    $('wallPos').oninput=function(){ st.pos=+this.value; saveSt(); redraw(); };
+    $('wallZoom').oninput=function(){ st.zoom=+this.value; saveSt(); redraw(); };
+    $('wallRand').onclick=function(){
+      function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+      st.color=pick(Object.keys(THEME)); st.pattern=pick(['dot','heart','gingham','stripe','star','plain']); st.deco=pick(['heart','sparkle','sweets','ribbon','music']);
+      st.mode=pick(['standard','card','polaroid','circle','heart','full']); st.icing=Math.random()<.6; st.logo=pick(['top','top','bottom']); st.msgStyle=pick(['plain','bubble','ribbon']);
+      saveSt(); syncUI(); redraw();
+    };
+    syncUI();
+    $('wallFile').onchange=function(){
+      var f=this.files&&this.files[0]; if(!f) return;
+      var u=URL.createObjectURL(f); load(u).then(function(i){ userImg=i; if(!i) say($('wallMsgOut'),'画像を読み込めませんでした',true); redraw(); });
+    };
+    $('wallReset').onclick=function(){ userImg=null; $('wallFile').value=''; redraw(); };
+    function md(d){ return (d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+('0'+d.getMinutes()).slice(-2); }
+    function showNow(r){
+      var u=r&&r.updated_at?new Date(r.updated_at):null;
+      if(u&&!isNaN(u)){ var n0=new Date(), old=u<new Date(n0.getFullYear(),n0.getMonth(),1); $('wallNowVal').innerHTML='しぃが作った壁紙<small>'+md(u)+' に設定'+(old?'<br><span style="color:#C0607F;font-weight:700">⚠ 先月までの壁紙です。'+(n0.getMonth()+1)+'月の壁紙を作って設定してね</span>':'')+'</small>'; $('wallClear').hidden=false; $('wallNow').classList.remove('is-empty'); }
+      else { $('wallNowVal').textContent='標準の壁紙（キャンディのしぃ）'; $('wallClear').hidden=true; $('wallNow').classList.add('is-empty'); }
+    }
+    function loadNow(){ return fetch(SB+'shii_wallpaper_info',{method:'POST',headers:{'apikey':SBKEY,'Content-Type':'application/json'},body:'{}'}).then(function(r){ return r.ok?r.json():null; }).then(showNow).catch(function(){ $('wallNowVal').textContent='確認できませんでした'; }); }
+    $('tabWall').addEventListener('click',function(){ loadNow(); redraw(); });
+    $('wallSave').onclick=function(){
+      cv.toBlob(function(b){ var f=new File([b],'shii-wallpaper.png',{type:'image/png'});
+        if(navigator.canShare&&navigator.canShare({files:[f]})){ navigator.share({files:[f]}).catch(function(){}); return; }
+        var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='shii-wallpaper.png'; document.body.appendChild(a); a.click(); a.remove(); },'image/png');
+    };
+    $('wallSet').onclick=function(){
+      if(!confirm('この壁紙を、今月のごほうび（スタンプ20個）に設定します。よろしいですか？')) return;
+      var b=this; b.disabled=true; say($('wallMsgOut'),'設定しています…');
+      var data=cv.toDataURL('image/jpeg',.85); if(data.length>2400000) data=cv.toDataURL('image/jpeg',.7);
+      call('shii_wallpaper_admin',{p_action:'save',p_image:data}).then(function(r){ showNow(r); say($('wallMsgOut'),'設定しました！これからスタンプ20個たまった人にはこの壁紙が届きます'); $('wallNow').scrollIntoView({behavior:'smooth',block:'center'}); })
+        .catch(function(e){ fail(e,$('wallMsgOut')); }).then(function(){ b.disabled=false; });
+    };
+    $('wallClear').onclick=function(){
+      if(!confirm('ごほうび壁紙を、標準の壁紙に戻します。よろしいですか？')) return;
+      call('shii_wallpaper_admin',{p_action:'clear'}).then(function(r){ showNow(r); say($('wallMsgOut'),'標準の壁紙に戻しました'); }).catch(function(e){ fail(e,$('wallMsgOut')); });
+    };
+  })();
+
+  // ---- 予定表画像メーカー（入力はこのスマホに保存。サーバーは使わない） ----
+  (function(){
+    var KEY='shii_sch', WD=['日','月','火','水','木','金','土'];
+    var st={start:'',note:'',days:{}};
+    try{ var s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s) st=s; }catch(e){}
+    function saveSt(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
+    function ymd(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+    function parse(s){ var p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+    function monday(){ var d=new Date(); var w=(d.getDay()+6)%7; d.setDate(d.getDate()-w); return d; }
+    if(!st.start) st.start=ymd(monday());
+    $('schStart').value=st.start; $('schNote').value=st.note||'';
+    function dates(){ var b=parse(st.start), out=[]; for(var i=0;i<7;i++){ var d=new Date(b); d.setDate(b.getDate()+i); out.push(d); } return out; }
+    function day(k){ return st.days[k]||(st.days[k]={time:'22:00',what:'',off:false}); }
+    function rows(){
+      var box=$('schRows'); box.innerHTML='';
+      dates().forEach(function(d){
+        var k=ymd(d), v=day(k), w=d.getDay();
+        var row=document.createElement('div'); row.className='schRow'+(v.off?' is-off':'');
+        row.innerHTML='<div class="schDay'+(w===6?' sat':w===0?' sun':'')+'">'+(d.getMonth()+1)+'/'+d.getDate()+'<small>'+WD[w]+'</small></div>'+
+          '<div class="schF"><div class="schTop"><input type="text" class="t" maxlength="12" placeholder="22:00〜"><label class="schOff"><input type="checkbox" class="o">お休み</label></div>'+
+          '<input type="text" class="w" maxlength="24" placeholder="内容（雑談・歌枠・ゲームなど）"></div>';
+        var ti=row.querySelector('.t'), wi=row.querySelector('.w'), oi=row.querySelector('.o');
+        ti.value=v.time; wi.value=v.what; oi.checked=!!v.off;
+        ti.oninput=function(){ v.time=ti.value; saveSt(); };
+        wi.oninput=function(){ v.what=wi.value; saveSt(); };
+        oi.onchange=function(){ v.off=oi.checked; row.classList.toggle('is-off',v.off); saveSt(); };
+        box.appendChild(row);
+      });
+    }
+    $('schStart').onchange=function(){ if(this.value){ st.start=this.value; saveSt(); rows(); } };
+    $('schNote').oninput=function(){ st.note=this.value; saveSt(); };
+    rows();
+
+    function img(src){ return new Promise(function(ok){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=function(){ok(null);}; i.src=src; }); }
+    function rr(x,X,Y,W,H,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+W,Y,X+W,Y+H,r); x.arcTo(X+W,Y+H,X,Y+H,r); x.arcTo(X,Y+H,X,Y,r); x.arcTo(X,Y,X+W,Y,r); x.closePath(); }
+    function fit(x,txt,max){ var s=txt; while(s.length>1 && x.measureText(s).width>max) s=s.slice(0,-1); return s===txt?s:s.slice(0,-1)+'…'; }
+    var blob=null;
+    function draw(){
+      var F=FF();
+      return fontReady().then(function(){ return Promise.all([img('../img/logo.webp'),img('../img/chibi-a.webp'),img('../img/drip0.svg')]); }).then(function(im){
+        var W=1080,H=1350,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
+        var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#FBE7EE'); g.addColorStop(1,'#EFC3D2'); x.fillStyle=g; x.fillRect(0,0,W,H);
+        x.fillStyle='rgba(255,255,255,.6)'; for(var y=18;y<H;y+=36) for(var xx=18+(y/36%2)*18;xx<W;xx+=36){ x.beginPath(); x.arc(xx,y,2.6,0,7); x.fill(); }
+        if(im[2]){ for(var dx=0;dx<W;dx+=360*1.6) x.drawImage(im[2],dx,0,360*1.6,50*1.6); }
+        if(im[0]){ var lw=380, lh=im[0].height*lw/im[0].width; x.drawImage(im[0],60,82,lw,lh); }
+        var ds=dates(), a=ds[0], b=ds[6];
+        x.textAlign='right'; x.fillStyle='#E07496'; x.font='500 64px "Quicksand","Avenir Next",'+F; x.fillText('WEEKLY',W-64,170);
+        x.fillText('SCHEDULE',W-64,236);
+        x.fillStyle='#8E5C69'; x.font='700 36px '+F; x.fillText((a.getMonth()+1)+'/'+a.getDate()+' 〜 '+(b.getMonth()+1)+'/'+b.getDate(),W-64,292);
+        var top=326, rh=106, gap=12, X=60, RW=W-120;
+        ds.forEach(function(d,i){
+          var v=day(ymd(d)), Y=top+i*(rh+gap), w=d.getDay();
+          x.save(); x.shadowColor='rgba(200,80,120,.18)'; x.shadowOffsetY=6; x.shadowBlur=0;
+          x.fillStyle=v.off?'rgba(255,255,255,.55)':'#fff'; rr(x,X,Y,RW,rh,30); x.fill(); x.restore();
+          x.fillStyle=v.off?'#E5D6EF':(w===0?'#EC6F98':w===6?'#86A6E8':'#F08DB0'); rr(x,X+14,Y+14,150,rh-28,22); x.fill();
+          x.textAlign='center'; x.fillStyle='#fff'; x.font='700 38px '+F; x.fillText((d.getMonth()+1)+'/'+d.getDate(),X+89,Y+57);
+          x.font='700 24px '+F; x.fillText(WD[w],X+89,Y+86);
+          x.textAlign='left';
+          if(v.off){ x.fillStyle='#A28AB8'; x.font='700 42px '+F; x.fillText('おやすみ 💤',X+200,Y+68); }
+          else{
+            x.fillStyle='#E07496'; x.font='700 46px "Quicksand","Avenir Next",'+F; var tt=fit(x,v.time||'',260); x.fillText(tt,X+196,Y+70);
+            var tw=Math.max(170,x.measureText(tt).width+24);
+            x.fillStyle='#5E3540'; x.font='700 38px '+F; x.fillText(fit(x,v.what||'配信',RW-196-tw-30),X+196+tw,Y+68);
+          }
+        });
+        var by=top+7*(rh+gap)+8;
+        if(st.note){ x.fillStyle='#fff'; rr(x,X,by,RW-220,74,37); x.fill(); x.fillStyle='#C9557B'; x.font='700 34px '+F; x.textAlign='left'; x.fillText(fit(x,'♡ '+st.note,RW-280),X+30,by+49); }
+        x.textAlign='left'; x.fillStyle='#8E5C69'; x.font='700 28px '+F; x.fillText('Mirrativ ／ X @shiitarou210',X+4,H-34);
+        if(im[1]){ var ch=190, cw=im[1].width*ch/im[1].height; x.drawImage(im[1],W-cw-40,H-ch-16,cw,ch); }
+        return new Promise(function(ok){ c.toBlob(function(bb){ blob=bb; ok(URL.createObjectURL(bb)); },'image/png'); });
+      });
+    }
+    if(st.sync===false) $('schSync').checked=false;
+    $('schSync').onchange=function(){ st.sync=this.checked; saveSt(); };
+    function payload(){
+      return { start:st.start, note:st.note||'', days:dates().map(function(d){ var v=day(ymd(d)); return {date:ymd(d), time:(v.time||'').slice(0,12), what:(v.what||'').slice(0,24), off:!!v.off}; }) };
+    }
+    function syncHP(){
+      if(!$('schSync').checked) return Promise.resolve(null);
+      return call('shii_schedule_admin',{p_action:'save',p_data:payload()}).then(function(r){ showNow(r); return 'ok'; });
+    }
+    function md(d){ return (d.getMonth()+1)+'/'+d.getDate(); }
+    function showNow(res){
+      var box=$('schNow'), val=$('schNowVal'), del=$('schClear');
+      if(!res||!res.data||!res.data.days||!res.data.days.length){ box.classList.add('is-empty'); val.textContent='なし（HPにはいつもの配信時間だけ出ています）'; del.hidden=true; return; }
+      var ds=res.data.days, a=parse(ds[0].date), b=parse(ds[ds.length-1].date), u=new Date(res.updated_at), t=new Date(); t.setHours(0,0,0,0);
+      box.classList.remove('is-empty');
+      val.innerHTML=md(a)+'〜'+md(b)+' の予定<small>'+(isNaN(u)?'':md(u)+' '+u.getHours()+':'+('0'+u.getMinutes()).slice(-2)+' に更新')+(b<t?'・期間が終わったのでHPには表示されていません':'')+'</small>';
+      del.hidden=false;
+    }
+    function loadNow(){
+      return fetch(SB+'shii_schedule_get',{method:'POST',headers:{'apikey':SBKEY,'Content-Type':'application/json'},body:'{}'})
+        .then(function(r){ return r.ok?r.json():null; }).then(showNow).catch(function(){ $('schNowVal').textContent='確認できませんでした'; });
+    }
+    $('tabSch').addEventListener('click',loadNow);
+    $('schClear').onclick=function(){
+      if(!confirm('HPの「Schedule」から今週の予定を消します。\n（この画面の入力内容は消えません）\nよろしいですか？')) return;
+      var b=this; b.disabled=true;
+      call('shii_schedule_admin',{p_action:'clear'}).then(function(r){ showNow(r); say($('schMsg'),'HPから予定を消しました'); $('schNow').scrollIntoView({behavior:'smooth',block:'center'}); })
+        .catch(function(e){ fail(e,$('schMsg')); }).then(function(){ b.disabled=false; });
+    };
+    $('schMake').onclick=function(){
+      var btn=this; btn.disabled=true; say($('schMsg'),'つくっています…');
+      syncHP().then(function(r){ if(r) say($('schMsg'),'HPのスケジュールに反映しました！画像をつくっています…'); })
+        .catch(function(e){ if(e.message==='auth'){ fail(e,$('schMsg')); } else say($('schMsg'),'HPへの反映ができませんでした（画像はつくれます）',true); });
+      draw().then(function(u){ var i=$('schImg'); if(i.dataset.u) URL.revokeObjectURL(i.dataset.u); i.src=u; i.dataset.u=u; $('schOut').hidden=false; if(!/できません|合言葉/.test($('schMsg').textContent)) say($('schMsg'), $('schSync').checked?'できました！HPのスケジュールにも反映済みです':'できました！'); setTimeout(function(){ $('schOut').scrollIntoView({behavior:'smooth',block:'start'}); },100); })
+        .catch(function(){ say($('schMsg'),'画像をつくれませんでした。もう一度押してね',true); }).then(function(){ btn.disabled=false; });
+    };
+    fontListeners.push(function(){ if(!$('schOut').hidden) $('schMake').click(); });
+    $('schAgain').onclick=function(){ $('schOut').hidden=true; window.scrollTo({top:0,behavior:'smooth'}); };
+    $('schShare').onclick=function(){
+      if(!blob) return;
+      var f=new File([blob],'shii-schedule.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[f]})){ navigator.share({files:[f],text:'今週の配信予定だよ♡ #しぃの見守り隊'}).catch(function(){}); return; }
+      var a=document.createElement('a'); a.href=$('schImg').src; a.download='shii-schedule.png'; document.body.appendChild(a); a.click(); a.remove();
+    };
+  })();
 
   // ---- 歌える（かも）リスト ----
   var songs=[];
@@ -376,8 +1010,8 @@
       var b=document.createElement('div'); b.className='body'; b.textContent=it.body; left.appendChild(b);
       var m=document.createElement('small'); m.className='m'; m.textContent=(it.read?'読んだ・':'')+fmt(it.at); left.appendChild(m);
       var acts=document.createElement('div'); acts.className='acts';
-      var c=document.createElement('button'); c.className='card-btn'; c.type='button'; c.textContent='画像にする';
-      c.onclick=function(){ openCard(it.body); if(!it.read){ mcall('read',it.id,true).then(function(){ it.read=true; renderM(); }).catch(function(){}); } };
+      var c=document.createElement('button'); c.className='card-btn'; c.type='button'; c.textContent='返信してXへ';
+      c.onclick=function(){ openReply({kind:'msg',item:it}); if(!it.read){ mcall('read',it.id,true).then(function(){ it.read=true; renderM(); }).catch(function(){}); } };
       var r=document.createElement('button'); r.className='sung'; r.type='button'; r.textContent=it.read?'未読にする':'読んだ✓';
       r.onclick=function(){ r.disabled=true;
         mcall('read',it.id,!it.read).then(function(){ it.read=!it.read; renderM(); })
@@ -418,40 +1052,75 @@
     return lines;
   }
   function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
-  function openCard(text){
-    var W=1200, pad=110, font='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
-    var cv=document.createElement('canvas'), ctx=cv.getContext('2d');
-    var size=text.length>160?40:text.length>80?46:54;
-    ctx.font='700 '+size+'px '+font;
-    var lines=wrap(ctx,text,W-pad*2-80), lh=size*1.7;
-    var H=Math.max(630, Math.round(lines.length*lh+pad*2+150));
+  // ---- お返事画像（匿名メッセージ／歌のリクエスト → しぃのお返事つきでXへ） ----
+  var cur=null, iconImg=null, drawT=null;
+  (function(){ var i=new Image(); i.onload=function(){ iconImg=i; }; i.src='../img/icon.webp'; })();
+  function drawReply(){
+    if(!cur) return;
+    var W=1200, P=70, F=FF();
+    var cv=document.createElement('canvas'), x=cv.getContext('2d');
+    var it=cur.item, isReq=cur.kind==='req', reply=$('replyTxt').value.trim();
+    // 中身の行を先に数えて高さを決める
+    x.font='700 46px '+F;
+    var qLines, qSub=[];
+    if(isReq){
+      x.font='700 56px '+F; qLines=wrap(x,'♪ '+it.song,W-P*2-100);
+      x.font='500 36px '+F; if(it.artist) qSub=qSub.concat(wrap(x,it.artist,W-P*2-100));
+      if(it.comment) qSub=qSub.concat(wrap(x,'「'+it.comment+'」',W-P*2-100));
+      qSub.push('from '+(it.name||'見守り隊さん'));
+    } else { x.font='700 46px '+F; qLines=wrap(x,it.body,W-P*2-100); }
+    x.font='700 44px '+F; var rLines=reply?wrap(x,reply,W-P*2-260):[];
+    var qh=(isReq?qLines.length*76:qLines.length*74)+qSub.length*52+90;
+    var rh=reply?Math.max(160,rLines.length*70+80):0;
+    var H=140+qh+(reply?rh+50:0)+120;
     cv.width=W; cv.height=H;
-    var g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#F6E4E9'); g.addColorStop(1,'#E2B9C6');
-    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='rgba(255,255,255,.55)';
-    for(var y=14;y<H;y+=28) for(var x=14;x<W;x+=28){ ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); }
-    var cx=pad-40, cy=pad-40, cw=W-(pad-40)*2, ch=H-(pad-40)*2-70;
-    ctx.fillStyle='#E07496'; rr(ctx,cx+12,cy+12,cw,ch,36); ctx.fill();
-    ctx.fillStyle='#fff'; rr(ctx,cx,cy,cw,ch,36); ctx.fill();
-    ctx.fillStyle='#5E3540'; ctx.font='700 '+size+'px '+font; ctx.textBaseline='middle';
-    var top=cy+(ch-lines.length*lh)/2+lh/2;
-    lines.forEach(function(l,i){ ctx.fillText(l,pad,top+i*lh); });
-    ctx.fillStyle='#8E5C69'; ctx.font='700 30px '+font; ctx.textAlign='right';
-    ctx.fillText('しぃの部屋 💌 匿名メッセージ',W-pad+40,H-55);
-    cv.toBlob(function(b){
-      cardBlob=b; var u=URL.createObjectURL(b); var img=$('sheetImg'); if(img.dataset.u) URL.revokeObjectURL(img.dataset.u);
-      img.src=u; img.dataset.u=u; $('sheet').hidden=false;
-    },'image/png');
+    var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#FBE7EE'); g.addColorStop(1,'#EBB7CA'); x.fillStyle=g; x.fillRect(0,0,W,H);
+    x.fillStyle='rgba(255,255,255,.55)'; for(var yy=16;yy<H;yy+=32) for(var xx=16+(yy/32%2)*16;xx<W;xx+=32){ x.beginPath(); x.arc(xx,yy,2.4,0,7); x.fill(); }
+    // ラベル
+    x.font='700 34px '+F; var lab=isReq?'🎤 歌のリクエスト':'💌 匿名メッセージ', lw=x.measureText(lab).width+56;
+    x.fillStyle='#E07496'; rr(x,P,48,lw,62,31); x.fill(); x.fillStyle='#fff'; x.textBaseline='middle'; x.fillText(lab,P+28,80);
+    // 質問カード
+    var qy=140; x.save(); x.shadowColor='rgba(200,80,120,.2)'; x.shadowOffsetY=8; x.fillStyle='#fff'; rr(x,P,qy,W-P*2,qh,40); x.fill(); x.restore();
+    var ty=qy+45+(isReq?38:37);
+    if(isReq){ x.fillStyle='#C9557B'; x.font='700 56px '+F; qLines.forEach(function(l){ x.fillText(l,P+50,ty); ty+=76; }); x.fillStyle='#8E5C69'; x.font='500 36px '+F; qSub.forEach(function(l){ x.fillText(l,P+50,ty-12); ty+=52; }); }
+    else { x.fillStyle='#5E3540'; x.font='700 46px '+F; qLines.forEach(function(l){ x.fillText(l,P+50,ty); ty+=74; }); }
+    // お返事
+    if(reply){
+      var ry=qy+qh+50, bx=P+170, bw=W-P-bx;
+      if(iconImg){ x.save(); x.beginPath(); x.arc(P+70,ry+70,70,0,7); x.closePath(); x.fillStyle='#fff'; x.fill(); x.clip(); x.drawImage(iconImg,P+6,ry+6,128,128); x.restore(); x.strokeStyle='#fff'; x.lineWidth=8; x.beginPath(); x.arc(P+70,ry+70,68,0,7); x.stroke(); }
+      x.fillStyle='#F08DB0'; rr(x,bx,ry,bw,rh,40); x.fill();
+      x.beginPath(); x.moveTo(bx+2,ry+50); x.lineTo(bx-26,ry+70); x.lineTo(bx+2,ry+90); x.fill();
+      x.fillStyle='#fff'; x.font='700 44px '+F; var y2=ry+(rh-rLines.length*70)/2+35; rLines.forEach(function(l){ x.fillText(l,bx+44,y2); y2+=70; });
+      x.fillStyle='#C9557B'; x.font='700 28px '+F; x.fillText('しぃ',P+44,ry+178);
+    }
+    x.textAlign='right'; x.fillStyle='#8E5C69'; x.font='700 30px '+F; x.fillText('しぃの部屋 ♡ shii-room.github.io',W-P,H-56); x.textAlign='left';
+    cv.toBlob(function(b){ cardBlob=b; var u=URL.createObjectURL(b); var img=$('sheetImg'); if(img.dataset.u) URL.revokeObjectURL(img.dataset.u); img.src=u; img.dataset.u=u; },'image/png');
   }
+  function openReply(o){
+    cur=o; $('replyTxt').value='';
+    $('sheetTtl').textContent=o.kind==='req'?'リクエストにお返事してXに投稿':'メッセージにお返事してXに投稿';
+    $('postTxt').value=(o.kind==='req'?'リクエストありがとう🎤✨':'メッセージありがとう💌')+'\n#しぃの見守り隊\nhttps://shii-room.github.io/';
+    $('sheet').hidden=false; fontReady().then(drawReply);
+    if(o.kind==='msg' && !o.item.read){ mcall('read',o.item.id,true).then(function(){ o.item.read=true; renderM(); }).catch(function(){}); }
+  }
+  $('replyTxt').addEventListener('input',function(){ clearTimeout(drawT); drawT=setTimeout(function(){ fontReady().then(drawReply); },250); });
+  fontListeners.push(function(){ if(!$('sheet').hidden) drawReply(); });
   $('sheetClose').onclick=function(){ $('sheet').hidden=true; };
   $('sheet').addEventListener('click',function(e){ if(e.target.id==='sheet') $('sheet').hidden=true; });
   $('sheetShare').onclick=function(){
     if(!cardBlob) return;
-    var file=new File([cardBlob],'shii-message.png',{type:'image/png'});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file]}).catch(function(){}); return; }
-    var a=document.createElement('a'); a.href=$('sheetImg').src; a.download='shii-message.png'; document.body.appendChild(a); a.click(); a.remove();
+    var text=$('postTxt').value;
+    var file=new File([cardBlob],'shii-reply.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      // 文章をコピーしておく（Xアプリに画像だけ渡る時のため）
+      try{ navigator.clipboard&&navigator.clipboard.writeText(text); }catch(e){}
+      navigator.share({files:[file],text:text}).catch(function(){}); return;
+    }
+    var a=document.createElement('a'); a.href=$('sheetImg').src; a.download='shii-reply.png'; document.body.appendChild(a); a.click(); a.remove();
+    window.open('https://x.com/intent/post?text='+encodeURIComponent(text),'_blank');
   };
 
+  initFontSegs();
   function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadM(); loadPosts(); loadSongs(); }
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };

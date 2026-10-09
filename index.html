@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009180205">
+<meta name="build" content="20261009181628">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -27,6 +27,7 @@
 <meta name="application-name" content="しぃ">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&text=1stAnniversary&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Yomogi&text=%E6%9D%A5%E3%81%A6%E3%81%8F%E3%82%8C%E3%81%A6%E3%81%82%E3%82%8A%E3%81%8C%E3%81%A8%E3%81%86%EF%BC%81%E3%81%97%E3%81%83%E3%81%AE%E9%83%A8%E5%B1%8B%E3%81%B8%E3%82%88%E3%81%86%E3%81%93%E3%81%9D&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
@@ -90,6 +91,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     font-feature-settings: "palt";
     overflow-x: hidden;
   }
+  /* iPhone：横にはみ出す物があるとページ全体が縮小表示されるので、横方向は切り落とす */
+  @supports (overflow: clip) { html, body { overflow-x: clip; } }
   a { color: inherit; text-decoration: none; }
   a:focus-visible, summary:focus-visible, button:focus-visible { outline: 2px solid var(--rose); outline-offset: 4px; border-radius: 4px; }
   .heart { display: inline-block; width: .38em; height: .38em; vertical-align: top; color: var(--rose); }
@@ -109,15 +112,47 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .nav a:hover { color: var(--rose); }
 
   .menu-btn {
-    display: inline-flex; flex-direction: column; justify-content: center; gap: 6px;
-    width: 44px; height: 44px; margin-right: -10px; padding: 0 10px;
-    background: none; border: 0; cursor: pointer; color: var(--rose);
+    position: relative; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    width: 46px; height: 44px; margin-right: -12px; padding: 0; border-radius: 14px;
+    background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid #fff; box-shadow: 0 3px 0 #E6A6BE;
+    cursor: pointer; color: var(--rose); -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s;
   }
-  .menu-btn span { display: block; height: 1.5px; background: currentColor; border-radius: 1px; transition: transform .2s, opacity .2s; }
-  .menu-btn span:nth-child(2) { width: 70%; margin-left: auto; }
-  .menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(3.75px) rotate(45deg); }
-  .menu-btn[aria-expanded="true"] span:nth-child(2) { width: 100%; transform: translateY(-3.75px) rotate(-45deg); }
+  .menu-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
+  /* スマホ：MENUボタンは画面の右端に固定（レイアウトの幅に左右されないように） */
+  @media (max-width: 767px) {
+    .header__in { padding-right: 46px; }
+    .menu-btn { position: absolute; right: calc(8px + env(safe-area-inset-right, 0px)); top: 50%; margin: -22px 0 0 0; }
+  }
+  .menu-btn .mb-l { display: block; width: 20px; height: 2.4px; border-radius: 2px; background: currentColor; transition: transform .2s, opacity .2s; }
+  .menu-btn .mb-t { display: block; margin-top: 1px; font-family: var(--en); font-weight: 600; font-size: 8px; line-height: 1; letter-spacing: .12em; color: var(--rose); }
+  .menu-btn .mb-t::before { content: "MENU"; }
+  .menu-btn[aria-expanded="true"] .mb-t::before { content: "CLOSE"; }
+  .menu-btn[aria-expanded="true"] .mb-l:nth-child(1) { transform: translateY(6.4px) rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .mb-l:nth-child(2) { opacity: 0; }
+  .menu-btn[aria-expanded="true"] .mb-l:nth-child(3) { transform: translateY(-6.4px) rotate(-45deg); }
   .header__right { display: flex; align-items: center; gap: 28px; }
+  /* お菓子の電光掲示板（ヘッダーのまんなか） */
+  .ticker { flex: 1; min-width: 0; max-width: 360px; height: 32px; margin: 0 8px 0 12px; padding: 3px; border-radius: 999px;
+    background: repeating-linear-gradient(-50deg, #fff 0 5px, #F59BBE 5px 10px);
+    box-shadow: 0 2px 0 rgba(200,80,120,.28), 0 0 0 1px rgba(236,120,160,.35); }
+  .ticker { overflow: hidden; contain: layout paint; }
+  .ticker__win { position: relative; display: block; height: 100%; overflow: hidden; contain: paint; -webkit-mask-image: -webkit-radial-gradient(white, black); border-radius: 999px;
+    background: radial-gradient(120% 140% at 50% 0%, #5A2E40 0%, #3A1B28 60%, #2C1420 100%);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,.55), inset 0 -1px 0 rgba(255,255,255,.15); }
+  .ticker__win::before { content: ""; position: absolute; left: 8%; right: 8%; top: 1px; height: 38%; border-radius: 999px; background: linear-gradient(rgba(255,255,255,.14), rgba(255,255,255,0)); z-index: 2; pointer-events: none; }
+  .ticker__win::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, transparent .75px, rgba(44,20,32,.5) 1.2px) 0 0 / 2.6px 2.6px; }
+  .ticker__txt { position: absolute; left: 0; top: 50%; white-space: nowrap; transform: translate(100%, -50%); will-change: transform;
+    font-family: "DotGothic16", var(--maru); font-size: 15px; line-height: 1; letter-spacing: .06em; color: #FFC9DD;
+    text-shadow: 0 0 3px #FF6FA8, 0 0 9px rgba(255,111,168,.75); }
+  .ticker__txt .y { color: #FFF0A8; text-shadow: 0 0 3px #FFCB3D, 0 0 9px rgba(255,203,61,.7); }
+  .ticker__txt .m { color: #C6FFE9; text-shadow: 0 0 3px #4FE0B0, 0 0 9px rgba(79,224,176,.7); }
+  .ticker__txt .w { color: #FFFFFF; text-shadow: 0 0 3px #FFB3D1, 0 0 9px rgba(255,179,209,.8); }
+  .ticker__txt .sep { margin: 0 .9em; color: #FF8FBF; }
+  @media (prefers-reduced-motion: reduce) { .ticker__txt { transform: translate(10px, -50%); } }
+  .logo__name { display: none; }
+  .ticker { margin-left: 10px; }
+  @media (min-width: 768px) { .ticker { display: none; } .logo__name { display: inline; } }
   .header .nav { display: none; }
 
   .menu {
@@ -133,14 +168,54 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .menu__label + .quick { margin-top: 0; }
   .quick--menu { max-width: none; margin-bottom: 28px; }
   .menu__sns { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
-  .menu__sns a { display: inline-block; padding: 8px 16px; border-radius: 999px; background: rgba(255,255,255,.75); border: 1.5px solid var(--white); box-shadow: 0 3px 0 rgba(224,116,150,.45); font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .06em; transition: transform .15s, box-shadow .15s; }
+  .menu__sns a { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 16px; border-radius: 999px; background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid var(--white); box-shadow: 0 3px 0 #E6A6BE; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .06em; transition: transform .15s, box-shadow .15s; }
+  .menu__sns a::before { content: ""; position: absolute; inset: 3px; border: 1px solid rgba(255,255,255,.9); border-radius: inherit; pointer-events: none; }
   .menu__sns a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); }
   .menu__top { display: inline-block; margin-top: 26px; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .08em; color: var(--ink-sub); border-bottom: 1.5px solid var(--rose); }
   body.menu-open { overflow: hidden; }
   @media (min-width: 768px) { .header .nav { display: flex; } }
 
+
+  /* メニューの端でかくれんぼ */
+  .menu-peeks{position:fixed;inset:calc(env(safe-area-inset-top,0px) + 57px) 0 0;z-index:10;overflow:hidden;pointer-events:none;}
+  .menu-peeks[hidden]{display:none;}
+  .menu-peek{position:absolute;padding:0;border:0;background:none;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;opacity:0;transition:transform .35s ease-in,opacity .25s;}
+  .menu-peek:focus-visible{outline:2px dashed var(--rose-deep);outline-offset:-4px;border-radius:28px;}
+  .menu-peek--mini{width:96px;height:171px;top:var(--peek-y,18%);filter:drop-shadow(0 3px 4px rgba(150,70,95,.18));}
+  .menu-peek--mini img{display:block;width:100%;height:auto;pointer-events:none;}
+  .menu-peek--mini[data-side="left"]{left:0;transform:translateX(-115%) rotate(20deg);}
+  .menu-peek--mini[data-side="right"]{right:0;transform:translateX(115%) rotate(-20deg);}
+  .menu-peek--mini.is-peeking[data-side="left"]{opacity:1;transform:translateX(-38%) rotate(20deg);transition:transform .65s cubic-bezier(.2,.8,.3,1),opacity .3s;}
+  .menu-peek--mini.is-peeking[data-side="right"]{opacity:1;transform:translateX(38%) rotate(-20deg);transition:transform .65s cubic-bezier(.2,.8,.3,1),opacity .3s;}
+  .menu-peek--large{left:var(--large-x,55%);bottom:0;width:clamp(280px,60vw,460px);height:clamp(185px,34vw,270px);overflow:hidden;transform:translate(-50%,105%);}
+  .menu-peek--large img{display:block;width:100%;height:auto;pointer-events:none;}
+  .menu-peek--large.is-peeking{opacity:1;transform:translate(-50%,0);transition:transform .65s cubic-bezier(.2,.8,.3,1),opacity .3s;}
+  .menu-peek:not(.is-peeking){pointer-events:none;}
+  @media(prefers-reduced-motion:reduce){.menu-peek,.menu-peek--mini.is-peeking,.menu-peek--large.is-peeking{transition:opacity .15s;}}
+
+
+  .menu-confetti{position:fixed;inset:0;z-index:40;overflow:hidden;pointer-events:none;opacity:1;transition:opacity .45s;}
+  .menu-confetti.is-fading{opacity:0;}
+  .menu-confetti__piece{position:absolute;display:block;font-size:var(--size);line-height:1;color:var(--heart-color,var(--rose));text-shadow:0 1px 2px rgba(255,255,255,.4);animation:shii-heart-party 3.8s ease-out both;animation-delay:var(--delay);will-change:transform,opacity;}
+  @keyframes shii-heart-party{0%{opacity:1;transform:translate(0,0) rotate(var(--turn)) scale(.75);}18%{opacity:1;transform:translate(calc(var(--drift) * .2),-12px) rotate(var(--turn)) scale(1);}72%{opacity:1;}100%{opacity:1;transform:translate(var(--drift),90px) rotate(var(--end-turn)) scale(.9);}}
+  @media(prefers-reduced-motion:reduce){.menu-confetti__piece{animation:shii-heart-fade 3s ease-out both;}@keyframes shii-heart-fade{0%,100%{opacity:1;}}}
+
   /* Hero */
-  .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 80px; display: grid; gap: 28px; }
+  .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 32px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  /* iPhoneの文字幅でも横にはみ出さないように（中身が広がって列を押し広げない） */
+  .hero__text, .hero__in > * { min-width: 0; }
+  .quick a { min-width: 0; overflow-wrap: anywhere; }
+  @media (max-width: 400px) { .quick a { font-size: clamp(12px, 3.5vw, 14px); letter-spacing: 0; } .hero__sns a { font-size: 12px; } }
+  .hero__identity { display: contents; }
+  .hero__menu-title { display: flex; align-items: center; gap: 9px; margin: 26px 0 12px; max-width: 420px; color: var(--rose-deep); font-family: var(--maru); font-weight: 700; font-size: 15px; letter-spacing: .12em; }
+  .hero__menu-title svg { width: 20px; height: 20px; flex: none; color: var(--rose); }
+  .hero__menu-title::after { content: ""; flex: 1; border-top: 1px dashed rgba(224,116,150,.45); margin-left: 5px; }
+  .hero__menu-title + .quick { margin-top: 0; }
+  .hero__external { margin-top: 18px; }
+  .hero__external .menu__label { font-family: var(--maru); letter-spacing: .1em; }
+  .hero__sns { margin-top: 0; margin-bottom: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .6fr) minmax(0, 1.9fr); max-width: 420px; gap: 8px; }
+  .hero__sns a { width: 100%; justify-content: center; padding-inline: 6px; font-size: 13px; letter-spacing: 0; white-space: nowrap; }
+  .hero__sns a { display: inline-flex; align-items: center; min-height: 44px; }
   .hero__photo { position: relative; justify-self: center; width: min(100%, 420px); }
   .hero__photo .holo { border-radius: 16px; border: 6px solid var(--white); box-shadow: 8px 8px 0 var(--rose); }
   .bubble {
@@ -151,6 +226,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     transform: rotate(8deg);
     box-shadow: 0 4px 14px rgba(150,70,95,.15);
   }
+  @media (max-width: 767px) { .bubble { right: 2px; } }
   .bubble { transform-origin: 20% 100%; animation: bubble-pop .55s cubic-bezier(.3,1.7,.5,1) .4s both, pyoko 2.8s ease-in-out 1.2s infinite; }
   @keyframes bubble-pop { 0% { transform: scale(0) rotate(-10deg); opacity: 0; } 100% { transform: scale(1) rotate(8deg); opacity: 1; } }
   @keyframes pyoko {
@@ -276,28 +352,57 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .btn:hover { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--rose); background: var(--rose); color: var(--white); }
   .btn--main { background: var(--rose); color: var(--white); border-color: var(--white); box-shadow: 4px 4px 0 var(--white); }
   .btn--main:hover { background: var(--white); color: var(--ink); box-shadow: 1px 1px 0 var(--white); }
+  /* 配信を見にいく：キャンディ柄フチの大きなボタン */
+  .watch { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; max-width: 420px; margin-top: 24px; padding: 4px; border-radius: 26px;
+    background: repeating-linear-gradient(-50deg, #fff 0 6px, #F59BBE 6px 12px); box-shadow: 0 4px 0 #D9789D, 0 8px 16px rgba(174,92,120,.18);
+    color: #fff; -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s; }
+  .watch::before { content: ""; position: absolute; inset: 4px; border-radius: 22px; background: linear-gradient(120deg, #F27DA6, #EE6F9B 45%, #F6A0C0); z-index: 0; }
+  .watch::after { content: ""; position: absolute; left: 16px; right: 16px; top: 7px; height: 40%; border-radius: 999px; background: linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,0)); z-index: 0; pointer-events: none; }
+  .watch > * { position: relative; z-index: 1; }
+  .watch:active, .watch:hover { transform: translateY(3px); box-shadow: 0 1px 0 #D9789D, 0 3px 8px rgba(174,92,120,.18); }
+  .watch__play { flex: none; display: grid; place-items: center; width: 46px; height: 46px; margin: 8px 0 8px 10px; border-radius: 50%; background: #fff; color: #EE6F9B; box-shadow: 0 0 0 0 rgba(255,255,255,.7); animation: watch-pulse 2s ease-out infinite; }
+  .watch__play svg { width: 26px; height: 26px; fill: currentColor; stroke: currentColor; stroke-width: 3.2; stroke-linejoin: round; }
+  @keyframes watch-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.75); } 70%,100% { box-shadow: 0 0 0 12px rgba(255,255,255,0); } }
+  .watch__t { flex: 1; min-width: 0; font-family: var(--maru); font-weight: 700; font-size: 17px; letter-spacing: .1em; line-height: 1.3; text-shadow: 0 1px 0 rgba(180,60,100,.35); }
+  .watch__sub { display: block; margin-top: 2px; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: rgba(255,255,255,.92); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .watch__go { flex: none; display: grid; place-items: center; width: 30px; height: 30px; margin-right: 14px; border-radius: 50%; background: rgba(255,255,255,.3); font-size: 22px; line-height: 1; padding-bottom: 3px; }
+  @media (prefers-reduced-motion: reduce) { .watch__play { animation: none; } }
   .hero__btns { display: flex; flex-wrap: wrap; gap: 0 18px; }
   /* ヒーロー下のコンパクトなメニュー（3列×2段） */
-  .quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 26px; max-width: 420px; }
+  .quick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 26px; max-width: 420px; }
   .quick a {
+    position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-    min-height: 74px; padding: 10px 4px 9px; border-radius: 18px;
-    background: rgba(255,255,255,.75); border: 1.5px solid var(--white); box-shadow: 0 3px 0 rgba(224,116,150,.45);
-    font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .04em; color: var(--ink); text-align: center;
+    min-height: 84px; padding: 11px 4px 10px; border-radius: 18px;
+    background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid var(--white); box-shadow: 0 4px 0 #E6A6BE, 0 7px 12px rgba(174,92,120,.08);
+    font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--ink); text-align: center;
     transition: transform .15s, box-shadow .15s, background-color .15s; -webkit-tap-highlight-color: transparent;
   }
   .quick a:hover, .quick a:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(224,116,150,.45); background: var(--white); }
-  .quick { grid-template-columns: repeat(6, 1fr); }
+  .quick a::before { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(255,255,255,.9); border-radius: 12px; pointer-events: none; }
+  .quick a::after { content: "♡"; position: absolute; top: 7px; right: 10px; font-size: 12px; line-height: 1; color: var(--rose); opacity: .5; pointer-events: none; }
+  .quick a.quick__omikuji::after { color: #916DB0; }
+  .quick { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .quick a { grid-column: span 2; }
   .quick a.quick__half { grid-column: span 3; flex-direction: row; gap: 8px; min-height: 54px; font-size: 13px;
     background: linear-gradient(90deg, rgba(255,255,255,.85), rgba(255,236,242,.9)); }
+  .quick a.quick__omikuji { grid-column: 1 / -1; flex-direction: row; gap: 10px; min-height: 58px; font-size: 14px; background: linear-gradient(110deg, #F7F2FC, #EEE4F7); border-color: #D5C1E8; box-shadow: 0 3px 0 #C2A8DC; color: #765591; }
+  .quick a.quick__omikuji:hover, .quick a.quick__omikuji:active { background: #F7F2FC; box-shadow: 0 1px 0 #C2A8DC; }
+  .quick__omikuji .quick__i { background: #E6D7F1; color: #916DB0; }
+  .quick a.quick__omikuji, .quick a.quick__stamp { grid-column: span 3; }
+  .quick a.quick__stamp { flex-direction: row; gap: 10px; min-height: 58px; font-size: 14px; background: linear-gradient(110deg, #FFF8EC, #FDEBD6); border-color: #F2D2A8; box-shadow: 0 3px 0 #E7BE86; color: #9A6A2E; }
+  .quick a.quick__stamp::after { color: #D49A4C; }
+  .quick__stamp .quick__i { background: #FBE2C2; color: #E59A3A; }
+  .quick__dot { position: absolute; top: 8px; left: 10px; width: 9px; height: 9px; border-radius: 50%; background: #FF6F9C; box-shadow: 0 0 0 2px #fff; animation: dot-pulse 1.4s ease-in-out infinite; }
+  @keyframes dot-pulse { 50% { transform: scale(1.35); } }
   .quick__wide small { font-family: var(--maru); font-weight: 500; font-size: 11px; color: var(--ink-sub); padding: 2px 8px; border-radius: 999px; background: #FBE3EA; }
-  .quick__i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #FBE3EA; color: var(--rose); }
-  .quick__i svg { width: 20px; height: 20px; }
-  .quick a:nth-child(2) .quick__i svg, .quick a:nth-child(5) .quick__i svg { width: 18px; height: 18px; }
+  .quick__i { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(145deg, #FDE9F0, #F5CADB); color: var(--rose); box-shadow: inset 0 1px 0 #fff, 0 0 0 3px rgba(255,255,255,.65); }
+  .quick__i svg { width: 22px; height: 22px; }
+  .quick a:nth-child(2) .quick__i svg, .quick a:nth-child(5) .quick__i svg { width: 20px; height: 20px; }
 
   /* セクション共通 */
   .sec { width: var(--wrap); margin-inline: auto; padding-block: 72px; border-top: 1px dashed var(--white); }
+  #profile { padding-top: 40px; }
   .sec__head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 32px; }
   .sec__en { font-family: var(--en); font-weight: 500; font-size: clamp(34px, 8vw, 52px); letter-spacing: .08em; line-height: 1; color: var(--rose); }
   .sec__ja { font-family: var(--maru); font-weight: 500; font-size: 13px; letter-spacing: .14em; color: var(--ink-sub); }
@@ -413,6 +518,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .req__pic .floater { animation: fuwa-s 5.5s ease-in-out infinite; }
   @keyframes fuwa-s { 0%, 100% { transform: translateY(0) rotate(.4deg); } 50% { transform: translateY(-7px) rotate(-.5deg); } }
   .req__lead { font-size: 15px; line-height: 2; letter-spacing: .05em; }
+  .req__notice { margin-top: 6px; font-size: 11px; line-height: 1.7; color: var(--ink-sub); }
   .req__form { margin-top: 26px; display: grid; gap: 18px; }
   .req__row { display: grid; gap: 18px; }
   .req__f label { display: block; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .1em; margin-bottom: 6px; }
@@ -534,6 +640,25 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .totop:active { transform: scale(.92); }
   .totop svg { width: 22px; height: 22px; }
   .totop small { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-family: var(--en); font-weight: 500; font-size: 9px; letter-spacing: .15em; color: var(--rose-deep); white-space: nowrap; }
+  .tomenu { position: fixed; right: 16px; bottom: calc(104px + env(safe-area-inset-bottom, 0px)); z-index: 80;
+    display: grid; place-items: center; width: 52px; height: 52px; padding: 0; border-radius: 50%;
+    background: var(--white); color: var(--rose); border: 2px solid var(--rose); box-shadow: 0 6px 16px rgba(150,70,95,.25);
+    cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(16px) scale(.8);
+    transition: opacity .25s, transform .35s cubic-bezier(.3,1.5,.5,1) .05s, visibility .25s; -webkit-tap-highlight-color: transparent; }
+  .tomenu.is-show { opacity: 1; visibility: visible; transform: none; }
+  .tomenu:active { transform: scale(.92); }
+  .tomenu svg { width: 22px; height: 22px; }
+  .tomenu small { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-family: var(--en); font-weight: 500; font-size: 9px; letter-spacing: .15em; color: var(--rose-deep); white-space: nowrap; }
+  /* 右下のボタンもヘッダーのMENUボタンと同じお菓子タイル風に */
+  .tomenu, .totop { right: 8px; width: 52px; height: 54px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    background: linear-gradient(145deg, #FFFCFD, #FBEAF0); color: var(--rose); border: 1.5px solid #fff;
+    box-shadow: 0 3px 0 #E6A6BE, 0 8px 16px rgba(150,70,95,.22); }
+  .totop { background: linear-gradient(145deg, #F68FB4, #EE6F9B); color: #fff; box-shadow: 0 3px 0 #C9557B, 0 8px 16px rgba(150,70,95,.25); }
+  .tomenu svg, .totop svg { width: 24px; height: 24px; }
+  .tomenu small, .totop small { position: static; transform: none; font-family: var(--en); font-weight: 600; font-size: 8px; line-height: 1; letter-spacing: .12em; color: inherit; }
+  .tomenu:active, .totop:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
+  .tomenu { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+  body.menu-open .tomenu, body.menu-open .totop { opacity: 0; visibility: hidden; }
 
   /* 更新のお知らせ */
   .upd { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 90; transform: translate(-50%, 160%);
@@ -549,6 +674,23 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* SONGS */
   .deco--songs::before { background-image: url(img/drip2.svg); background-position: -110px 0; }
   .deco--songs::after { left: calc(243.1px - 110px - 2px - 4px); top: calc(30.3px - 2px - 6px); animation-delay: 2.2s; }
+  .songs__arrow { font-size:22px; color:var(--rose-deep); }
+  .songs__page-link { display:inline-block; margin-bottom:10px; font-size:12px; color:var(--ink-sub); border-bottom:1px solid rgba(142,92,105,.35); }
+  .songs__credit { display:flex; flex-wrap:wrap; gap:4px 10px; }
+  .songs__credit a { font-size:10px; padding:4px; color:var(--ink-sub); text-decoration:none; }
+  .songs__credit a:hover { color:var(--rose-deep); text-decoration:underline; }
+  .songs__modes { display:flex; gap:4px; padding:4px; border-radius:999px; background:rgba(255,255,255,.55); margin-bottom:8px; }
+  .songs__modes button { flex:1; border:0; border-radius:999px; padding:8px 6px; background:transparent; color:var(--ink-sub); font:inherit; font-size:12px; cursor:pointer; }
+  .songs__modes button[aria-pressed="true"] { background:var(--white); color:var(--rose-deep); box-shadow:0 2px 8px rgba(181,100,130,.12); }
+  .songs__kana { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+  .songs__kana button { border:1px solid rgba(181,100,130,.2); border-radius:999px; padding:5px 9px; background:rgba(255,255,255,.65); color:var(--ink-sub); font:inherit; font-size:11px; cursor:pointer; }
+  .songs__kana button[aria-pressed="true"] { background:var(--rose-deep); color:#fff; }
+  .songs__tools { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:12px; }
+  .songs__tools label { font-size:13px; color:var(--ink-sub); }
+  .songs__tools select, .songs__random { max-width:100%; padding:9px 13px; border:1.5px solid var(--white); border-radius:999px; background:rgba(255,255,255,.8); color:var(--rose-deep); font:inherit; font-size:13px; }
+  .songs__random:disabled { opacity:.5; }
+  .songs__picked { margin-top:12px; padding:14px; border-radius:16px; background:rgba(255,255,255,.8); color:var(--ink); overflow-wrap:anywhere; }
+  .songs__picked .songs__req { margin-top:8px; }
   .songs__search { position: relative; margin-top: 18px; }
   .songs__search svg { position: absolute; left: 14px; top: 50%; width: 18px; height: 18px; margin-top: -9px; color: var(--rose); }
   .songs__search input { width: 100%; height: 48px; padding: 0 16px 0 42px; border: 1.5px solid var(--white); border-radius: 999px; background: rgba(255,255,255,.8);
@@ -560,13 +702,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .songs__tags button { flex: none; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--white); background: rgba(255,255,255,.55);
     font-family: var(--maru); font-weight: 700; font-size: 12px; color: var(--ink-sub); cursor: pointer; }
   .songs__tags button[aria-pressed="true"] { background: var(--rose); color: var(--white); }
-  .songs__tools { display: flex; gap: 10px; margin-top: 12px; }
-  .songs__sort, .songs__random { min-height: 42px; border: 1.5px solid var(--white); border-radius: 999px; background: rgba(255,255,255,.72); color: var(--ink); font: 700 13px var(--maru); }
-  .songs__sort { flex: 1; min-width: 0; padding: 0 34px 0 14px; appearance: auto; cursor: pointer; }
-  .songs__random { flex: none; padding: 0 15px; cursor: pointer; white-space: nowrap; }
-  .songs__sort:focus, .songs__random:focus, .songs__list-toggle:focus, .songs__req:focus { outline: 2px solid var(--rose); outline-offset: 2px; }
-  .songs__random:active { background: var(--rose); color: var(--white); }
-  .songs__random:disabled { opacity: .55; cursor: not-allowed; }
   .songs__count { margin-top: 12px; font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .06em; color: var(--ink-sub); }
   .songs__list { list-style: none; margin-top: 8px; display: grid; gap: 8px; }
   .songs__list li { display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 12px; border-radius: 16px; background: rgba(255,255,255,.78);
@@ -592,19 +727,71 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .songs__empty { padding: 18px; text-align: center; font-size: 14px; color: var(--ink-sub); background: rgba(255,255,255,.5); border-radius: 16px; }
   .songs__more { display: block; margin: 14px auto 0; height: 40px; padding: 0 22px; border-radius: 999px; border: 1.5px solid var(--white); background: rgba(255,255,255,.7);
     font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; }
-  .songs__list-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 44px; margin-top: 12px; padding: 0 15px; border: 1.5px solid var(--white); border-radius: 999px; background: rgba(255,255,255,.64); color: var(--ink); font: 700 13px var(--maru); cursor: pointer; }
-  .songs__list-toggle svg { width: 18px; height: 18px; color: var(--rose); transition: transform .22s ease; }
-  .songs__list-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
-  .songs__list-wrap { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .26s ease, opacity .2s ease; }
-  .songs__list-wrap.is-collapsed { grid-template-rows: 0fr; opacity: 0; }
-  .songs__list-wrap > div { min-height: 0; overflow: hidden; }
-  .songs__random-result { margin-top: 12px; padding: 14px 16px; border: 1.5px solid var(--white); border-radius: 18px; background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,229,238,.86)); box-shadow: 0 2px 0 rgba(224,116,150,.2); }
-  .songs__random-label { margin: 0 0 5px; font-family: var(--maru); font-weight: 700; font-size: 12px; color: var(--rose-deep); }
-  .songs__random-result .songs__title { font-size: 16px; }
-  .songs__random-result .songs__artist { margin-top: 2px; }
-  .songs__random-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
-  @media (max-width: 420px) { .songs__tools { flex-direction: column; } .songs__sort, .songs__random { width: 100%; } }
   mark.songs__hit { background: #FFE3EC; color: inherit; border-radius: 4px; padding: 0 1px; }
+
+  /* 今週の配信予定（しぃ管理の予定表メーカーから反映） */
+  .week { margin-bottom: 18px; }
+  .week__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; margin-bottom: 10px; }
+  .week__ttl { font-family: var(--maru); font-weight: 700; font-size: 16px; color: var(--ink); }
+  .week__ttl span { margin-left: 8px; font-size: 12px; color: var(--ink-sub); }
+  .week__upd { padding: 2px 10px; border-radius: 999px; background: rgba(255,255,255,.7); font-family: var(--maru); font-weight: 700; font-size: 11px; color: var(--rose-deep); }
+  .week__list { list-style: none; display: grid; gap: 7px; }
+  .week__list li { position: relative; display: flex; align-items: center; gap: 12px; padding: 7px 12px 7px 7px; border-radius: 16px; background: rgba(255,255,255,.82); box-shadow: 0 2px 0 rgba(224,116,150,.25); }
+  .week__d { flex: none; display: grid; place-items: center; width: 52px; height: 44px; border-radius: 12px; background: #F08DB0; color: #fff; font-family: var(--maru); font-weight: 700; font-size: 14px; line-height: 1.1; text-align: center; }
+  .week__d small { display: block; font-size: 10px; }
+  .week__list li.sat .week__d { background: #86A6E8; }
+  .week__list li.sun .week__d { background: #EC6F98; }
+  .week__t { flex: none; min-width: 64px; font-family: var(--en); font-weight: 500; font-size: 16px; color: var(--rose); }
+  .week__w { flex: 1; min-width: 0; font-family: var(--maru); font-weight: 700; font-size: 14px; color: var(--ink); overflow-wrap: anywhere; }
+  .week__list li.is-off { background: rgba(255,255,255,.45); box-shadow: none; }
+  .week__list li.is-off .week__d { background: #D9C8E8; }
+  .week__list li.is-off .week__w { color: #A28AB8; }
+  .week__list li.is-past { opacity: .45; }
+  .week__list li.is-today { background: #fff; box-shadow: 0 0 0 2px var(--rose), 0 4px 10px rgba(224,116,150,.3); }
+  .week__list li.is-today::after { content: "TODAY"; position: absolute; top: -8px; right: 10px; padding: 1px 8px; border-radius: 999px; background: var(--rose); color: #fff; font-family: var(--en); font-weight: 500; font-size: 9px; letter-spacing: .14em; }
+  .week__note { margin-top: 10px; padding: 8px 14px; border-radius: 999px; background: #fff; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--rose-deep); }
+  .week__base { margin-top: 22px; padding-top: 14px; border-top: 1px dashed rgba(224,116,150,.4); font-family: var(--maru); font-weight: 700; font-size: 12px; color: var(--ink-sub); }
+
+  /* STAMP */
+  .deco--stamp::before { background-image: url(img/drip0.svg); background-position: -40px 0; }
+  .deco--stamp::after { left: calc(158.1px - 40px - 2px - 4px); top: calc(30.5px - 2px - 6px); animation-delay: 6.2s; }
+  .stamp { text-align: center; }
+  .stamp .req__lead { text-align: left; }
+  .stamp .req__lead small { display: block; margin-top: 2px; font-size: 11px; color: var(--ink-sub); }
+  .stamp__card { position: relative; margin: 18px auto 0; max-width: 380px; padding: 16px 16px 14px; border-radius: 20px; background:
+      radial-gradient(circle at 1px 1px, rgba(224,116,150,.12) 1.2px, transparent 1.6px) 0 0 / 14px 14px, #FFFBF7;
+    border: 2px solid #fff; box-shadow: 0 0 0 2px #F6C9D7, 0 6px 0 rgba(224,116,150,.35), 0 10px 22px rgba(150,70,95,.15); }
+  .stamp__card::before { content: ""; position: absolute; inset: 7px; border: 1.5px dashed #F3B7CA; border-radius: 14px; pointer-events: none; }
+  .stamp__top { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 2px 4px 10px; }
+  .stamp__ttl { text-align: left; font-family: var(--maru); font-weight: 700; font-size: 12px; line-height: 1.3; color: var(--ink-sub); }
+  .stamp__ttl b { font-family: var(--en); font-weight: 500; font-size: 20px; letter-spacing: .14em; color: var(--rose); }
+  .stamp__no { flex: none; padding: 4px 12px; border-radius: 999px; background: var(--rose); color: #fff; font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .1em; }
+  .stamp__grid { position: relative; list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 4px; }
+  .stamp__grid li { position: relative; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; border: 2px dashed #F3B7CA; background: #fff;
+    font-family: var(--en); font-weight: 500; font-size: 14px; color: #F0A9C0; }
+  .stamp__grid li.is-on { border: 0; background: radial-gradient(circle at 35% 30%, #FFB3CC, #EE6F9B); color: #fff; transform: rotate(var(--rot, -8deg));
+    box-shadow: inset 0 0 0 3px rgba(255,255,255,.55), 0 2px 0 rgba(200,70,110,.35); }
+  .stamp__grid li.is-on svg { width: 58%; height: 58%; filter: drop-shadow(0 1px 0 rgba(160,40,80,.25)); }
+  .stamp__grid li.is-gold { background: radial-gradient(circle at 35% 30%, #FFF1C2, #E7AE4A); }
+  .stamp__grid li.is-goal:not(.is-on) { border-color: #E7BE86; color: #D9A04E; }
+  .stamp__grid li.is-goal:not(.is-on)::after { content: "🎁"; position: absolute; right: -6px; top: -8px; font-size: 14px; }
+  .stamp__grid li.is-today { animation: stamp-pon .6s cubic-bezier(.3,1.6,.5,1) both; }
+  @keyframes stamp-pon { 0% { transform: scale(2.2) rotate(-30deg); opacity: 0; } 55% { transform: scale(.88) rotate(var(--rot, -8deg)); opacity: 1; } 100% { transform: scale(1) rotate(var(--rot, -8deg)); } }
+  .stamp__count { position: relative; margin-top: 10px; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink-sub); }
+  .stamp__count b { color: var(--rose); font-size: 18px; }
+  .stamp__count small { font-size: 11px; font-weight: 500; }
+  .stamp__btn { cursor: pointer; }
+  .stamp__btn:disabled { opacity: .6; cursor: default; transform: none; box-shadow: 4px 4px 0 var(--white); }
+  .stamp__note { margin-top: 10px; min-height: 1.6em; font-size: 12px; color: var(--ink-sub); }
+  .stamp__reward-open { margin-top: 4px; padding: 6px 14px; border: 0; border-radius: 999px; background: #FDEBD6; color: #9A6A2E; font-family: var(--maru); font-weight: 700; font-size: 12px; cursor: pointer; }
+  .stamp-modal { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: 20px; background: rgba(94,53,64,.5); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .stamp-modal__in { width: min(360px, 100%); max-height: 100%; overflow: auto; padding: 20px 18px 16px; border-radius: 24px; background: #FFF8FA; text-align: center; animation: omi-pop .6s cubic-bezier(.3,1.6,.5,1) both; }
+  .stamp-modal__ttl { font-family: var(--en); font-weight: 500; font-size: 20px; letter-spacing: .18em; background: linear-gradient(110deg, #E6AD4A, #FF8FBF 50%, #E6AD4A); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stamp-modal__sub { margin-top: 6px; font-family: var(--maru); font-weight: 700; font-size: 14px; line-height: 1.7; color: var(--ink); }
+  .stamp-modal__img { display: block; width: 62%; margin: 14px auto 0; border-radius: 14px; box-shadow: 0 6px 18px rgba(150,70,95,.25); background: #F6E4E9; aspect-ratio: 9 / 19.5; object-fit: cover; }
+  .stamp-modal__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 12px; }
+  .stamp-modal__btns .btn { min-width: 0; height: 46px; padding-inline: 22px; font-size: 14px; cursor: pointer; }
+  .stamp-modal__hint { margin-top: 10px; font-size: 11px; color: var(--ink-sub); }
 
   /* OMIKUJI */
   .deco--omi::before { background-image: url(img/drip1.svg); background-position: -180px 0; }
@@ -656,8 +843,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     100% { opacity: 0; transform: translate(var(--x), -38px) scale(.7) rotate(var(--r)); } }
 
   /* 季節のきせかえ */
-  .season-fx { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-  .season-fx i { position: absolute; top: -40px; display: block; opacity: .85; will-change: transform; animation: sfx-fall linear infinite; }
+  .season-fx { position: fixed; inset: 0; z-index: 8; pointer-events: none; overflow: hidden; }
+  .season-fx i { position: absolute; top: -40px; display: block; opacity: .9; filter: drop-shadow(0 2px 3px rgba(120,60,90,.18)); will-change: transform; animation: sfx-fall linear infinite; }
   .season-fx i svg { display: block; width: 100%; height: 100%; }
   html[data-season="xmas"] .season-fx i svg, html[data-season="newyear"] .season-fx i svg { filter: drop-shadow(0 0 2px rgba(190,110,140,.55)); }
   @keyframes sfx-fall {
@@ -825,6 +1012,47 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .bubble { transform: rotate(8deg); }
     .floaty, .kira { display: none; }
   }
+  /* Tablet layout: keep phone portrait and landscape rules unchanged. */
+  @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) {
+    :root { --wrap: min(1040px, 100% - 64px); }
+    .header .nav { display: none; }
+    .hero__in { max-width: 900px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "identity photo" "talk talk" "cta cta" "menuheading menuheading" "quick quick" "social social"; gap: 18px 28px; align-items: center; padding-block: 32px 48px; min-height: auto; }
+    .hero__text { display: contents; }
+    .hero__identity { display: block; grid-area: identity; min-width: 0; text-align: center; }
+    .hero__logo { margin-inline: 0; }
+    .hero__logo img { width: min(100%, 320px); margin-inline: auto; }
+    .hero__photo { grid-area: photo; order: 0; width: min(100%, 300px); }
+    .hero__talk { grid-area: talk; margin-top: 0; font-size: 15px; text-align: center; }
+    .hero__text > .hero__btns { grid-area: cta; justify-content: center; }
+    .hero__menu-title { grid-area: menuheading; margin: 4px 0 -6px; max-width: none; }
+    .hero__text > .quick { grid-area: quick; margin-top: 0; }
+    .hero__text > .hero__external { grid-area: social; margin-top: 0; text-align: center; }
+    .hero__sns { margin-inline: auto; width: 100%; }
+    .quick { max-width: none; gap: 12px; }
+    .quick a { min-height: 88px; }
+    .quick a.quick__omikuji, .quick a.quick__stamp { min-height: 60px; }
+    .menu__in { width: min(760px, 100% - 192px); padding-block: 36px 64px; }
+    .quick--menu { max-width: none; margin-top: 0; gap: 16px; }
+    .quick--menu a { min-height: 104px; font-size: 15px; }
+    .quick--menu a.quick__omikuji, .quick--menu a.quick__stamp { min-height: 72px; font-size: 15px; }
+    .menu__sns a, .menu__top { min-height: 44px; display: inline-flex; align-items: center; }
+    .prof { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+    .prof__side { gap: 16px; }
+    .prof__meta { min-width: 0; }
+    .prof__meta dd { overflow-wrap: anywhere; }
+    .prof__chibi { width: 96px; }
+    .req { max-width: 680px; }
+    .sec { padding-block: 60px; }
+    .acc__btn { min-height: 56px; }
+  }
+  @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) and (orientation: portrait) {
+    .hero__in { gap: 18px 20px; padding-block: 28px 40px; }
+    .prof { grid-template-columns: 1fr; gap: 28px; max-width: 680px; }
+  }
+
+  /* 画像の保存よけ（長押し・右クリック・ドラッグ）。ごほうび壁紙だけは保存OK */
+  img, svg image, canvas, picture { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
+  img[data-save] { -webkit-touch-callout: default; -webkit-user-select: auto; user-select: auto; -webkit-user-drag: auto; }
 </style>
 </head>
 <body>
@@ -840,7 +1068,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   <symbol id="star" viewBox="0 0 24 24"><path fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="m12 3 2.6 5.6 6.1.7-4.5 4.1 1.2 6L12 16.4l-5.4 3 1.2-6-4.5-4.1 6.1-.7z"/></symbol>
   <symbol id="moon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5z"/></symbol>
   <symbol id="gift" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2" fill="#fff" stroke="currentColor" stroke-width="1.6"/><rect x="2" y="6" width="20" height="4" rx="1.5" fill="currentColor"/><path d="M12 6v15" stroke="currentColor" stroke-width="2.4"/><path d="M12 6c-1.5-3-5.5-3.5-5.5-1.2S12 6 12 6zm0 0c1.5-3 5.5-3.5 5.5-1.2S12 6 12 6z" fill="currentColor"/></symbol>
-  <symbol id="omi" viewBox="0 0 24 24"><g fill="currentColor"><rect x="10.6" y="1.5" width="2.8" height="7" rx="1.2" transform="rotate(14 12 5)"/><path d="M6 7.5h12l-1.4 13.2a1.6 1.6 0 0 1-1.6 1.4H9a1.6 1.6 0 0 1-1.6-1.4z"/></g><path d="M9.2 13.2s1.1-.9 2.8-.9 2.8.9 2.8.9M10 16.5h4" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="omi" viewBox="0 0 24 24"><path d="m13 2-1 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="m5 9 7-2 7 2v11l-7 2-7-2Z" fill="currentColor"/><path d="m5 9 7 2 7-2M12 11v11" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.1" stroke-linejoin="round"/><path d="M8 13v4m-1-2h2" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></symbol>
   <symbol id="pumpkin" viewBox="0 0 24 24"><path fill="#F59A3C" d="M12 7c-5 0-9 3-9 7.3S7 21 12 21s9-2.4 9-6.7S17 7 12 7z"/><path d="M12 7c-2 0-3.2 3-3.2 7s1.2 7 3.2 7 3.2-3 3.2-7S14 7 12 7z" fill="#FFB65C"/><path d="M12 7V4.2c0-.9.8-1.5 1.8-1.3" stroke="#7A5A3A" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M13 5.5c1.5-1.8 3.8-1.6 4.5-.7-1.3.9-2.8 1.2-4.5.7z" fill="#7CC48A"/><path d="M8.5 12.5l1.5 1.5 1.5-1.5M12.5 12.5l1.5 1.5 1.5-1.5M9 16.5c1.8 1.2 4.2 1.2 6 0" stroke="#7A3E1E" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="ghost" viewBox="0 0 24 24"><path fill="#fff" stroke="#E7B9CB" stroke-width="1" d="M12 2.5c-4.4 0-7.5 3.3-7.5 7.8V21l2.5-1.8 2.5 1.8 2.5-1.8 2.5 1.8 2.5-1.8 2.5 1.8V10.3c0-4.5-3.1-7.8-7.5-7.8z"/><circle cx="9.5" cy="10.5" r="1.3" fill="#5E3540"/><circle cx="14.5" cy="10.5" r="1.3" fill="#5E3540"/><ellipse cx="8" cy="13.2" rx="1.2" ry=".7" fill="#FFB3C9"/><ellipse cx="16" cy="13.2" rx="1.2" ry=".7" fill="#FFB3C9"/></symbol>
   <symbol id="bat" viewBox="0 0 32 16"><path fill="#8A6A98" d="M16 4c1.3 0 2 1.2 2 2.3 2-2 5.5-4.5 8.8-4.3-1.3 1.3-1.6 3-1.2 4.8-1.7-.6-3.5-.4-4.6.8-1.4-.8-3 .2-3.2 1.7-.6-.4-1.2-.6-1.8-.6s-1.2.2-1.8.6c-.2-1.5-1.8-2.5-3.2-1.7-1.1-1.2-2.9-1.4-4.6-.8.4-1.8.1-3.5-1.2-4.8C8.5 1.8 12 4.3 14 6.3 14 5.2 14.7 4 16 4z"/></symbol>
@@ -865,52 +1093,59 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 </div>
 
 <div class="season-fx" id="season-fx" aria-hidden="true"></div>
+<button class="tomenu" id="tomenu" type="button" aria-label="メニューを開く"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12M6 12h12M6 17h12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><small>MENU</small></button>
 <button class="totop" id="totop" type="button" aria-label="いちばん上へ戻る"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 11.5 12 5.5l6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><small>TOP</small></button>
 <button class="upd" id="upd" type="button" hidden><span class="upd__dot" aria-hidden="true"></span><span>新しいバージョンがあります<small>タップで更新</small></span></button>
 
 <header class="header">
   <div class="header__in">
-    <a class="logo" href="#top"><img src="img/icon.webp" alt="" width="34" height="34">しぃ</a>
+    <a class="logo" href="#top" aria-label="しぃ（トップへ）"><img src="img/icon.webp" alt="" width="34" height="34"><span class="logo__name">しぃ</span></a>
+    <a class="ticker" id="ticker" href="#schedule" aria-label="お知らせ"><span class="ticker__win"><span class="ticker__txt" id="ticker-txt"></span></span></a>
     <div class="header__right">
       <nav class="nav" aria-label="メイン">
         <a href="#profile">PROFILE</a>
         <a href="#schedule">SCHEDULE</a>
         <a href="#request">REQUEST</a>
         <a href="#message">MESSAGE</a>
-        <a href="#songs">SONGS</a>
+        <a href="songs.html">SONGS</a>
         <a href="#omikuji">OMIKUJI</a>
-        <a href="#link">LINK</a>
+        <a href="#link">外部リンク</a>
       </nav>
-      <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+      <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><i class="mb-l"></i><i class="mb-l"></i><i class="mb-l"></i><b class="mb-t" aria-hidden="true"></b></button>
     </div>
   </div>
 </header>
 
 <nav class="menu" id="menu" aria-label="メニュー">
   <div class="menu__in">
-    <p class="menu__label">MENU</p>
+    <p class="menu__label">メニュー</p>
     <div class="quick quick--menu">
       <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
-      <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信時間</a>
+      <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信予定</a>
       <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
       <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
-      <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
+      <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
       <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
-      <a class="quick__half" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
-          <a class="quick__half" href="#songs"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
+      <a class="quick__omikuji" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
+          <a class="quick__stamp" href="#stamp"><span class="quick__i"><svg><use href="#heart"/></svg></span>スタンプカード<i class="quick__dot" hidden></i></a>
     </div>
-    <p class="menu__label">SNS</p>
-    <ul class="menu__sns">
+    <p class="menu__label">外部リンク</p>
+    <ul class="menu__sns" aria-label="外部リンク">
       <li><a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">Mirrativ</a></li>
       <li><a href="https://x.com/shiitarou210" target="_blank" rel="noopener">X</a></li>
       <li><a href="https://honyararalivers.jp/" target="_blank" rel="noopener">ほにゃららLIVERS</a></li>
     </ul>
     <div class="hero__btns">
-      <a class="btn btn--main" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を見にいく</a>
+      <a class="watch" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener"><span class="watch__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9.2 7.2v9.6l8-4.8z"/></svg></span><span class="watch__t">配信を見にいく<small class="watch__sub">Mirrativ・夜22時からほぼ毎日</small></span><span class="watch__go" aria-hidden="true">›</span></a>
     </div>
     <a class="menu__top" href="#top">↑ トップへ戻る</a>
   </div>
 </nav>
+
+<div class="menu-peeks" id="menu-peeks" hidden>
+  <button class="menu-peek menu-peek--mini" id="menu-peek-mini" type="button" data-side="right" aria-label="ミニしぃをタップしてかくれんぼ" disabled><img src="img/chibi-a.webp" alt="" width="320" height="569"></button>
+  <button class="menu-peek menu-peek--large" id="menu-peek-large" type="button" aria-label="大きなしぃをタップしてハートと季節の飾りを広げる" disabled><img src="img/menu-candy-transparent.webp" alt="" width="1055" height="1491" loading="lazy"></button>
+</div>
 
 <main id="top">
   <section class="hero" aria-label="しぃ">
@@ -928,24 +1163,35 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <span class="kira k3" aria-hidden="true"><svg><use href="#kira"/></svg></span>
       </figure>
       <div class="hero__text">
+        <div class="hero__identity">
         <p class="hero__en" id="hero-en">SHII</p>
         <p class="hero__welcome">しぃの部屋へようこそ</p>
         <h1 class="hero__logo"><img src="img/logo.webp" alt="しぃ" width="900" height="558"></h1>
         <p class="hero__tag">🌈 ほにゃららLIVERS所属</p>
+        </div>
         <p class="hero__talk"><b>面白いこと、楽しいこと、お菓子が大好きな元メイド🍭🍰</b><br>夜22時からほぼ毎日ミラティブで配信中。ぜひ遊びに来てね！</p>
         <div class="hero__btns">
-          <a class="btn btn--main" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を見にいく</a>
+          <a class="watch" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener"><span class="watch__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9.2 7.2v9.6l8-4.8z"/></svg></span><span class="watch__t">配信を見にいく<small class="watch__sub">Mirrativ・夜22時からほぼ毎日</small></span><span class="watch__go" aria-hidden="true">›</span></a>
         </div>
+        <h2 class="hero__menu-title"><svg aria-hidden="true"><use href="#bow"/></svg>メニュー</h2>
         <nav class="quick" aria-label="メニュー">
           <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
-          <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信時間</a>
+          <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信予定</a>
           <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
           <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
-          <a href="#link"><span class="quick__i"><svg><use href="#kira"/></svg></span>リンク</a>
+          <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
           <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
-          <a class="quick__half" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
-          <a class="quick__half" href="#songs"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
+          <a class="quick__omikuji" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
+          <a class="quick__stamp" href="#stamp"><span class="quick__i"><svg><use href="#heart"/></svg></span>スタンプカード<i class="quick__dot" hidden></i></a>
         </nav>
+        <div class="hero__external" id="link">
+        <p class="menu__label">外部リンク</p>
+        <ul class="menu__sns hero__sns" aria-label="外部リンク">
+          <li><a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">Mirrativ</a></li>
+          <li><a href="https://x.com/shiitarou210" target="_blank" rel="noopener">X</a></li>
+          <li><a href="https://honyararalivers.jp/" target="_blank" rel="noopener">ほにゃららLIVERS</a></li>
+        </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -998,6 +1244,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="sec__head"><h2 class="sec__en">Schedule</h2><span class="sec__ja">配信</span></div>
     <div class="deco deco--night">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#moon"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p6" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r3" aria-hidden="true"><svg><use href="#star"/></svg></span>
+    <div class="week" id="week" hidden>
+      <div class="week__head"><p class="week__ttl">今週の配信予定<span id="week-range"></span></p><p class="week__upd" id="week-upd"></p></div>
+      <ol class="week__list" id="week-list"></ol>
+      <p class="week__note" id="week-note" hidden></p>
+      <p class="week__base">いつもの配信時間</p>
+    </div>
     <div class="sched__row">
       <span class="sched__time">22:00〜</span>
       <span class="sched__freq">ほぼ毎日</span>
@@ -1030,7 +1282,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <div class="req__f"><label for="req-song">曲名</label><input id="req-song" name="song" type="text" maxlength="80" autocomplete="off" required></div>
           <div class="req__f"><label for="req-artist">歌ってる人<small>わかれば</small></label><input id="req-artist" name="artist" type="text" maxlength="60" autocomplete="off"></div>
         </div>
-        <div class="req__f"><label for="req-name">リクエストする人のなまえ<small>ニックネームでOK・なしでもOK</small></label><input id="req-name" name="name" type="text" maxlength="24" autocomplete="nickname"></div>
+        <div class="req__f"><label for="req-name">リクエストする人のなまえ<small>ニックネームでOK・なしでもOK</small></label><input id="req-name" name="name" type="text" maxlength="24" autocomplete="nickname"><p class="req__notice">※ 届いたリクエストは、しぃがXや配信で紹介することがあります（ここに入れたなまえ・ひとことも載ります）。出したくない時は、なまえを空けて送ってね。</p></div>
         <div class="req__f"><label for="req-comment">ひとこと<small>なしでもOK</small></label><textarea id="req-comment" name="comment" maxlength="140" placeholder="この曲の好きなところ、聴きたい理由など"></textarea></div>
         <div class="req__hp" aria-hidden="true"><label for="req-web">website</label><input id="req-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
         <button class="btn btn--main" type="submit">リクエストを送る</button>
@@ -1053,30 +1305,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="sec__head"><h2 class="sec__en">Songs</h2><span class="sec__ja">歌える（かも）リスト</span></div>
     <div class="deco deco--songs">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#note2"/></svg></span>
-      <div class="songs">
-        <p class="req__lead">しぃが歌えるかも…な曲たち🎤「コピー」を押すとリクエスト用のコメントがコピーされるから、配信のコメント欄に貼ってね♡</p>
-        <div class="songs__search">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 20 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-          <input id="song-q" type="search" placeholder="曲名・アーティストでさがす" autocomplete="off" aria-label="曲をさがす">
-        </div>
-        <div class="songs__tags" id="song-tags" hidden></div>
-        <div class="songs__tools">
-          <select class="songs__sort" id="song-sort" aria-label="曲の並び替え">
-            <option value="recommended">おすすめ順</option>
-            <option value="title">五十音順</option>
-            <option value="title-desc">五十音順（逆）</option>
-            <option value="artist">アーティスト順</option>
-          </select>
-          <button class="songs__random" id="song-random" type="button">🎲 ランダムで1曲</button>
-        </div>
-        <div class="songs__random-result" id="song-random-result" hidden aria-live="polite"></div>
-        <button class="songs__list-toggle" id="song-list-toggle" type="button" aria-expanded="true" aria-controls="song-list-wrap"><span>♪ 曲一覧をしまう</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <div class="songs__list-wrap" id="song-list-wrap"><div>
-          <p class="songs__count" id="song-count">読み込み中…</p>
-          <ul class="songs__list" id="song-list"></ul>
-          <button class="songs__more" id="song-more" type="button" hidden>もっと見る</button>
-        </div></div>
-      </div>
+      <p class="req__lead">歌える曲をさがして、リクエスト用のコメントをコピーできるよ🎤</p>
+      <a class="acc__btn" href="songs.html">🎤 歌える曲リストを開く<span class="songs__arrow" aria-hidden="true">↗</span></a>
     </div>
   </section>
 
@@ -1168,17 +1398,40 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     </div>
   </section>
 
-  <section class="sec" id="link">
-    <div class="sec__head"><h2 class="sec__en">Link</h2><span class="sec__ja">リンク</span></div>
-    <div class="deco deco--spark">
-      <span class="deco__i p1" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p2" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p3 w" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p4" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p5 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p6" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#heart"/></svg></span>
-    <ul class="links">
-      <li><a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-play"/></svg><span><span class="links__name">Mirrativ</span><span class="links__sub">配信はここ</span></span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://x.com/shiitarou210" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-bell"/></svg><span><span class="links__name">X</span><span class="links__sub">日常や更新のお知らせ</span></span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://honyararalivers.jp/" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-house"/></svg><span><span class="links__name ja">ほにゃららLIVERS</span><span class="links__sub">所属事務所</span></span></span><span class="links__go">↗</span></a></li>
-    </ul>
+
+  <section class="sec" id="stamp">
+    <div class="sec__head"><h2 class="sec__en">Stamp</h2><span class="sec__ja">見守り隊スタンプカード</span></div>
+    <div class="deco deco--stamp">
+      <span class="deco__i p1" aria-hidden="true"><svg><use href="#lolli"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#cake"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#bow"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#kira"/></svg></span>
+      <div class="stamp">
+        <p class="req__lead">1日1回、遊びに来たらスタンプを押してね🍭 その月に20個たまると、今月だけの特別なしぃの壁紙がもらえるよ♡<br><small>カードは毎月1日に新しくなります</small></p>
+        <div class="stamp__card">
+          <div class="stamp__top">
+            <span class="stamp__ttl">しぃの見守り隊<br><b>STAMP CARD</b></span>
+            <span class="stamp__no" id="stamp-no"></span>
+          </div>
+          <ol class="stamp__grid" id="stamp-grid" aria-label="スタンプ"></ol>
+          <p class="stamp__count" id="stamp-count"></p>
+        </div>
+        <button class="btn btn--main stamp__btn" id="stamp-btn" type="button">今日のスタンプを押す</button>
+        <p class="stamp__note" id="stamp-note"></p>
+        <button class="stamp__reward-open" id="stamp-reward-open" type="button" hidden>🎁 今月の壁紙をもう一度見る</button>
+      </div>
     </div>
   </section>
+
+  <div class="stamp-modal" id="stamp-modal" hidden role="dialog" aria-modal="true" aria-label="スタンプ20個達成">
+    <div class="stamp-modal__in">
+      <p class="stamp-modal__ttl">CONGRATULATIONS!</p>
+      <p class="stamp-modal__sub" id="stamp-sub">今月のスタンプ20個たまったよ！<br>いつも来てくれてありがとう♡</p>
+      <img class="stamp-modal__img" id="stamp-wall" alt="しぃの特別壁紙" data-save>
+      <div class="stamp-modal__btns">
+        <button class="btn btn--main" id="stamp-save" type="button">壁紙を保存する</button>
+        <button class="btn" id="stamp-close" type="button">とじる</button>
+      </div>
+      <p class="stamp-modal__hint">画像を長押ししても保存できます</p>
+    </div>
+  </div>
 
   <section class="sec" id="present">
     <div class="sec__head"><h2 class="sec__en">Present</h2><span class="sec__ja">贈りもの</span></div>
@@ -1201,11 +1454,81 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 <script>
 (function(){
   var btn=document.querySelector('.menu-btn'), menu=document.getElementById('menu');
+  var layer=document.getElementById('menu-peeks'), mini=document.getElementById('menu-peek-mini'), large=document.getElementById('menu-peek-large');
+  var active=false, miniTimer=null, bigTimer=null, bigHide=null, slot=-1;
+  var positions=[['left','16%'],['right','20%'],['left','43%'],['right','47%'],['left','68%'],['right','70%']];
+  function revealMini(){
+    if(!active) return;
+    var next=Math.floor(Math.random()*(positions.length-1)); if(next>=slot) next++;
+    slot=next;
+    // 次の隠れ場所を画面外で確定してから、その端から顔を出す。
+    mini.style.transition='none'; mini.classList.remove('is-peeking');
+    mini.dataset.side=positions[slot][0]; mini.style.setProperty('--peek-y',positions[slot][1]);
+    mini.querySelector('img').src='img/chibi-a.webp'; void mini.offsetWidth;
+    mini.style.transition=''; void mini.offsetWidth;
+    requestAnimationFrame(function(){if(active){mini.disabled=false;mini.classList.add('is-peeking');}});
+  }
+  var party=null, partyTimer=null, partyFade=null;
+  function clearParty(){clearTimeout(partyTimer);clearTimeout(partyFade);if(party){party.remove();party=null;}}
+  function seasonalPieces(){
+    var month=new Date().getMonth()+1;
+    if(month===10) return ['🎃','👻','🦇','🍬'];
+    if(month===12) return ['🎄','🎁','❄️','⭐'];
+    if(month<=2) return ['❄️','⛄','✨'];
+    if(month<=5) return ['🌸','🌷','🦋'];
+    if(month<=8) return ['🌻','🐚','🫧'];
+    return ['🍁','🍂','🌰'];
+  }
+  function heartParty(){
+    clearParty(); party=document.createElement('div');party.className='menu-confetti';party.setAttribute('aria-hidden','true');
+    var seasonal=seasonalPieces(), colors=['#E07496','#EF9CBA','#D96189','#FFD0DF'];
+    var count=window.matchMedia('(max-width:600px)').matches?76:100;
+    // 画面全体に均等に散らす。ハート多めに、季節の飾りも少し。
+    for(var i=0;i<count;i++){
+      var piece=document.createElement('span');piece.className='menu-confetti__piece';
+      piece.textContent=i%3===0?seasonal[Math.floor(Math.random()*seasonal.length)]:'♥';
+      piece.style.left=((i%10)*10+Math.random()*8)+'%';piece.style.top=(Math.floor(i/10)/(Math.ceil(count/10))*90+Math.random()*7)+'%';
+      piece.style.setProperty('--size',(12+Math.random()*12)+'px');
+      piece.style.setProperty('--heart-color',colors[i%colors.length]);
+      piece.style.setProperty('--delay',(Math.random()*.2)+'s');
+      piece.style.setProperty('--turn',(Math.random()*50-25)+'deg');
+      piece.style.setProperty('--end-turn',(Math.random()*150-75)+'deg');
+      piece.style.setProperty('--drift',(Math.random()*80-40)+'px');
+      party.appendChild(piece);
+    }
+    document.body.appendChild(party);partyFade=setTimeout(function(){if(party) party.classList.add('is-fading');},3500);partyTimer=setTimeout(clearParty,4300);
+  }
+  function hideLarge(){large.classList.remove('is-peeking');large.disabled=true;}
+  function revealLarge(){
+    if(!active) return;
+    large.style.setProperty('--large-x',(45+Math.random()*25)+'%');
+    large.disabled=false; large.classList.add('is-peeking');
+    bigHide=setTimeout(hideLarge,6500);
+    bigTimer=setTimeout(revealLarge,24000+Math.random()*12000);
+  }
+  function peekMenu(open){
+    active=open; clearTimeout(miniTimer);clearTimeout(bigTimer);clearTimeout(bigHide);
+    if(!open) clearParty();
+    mini.classList.remove('is-peeking');hideLarge(); mini.disabled=true;layer.hidden=!open;
+    if(open){miniTimer=setTimeout(revealMini,650);bigTimer=setTimeout(revealLarge,9500);}
+  }
+  mini.addEventListener('click',function(){
+    if(!active||mini.disabled) return;
+    mini.disabled=true; mini.querySelector('img').src='img/chibi-b.webp';
+    clearTimeout(miniTimer);
+    miniTimer=setTimeout(function(){mini.classList.remove('is-peeking');miniTimer=setTimeout(revealMini,650);},120);
+  });
+  large.addEventListener('click',function(){clearTimeout(bigHide);hideLarge();heartParty();});
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden) peekMenu(false);
+    else if(btn.getAttribute('aria-expanded')==='true') peekMenu(true);
+  });
   function set(open){
     btn.setAttribute('aria-expanded', open);
     btn.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
     menu.classList.toggle('is-open', open);
     document.body.classList.toggle('menu-open', open);
+    peekMenu(open);
   }
   btn.addEventListener('click', function(){ set(btn.getAttribute('aria-expanded')!=='true'); });
   menu.addEventListener('click', function(e){ if(e.target.closest('a')) set(false); });
@@ -1402,7 +1725,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 (function(){
   var b=document.getElementById('totop'); if(!b) return;
   var ticking=false;
-  function upd(){ ticking=false; b.classList.toggle('is-show', window.scrollY > window.innerHeight*0.9); }
+  function upd(){ ticking=false; var s=window.scrollY > window.innerHeight*0.9; b.classList.toggle('is-show', s); var mb=document.getElementById('tomenu'); if(mb) mb.classList.toggle('is-show', s); }
   window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(upd); } },{passive:true});
   b.addEventListener('click',function(){
     var smooth=!matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1523,12 +1846,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 </script>
 <script>
 (function(){
-  // ---- どこをタップしても小さなハート ----
+  // ---- 背景をタップすると小さなハート ----
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var last=0;
   document.addEventListener('pointerdown',function(e){
     if(document.documentElement.classList.contains('op')) return;
-    if(e.target.closest('input, textarea, select')) return;
+    if(e.target.closest('a, button, input, textarea, select, label, p, h1, h2, h3, dt, dd, .quick, .hero__external')) return;
     var now=Date.now(); if(now-last<70) return; last=now;
     for(var i=0;i<2;i++){
       var s=document.createElement('span'); s.className='tap-fx'+(i?' w':'');
@@ -1547,7 +1870,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // ---- 季節のきせかえ ----
   var s=document.documentElement.getAttribute('data-season'); if(!s) return;
   var T={
-    halloween:{label:'HAPPY HALLOWEEN 🎃', bubble:'Trick or<br>Treat！🎃', items:[['pumpkin',20],['ghost',20],['bat',30,'fly'],['pumpkin',16],['ghost',16]], tap:'pumpkin'},
+    halloween:{label:'HAPPY HALLOWEEN 🎃', bubble:'Trick or<br>Treat！🎃', items:[['pumpkin',26],['ghost',24],['bat',34,'fly'],['pumpkin',20],['ghost',20]], tap:'pumpkin'},
     xmas:{label:'MERRY CHRISTMAS 🎄', bubble:'メリー<br>クリスマス！', items:[['snow',14],['snow',10],['snow',18],['kira',12]], tap:'snow', color:'#fff'},
     newyear:{label:'HAPPY NEW YEAR 🎍', bubble:'あけまして<br>おめでとう！', items:[['kira',14],['kira',10],['heart',12]], tap:'kira', color:'#F3C25B'},
     valentine:{label:'HAPPY VALENTINE ♡', bubble:'ハッピー<br>バレンタイン♡', items:[['heart',14],['heart',10],['heart',18]], tap:'heart', color:'#C9557B'},
@@ -1559,16 +1882,17 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   window.SHII_BUBBLE=T.bubble;
   window.SHII_TAP=T.tap;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var fx=document.getElementById('season-fx'), n=window.innerWidth<600?12:18;
+  var fx=document.getElementById('season-fx'), n=window.innerWidth<600?10:14;
+
   function r(a,b){ return a+Math.random()*(b-a); }
   for(var i=0;i<n;i++){
     var it=T.items[i%T.items.length], el=document.createElement('i'), size=it[1]*r(.8,1.25);
     el.innerHTML='<svg viewBox="0 0 '+(it[0]==='bat'?'32 16':'24 24')+'"><use href="#'+it[0]+'"/></svg>';
     el.style.width=(it[0]==='bat'?size*1.6:size)+'px'; el.style.height=(it[0]==='bat'?size*.8:size)+'px';
     if(T.color) el.style.color=T.color;
-    if(it[2]==='fly'){ el.className='fly'; el.style.setProperty('--y',r(8,70)+'vh'); el.style.animationDuration=r(14,22)+'s'; el.style.animationDelay=(-r(0,20))+'s'; }
-    else if(s==='halloween' && it[0]==='ghost'){ el.className='bob'; el.style.left=r(4,92)+'vw'; el.style.setProperty('--y',r(15,85)+'vh'); el.style.animationDuration=r(5,8)+'s'; el.style.animationDelay=(-r(0,8))+'s'; }
-    else { el.style.left=r(0,96)+'vw'; el.style.setProperty('--sw',r(-24,24)+'px'); el.style.setProperty('--rot',r(-360,360)+'deg'); el.style.animationDuration=r(12,24)+'s'; el.style.animationDelay=(-r(0,24))+'s'; }
+    if(it[2]==='fly'){ el.className='fly'; el.style.setProperty('--y',r(10,70)+'vh'); el.style.animationDuration=r(16,24)+'s'; el.style.animationDelay=(-r(0,20))+'s'; }
+    else if(s==='halloween' && it[0]==='ghost'){ el.className='bob'; el.style.left=r(4,90)+'vw'; el.style.setProperty('--y',r(15,85)+'vh'); el.style.animationDuration=r(5,8)+'s'; el.style.animationDelay=(-r(0,8))+'s'; }
+    else { el.style.left=r(0,94)+'vw'; el.style.setProperty('--sw',r(-22,22)+'px'); el.style.setProperty('--rot',r(-360,360)+'deg'); el.style.animationDuration=r(12,22)+'s'; el.style.animationDelay=(-r(0,22))+'s'; }
     fx.appendChild(el);
   }
 })();
@@ -1589,86 +1913,132 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   b.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); next(); } });
 })();
 </script>
+
 <script>
 (function(){
-  // ---- 歌える（かも）リスト ----
-  var list=document.getElementById('song-list'); if(!list) return;
-  var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
+  // ---- 見守り隊スタンプカード（1日1回・この端末に保存） ----
   var $=function(id){return document.getElementById(id);};
-  var songs=[], tag='', q='', sort='recommended', shown=20, STEP=20;
-  function norm(s){ return String(s||'').toLowerCase().normalize('NFKC').replace(/[\u30a1-\u30f6]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-0x60); }).replace(/\s+/g,''); }
-  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  function reading(s,fields){ for(var i=0;i<fields.length;i++){ if(s[fields[i]]) return s[fields[i]]; } return ''; }
-  function titleReading(s){ return reading(s,['title_kana','title_reading','title_yomi','reading','yomi','kana']) || s.title || ''; }
-  function artistReading(s){ return reading(s,['artist_kana','artist_reading','artist_yomi']) || s.artist || ''; }
-  function searchable(s){ return [s.title,s.artist,titleReading(s),artistReading(s)].join(' '); }
-  function compareJa(a,b){ return String(a||'').localeCompare(String(b||''),'ja',{numeric:true,sensitivity:'base'}); }
-  function currentHits(){
-    var nq=norm(q), hits=songs.filter(function(s){ return (!tag||s.tag===tag) && (!nq||norm(searchable(s)).indexOf(nq)>=0); });
-    if(sort==='title') hits.sort(function(a,b){ return compareJa(titleReading(a),titleReading(b)); });
-    else if(sort==='title-desc') hits.sort(function(a,b){ return compareJa(titleReading(b),titleReading(a)); });
-    else if(sort==='artist') hits.sort(function(a,b){ var c=compareJa(artistReading(a),artistReading(b)); return c || compareJa(titleReading(a),titleReading(b)); });
-    return hits;
+  var grid=$('stamp-grid'); if(!grid) return;
+  var KEY='shii_stamp', GOAL=20, ICONS=['heart','lolli','cake','bow','star','gift','note1','kira','moon','star'];
+  var ROT=[-8,6,-4,10,-10,4,-6,8,-2,3];
+  function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function month(){ return today().slice(0,7); }
+  function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'null'); if(v&&Array.isArray(v.d)) return v; }catch(e){} return {d:[],total:0,reward:false}; }
+  function save(v){ try{ localStorage.setItem(KEY,JSON.stringify(v)); }catch(e){} }
+  // カードは月ごと：月がかわったら新しいカードに（ごほうびも月に1回）
+  function fresh(){ if(st.m!==month()){ var m=month(); st.d=st.d.filter(function(d){ return d.slice(0,7)===m; }).slice(0,GOAL); st.m=m; st.reward=st.d.length>=GOAL; save(st); } }
+  var st=load(); fresh();
+  function full(){ return st.d.length>=GOAL; }
+  function done(){ return st.last===today() || full(); }
+  function render(pon){
+    grid.innerHTML='';
+    for(var i=0;i<GOAL;i++){
+      var li=document.createElement('li'); li.style.setProperty('--rot',ROT[i%10]+'deg');
+      if(i===GOAL-1) li.classList.add('is-goal');
+      if(i<st.d.length){
+        li.classList.add('is-on'); if(i===GOAL-1) li.classList.add('is-gold');
+        li.innerHTML='<svg viewBox="0 0 24 24"><use href="#'+ICONS[i%10]+'"/></svg>';
+        li.setAttribute('aria-label',(i+1)+'個目 '+st.d[i].replace(/^\d+-/,'').replace('-','/'));
+        if(pon && i===st.d.length-1) li.classList.add('is-today');
+      } else { li.textContent=i+1; li.setAttribute('aria-label',(i+1)+'個目 まだ'); }
+      grid.appendChild(li);
+    }
+    var mo=+st.m.slice(5);
+    $('stamp-no').textContent=mo+'月';
+    $('stamp-count').innerHTML='今月 <b>'+st.d.length+'</b> / '+GOAL+' 個'+(st.total?'<br><small>これまで '+st.total+' 回来てくれたよ♡</small>':'');
+    var b=$('stamp-btn'); b.disabled=done(); b.textContent=full()?'今月はコンプリート♡':done()?'今日はもう押したよ♡':'今日のスタンプを押す';
+    $('stamp-note').textContent=full()?'来月1日に新しいカードになるよ！':done()?'また明日来てね！':'';
+    $('stamp-reward-open').hidden=!st.reward;
+    document.querySelectorAll('.quick__dot').forEach(function(d){ d.hidden=done(); });
   }
-  function render(){
-    var hits=currentHits();
-    $('song-count').textContent = songs.length ? (q||tag ? hits.length+'曲みつかったよ（全'+songs.length+'曲）' : '全'+songs.length+'曲') : '';
-    $('song-random').disabled=!hits.length;
-    list.innerHTML='';
-    if(!songs.length){ list.innerHTML='<li class="songs__empty">リストは準備中だよ♪</li>'; $('song-more').hidden=true; return; }
-    if(!hits.length){ list.innerHTML='<li class="songs__empty">見つからなかった…！リクエストで送ってみてね♡</li>'; $('song-more').hidden=true; return; }
-    hits.slice(0,shown).forEach(function(s,i){
-      var li=document.createElement('li'); li.className='song-card'; li.style.animationDelay=Math.min(i,10)*.03+'s';
-      li.innerHTML='<span class="songs__note"><svg><use href="#note1"/></svg></span><span class="songs__txt"><span class="songs__title">'+esc(s.title)+'</span>'+(s.artist?'<span class="songs__artist">'+esc(s.artist)+'</span>':'')+'</span><button class="songs__req" type="button" aria-label="'+esc(s.title)+'のリクエストコメントをコピー"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 16V5.5A2.5 2.5 0 0 1 7.5 3H15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>コピー</button>';
-      li.querySelector('.songs__req').addEventListener('click',function(){ pickSong(s); });
+  // ---- ごほうび壁紙（スマホの待ち受けサイズ） ----
+  function loadImg(src){ return new Promise(function(ok,ng){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=ng; i.src=src; }); }
+  var wallURL=null, wallBlob=null;
+  // しぃ管理の「ごほうび壁紙」で設定された壁紙があればそれを使い、なければ標準の壁紙を作る
+  function customWall(){
+    return fetch('https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/shii_wallpaper_get',{method:'POST',headers:{'apikey':'sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC','Content-Type':'application/json'},body:'{}'})
+      .then(function(r){ return r.ok?r.json():null; })
+      .then(function(d){ if(!d||!d.image) return null; return fetch(d.image).then(function(r){ return r.blob(); }); })
+      .catch(function(){ return null; });
+  }
+  function makeWall(){
+    if(wallURL) return Promise.resolve(wallURL);
+    return customWall().then(function(b){
+      if(b){ wallBlob=b; wallURL=URL.createObjectURL(b); return wallURL; }
+      return defaultWall();
+    });
+  }
+  function defaultWall(){
+    return Promise.all([loadImg('img/menu-candy-transparent.webp'),loadImg('img/logo.webp')]).then(function(im){
+      var W=1170,H=2532,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
+      var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#FBE7EE'); g.addColorStop(.55,'#F4CFDC'); g.addColorStop(1,'#EBB7CA'); x.fillStyle=g; x.fillRect(0,0,W,H);
+      x.fillStyle='rgba(255,255,255,.55)'; for(var yy=20;yy<H;yy+=46) for(var xx=20+(yy/46%2)*23;xx<W;xx+=46){ x.beginPath(); x.arc(xx,yy,3.2,0,7); x.fill(); }
+      x.save(); x.globalAlpha=.9; x.fillStyle='#fff'; x.beginPath(); x.arc(W/2,H*.58,W*.47,0,7); x.fill(); x.restore();
+      x.strokeStyle='rgba(224,116,150,.35)'; x.lineWidth=6; x.setLineDash([22,16]); x.beginPath(); x.arc(W/2,H*.58,W*.47+26,0,7); x.stroke(); x.setLineDash([]);
+      var ch=im[0], ch_h=H*.56, ch_w=ch.width*ch_h/ch.height; x.drawImage(ch,(W-ch_w)/2,H*.325,ch_w,ch_h);
+      var lg=im[1], lw=W*.66, lh=lg.height*lw/lg.width; x.drawImage(lg,(W-lw)/2,H*.13,lw,lh);
+      function heart(cx,cy,s,col){ x.save(); x.translate(cx,cy); x.scale(s/24,s/24); x.fillStyle=col; x.beginPath(); x.moveTo(12,21.5); x.bezierCurveTo(0,14.2,0,10,0,6.6); x.bezierCurveTo(0,3,2.8,.3,6.3,.3); x.bezierCurveTo(8.7,.3,10.8,1.7,12,3.9); x.bezierCurveTo(13.2,1.7,15.3,.3,17.7,.3); x.bezierCurveTo(21.2,.3,24,3,24,6.6); x.bezierCurveTo(24,10,24,14.2,12,21.5); x.fill(); x.restore(); }
+      [[140,520,70,'#FF8FB1'],[1010,470,54,'#fff'],[120,1500,48,'#fff'],[1050,1350,64,'#FF8FB1'],[200,2180,56,'#FF8FB1'],[980,2120,44,'#fff']].forEach(function(h){ heart(h[0],h[1],h[2],h[3]); });
+      x.textAlign='center'; x.fillStyle='#C9557B'; x.font='700 60px "Hiragino Maru Gothic ProN","Zen Maru Gothic",sans-serif';
+      x.fillText('しぃの見守り隊 ♡ COMPLETE',W/2,H*.935);
+      x.fillStyle='rgba(142,92,105,.85)'; x.font='500 42px "Hiragino Maru Gothic ProN","Zen Maru Gothic",sans-serif'; x.fillText('いつも来てくれてありがとう',W/2,H*.962);
+      return new Promise(function(ok){ c.toBlob(function(b){ wallBlob=b; wallURL=URL.createObjectURL(b); ok(wallURL); },'image/png'); });
+    });
+  }
+  function openReward(){
+    var m=$('stamp-modal'); m.hidden=false; document.body.classList.add('menu-open');
+    makeWall().then(function(u){ $('stamp-wall').src=u; }).catch(function(){ $('stamp-wall').src='img/menu-large.jpg'; });
+  }
+  function closeReward(){ $('stamp-modal').hidden=true; document.body.classList.remove('menu-open'); }
+  $('stamp-close').addEventListener('click',closeReward);
+  $('stamp-modal').addEventListener('click',function(e){ if(e.target.id==='stamp-modal') closeReward(); });
+  $('stamp-reward-open').addEventListener('click',openReward);
+  $('stamp-save').addEventListener('click',function(){
+    makeWall().then(function(u){
+      var file=wallBlob&&new File([wallBlob],'shii-wallpaper.'+(wallBlob.type==='image/jpeg'?'jpg':'png'),{type:wallBlob.type||'image/png'});
+      if(file && navigator.canShare && navigator.canShare({files:[file]})){ navigator.share({files:[file]}).catch(function(){}); return; }
+      var a=document.createElement('a'); a.href=u; a.download='shii-wallpaper.png'; document.body.appendChild(a); a.click(); a.remove();
+    });
+  });
+  $('stamp-btn').addEventListener('click',function(){
+    fresh(); if(done()){ render(false); return; }
+    st.d.push(today()); st.last=today(); st.total=(st.total||0)+1;
+    var complete=st.d.length===GOAL; if(complete) st.reward=true;
+    save(st); render(true);
+    if(complete) setTimeout(openReward,900);
+  });
+  render(false);
+})();
+</script>
+<script>
+(function(){
+  // ---- 今週の配信予定（しぃ管理で作った予定表をそのまま表示） ----
+  var box=document.getElementById('week'); if(!box) return;
+  var WD=['日','月','火','水','木','金','土'];
+  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function parse(s){ var p=String(s).split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function md(d){ return (d.getMonth()+1)+'/'+d.getDate(); }
+  fetch('https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/shii_schedule_get',{method:'POST',headers:{'apikey':'sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC','Content-Type':'application/json'},body:'{}'})
+  .then(function(r){ return r.ok?r.json():null; }).then(function(res){
+    if(!res||!res.data||!Array.isArray(res.data.days)||!res.data.days.length) return;
+    var days=res.data.days, today=new Date(); today.setHours(0,0,0,0);
+    try{ var tv=days.filter(function(v){ return +parse(v.date)===+today; })[0]; window.shiiToday=tv||null; document.dispatchEvent(new CustomEvent('shii:today',{detail:tv||null})); }catch(e){}
+    var last=parse(days[days.length-1].date); if(last<today) return;   // 終わった週は出さない
+    var list=document.getElementById('week-list'); list.innerHTML='';
+    days.forEach(function(v){
+      var d=parse(v.date), w=d.getDay(), li=document.createElement('li');
+      if(w===6) li.classList.add('sat'); if(w===0) li.classList.add('sun');
+      if(v.off) li.classList.add('is-off');
+      if(d<today) li.classList.add('is-past'); if(+d===+today) li.classList.add('is-today');
+      li.innerHTML='<span class="week__d">'+md(d)+'<small>'+WD[w]+'</small></span>'+
+        (v.off?'<span class="week__w">おやすみ 💤</span>':'<span class="week__t">'+esc(v.time)+'</span><span class="week__w">'+esc(v.what||'配信')+'</span>');
       list.appendChild(li);
     });
-    $('song-more').hidden = hits.length<=shown;
-  }
-  // リクエスト用コメントをコピー → 配信のコメント欄に貼ってもらう
-  function copyText(txt){
-    if(navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(txt);
-    return new Promise(function(ok,ng){
-      var ta=document.createElement('textarea'); ta.value=txt; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.opacity='0';
-      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,txt.length);
-      try{ document.execCommand('copy') ? ok() : ng(); }catch(e){ ng(e); } ta.remove();
-    });
-  }
-  var toastT=null;
-  function toast(html){
-    var el=document.getElementById('song-toast');
-    if(!el){ el=document.createElement('div'); el.id='song-toast'; el.className='song-toast'; el.setAttribute('role','status'); document.body.appendChild(el); }
-    el.innerHTML=html; el.classList.remove('is-show'); void el.offsetWidth; el.classList.add('is-show');
-    clearTimeout(toastT); toastT=setTimeout(function(){ el.classList.remove('is-show'); }, 3200);
-  }
-  function pickSong(s){
-    var txt='🎤リクエスト：'+s.title+(s.artist?'／'+s.artist:'');
-    copyText(txt).then(function(){
-      toast('<b>コピーしたよ！</b>配信のコメント欄に貼り付けてね♡<a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を開く</a>');
-    }).catch(function(){
-      toast('<b>コピーできなかったみたい…</b>「'+esc(txt)+'」とコメントしてね');
-    });
-  }
-  function tags(){
-    var t=[]; songs.forEach(function(s){ if(s.tag && t.indexOf(s.tag)<0) t.push(s.tag); });
-    var box=$('song-tags'); if(!t.length){ box.hidden=true; return; }
-    box.hidden=false; box.innerHTML='';
-    [''].concat(t).forEach(function(name){
-      var b=document.createElement('button'); b.type='button'; b.textContent=name||'すべて'; b.setAttribute('aria-pressed', name===tag?'true':'false');
-      b.addEventListener('click',function(){ tag=name; shown=STEP; clearRandom(); Array.prototype.forEach.call(box.children,function(c){ c.setAttribute('aria-pressed', c===b?'true':'false'); }); render(); });
-      box.appendChild(b);
-    });
-  }
-  function clearRandom(){ $('song-random-result').hidden=true; $('song-random-result').innerHTML=''; }
-  function showRandom(s){ var result=$('song-random-result'); result.hidden=false; result.innerHTML='<p class="songs__random-label">🎲 しぃに歌ってほしい今日の1曲</p><span class="songs__title">'+esc(s.title)+'</span>'+(s.artist?'<span class="songs__artist">'+esc(s.artist)+'</span>':'')+'<div class="songs__random-actions"><button class="songs__req" type="button" aria-label="'+esc(s.title)+'のリクエストコメントをコピー">コピー</button></div>'; result.querySelector('button').addEventListener('click',function(){ pickSong(s); }); }
-  $('song-q').addEventListener('input',function(e){ q=e.target.value; shown=STEP; clearRandom(); render(); });
-  $('song-sort').addEventListener('change',function(e){ sort=e.target.value; shown=STEP; render(); });
-  $('song-random').addEventListener('click',function(){ var hits=currentHits(); if(hits.length) showRandom(hits[Math.floor(Math.random()*hits.length)]); });
-  $('song-list-toggle').addEventListener('click',function(){ var btn=this, open=btn.getAttribute('aria-expanded')==='true', wrap=$('song-list-wrap'); btn.setAttribute('aria-expanded',String(!open)); btn.querySelector('span').textContent='♪ 曲一覧を'+(open?'ひらく':'しまう'); wrap.classList.toggle('is-collapsed',open); });
-  $('song-more').addEventListener('click',function(){ shown+=STEP; render(); });
-  fetch(SB+'shii_songs_list',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'})
-    .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?d:[]; tags(); render(); })
-    .catch(function(){ songs=[]; render(); });
+    document.getElementById('week-range').textContent=md(parse(days[0].date))+'〜'+md(last);
+    var u=new Date(res.updated_at); if(!isNaN(u)) document.getElementById('week-upd').textContent=md(u)+' '+u.getHours()+':'+('0'+u.getMinutes()).slice(-2)+' 更新';
+    var n=document.getElementById('week-note'); if(res.data.note){ n.textContent='♡ '+res.data.note; n.hidden=false; }
+    box.hidden=false;
+  }).catch(function(){});
 })();
 </script>
 <script>
@@ -1695,6 +2065,62 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   setTimeout(check, 1500);
   document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') check(); });
   setInterval(check, 10*60*1000);
+})();
+</script>
+<script>
+(function(){
+  var b=document.getElementById('tomenu'), mb=document.querySelector('.menu-btn'); if(!b||!mb) return;
+  b.addEventListener('click',function(){ if(mb.getAttribute('aria-expanded')!=='true') mb.click(); });
+})();
+</script>
+<script>
+(function(){
+  // 画像の保存よけ：長押しメニュー・右クリック・ドラッグを止める（ごほうび壁紙 data-save は除く）
+  function guard(e){ var t=e.target; if(!t||!t.closest) return; var el=t.closest('img,picture,canvas,svg'); if(!el) return; if(el.hasAttribute&&el.hasAttribute('data-save')) return; e.preventDefault(); }
+  document.addEventListener('contextmenu',guard,true);
+  document.addEventListener('dragstart',guard,true);
+})();
+</script>
+<script>
+(function(){
+  // ---- お菓子の電光掲示板：今日の配信・季節・スタンプのお知らせを流す ----
+  var t=document.getElementById('ticker-txt'); if(!t) return;
+  var anim=null, today=null;
+  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function ymd(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function msgs(){
+    var a=['<span class="w">WELCOME</span> ♡ しぃの部屋へようこそ'];
+    if(today){ a.push(today.off?'<span class="y">TODAY</span> 今日はおやすみ ☾ また明日ね':'<span class="y">TODAY</span> '+esc(today.time)+' から '+esc(today.what||'配信')+' ♪ 待ってるね'); }
+    var se=document.documentElement.getAttribute('data-season');
+    var S={halloween:'<span class="y">TRICK OR TREAT</span> ♡ HAPPY HALLOWEEN',xmas:'<span class="m">MERRY CHRISTMAS</span> ★ すてきな夜を',newyear:'<span class="y">HAPPY NEW YEAR</span> ♡ ことしもよろしくね',valentine:'<span class="w">HAPPY VALENTINE</span> ♡ チョコより甘い時間を',sakura:'<span class="w">SPRING</span> ✿ さくらの季節だよ'};
+    if(se&&S[se]) a.push(S[se]);
+    try{ var st=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(!st||st.last!==ymd()) a.push('<span class="m">STAMP</span> 今日のスタンプ まだだよ → 押してね'); }catch(e){}
+    // リクエストのお知らせは、今日が歌の配信の日だけ
+    if(today && !today.off && /歌|うた|ウタ|カラオケ|リクエスト|sing|karaoke/i.test(today.what||'')) a.push('<span class="m">REQUEST</span> 今日は歌の配信！ 歌ってほしい曲 まってるよ ♪');
+    return a;
+  }
+  function run(){
+    var a=msgs(); t.innerHTML=a.join('<span class="sep">★</span>');
+    if(anim){ anim.cancel(); anim=null; }
+    if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var W=t.parentNode.clientWidth, w=t.scrollWidth; if(!W) return;
+    anim=t.animate([{transform:'translate('+W+'px,-50%)'},{transform:'translate('+(-w)+'px,-50%)'}],{duration:(W+w)/48*1000,iterations:Infinity});
+  }
+  document.addEventListener('shii:today',function(e){ today=e.detail; run(); });
+  if(window.shiiToday!==undefined) today=window.shiiToday;
+  function start(){ run(); }
+  if(document.fonts&&document.fonts.load){ document.fonts.load('15px "DotGothic16"','しぃ').then(start,start); } else start();
+  var rt; window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(run,200); });
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) run(); });
+})();
+</script>
+<script>
+(function(){
+  // 配信ボタンの下の小さい文字に、今日の予定を出す
+  function set(v){ if(!v) return; var t=v.off?'今日はおやすみ 💤 また明日ね':'今日は '+(v.time||'')+' から'+(v.what?'・'+v.what:'')+' ♪';
+    document.querySelectorAll('.watch__sub').forEach(function(e){ e.textContent=t; }); }
+  document.addEventListener('shii:today',function(e){ set(e.detail); });
+  if(window.shiiToday) set(window.shiiToday);
 })();
 </script>
 </body>
