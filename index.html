@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009070743">
+<meta name="build" content="20261009072220">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -27,6 +27,7 @@
 <meta name="application-name" content="しぃ">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&text=1stAnniversary&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Yomogi&text=%E6%9D%A5%E3%81%A6%E3%81%8F%E3%82%8C%E3%81%A6%E3%81%82%E3%82%8A%E3%81%8C%E3%81%A8%E3%81%86%EF%BC%81%E3%81%97%E3%81%83%E3%81%AE%E9%83%A8%E5%B1%8B%E3%81%B8%E3%82%88%E3%81%86%E3%81%93%E3%81%9D&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
@@ -118,6 +119,25 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(3.75px) rotate(45deg); }
   .menu-btn[aria-expanded="true"] span:nth-child(2) { width: 100%; transform: translateY(-3.75px) rotate(-45deg); }
   .header__right { display: flex; align-items: center; gap: 28px; }
+  /* お菓子の電光掲示板（ヘッダーのまんなか） */
+  .ticker { flex: 1; min-width: 0; max-width: 360px; height: 32px; margin: 0 8px 0 12px; padding: 3px; border-radius: 999px;
+    background: repeating-linear-gradient(-50deg, #fff 0 5px, #F59BBE 5px 10px);
+    box-shadow: 0 2px 0 rgba(200,80,120,.28), 0 0 0 1px rgba(236,120,160,.35); }
+  .ticker__win { position: relative; display: block; height: 100%; overflow: hidden; border-radius: 999px;
+    background: radial-gradient(120% 140% at 50% 0%, #5A2E40 0%, #3A1B28 60%, #2C1420 100%);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,.55), inset 0 -1px 0 rgba(255,255,255,.15); }
+  .ticker__win::before { content: ""; position: absolute; left: 8%; right: 8%; top: 1px; height: 38%; border-radius: 999px; background: linear-gradient(rgba(255,255,255,.14), rgba(255,255,255,0)); z-index: 2; pointer-events: none; }
+  .ticker__win::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, transparent .75px, rgba(44,20,32,.5) 1.2px) 0 0 / 2.6px 2.6px; }
+  .ticker__txt { position: absolute; left: 0; top: 50%; white-space: nowrap; transform: translate(100%, -50%); will-change: transform;
+    font-family: "DotGothic16", var(--maru); font-size: 15px; line-height: 1; letter-spacing: .06em; color: #FFC9DD;
+    text-shadow: 0 0 3px #FF6FA8, 0 0 9px rgba(255,111,168,.75); }
+  .ticker__txt .y { color: #FFF0A8; text-shadow: 0 0 3px #FFCB3D, 0 0 9px rgba(255,203,61,.7); }
+  .ticker__txt .m { color: #C6FFE9; text-shadow: 0 0 3px #4FE0B0, 0 0 9px rgba(79,224,176,.7); }
+  .ticker__txt .w { color: #FFFFFF; text-shadow: 0 0 3px #FFB3D1, 0 0 9px rgba(255,179,209,.8); }
+  .ticker__txt .sep { margin: 0 .9em; color: #FF8FBF; }
+  @media (prefers-reduced-motion: reduce) { .ticker__txt { transform: translate(10px, -50%); } }
+  @media (min-width: 768px) { .ticker { display: none; } }
   .header .nav { display: none; }
 
   .menu {
@@ -1027,6 +1047,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 <header class="header">
   <div class="header__in">
     <a class="logo" href="#top"><img src="img/icon.webp" alt="" width="34" height="34">しぃ</a>
+    <a class="ticker" id="ticker" href="#schedule" aria-label="お知らせ"><span class="ticker__win"><span class="ticker__txt" id="ticker-txt"></span></span></a>
     <div class="header__right">
       <nav class="nav" aria-label="メイン">
         <a href="#profile">PROFILE</a>
@@ -1948,6 +1969,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .then(function(r){ return r.ok?r.json():null; }).then(function(res){
     if(!res||!res.data||!Array.isArray(res.data.days)||!res.data.days.length) return;
     var days=res.data.days, today=new Date(); today.setHours(0,0,0,0);
+    try{ var tv=days.filter(function(v){ return +parse(v.date)===+today; })[0]; window.shiiToday=tv||null; document.dispatchEvent(new CustomEvent('shii:today',{detail:tv||null})); }catch(e){}
     var last=parse(days[days.length-1].date); if(last<today) return;   // 終わった週は出さない
     var list=document.getElementById('week-list'); list.innerHTML='';
     days.forEach(function(v){
@@ -2004,6 +2026,38 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   function guard(e){ var t=e.target; if(!t||!t.closest) return; var el=t.closest('img,picture,canvas,svg'); if(!el) return; if(el.hasAttribute&&el.hasAttribute('data-save')) return; e.preventDefault(); }
   document.addEventListener('contextmenu',guard,true);
   document.addEventListener('dragstart',guard,true);
+})();
+</script>
+<script>
+(function(){
+  // ---- お菓子の電光掲示板：今日の配信・季節・スタンプのお知らせを流す ----
+  var t=document.getElementById('ticker-txt'); if(!t) return;
+  var anim=null, today=null;
+  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function ymd(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function msgs(){
+    var a=['<span class="w">WELCOME</span> ♡ しぃの部屋へようこそ'];
+    if(today){ a.push(today.off?'<span class="y">TODAY</span> 今日はおやすみ ☾ また明日ね':'<span class="y">TODAY</span> '+esc(today.time)+' から '+esc(today.what||'配信')+' ♪ 待ってるね'); }
+    var se=document.documentElement.getAttribute('data-season');
+    var S={halloween:'<span class="y">TRICK OR TREAT</span> ♡ HAPPY HALLOWEEN',xmas:'<span class="m">MERRY CHRISTMAS</span> ★ すてきな夜を',newyear:'<span class="y">HAPPY NEW YEAR</span> ♡ ことしもよろしくね',valentine:'<span class="w">HAPPY VALENTINE</span> ♡ チョコより甘い時間を',sakura:'<span class="w">SPRING</span> ✿ さくらの季節だよ'};
+    if(se&&S[se]) a.push(S[se]);
+    try{ var st=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(!st||st.last!==ymd()) a.push('<span class="m">STAMP</span> 今日のスタンプ まだだよ → 押してね'); }catch(e){}
+    a.push('<span class="m">REQUEST</span> 歌ってほしい曲 まってるよ ♪');
+    return a;
+  }
+  function run(){
+    var a=msgs(); t.innerHTML=a.join('<span class="sep">★</span>');
+    if(anim){ anim.cancel(); anim=null; }
+    if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var W=t.parentNode.clientWidth, w=t.scrollWidth; if(!W) return;
+    anim=t.animate([{transform:'translate('+W+'px,-50%)'},{transform:'translate('+(-w)+'px,-50%)'}],{duration:(W+w)/48*1000,iterations:Infinity});
+  }
+  document.addEventListener('shii:today',function(e){ today=e.detail; run(); });
+  if(window.shiiToday!==undefined) today=window.shiiToday;
+  function start(){ run(); }
+  if(document.fonts&&document.fonts.load){ document.fonts.load('15px "DotGothic16"','しぃ').then(start,start); } else start();
+  var rt; window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(run,200); });
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) run(); });
 })();
 </script>
 </body>
