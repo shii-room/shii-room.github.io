@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009043159">
+<meta name="build" content="20261009061244">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -78,6 +78,10 @@
   .sheet__in img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 4px 16px rgba(94,53,64,.2)}
   .sheet__hint{margin-top:10px;font-size:12px;color:var(--sub);text-align:center}
   .sheet .row button{flex:1}
+  .sheet__ttl{font-family:var(--maru);font-weight:700;font-size:17px;color:var(--peri);margin-bottom:10px}
+  .sheet__lbl{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+  .sheet textarea{font-size:16px}
+  .card-btn{height:36px;padding:0 12px;font-size:13px;background:var(--peri);color:var(--white);border-color:var(--peri)}
 
   /* 更新のお知らせ */
   .upd { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 90; transform: translate(-50%, 160%);
@@ -285,12 +289,18 @@
 </main>
 <div class="sheet" id="sheet" hidden>
   <div class="sheet__in">
-    <img id="sheetImg" alt="メッセージの画像">
-    <p class="sheet__hint">画像を長押しして保存もできます</p>
+    <p class="sheet__ttl" id="sheetTtl">お返事してXに投稿</p>
+    <label for="replyTxt" class="sheet__lbl">しぃからのお返事<small class="opt">なしでもOK</small></label>
+    <textarea id="replyTxt" rows="3" maxlength="140" placeholder="例）ありがとう〜！次の歌枠で歌うね🎤"></textarea>
+    <p class="sheet__lbl" style="margin-top:12px">投稿される画像</p>
+    <img id="sheetImg" alt="お返事の画像">
+    <label for="postTxt" class="sheet__lbl" style="margin-top:12px">投稿の文章</label>
+    <textarea id="postTxt" rows="2" maxlength="200"></textarea>
     <div class="row">
       <button class="ghost" id="sheetClose" type="button">閉じる</button>
-      <button class="primary" id="sheetShare" type="button">保存・シェア</button>
+      <button class="primary" id="sheetShare" type="button">Xに投稿する</button>
     </div>
+    <p class="sheet__hint">「Xに投稿する」→ 出てきた一覧から X を選ぶと、画像つきで投稿画面が開きます。<br>X が出ない時は、画像を長押しで保存してから X で投稿してね。</p>
   </div>
 </div>
 <script>
@@ -384,7 +394,9 @@
         rcall('delete',it.id).then(function(){ req.items=req.items.filter(function(x){return x.id!==it.id;}); renderReq(); })
           .catch(function(e){ d.disabled=false; fail(e,$('reqMsg')); });
       };
-      acts.appendChild(s); acts.appendChild(d);
+      var x=document.createElement('button'); x.className='card-btn'; x.type='button'; x.textContent='返信してXへ';
+      x.onclick=function(){ openReply({kind:'req',item:it}); };
+      acts.appendChild(x); acts.appendChild(s); acts.appendChild(d);
       li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
     });
   }
@@ -684,8 +696,8 @@
       var b=document.createElement('div'); b.className='body'; b.textContent=it.body; left.appendChild(b);
       var m=document.createElement('small'); m.className='m'; m.textContent=(it.read?'読んだ・':'')+fmt(it.at); left.appendChild(m);
       var acts=document.createElement('div'); acts.className='acts';
-      var c=document.createElement('button'); c.className='card-btn'; c.type='button'; c.textContent='画像にする';
-      c.onclick=function(){ openCard(it.body); if(!it.read){ mcall('read',it.id,true).then(function(){ it.read=true; renderM(); }).catch(function(){}); } };
+      var c=document.createElement('button'); c.className='card-btn'; c.type='button'; c.textContent='返信してXへ';
+      c.onclick=function(){ openReply({kind:'msg',item:it}); if(!it.read){ mcall('read',it.id,true).then(function(){ it.read=true; renderM(); }).catch(function(){}); } };
       var r=document.createElement('button'); r.className='sung'; r.type='button'; r.textContent=it.read?'未読にする':'読んだ✓';
       r.onclick=function(){ r.disabled=true;
         mcall('read',it.id,!it.read).then(function(){ it.read=!it.read; renderM(); })
@@ -726,38 +738,71 @@
     return lines;
   }
   function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
-  function openCard(text){
-    var W=1200, pad=110, font='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
-    var cv=document.createElement('canvas'), ctx=cv.getContext('2d');
-    var size=text.length>160?40:text.length>80?46:54;
-    ctx.font='700 '+size+'px '+font;
-    var lines=wrap(ctx,text,W-pad*2-80), lh=size*1.7;
-    var H=Math.max(630, Math.round(lines.length*lh+pad*2+150));
+  // ---- お返事画像（匿名メッセージ／歌のリクエスト → しぃのお返事つきでXへ） ----
+  var cur=null, iconImg=null, drawT=null;
+  (function(){ var i=new Image(); i.onload=function(){ iconImg=i; }; i.src='../img/icon.webp'; })();
+  function drawReply(){
+    if(!cur) return;
+    var W=1200, P=70, F='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
+    var cv=document.createElement('canvas'), x=cv.getContext('2d');
+    var it=cur.item, isReq=cur.kind==='req', reply=$('replyTxt').value.trim();
+    // 中身の行を先に数えて高さを決める
+    x.font='700 46px '+F;
+    var qLines, qSub=[];
+    if(isReq){
+      x.font='700 56px '+F; qLines=wrap(x,'♪ '+it.song,W-P*2-100);
+      x.font='500 36px '+F; if(it.artist) qSub=qSub.concat(wrap(x,it.artist,W-P*2-100));
+      if(it.comment) qSub=qSub.concat(wrap(x,'「'+it.comment+'」',W-P*2-100));
+      qSub.push('from '+(it.name||'見守り隊さん'));
+    } else { x.font='700 46px '+F; qLines=wrap(x,it.body,W-P*2-100); }
+    x.font='700 44px '+F; var rLines=reply?wrap(x,reply,W-P*2-260):[];
+    var qh=(isReq?qLines.length*76:qLines.length*74)+qSub.length*52+90;
+    var rh=reply?Math.max(160,rLines.length*70+80):0;
+    var H=140+qh+(reply?rh+50:0)+120;
     cv.width=W; cv.height=H;
-    var g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#F6E4E9'); g.addColorStop(1,'#E2B9C6');
-    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='rgba(255,255,255,.55)';
-    for(var y=14;y<H;y+=28) for(var x=14;x<W;x+=28){ ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); }
-    var cx=pad-40, cy=pad-40, cw=W-(pad-40)*2, ch=H-(pad-40)*2-70;
-    ctx.fillStyle='#E07496'; rr(ctx,cx+12,cy+12,cw,ch,36); ctx.fill();
-    ctx.fillStyle='#fff'; rr(ctx,cx,cy,cw,ch,36); ctx.fill();
-    ctx.fillStyle='#5E3540'; ctx.font='700 '+size+'px '+font; ctx.textBaseline='middle';
-    var top=cy+(ch-lines.length*lh)/2+lh/2;
-    lines.forEach(function(l,i){ ctx.fillText(l,pad,top+i*lh); });
-    ctx.fillStyle='#8E5C69'; ctx.font='700 30px '+font; ctx.textAlign='right';
-    ctx.fillText('しぃの部屋 💌 匿名メッセージ',W-pad+40,H-55);
-    cv.toBlob(function(b){
-      cardBlob=b; var u=URL.createObjectURL(b); var img=$('sheetImg'); if(img.dataset.u) URL.revokeObjectURL(img.dataset.u);
-      img.src=u; img.dataset.u=u; $('sheet').hidden=false;
-    },'image/png');
+    var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#FBE7EE'); g.addColorStop(1,'#EBB7CA'); x.fillStyle=g; x.fillRect(0,0,W,H);
+    x.fillStyle='rgba(255,255,255,.55)'; for(var yy=16;yy<H;yy+=32) for(var xx=16+(yy/32%2)*16;xx<W;xx+=32){ x.beginPath(); x.arc(xx,yy,2.4,0,7); x.fill(); }
+    // ラベル
+    x.font='700 34px '+F; var lab=isReq?'🎤 歌のリクエスト':'💌 匿名メッセージ', lw=x.measureText(lab).width+56;
+    x.fillStyle='#E07496'; rr(x,P,48,lw,62,31); x.fill(); x.fillStyle='#fff'; x.textBaseline='middle'; x.fillText(lab,P+28,80);
+    // 質問カード
+    var qy=140; x.save(); x.shadowColor='rgba(200,80,120,.2)'; x.shadowOffsetY=8; x.fillStyle='#fff'; rr(x,P,qy,W-P*2,qh,40); x.fill(); x.restore();
+    var ty=qy+45+(isReq?38:37);
+    if(isReq){ x.fillStyle='#C9557B'; x.font='700 56px '+F; qLines.forEach(function(l){ x.fillText(l,P+50,ty); ty+=76; }); x.fillStyle='#8E5C69'; x.font='500 36px '+F; qSub.forEach(function(l){ x.fillText(l,P+50,ty-12); ty+=52; }); }
+    else { x.fillStyle='#5E3540'; x.font='700 46px '+F; qLines.forEach(function(l){ x.fillText(l,P+50,ty); ty+=74; }); }
+    // お返事
+    if(reply){
+      var ry=qy+qh+50, bx=P+170, bw=W-P-bx;
+      if(iconImg){ x.save(); x.beginPath(); x.arc(P+70,ry+70,70,0,7); x.closePath(); x.fillStyle='#fff'; x.fill(); x.clip(); x.drawImage(iconImg,P+6,ry+6,128,128); x.restore(); x.strokeStyle='#fff'; x.lineWidth=8; x.beginPath(); x.arc(P+70,ry+70,68,0,7); x.stroke(); }
+      x.fillStyle='#F08DB0'; rr(x,bx,ry,bw,rh,40); x.fill();
+      x.beginPath(); x.moveTo(bx+2,ry+50); x.lineTo(bx-26,ry+70); x.lineTo(bx+2,ry+90); x.fill();
+      x.fillStyle='#fff'; x.font='700 44px '+F; var y2=ry+(rh-rLines.length*70)/2+35; rLines.forEach(function(l){ x.fillText(l,bx+44,y2); y2+=70; });
+      x.fillStyle='#C9557B'; x.font='700 28px '+F; x.fillText('しぃ',P+44,ry+178);
+    }
+    x.textAlign='right'; x.fillStyle='#8E5C69'; x.font='700 30px '+F; x.fillText('しぃの部屋 ♡ shii-room.github.io',W-P,H-56); x.textAlign='left';
+    cv.toBlob(function(b){ cardBlob=b; var u=URL.createObjectURL(b); var img=$('sheetImg'); if(img.dataset.u) URL.revokeObjectURL(img.dataset.u); img.src=u; img.dataset.u=u; },'image/png');
   }
+  function openReply(o){
+    cur=o; $('replyTxt').value='';
+    $('sheetTtl').textContent=o.kind==='req'?'リクエストにお返事してXに投稿':'メッセージにお返事してXに投稿';
+    $('postTxt').value=(o.kind==='req'?'リクエストありがとう🎤✨':'メッセージありがとう💌')+'\n#しぃの見守り隊\nhttps://shii-room.github.io/';
+    $('sheet').hidden=false; drawReply();
+    if(o.kind==='msg' && !o.item.read){ mcall('read',o.item.id,true).then(function(){ o.item.read=true; renderM(); }).catch(function(){}); }
+  }
+  $('replyTxt').addEventListener('input',function(){ clearTimeout(drawT); drawT=setTimeout(drawReply,250); });
   $('sheetClose').onclick=function(){ $('sheet').hidden=true; };
   $('sheet').addEventListener('click',function(e){ if(e.target.id==='sheet') $('sheet').hidden=true; });
   $('sheetShare').onclick=function(){
     if(!cardBlob) return;
-    var file=new File([cardBlob],'shii-message.png',{type:'image/png'});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file]}).catch(function(){}); return; }
-    var a=document.createElement('a'); a.href=$('sheetImg').src; a.download='shii-message.png'; document.body.appendChild(a); a.click(); a.remove();
+    var text=$('postTxt').value;
+    var file=new File([cardBlob],'shii-reply.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      // 文章をコピーしておく（Xアプリに画像だけ渡る時のため）
+      try{ navigator.clipboard&&navigator.clipboard.writeText(text); }catch(e){}
+      navigator.share({files:[file],text:text}).catch(function(){}); return;
+    }
+    var a=document.createElement('a'); a.href=$('sheetImg').src; a.download='shii-reply.png'; document.body.appendChild(a); a.click(); a.remove();
+    window.open('https://x.com/intent/post?text='+encodeURIComponent(text),'_blank');
   };
 
   function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadM(); loadPosts(); loadSongs(); }
