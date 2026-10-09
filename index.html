@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009072220">
+<meta name="build" content="20261009073016">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2042,7 +2042,8 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     var S={halloween:'<span class="y">TRICK OR TREAT</span> ♡ HAPPY HALLOWEEN',xmas:'<span class="m">MERRY CHRISTMAS</span> ★ すてきな夜を',newyear:'<span class="y">HAPPY NEW YEAR</span> ♡ ことしもよろしくね',valentine:'<span class="w">HAPPY VALENTINE</span> ♡ チョコより甘い時間を',sakura:'<span class="w">SPRING</span> ✿ さくらの季節だよ'};
     if(se&&S[se]) a.push(S[se]);
     try{ var st=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(!st||st.last!==ymd()) a.push('<span class="m">STAMP</span> 今日のスタンプ まだだよ → 押してね'); }catch(e){}
-    a.push('<span class="m">REQUEST</span> 歌ってほしい曲 まってるよ ♪');
+    // リクエストのお知らせは、今日が歌の配信の日だけ
+    if(today && !today.off && /歌|うた|ウタ|カラオケ|リクエスト|sing|karaoke/i.test(today.what||'')) a.push('<span class="m">REQUEST</span> 今日は歌の配信！ 歌ってほしい曲 まってるよ ♪');
     return a;
   }
   function run(){
