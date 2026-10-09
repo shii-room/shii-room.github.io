@@ -327,16 +327,29 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     text-shadow: 5px 5px 0 var(--rose);
   }
   .hero__name .heart { width: .3em; height: .3em; margin-left: .08em; }
-  .hero__logo { margin: 6px 0 0 -8px; line-height: 0; }
-  .hero__logo img { display: block; width: min(100%, 400px); height: auto; transform-origin: 50% 90%; animation: puni 3.2s ease-in-out infinite; filter: drop-shadow(0 6px 10px rgba(150,70,95,.15)); }
-  @keyframes puni {
-    0%, 70%, 100% { transform: translateY(0) scale(1, 1); }
-    78% { transform: translateY(0) scale(1.03, .96); }
-    86% { transform: translateY(-6px) scale(.98, 1.03); }
-    93% { transform: translateY(0) scale(1.02, .98); }
+  /* Separate arrival, float and squash layers so taps do not interrupt the float. */
+  .hero__logo { width: min(100%, 400px); margin: 6px 0 0 -8px; line-height: 0; animation: logo-arrive .9s ease-out both; }
+  html.op .hero__logo { animation: none; }
+  html.op-in .hero__logo { animation: logo-arrive .9s ease-out .15s both; }
+  .hero__logo-button { position: relative; display: block; width: 100%; padding: 0; border: 0; background: transparent; color: var(--rose); cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; animation: logo-float 5.6s ease-in-out 1s infinite; }
+  .hero__logo-button:focus-visible { outline: 2px solid var(--rose-deep); outline-offset: 5px; border-radius: 12px; }
+  .hero__logo img { display: block; width: 100%; height: auto; transform-origin: 50% 65%; animation: logo-quiver 12s ease-in-out 1s infinite; }
+  .hero__logo-effects { position: absolute; inset: 0; pointer-events: none; }
+  .hero__logo-particle { position: absolute; width: 12px; height: 12px; overflow: visible; }
+  @keyframes logo-arrive {
+    0% { opacity: 0; transform: translateY(9px) scale(.95); }
+    55% { opacity: 1; transform: translateY(-3px) scale(1.02,.98); }
+    78% { transform: translateY(1px) scale(.99,1.01); }
+    100% { opacity: 1; transform: none; }
   }
-  html.op-in .hero__logo img { animation: logo-pop .8s cubic-bezier(.3,1.6,.5,1) .35s both, puni 3.2s ease-in-out 1.2s infinite; }
-  @keyframes logo-pop { 0% { opacity: 0; transform: scale(.6) rotate(-6deg); } 100% { opacity: 1; transform: none; } }
+  @keyframes logo-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @keyframes logo-quiver {
+    0%,82%,100% { transform: none; }
+    86% { transform: scale(1.015,.985) rotate(-.35deg); }
+    90% { transform: scale(.99,1.01) rotate(.35deg); }
+    94% { transform: scale(1.005,.995); }
+  }
+  @media (prefers-reduced-motion: reduce) { .hero__logo-button:active { opacity: .8; } }
   .hero__tag { display: inline-block; margin-top: 18px; padding: 4px 14px; border-radius: 999px; background: var(--white); font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .1em; color: var(--rose-deep); }
   .hero__talk { margin-top: 18px; font-size: 15px; line-height: 2; letter-spacing: .06em; }
   .hero__talk b { font-family: var(--maru); font-weight: 700; }
@@ -894,17 +907,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__in { grid-template-columns: 1fr minmax(0, 400px); align-items: center; gap: 56px; padding-block: 64px 104px; min-height: 78svh; }
     .hero__photo { order: 2; }
   }
-  /* スマホではロゴをヒーロー画像の左上に重ね、最初の画面内で名前が伝わるようにする */
+  /* Give the phone logo its own band above the illustration, including motion clearance. */
   @media (max-width: 767px) {
-    .hero__logo { position: absolute; z-index: 4; top: clamp(54px, 14vw, 66px); left: clamp(2px, 1.5vw, 8px); width: 39%; margin: 0; padding: 9px 9px 7px; border: 2px solid var(--white); border-radius: 14px; background: linear-gradient(145deg, #FFFDFE, #F9D8E4); box-shadow: 3px 4px 0 rgba(224,116,150,.48), 0 7px 14px rgba(150,70,95,.18); transform-origin: 50% -24px; animation: logo-hang-in .72s cubic-bezier(.22,1.45,.45,1) .15s both, logo-swing 3.8s ease-in-out 1s infinite; }
-    .hero__logo::before, .hero__logo::after { content: ""; position: absolute; top: -27px; width: 3px; height: 27px; border-radius: 999px; background: linear-gradient(90deg, #C65D82, #F6B5C9 50%, #B94D74); box-shadow: 0 1px 0 var(--white); }
-    .hero__logo::before { left: 25%; }
-    .hero__logo::after { right: 25%; }
-    .hero__logo img { width: 100%; filter: drop-shadow(0 2px 1px rgba(255,255,255,.85)); animation: none; }
-    html.op-in .hero__logo { animation-delay: .35s, 1.2s; }
+    .hero__in { padding-top: min(164px, calc(24.18vw + 30.328px)); }
+    .hero__logo { position: absolute; z-index: 4; top: 12px; left: 4px; width: min(39%, 200px); margin: 0; }
   }
-  @keyframes logo-hang-in { 0% { opacity: 0; transform: translateY(-42px) rotate(-7deg) scale(.88); } 72% { opacity: 1; transform: translateY(3px) rotate(2deg) scale(1.02); } 100% { opacity: 1; transform: rotate(-1.5deg); } }
-  @keyframes logo-swing { 0%,100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.8deg); } }
   /* OPENING：スポットライト → カーテンが開く */
   .opening { display: none; }
   html.op .opening { display: block; }
@@ -1021,7 +1028,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__in { max-width: 900px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "identity photo" "talk talk" "cta cta" "menuheading menuheading" "quick quick" "social social"; gap: 18px 28px; align-items: center; padding-block: 32px 48px; min-height: auto; }
     .hero__text { display: contents; }
     .hero__identity { display: block; grid-area: identity; min-width: 0; text-align: center; }
-    .hero__logo { margin-inline: 0; }
+    .hero__logo { margin-inline: auto; width: min(100%, 320px); }
     .hero__logo img { width: min(100%, 320px); margin-inline: auto; }
     .hero__photo { grid-area: photo; order: 0; width: min(100%, 300px); }
     .hero__talk { grid-area: talk; margin-top: 0; font-size: 15px; text-align: center; }
@@ -1168,7 +1175,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <div class="hero__identity">
         <p class="hero__en" id="hero-en">SHII</p>
         <p class="hero__welcome">しぃの部屋へようこそ</p>
-        <h1 class="hero__logo"><img src="img/logo.webp" alt="しぃ" width="900" height="558"></h1>
+        <h1 class="hero__logo"><button class="hero__logo-button" type="button" aria-label="しぃ"><img src="img/logo.webp" alt="しぃ" width="900" height="558"><span class="hero__logo-effects" aria-hidden="true"></span></button></h1>
         <p class="hero__tag">🌈 ほにゃららLIVERS所属</p>
         </div>
         <p class="hero__talk"><b>面白いこと、楽しいこと、お菓子が大好きな元メイド🍭🍰</b><br>夜22時からほぼ毎日ミラティブで配信中。ぜひ遊びに来てね！</p>
@@ -1453,6 +1460,58 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   <span>しぃの見守り隊</span>
   <span>FM 🍭🍰꙳.*</span>
 </footer>
+<script>
+// A small logo-only surprise. Replace the last burst instead of accumulating particles.
+(function(){
+  var button=document.querySelector('.hero__logo-button');
+  if(!button) return;
+  var image=button.querySelector('img'), effects=button.querySelector('.hero__logo-effects');
+  var motion=matchMedia('(prefers-reduced-motion: reduce)'), squash=null, cleanup=0;
+  function clearBurst(){
+    clearTimeout(cleanup);
+    effects.querySelectorAll('svg').forEach(function(piece){
+      piece.getAnimations().forEach(function(animation){ animation.cancel(); });
+    });
+    effects.replaceChildren();
+  }
+  button.addEventListener('click',function(){
+    if(squash){ squash.cancel(); squash=null; }
+    clearBurst();
+    if(!motion.matches){
+      squash=image.animate([
+        {transform:'scale(1,1)'},
+        {transform:'scale(1.12,.89)',offset:.18},
+        {transform:'scale(.94,1.09)',offset:.42},
+        {transform:'scale(1.04,.97)',offset:.65},
+        {transform:'scale(.99,1.02)',offset:.82},
+        {transform:'scale(1,1)'}
+      ],{duration:620,easing:'ease-in-out'});
+    }
+    var spots=[[18,35,-20,-22],[38,14,-8,-26],[65,15,8,-26],[83,39,20,-20],[28,72,-16,8],[73,72,16,8]];
+    spots.forEach(function(spot,i){
+      var piece=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      piece.classList.add('hero__logo-particle');
+      piece.setAttribute('viewBox','0 0 24 24');
+      piece.style.left=spot[0]+'%'; piece.style.top=spot[1]+'%';
+      piece.style.color=i%2 ? '#C9557B' : '#EFA1BB';
+      var use=document.createElementNS('http://www.w3.org/2000/svg','use');
+      use.setAttribute('href',i%2 ? '#kira' : '#heart'); piece.appendChild(use);
+      effects.appendChild(piece);
+      var frames=motion.matches ? [{opacity:.8},{opacity:0}] : [
+        {opacity:0,transform:'translate(-50%,-50%) scale(.4)'},
+        {opacity:1,transform:'translate(calc(-50% + '+spot[2]*.3+'px), calc(-50% + '+spot[3]*.3+'px)) scale(1)',offset:.25},
+        {opacity:0,transform:'translate(calc(-50% + '+spot[2]+'px), calc(-50% + '+spot[3]+'px)) scale(.7)'}
+      ];
+      piece.animate(frames,{duration:motion.matches ? 220 : 700,easing:'ease-out',fill:'forwards'});
+    });
+    cleanup=setTimeout(clearBurst,motion.matches ? 240 : 750);
+  });
+  motion.addEventListener('change',function(){
+    if(squash){ squash.cancel(); squash=null; }
+    clearBurst();
+  });
+})();
+</script>
 <script>
 (function(){
   var btn=document.querySelector('.menu-btn'), menu=document.getElementById('menu');
