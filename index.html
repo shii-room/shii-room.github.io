@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009235000">
+<meta name="build" content="20261009235500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2210,7 +2210,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 </script>
 <script>
 (function(){
-  // Long stream subtitles move slowly, with a reading pause at both ends.
+  // 「配信を見にいく」の下の文字：電光掲示板のように流れ続ける（タップ・マウスを乗せている間は止まる）
   var motion=matchMedia('(prefers-reduced-motion: reduce)'), rows=[];
   document.querySelectorAll('.watch__sub').forEach(function(el){
     var text=document.createElement('span'); text.className='watch__sub-text'; text.textContent=el.textContent;
@@ -2224,16 +2224,12 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     rows.forEach(function(row){
       if(row.animation){ row.animation.cancel(); row.animation=null; }
       if(motion.matches||!row.el.clientWidth) return;
-      var distance=row.text.scrollWidth-row.el.clientWidth;
-      if(distance<=1) return;
-      var travel=distance/24, duration=travel*2+4;
+      // 上の電光掲示板と同じように、文字が端から流れてくるのをずっとくり返す
+      var W=row.el.clientWidth, w=row.text.scrollWidth;
       row.animation=row.text.animate([
-        {transform:'translateX(0)',offset:0},
-        {transform:'translateX(0)',offset:2/duration},
-        {transform:'translateX(-'+distance+'px)',offset:(2+travel)/duration},
-        {transform:'translateX(-'+distance+'px)',offset:(4+travel)/duration},
-        {transform:'translateX(0)',offset:1}
-      ],{duration:duration*1000,iterations:Infinity,easing:'linear'});
+        {transform:'translateX('+W+'px)'},
+        {transform:'translateX('+(-w)+'px)'}
+      ],{duration:(W+w)/34*1000,iterations:Infinity,easing:'linear'});
       pause(row);
     });
   }
