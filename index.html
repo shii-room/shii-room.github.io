@@ -907,9 +907,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__in { grid-template-columns: 1fr minmax(0, 400px); align-items: center; gap: 56px; padding-block: 64px 104px; min-height: 78svh; }
     .hero__photo { order: 2; }
   }
-  /* Give the phone logo its own band above the illustration, including motion clearance. */
+  /* Let the phone logo overlap the upper-left illustration margin, clear of the face. */
   @media (max-width: 767px) {
-    .hero__in { padding-top: min(164px, calc(24.18vw + 30.328px)); }
     .hero__logo { position: absolute; z-index: 4; top: 12px; left: 4px; width: min(39%, 200px); margin: 0; }
   }
   /* OPENING：スポットライト → カーテンが開く */
