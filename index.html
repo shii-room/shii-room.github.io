@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261008235911">
+<meta name="build" content="20261009003443">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -664,6 +664,29 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; }
   mark.songs__hit { background: #FFE3EC; color: inherit; border-radius: 4px; padding: 0 1px; }
 
+  /* 今週の配信予定（しぃ管理の予定表メーカーから反映） */
+  .week { margin-bottom: 18px; }
+  .week__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; margin-bottom: 10px; }
+  .week__ttl { font-family: var(--maru); font-weight: 700; font-size: 16px; color: var(--ink); }
+  .week__ttl span { margin-left: 8px; font-size: 12px; color: var(--ink-sub); }
+  .week__upd { padding: 2px 10px; border-radius: 999px; background: rgba(255,255,255,.7); font-family: var(--maru); font-weight: 700; font-size: 11px; color: var(--rose-deep); }
+  .week__list { list-style: none; display: grid; gap: 7px; }
+  .week__list li { position: relative; display: flex; align-items: center; gap: 12px; padding: 7px 12px 7px 7px; border-radius: 16px; background: rgba(255,255,255,.82); box-shadow: 0 2px 0 rgba(224,116,150,.25); }
+  .week__d { flex: none; display: grid; place-items: center; width: 52px; height: 44px; border-radius: 12px; background: #F08DB0; color: #fff; font-family: var(--maru); font-weight: 700; font-size: 14px; line-height: 1.1; text-align: center; }
+  .week__d small { display: block; font-size: 10px; }
+  .week__list li.sat .week__d { background: #86A6E8; }
+  .week__list li.sun .week__d { background: #EC6F98; }
+  .week__t { flex: none; min-width: 64px; font-family: var(--en); font-weight: 500; font-size: 16px; color: var(--rose); }
+  .week__w { flex: 1; min-width: 0; font-family: var(--maru); font-weight: 700; font-size: 14px; color: var(--ink); overflow-wrap: anywhere; }
+  .week__list li.is-off { background: rgba(255,255,255,.45); box-shadow: none; }
+  .week__list li.is-off .week__d { background: #D9C8E8; }
+  .week__list li.is-off .week__w { color: #A28AB8; }
+  .week__list li.is-past { opacity: .45; }
+  .week__list li.is-today { background: #fff; box-shadow: 0 0 0 2px var(--rose), 0 4px 10px rgba(224,116,150,.3); }
+  .week__list li.is-today::after { content: "TODAY"; position: absolute; top: -8px; right: 10px; padding: 1px 8px; border-radius: 999px; background: var(--rose); color: #fff; font-family: var(--en); font-weight: 500; font-size: 9px; letter-spacing: .14em; }
+  .week__note { margin-top: 10px; padding: 8px 14px; border-radius: 999px; background: #fff; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--rose-deep); }
+  .week__base { margin-top: 22px; padding-top: 14px; border-top: 1px dashed rgba(224,116,150,.4); font-family: var(--maru); font-weight: 700; font-size: 12px; color: var(--ink-sub); }
+
   /* STAMP */
   .deco--stamp::before { background-image: url(img/drip0.svg); background-position: -40px 0; }
   .deco--stamp::after { left: calc(158.1px - 40px - 2px - 4px); top: calc(30.5px - 2px - 6px); animation-delay: 6.2s; }
@@ -1141,6 +1164,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="sec__head"><h2 class="sec__en">Schedule</h2><span class="sec__ja">配信</span></div>
     <div class="deco deco--night">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#moon"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p6" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r3" aria-hidden="true"><svg><use href="#star"/></svg></span>
+    <div class="week" id="week" hidden>
+      <div class="week__head"><p class="week__ttl">今週の配信予定<span id="week-range"></span></p><p class="week__upd" id="week-upd"></p></div>
+      <ol class="week__list" id="week-list"></ol>
+      <p class="week__note" id="week-note" hidden></p>
+      <p class="week__base">いつもの配信時間</p>
+    </div>
     <div class="sched__row">
       <span class="sched__time">22:00〜</span>
       <span class="sched__freq">ほぼ毎日</span>
@@ -1882,6 +1911,36 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     if(complete) setTimeout(openReward,900);
   });
   render(false);
+})();
+</script>
+<script>
+(function(){
+  // ---- 今週の配信予定（しぃ管理で作った予定表をそのまま表示） ----
+  var box=document.getElementById('week'); if(!box) return;
+  var WD=['日','月','火','水','木','金','土'];
+  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function parse(s){ var p=String(s).split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function md(d){ return (d.getMonth()+1)+'/'+d.getDate(); }
+  fetch('https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/shii_schedule_get',{method:'POST',headers:{'apikey':'sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC','Content-Type':'application/json'},body:'{}'})
+  .then(function(r){ return r.ok?r.json():null; }).then(function(res){
+    if(!res||!res.data||!Array.isArray(res.data.days)||!res.data.days.length) return;
+    var days=res.data.days, today=new Date(); today.setHours(0,0,0,0);
+    var last=parse(days[days.length-1].date); if(last<today) return;   // 終わった週は出さない
+    var list=document.getElementById('week-list'); list.innerHTML='';
+    days.forEach(function(v){
+      var d=parse(v.date), w=d.getDay(), li=document.createElement('li');
+      if(w===6) li.classList.add('sat'); if(w===0) li.classList.add('sun');
+      if(v.off) li.classList.add('is-off');
+      if(d<today) li.classList.add('is-past'); if(+d===+today) li.classList.add('is-today');
+      li.innerHTML='<span class="week__d">'+md(d)+'<small>'+WD[w]+'</small></span>'+
+        (v.off?'<span class="week__w">おやすみ 💤</span>':'<span class="week__t">'+esc(v.time)+'</span><span class="week__w">'+esc(v.what||'配信')+'</span>');
+      list.appendChild(li);
+    });
+    document.getElementById('week-range').textContent=md(parse(days[0].date))+'〜'+md(last);
+    var u=new Date(res.updated_at); if(!isNaN(u)) document.getElementById('week-upd').textContent=md(u)+' '+u.getHours()+':'+('0'+u.getMinutes()).slice(-2)+' 更新';
+    var n=document.getElementById('week-note'); if(res.data.note){ n.textContent='♡ '+res.data.note; n.hidden=false; }
+    box.hidden=false;
+  }).catch(function(){});
 })();
 </script>
 <script>

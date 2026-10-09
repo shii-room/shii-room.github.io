@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261008235911">
+<meta name="build" content="20261009003443">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -109,6 +109,8 @@
   .schOff input{width:18px;height:18px;margin:0;accent-color:var(--peri)}
   .schRow.is-off .schF input[type=text]{opacity:.4}
   .schOut{margin-top:20px}
+  .schSync{display:flex;align-items:center;gap:8px;margin:18px 0 0;font-size:13px;font-weight:700}
+  .schSync input{width:20px;height:20px;margin:0;accent-color:var(--peri)}
   .schOut img{display:block;width:100%;border-radius:12px;box-shadow:0 6px 18px rgba(94,53,64,.2)}
   .song{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .song b{display:block;font-weight:700}
@@ -172,7 +174,9 @@
         <label for="schNote">ひとこと<small class="opt">なしでもOK</small></label>
         <input id="schNote" type="text" maxlength="40" placeholder="例）今週は歌枠多めだよ🎤">
       </div>
+      <label class="schSync"><input type="checkbox" id="schSync" checked>HPの「Schedule」にも反映する</label>
       <div class="row"><button class="primary" id="schMake" type="button">予定表の画像をつくる</button></div>
+      <button class="reload" id="schClear" type="button">HPに載っている予定を消す</button>
       <p class="msg" id="schMsg"></p>
       <div class="schOut" id="schOut" hidden>
         <img id="schImg" alt="予定表の画像">
@@ -414,9 +418,24 @@
         return new Promise(function(ok){ c.toBlob(function(bb){ blob=bb; ok(URL.createObjectURL(bb)); },'image/png'); });
       });
     }
+    if(st.sync===false) $('schSync').checked=false;
+    $('schSync').onchange=function(){ st.sync=this.checked; saveSt(); };
+    function payload(){
+      return { start:st.start, note:st.note||'', days:dates().map(function(d){ var v=day(ymd(d)); return {date:ymd(d), time:(v.time||'').slice(0,12), what:(v.what||'').slice(0,24), off:!!v.off}; }) };
+    }
+    function syncHP(){
+      if(!$('schSync').checked) return Promise.resolve(null);
+      return call('shii_schedule_admin',{p_action:'save',p_data:payload()}).then(function(){ return 'ok'; });
+    }
+    $('schClear').onclick=function(){
+      if(!confirm('HPの「Schedule」に載っている今週の予定を消す？')) return;
+      call('shii_schedule_admin',{p_action:'clear'}).then(function(){ say($('schMsg'),'HPから予定を消しました'); }).catch(function(e){ fail(e,$('schMsg')); });
+    };
     $('schMake').onclick=function(){
       var btn=this; btn.disabled=true; say($('schMsg'),'つくっています…');
-      draw().then(function(u){ var i=$('schImg'); if(i.dataset.u) URL.revokeObjectURL(i.dataset.u); i.src=u; i.dataset.u=u; $('schOut').hidden=false; say($('schMsg'),'できました！'); setTimeout(function(){ $('schOut').scrollIntoView({behavior:'smooth',block:'start'}); },100); })
+      syncHP().then(function(r){ if(r) say($('schMsg'),'HPのスケジュールに反映しました！画像をつくっています…'); })
+        .catch(function(e){ if(e.message==='auth'){ fail(e,$('schMsg')); } else say($('schMsg'),'HPへの反映ができませんでした（画像はつくれます）',true); });
+      draw().then(function(u){ var i=$('schImg'); if(i.dataset.u) URL.revokeObjectURL(i.dataset.u); i.src=u; i.dataset.u=u; $('schOut').hidden=false; if(!/できません|合言葉/.test($('schMsg').textContent)) say($('schMsg'), $('schSync').checked?'できました！HPのスケジュールにも反映済みです':'できました！'); setTimeout(function(){ $('schOut').scrollIntoView({behavior:'smooth',block:'start'}); },100); })
         .catch(function(){ say($('schMsg'),'画像をつくれませんでした。もう一度押してね',true); }).then(function(){ btn.disabled=false; });
     };
     $('schAgain').onclick=function(){ $('schOut').hidden=true; window.scrollTo({top:0,behavior:'smooth'}); };
