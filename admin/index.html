@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009062750">
+<meta name="build" content="20261009063119">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,6 +12,9 @@
 <link rel="icon" type="image/png" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>しぃ管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&family=Hachi+Maru+Pop&family=Mochiy+Pop+One&family=Yusei+Magic&family=Kiwi+Maru:wght@500&family=Potta+One&display=swap" rel="stylesheet">
 <style>
   :root {
     --sky-top:#F6E4E9; --sky:#ECCDD6; --lilac:#E2B9C6; --peri:#E07496;
@@ -138,6 +141,8 @@
   .swatch button{height:auto;padding:6px 0 4px;border-radius:12px;font-size:10px;font-weight:700;background:rgba(255,255,255,.55);border-color:var(--rule);display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:0}
   .swatch button i{width:30px;height:30px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 2px #fff}
   .swatch button[aria-pressed="true"]{background:var(--white);border-color:var(--peri);box-shadow:2px 2px 0 var(--peri)}
+  .fontLbl{display:block;margin-top:14px;font-size:13px;font-weight:700}
+  .fontSeg button{flex:1 1 30%;height:44px;font-size:14px;font-weight:400;letter-spacing:0}
   .linkBtn{display:inline;height:auto;padding:0;margin-left:6px;border:0;background:none;font-size:12px;color:var(--peri);text-decoration:underline}
   .wallPrev canvas{width:min(62%,240px);height:auto;border-radius:22px;box-shadow:0 8px 22px rgba(94,53,64,.25);background:#fff}
   .schSync{display:flex;align-items:center;gap:8px;margin:18px 0 0;font-size:13px;font-weight:700}
@@ -210,6 +215,7 @@
       <div class="card">
         <label for="schNote">ひとこと<small class="opt">なしでもOK</small></label>
         <input id="schNote" type="text" maxlength="40" placeholder="例）今週は歌枠多めだよ🎤">
+        <label class="fontLbl">文字のフォント</label><div class="seg fontSeg"></div>
       </div>
       <label class="schSync"><input type="checkbox" id="schSync" checked>HPの「Schedule」にも反映する</label>
       <div class="row"><button class="primary" id="schMake" type="button">予定表の画像をつくる</button></div>
@@ -295,6 +301,7 @@
           <button type="button" data-v="bubble">ふきだし</button>
           <button type="button" data-v="ribbon">リボン帯</button>
         </div>
+        <label class="fontLbl">文字のフォント</label><div class="seg fontSeg"></div>
       </div>
       <div class="row"><button class="ghost" id="wallSave" type="button">スマホに保存</button><button class="primary" id="wallSet" type="button">ごほうびに設定</button></div>
       <p class="msg" id="wallMsgOut"></p>
@@ -338,6 +345,7 @@
     <p class="sheet__ttl" id="sheetTtl">お返事してXに投稿</p>
     <label for="replyTxt" class="sheet__lbl">しぃからのお返事<small class="opt">なしでもOK</small></label>
     <textarea id="replyTxt" rows="3" maxlength="140" placeholder="例）ありがとう〜！次の歌枠で歌うね🎤"></textarea>
+    <label class="fontLbl">文字のフォント</label><div class="seg fontSeg"></div>
     <p class="sheet__lbl" style="margin-top:12px">投稿される画像</p>
     <img id="sheetImg" alt="お返事の画像">
     <label for="postTxt" class="sheet__lbl" style="margin-top:12px">投稿の文章</label>
@@ -352,6 +360,23 @@
 <script>
 (function(){
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', SBKEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
+  // ---- 画像に使うフォント（壁紙・予定表・お返事画像で共通。選んだものはこのスマホに残る） ----
+  var FONTS={ maru:{n:'まるゴシック',f:'"Zen Maru Gothic"'}, hachi:{n:'はちまるポップ',f:'"Hachi Maru Pop"'}, mochiy:{n:'もっちりポップ',f:'"Mochiy Pop One"'},
+              yusei:{n:'ゆせいマジック',f:'"Yusei Magic"'}, kiwi:{n:'キウイ丸',f:'"Kiwi Maru"'}, potta:{n:'ポッタ',f:'"Potta One"'} };
+  var fontKey='maru'; try{ var fk=localStorage.getItem('shii_font'); if(FONTS[fk]) fontKey=fk; }catch(e){}
+  var fontListeners=[];
+  function FF(){ return FONTS[fontKey].f+',"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif'; }
+  function fontReady(){ if(!document.fonts||!document.fonts.load) return Promise.resolve(); return Promise.all([document.fonts.load('400 40px '+FONTS[fontKey].f,'あア亜Aa1♡'),document.fonts.load('700 40px '+FONTS[fontKey].f,'あア亜Aa1♡')]).catch(function(){}); }
+  function initFontSegs(){
+    document.querySelectorAll('.fontSeg').forEach(function(box){
+      box.innerHTML='';
+      Object.keys(FONTS).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.textContent=FONTS[k].n; b.style.fontFamily=FONTS[k].f+',sans-serif'; b.setAttribute('aria-pressed',k===fontKey?'true':'false');
+        b.onclick=function(){ fontKey=k; try{ localStorage.setItem('shii_font',k); }catch(e){}
+          document.querySelectorAll('.fontSeg button').forEach(function(c){ c.setAttribute('aria-pressed',c.dataset.v===k?'true':'false'); });
+          fontReady().then(function(){ fontListeners.forEach(function(fn){ fn(); }); }); };
+        box.appendChild(b); });
+    });
+  }
   var PASS='shii_admin_pass';
   var $=function(id){return document.getElementById(id);};
   var posts=[], req={items:[],open:true};
@@ -558,7 +583,7 @@
       x.restore(); return {top:Y,bottom:Y+ih};
     }
     function draw(){
-      var T=(THEME[st.color]||THEME.pink).c, F='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
+      var T=(THEME[st.color]||THEME.pink).c, F=FF();
       x.setTransform(1,0,0,1,0,0); x.globalAlpha=1;
       bg(T);
       var box=drawIllust(T);
@@ -582,7 +607,8 @@
         x.textBaseline='alphabetic';
       }
     }
-    function redraw(){ ready.then(draw); }
+    function redraw(){ ready.then(fontReady).then(draw); }
+    fontListeners.push(redraw);
     // ---- 入力 ----
     var sw=$('wallColor'); Object.keys(THEME).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.style.setProperty('--c',THEME[k].c[1]); b.innerHTML='<i></i>'+THEME[k].n; sw.appendChild(b); });
     var SEGS=[['wallMode','mode'],['wallColor','color'],['wallPattern','pattern'],['wallDeco','deco'],['wallLogo','logo'],['wallMsgStyle','msgStyle']];
@@ -671,8 +697,8 @@
     function fit(x,txt,max){ var s=txt; while(s.length>1 && x.measureText(s).width>max) s=s.slice(0,-1); return s===txt?s:s.slice(0,-1)+'…'; }
     var blob=null;
     function draw(){
-      var F='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
-      return Promise.all([img('../img/logo.webp'),img('../img/chibi-a.webp'),img('../img/drip0.svg')]).then(function(im){
+      var F=FF();
+      return fontReady().then(function(){ return Promise.all([img('../img/logo.webp'),img('../img/chibi-a.webp'),img('../img/drip0.svg')]); }).then(function(im){
         var W=1080,H=1350,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
         var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#FBE7EE'); g.addColorStop(1,'#EFC3D2'); x.fillStyle=g; x.fillRect(0,0,W,H);
         x.fillStyle='rgba(255,255,255,.6)'; for(var y=18;y<H;y+=36) for(var xx=18+(y/36%2)*18;xx<W;xx+=36){ x.beginPath(); x.arc(xx,y,2.6,0,7); x.fill(); }
@@ -741,6 +767,7 @@
       draw().then(function(u){ var i=$('schImg'); if(i.dataset.u) URL.revokeObjectURL(i.dataset.u); i.src=u; i.dataset.u=u; $('schOut').hidden=false; if(!/できません|合言葉/.test($('schMsg').textContent)) say($('schMsg'), $('schSync').checked?'できました！HPのスケジュールにも反映済みです':'できました！'); setTimeout(function(){ $('schOut').scrollIntoView({behavior:'smooth',block:'start'}); },100); })
         .catch(function(){ say($('schMsg'),'画像をつくれませんでした。もう一度押してね',true); }).then(function(){ btn.disabled=false; });
     };
+    fontListeners.push(function(){ if(!$('schOut').hidden) $('schMake').click(); });
     $('schAgain').onclick=function(){ $('schOut').hidden=true; window.scrollTo({top:0,behavior:'smooth'}); };
     $('schShare').onclick=function(){
       if(!blob) return;
@@ -869,7 +896,7 @@
   (function(){ var i=new Image(); i.onload=function(){ iconImg=i; }; i.src='../img/icon.webp'; })();
   function drawReply(){
     if(!cur) return;
-    var W=1200, P=70, F='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
+    var W=1200, P=70, F=FF();
     var cv=document.createElement('canvas'), x=cv.getContext('2d');
     var it=cur.item, isReq=cur.kind==='req', reply=$('replyTxt').value.trim();
     // 中身の行を先に数えて高さを決める
@@ -912,10 +939,11 @@
     cur=o; $('replyTxt').value='';
     $('sheetTtl').textContent=o.kind==='req'?'リクエストにお返事してXに投稿':'メッセージにお返事してXに投稿';
     $('postTxt').value=(o.kind==='req'?'リクエストありがとう🎤✨':'メッセージありがとう💌')+'\n#しぃの見守り隊\nhttps://shii-room.github.io/';
-    $('sheet').hidden=false; drawReply();
+    $('sheet').hidden=false; fontReady().then(drawReply);
     if(o.kind==='msg' && !o.item.read){ mcall('read',o.item.id,true).then(function(){ o.item.read=true; renderM(); }).catch(function(){}); }
   }
-  $('replyTxt').addEventListener('input',function(){ clearTimeout(drawT); drawT=setTimeout(drawReply,250); });
+  $('replyTxt').addEventListener('input',function(){ clearTimeout(drawT); drawT=setTimeout(function(){ fontReady().then(drawReply); },250); });
+  fontListeners.push(function(){ if(!$('sheet').hidden) drawReply(); });
   $('sheetClose').onclick=function(){ $('sheet').hidden=true; };
   $('sheet').addEventListener('click',function(e){ if(e.target.id==='sheet') $('sheet').hidden=true; });
   $('sheetShare').onclick=function(){
@@ -931,6 +959,7 @@
     window.open('https://x.com/intent/post?text='+encodeURIComponent(text),'_blank');
   };
 
+  initFontSegs();
   function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadM(); loadPosts(); loadSongs(); }
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };
