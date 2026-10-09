@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009003443">
+<meta name="build" content="20261009003758">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -109,6 +109,12 @@
   .schOff input{width:18px;height:18px;margin:0;accent-color:var(--peri)}
   .schRow.is-off .schF input[type=text]{opacity:.4}
   .schOut{margin-top:20px}
+  .schNow{margin-top:20px;padding:14px 16px;border-radius:14px;background:var(--white);border:1.5px solid var(--rule)}
+  .schNow__lbl{font-size:12px;font-weight:700;color:var(--sub)}
+  .schNow__val{margin-top:2px;font-family:var(--maru);font-weight:700;font-size:16px}
+  .schNow__val small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--sub)}
+  .schNow.is-empty .schNow__val{color:var(--sub);font-size:14px}
+  .schNow__del{margin-top:12px;width:100%;height:44px;border-radius:999px;border:1.5px solid #E58AA5;background:#FFF2F6;color:#B3264A;font-size:14px}
   .schSync{display:flex;align-items:center;gap:8px;margin:18px 0 0;font-size:13px;font-weight:700}
   .schSync input{width:20px;height:20px;margin:0;accent-color:var(--peri)}
   .schOut img{display:block;width:100%;border-radius:12px;box-shadow:0 6px 18px rgba(94,53,64,.2)}
@@ -164,6 +170,11 @@
     </div>
 
     <div id="schView" hidden>
+      <div class="schNow" id="schNow">
+        <p class="schNow__lbl">いまHPに載っている予定</p>
+        <p class="schNow__val" id="schNowVal">確認中…</p>
+        <button class="schNow__del" id="schClear" type="button" hidden>🗑 HPから予定を消す</button>
+      </div>
       <div class="card">
         <label for="schStart">はじまりの日</label>
         <input id="schStart" type="date">
@@ -176,7 +187,6 @@
       </div>
       <label class="schSync"><input type="checkbox" id="schSync" checked>HPの「Schedule」にも反映する</label>
       <div class="row"><button class="primary" id="schMake" type="button">予定表の画像をつくる</button></div>
-      <button class="reload" id="schClear" type="button">HPに載っている予定を消す</button>
       <p class="msg" id="schMsg"></p>
       <div class="schOut" id="schOut" hidden>
         <img id="schImg" alt="予定表の画像">
@@ -425,11 +435,27 @@
     }
     function syncHP(){
       if(!$('schSync').checked) return Promise.resolve(null);
-      return call('shii_schedule_admin',{p_action:'save',p_data:payload()}).then(function(){ return 'ok'; });
+      return call('shii_schedule_admin',{p_action:'save',p_data:payload()}).then(function(r){ showNow(r); return 'ok'; });
     }
+    function md(d){ return (d.getMonth()+1)+'/'+d.getDate(); }
+    function showNow(res){
+      var box=$('schNow'), val=$('schNowVal'), del=$('schClear');
+      if(!res||!res.data||!res.data.days||!res.data.days.length){ box.classList.add('is-empty'); val.textContent='なし（HPにはいつもの配信時間だけ出ています）'; del.hidden=true; return; }
+      var ds=res.data.days, a=parse(ds[0].date), b=parse(ds[ds.length-1].date), u=new Date(res.updated_at), t=new Date(); t.setHours(0,0,0,0);
+      box.classList.remove('is-empty');
+      val.innerHTML=md(a)+'〜'+md(b)+' の予定<small>'+(isNaN(u)?'':md(u)+' '+u.getHours()+':'+('0'+u.getMinutes()).slice(-2)+' に更新')+(b<t?'・期間が終わったのでHPには表示されていません':'')+'</small>';
+      del.hidden=false;
+    }
+    function loadNow(){
+      return fetch(SB+'shii_schedule_get',{method:'POST',headers:{'apikey':SBKEY,'Content-Type':'application/json'},body:'{}'})
+        .then(function(r){ return r.ok?r.json():null; }).then(showNow).catch(function(){ $('schNowVal').textContent='確認できませんでした'; });
+    }
+    $('tabSch').addEventListener('click',loadNow);
     $('schClear').onclick=function(){
-      if(!confirm('HPの「Schedule」に載っている今週の予定を消す？')) return;
-      call('shii_schedule_admin',{p_action:'clear'}).then(function(){ say($('schMsg'),'HPから予定を消しました'); }).catch(function(e){ fail(e,$('schMsg')); });
+      if(!confirm('HPの「Schedule」から今週の予定を消します。\n（この画面の入力内容は消えません）\nよろしいですか？')) return;
+      var b=this; b.disabled=true;
+      call('shii_schedule_admin',{p_action:'clear'}).then(function(r){ showNow(r); say($('schMsg'),'HPから予定を消しました'); $('schNow').scrollIntoView({behavior:'smooth',block:'center'}); })
+        .catch(function(e){ fail(e,$('schMsg')); }).then(function(){ b.disabled=false; });
     };
     $('schMake').onclick=function(){
       var btn=this; btn.disabled=true; say($('schMsg'),'つくっています…');
