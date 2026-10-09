@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009231800">
+<meta name="build" content="20261009235000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1058,6 +1058,29 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .prof { grid-template-columns: 1fr; gap: 28px; max-width: 680px; }
   }
 
+  /* iPad mini 縦（744px）や画面分割など、スマホより広くタブレット版より狭い幅：
+     スマホのデザインのまま、まんなかに寄せて左右の余白をそろえる */
+  @media (min-width: 600px) and (max-width: 767px) {
+    :root { --wrap: min(560px, 100% - 64px); }
+    .quick, .hero__sns, .hero__menu-title { max-width: none; }
+    .hero__btns { justify-content: center; }
+    .stamp__card { max-width: 420px; }
+  }
+  /* iPad（タブレット版）の見やすさ */
+  @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) {
+    /* 電光掲示板はiPadでも出す（ナビの代わりにヘッダーのまんなか） */
+    .ticker { display: block; max-width: 440px; margin: 0 16px; }
+    /* リクエスト・メッセージのカードも、ほかのカードと同じ横幅にそろえる */
+    .req, .mbox { max-width: none; }
+    /* リクエストは「左に絵・右に説明とボタン」の2列。書くフォームは下に広く出る */
+    .req { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 32px; align-items: center; }
+    .req > .req__pic { grid-column: 1; grid-row: 1 / span 2; margin: 0; }
+    .req > .req__lead { grid-column: 2; grid-row: 1; align-self: end; margin: 0; }
+    .req > .acc__btn { grid-column: 2; grid-row: 2; align-self: start; }
+    .req > .acc__panel { grid-column: 1 / -1; grid-row: 3; }
+    .acc__btn { max-width: 520px; }
+    .stamp__card { max-width: 440px; }
+  }
   /* 画像の保存よけ（長押し・右クリック・ドラッグ）。ごほうび壁紙だけは保存OK */
   img, svg image, canvas, picture { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
   img[data-save] { -webkit-touch-callout: default; -webkit-user-select: auto; user-select: auto; -webkit-user-drag: auto; }
