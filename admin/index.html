@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009070040">
+<meta name="build" content="20261009070159">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -312,7 +312,8 @@
           <button type="button" data-v="music">音符</button>
           <button type="button" data-v="none">なし</button>
         </div>
-        <label class="schSync" style="margin-top:14px"><input type="checkbox" id="wallIcing">上にとろ〜りアイシング</label>
+        <label class="schSync" style="margin-top:14px"><input type="checkbox" id="wallIcing">画面の上にクリームのたれ（アイシング）</label>
+        <p class="hint" style="margin-top:4px">壁紙のいちばん上に、クリームがとろ〜りたれたようなかざりが付きます（全面モードでは付きません）</p>
         <div class="acc__sep"></div>
         <label>名前ロゴ</label>
         <div class="seg" id="wallLogo">
@@ -587,15 +588,22 @@
     }
     function mulberry(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
     function icing(col,acc){
-      var base=78; x.fillStyle=col; x.beginPath(); x.moveTo(0,0); x.lineTo(W,0); x.lineTo(W,base);
-      var drips={120:46,330:80,560:36,760:96,980:56};
-      for(var px=W;px>0;px-=45){ var nx=px-45, mid=px-22.5, d=null; for(var k in drips){ if(Math.abs(+k-mid)<22.5) d=[+k,drips[k]]; }
-        if(d){ x.lineTo(d[0]+16,base); x.lineTo(d[0]+16,base+d[1]-16); x.arc(d[0],base+d[1]-16,16,0,Math.PI); x.lineTo(d[0]-16,base); x.lineTo(nx,base); }
-        else x.quadraticCurveTo(mid,base+22,nx,base); }
-      x.closePath(); x.fill();
-      x.fillStyle='rgba(255,255,255,.55)'; for(var k2 in drips){ x.beginPath(); x.ellipse(+k2+6,base+drips[k2]-22,4,7,0,0,7); x.fill(); }
+      // 画面の上から、クリームがとろ〜りたれているかざり（大きめ・影つきで分かりやすく）
+      var base=150, drips=[[70,90],[230,170],[400,70],[560,210],[720,110],[880,180],[1050,95]], dw=30;
+      function path(){ x.beginPath(); x.moveTo(0,0); x.lineTo(W,0); x.lineTo(W,base);
+        var pts=drips.slice().reverse(), px=W;
+        pts.forEach(function(d){ var c=d[0], L=d[1];
+          x.quadraticCurveTo((px+c+dw)/2,base+26,c+dw,base);
+          x.lineTo(c+dw,base+L-dw); x.arc(c,base+L-dw,dw,0,Math.PI); x.lineTo(c-dw,base); px=c-dw; });
+        x.quadraticCurveTo(px/2,base+26,0,base); x.closePath(); }
+      x.save(); x.shadowColor='rgba(120,50,75,.28)'; x.shadowBlur=22; x.shadowOffsetY=10; x.fillStyle=col; path(); x.fill(); x.restore();
+      x.save(); path(); x.clip();
+      var g=x.createLinearGradient(0,0,0,base+220); g.addColorStop(0,'rgba(255,255,255,.35)'); g.addColorStop(.5,'rgba(255,255,255,0)'); g.addColorStop(1,'rgba(0,0,0,.06)'); x.fillStyle=g; x.fillRect(0,0,W,base+240);
+      x.restore();
+      x.fillStyle='rgba(255,255,255,.7)'; drips.forEach(function(d){ x.beginPath(); x.ellipse(d[0]-10,base+d[1]-dw-6,7,13,-.2,0,7); x.fill(); });
+      
       var R=mulberry(3), cols=['#FFFFFF','#FFE68A','#9FE3C7','#C7B2FF','#8FD3FF',acc];
-      for(var i=0;i<36;i++){ var sx=R()*W, sy=12+R()*50, an=R()*3; x.save(); x.translate(sx,sy); x.rotate(an); x.fillStyle=cols[i%cols.length]; rr(-11,-3.5,22,7,3.5); x.fill(); x.restore(); }
+      for(var i=0;i<48;i++){ var sx=R()*W, sy=18+R()*(base-40), an=R()*3; x.save(); x.translate(sx,sy); x.rotate(an); x.fillStyle=cols[i%cols.length]; rr(-14,-4.5,28,9,4.5); x.fill(); x.restore(); }
     }
     // ---- イラスト ----
     function drawIllust(T){
