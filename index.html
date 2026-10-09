@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009064615">
+<meta name="build" content="20261009065317">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -693,6 +693,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .deco--stamp::after { left: calc(158.1px - 40px - 2px - 4px); top: calc(30.5px - 2px - 6px); animation-delay: 6.2s; }
   .stamp { text-align: center; }
   .stamp .req__lead { text-align: left; }
+  .stamp .req__lead small { display: block; margin-top: 2px; font-size: 11px; color: var(--ink-sub); }
   .stamp__card { position: relative; margin: 18px auto 0; max-width: 380px; padding: 16px 16px 14px; border-radius: 20px; background:
       radial-gradient(circle at 1px 1px, rgba(224,116,150,.12) 1.2px, transparent 1.6px) 0 0 / 14px 14px, #FFFBF7;
     border: 2px solid #fff; box-shadow: 0 0 0 2px #F6C9D7, 0 6px 0 rgba(224,116,150,.35), 0 10px 22px rgba(150,70,95,.15); }
@@ -723,7 +724,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .stamp-modal__in { width: min(360px, 100%); max-height: 100%; overflow: auto; padding: 20px 18px 16px; border-radius: 24px; background: #FFF8FA; text-align: center; animation: omi-pop .6s cubic-bezier(.3,1.6,.5,1) both; }
   .stamp-modal__ttl { font-family: var(--en); font-weight: 500; font-size: 20px; letter-spacing: .18em; background: linear-gradient(110deg, #E6AD4A, #FF8FBF 50%, #E6AD4A); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .stamp-modal__sub { margin-top: 6px; font-family: var(--maru); font-weight: 700; font-size: 14px; line-height: 1.7; color: var(--ink); }
-  .stamp-modal__sub small { display: block; margin-top: 6px; font-size: 12px; font-weight: 500; line-height: 1.6; color: var(--ink-sub); }
   .stamp-modal__img { display: block; width: 62%; margin: 14px auto 0; border-radius: 14px; box-shadow: 0 6px 18px rgba(150,70,95,.25); background: #F6E4E9; aspect-ratio: 9 / 19.5; object-fit: cover; }
   .stamp-modal__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 12px; }
   .stamp-modal__btns .btn { min-width: 0; height: 46px; padding-inline: 22px; font-size: 14px; cursor: pointer; }
@@ -1326,26 +1326,26 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="deco deco--stamp">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#lolli"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#cake"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#bow"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#kira"/></svg></span>
       <div class="stamp">
-        <p class="req__lead">1日1回、遊びに来たらスタンプを押してね🍭 10個たまると、特別なしぃの壁紙がもらえるよ♡</p>
+        <p class="req__lead">1日1回、遊びに来たらスタンプを押してね🍭 その月に20個たまると、今月だけの特別なしぃの壁紙がもらえるよ♡<br><small>カードは毎月1日に新しくなります</small></p>
         <div class="stamp__card">
           <div class="stamp__top">
             <span class="stamp__ttl">しぃの見守り隊<br><b>STAMP CARD</b></span>
-            <span class="stamp__no" id="stamp-no">No.1</span>
+            <span class="stamp__no" id="stamp-no"></span>
           </div>
           <ol class="stamp__grid" id="stamp-grid" aria-label="スタンプ"></ol>
           <p class="stamp__count" id="stamp-count"></p>
         </div>
         <button class="btn btn--main stamp__btn" id="stamp-btn" type="button">今日のスタンプを押す</button>
         <p class="stamp__note" id="stamp-note"></p>
-        <button class="stamp__reward-open" id="stamp-reward-open" type="button" hidden>🎁 もらった壁紙をもう一度見る</button>
+        <button class="stamp__reward-open" id="stamp-reward-open" type="button" hidden>🎁 今月の壁紙をもう一度見る</button>
       </div>
     </div>
   </section>
 
-  <div class="stamp-modal" id="stamp-modal" hidden role="dialog" aria-modal="true" aria-label="スタンプ10個達成">
+  <div class="stamp-modal" id="stamp-modal" hidden role="dialog" aria-modal="true" aria-label="スタンプ20個達成">
     <div class="stamp-modal__in">
       <p class="stamp-modal__ttl">CONGRATULATIONS!</p>
-      <p class="stamp-modal__sub">スタンプ10個たまったよ！<br>いつも来てくれてありがとう♡</p>
+      <p class="stamp-modal__sub" id="stamp-sub">今月のスタンプ20個たまったよ！<br>いつも来てくれてありがとう♡</p>
       <img class="stamp-modal__img" id="stamp-wall" alt="しぃの特別壁紙">
       <div class="stamp-modal__btns">
         <button class="btn btn--main" id="stamp-save" type="button">壁紙を保存する</button>
@@ -1841,30 +1841,35 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // ---- 見守り隊スタンプカード（1日1回・この端末に保存） ----
   var $=function(id){return document.getElementById(id);};
   var grid=$('stamp-grid'); if(!grid) return;
-  var KEY='shii_stamp', ICONS=['heart','lolli','cake','bow','star','gift','note1','kira','moon','star'];
-  var ROT=[-8,6,-4,10,-10,4,-6,8,-2,0];
+  var KEY='shii_stamp', GOAL=20, ICONS=['heart','lolli','cake','bow','star','gift','note1','kira','moon','star'];
+  var ROT=[-8,6,-4,10,-10,4,-6,8,-2,3];
   function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
-  function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'null'); if(v&&Array.isArray(v.d)) return v; }catch(e){} return {d:[],cards:0,total:0,reward:false}; }
+  function month(){ return today().slice(0,7); }
+  function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'null'); if(v&&Array.isArray(v.d)) return v; }catch(e){} return {d:[],total:0,reward:false}; }
   function save(v){ try{ localStorage.setItem(KEY,JSON.stringify(v)); }catch(e){} }
-  var st=load();
-  function done(){ return st.last===today(); }
+  // カードは月ごと：月がかわったら新しいカードに（ごほうびも月に1回）
+  function fresh(){ if(st.m!==month()){ var m=month(); st.d=st.d.filter(function(d){ return d.slice(0,7)===m; }).slice(0,GOAL); st.m=m; st.reward=st.d.length>=GOAL; save(st); } }
+  var st=load(); fresh();
+  function full(){ return st.d.length>=GOAL; }
+  function done(){ return st.last===today() || full(); }
   function render(pon){
     grid.innerHTML='';
-    for(var i=0;i<10;i++){
-      var li=document.createElement('li'); li.style.setProperty('--rot',ROT[i]+'deg');
-      if(i===9) li.classList.add('is-goal');
+    for(var i=0;i<GOAL;i++){
+      var li=document.createElement('li'); li.style.setProperty('--rot',ROT[i%10]+'deg');
+      if(i===GOAL-1) li.classList.add('is-goal');
       if(i<st.d.length){
-        li.classList.add('is-on'); if(i===9) li.classList.add('is-gold');
-        li.innerHTML='<svg viewBox="0 0 24 24"><use href="#'+ICONS[i]+'"/></svg>';
+        li.classList.add('is-on'); if(i===GOAL-1) li.classList.add('is-gold');
+        li.innerHTML='<svg viewBox="0 0 24 24"><use href="#'+ICONS[i%10]+'"/></svg>';
         li.setAttribute('aria-label',(i+1)+'個目 '+st.d[i].replace(/^\d+-/,'').replace('-','/'));
         if(pon && i===st.d.length-1) li.classList.add('is-today');
       } else { li.textContent=i+1; li.setAttribute('aria-label',(i+1)+'個目 まだ'); }
       grid.appendChild(li);
     }
-    $('stamp-no').textContent='No.'+(st.cards+1);
-    $('stamp-count').innerHTML='いま <b>'+st.d.length+'</b> / 10 個'+(st.total?'<br><small>これまで '+st.total+' 回来てくれたよ♡</small>':'');
-    var b=$('stamp-btn'); b.disabled=done(); b.textContent=done()?'今日はもう押したよ♡':'今日のスタンプを押す';
-    $('stamp-note').textContent=done()?'また明日来てね！':'';
+    var mo=+st.m.slice(5);
+    $('stamp-no').textContent=mo+'月';
+    $('stamp-count').innerHTML='今月 <b>'+st.d.length+'</b> / '+GOAL+' 個'+(st.total?'<br><small>これまで '+st.total+' 回来てくれたよ♡</small>':'');
+    var b=$('stamp-btn'); b.disabled=done(); b.textContent=full()?'今月はコンプリート♡':done()?'今日はもう押したよ♡':'今日のスタンプを押す';
+    $('stamp-note').textContent=full()?'来月1日に新しいカードになるよ！':done()?'また明日来てね！':'';
     $('stamp-reward-open').hidden=!st.reward;
     document.querySelectorAll('.quick__dot').forEach(function(d){ d.hidden=done(); });
   }
@@ -1902,31 +1907,14 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       return new Promise(function(ok){ c.toBlob(function(b){ wallBlob=b; wallURL=URL.createObjectURL(b); ok(wallURL); },'image/png'); });
     });
   }
-  // ---- 壁紙の「かぶり」チェック：前にもらった壁紙と同じなら、しぃ管理にお知らせ ----
-  var SBU='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', SBK='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
-  function sb(fn,body){ return fetch(SBU+fn,{method:'POST',headers:{'apikey':SBK,'Content-Type':'application/json'},body:JSON.stringify(body||{})}); }
-  function wallKey(){ return sb('shii_wallpaper_info').then(function(r){ return r.ok?r.json():null; }).then(function(d){ return d&&d.updated_at?d.updated_at:'default'; }).catch(function(){ return null; }); }
-  function devId(){ try{ var v=localStorage.getItem('shii_dev'); if(!v||!/^[a-z0-9]{8,40}$/.test(v)){ v=(Math.random().toString(36).slice(2)+Date.now().toString(36)).replace(/[^a-z0-9]/g,'').slice(0,24); localStorage.setItem('shii_dev',v); } return v; }catch(e){ return null; } }
-  function checkDup(complete){
-    return wallKey().then(function(k){
-      if(!k) return false;
-      if(!Array.isArray(st.got)) st.got=[];
-      var had=st.got.indexOf(k)>=0, n=st.d.length;
-      if(complete && !had){ st.got.push(k); if(st.got.length>20) st.got=st.got.slice(-20); save(st); }
-      if(had && n>=7){ var id=devId(); if(id) sb('shii_stamp_report',{p_dev:id,p_wall:k,p_cnt:n}).catch(function(){}); }
-      return complete && had;
-    });
-  }
-  var SUB0=$('stamp-modal').querySelector('.stamp-modal__sub').innerHTML;
-  function openReward(dup){
-    $('stamp-modal').querySelector('.stamp-modal__sub').innerHTML=dup===true?'スタンプ10個たまったよ！いつもありがとう♡<br><small>前と同じ壁紙だけど…<br>新しい壁紙、しぃにお願いしておいたよ！</small>':SUB0;
+  function openReward(){
     var m=$('stamp-modal'); m.hidden=false; document.body.classList.add('menu-open');
     makeWall().then(function(u){ $('stamp-wall').src=u; }).catch(function(){ $('stamp-wall').src='img/menu-large.jpg'; });
   }
   function closeReward(){ $('stamp-modal').hidden=true; document.body.classList.remove('menu-open'); }
   $('stamp-close').addEventListener('click',closeReward);
   $('stamp-modal').addEventListener('click',function(e){ if(e.target.id==='stamp-modal') closeReward(); });
-  $('stamp-reward-open').addEventListener('click',function(){ openReward(false); });
+  $('stamp-reward-open').addEventListener('click',openReward);
   $('stamp-save').addEventListener('click',function(){
     makeWall().then(function(u){
       var file=wallBlob&&new File([wallBlob],'shii-wallpaper.'+(wallBlob.type==='image/jpeg'?'jpg':'png'),{type:wallBlob.type||'image/png'});
@@ -1935,13 +1923,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     });
   });
   $('stamp-btn').addEventListener('click',function(){
-    if(done()) return;
-    if(st.d.length>=10){ st.d=[]; st.cards++; }       // 前のカードがいっぱいなら新しいカードへ
+    fresh(); if(done()){ render(false); return; }
     st.d.push(today()); st.last=today(); st.total=(st.total||0)+1;
-    var complete=st.d.length===10; if(complete) st.reward=true;
+    var complete=st.d.length===GOAL; if(complete) st.reward=true;
     save(st); render(true);
-    var t0=Date.now();
-    checkDup(complete).then(function(dup){ if(complete) setTimeout(function(){ openReward(dup); },Math.max(0,900-(Date.now()-t0))); });
+    if(complete) setTimeout(openReward,900);
   });
   render(false);
 })();
