@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009204206">
+<meta name="build" content="20261009204603">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -331,7 +331,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .hero__logo { width: min(100%, 400px); margin: 6px 0 0 -8px; line-height: 0; animation: none; }
   html.op .hero__logo { animation: none; }
   html.op:not(.op-in) .hero__logo { visibility: hidden; }
-  html.op-in .hero__logo { animation: logo-arrive .9s ease-out .35s both; }
+  html.op-in .hero__logo { animation: logo-arrive .9s ease-out .85s both; }
   .hero__logo-button { position: relative; display: block; width: 100%; padding: 0; border: 0; background: transparent; color: var(--rose); cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; animation: logo-float 5.6s ease-in-out 1s infinite; }
   .hero__logo-button:focus-visible { outline: 2px solid var(--rose-deep); outline-offset: 5px; border-radius: 12px; }
   .hero__logo img { display: block; width: 100%; height: auto; transform-origin: 50% 65%; animation: logo-quiver 12s ease-in-out 1s infinite; }
@@ -922,6 +922,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* Keep navigation available above the opening from the first frame. */
   html.op .header { z-index: 101; }
   html.op .menu { z-index: 102; }
+  html.op .hero__photo { visibility: hidden; }
   html.op .bubble { animation: none; opacity: 0; }
   .opening { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100vh + 160px); height: calc(100lvh + 160px); z-index: 100; overflow: hidden; background-color: #2A0F1A; cursor: pointer; transition: opacity .45s ease; animation: op-bg .8s ease 3.95s forwards; }
   @keyframes op-bg { to { background-color: rgba(42,15,26,0); } }
@@ -1016,7 +1017,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     100% { opacity: 0; transform: rotate(var(--a)) translateY(-34vmin) scale(1.1) rotate(180deg); }
   }
   .op-skip { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 5; font-size: 11px; letter-spacing: .1em; color: rgba(255,255,255,.55); }
-  html.op-in .hero__photo { animation: op-appear .9s cubic-bezier(.3,1.5,.5,1) both; }
+  html.op-in .hero__photo { animation: op-appear .9s cubic-bezier(.3,1.5,.5,1) .5s both; }
   @keyframes op-appear { 0% { opacity: 0; transform: scale(.82) translateY(20px); } 100% { opacity: 1; transform: none; } }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1746,7 +1747,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   top(); window.addEventListener('load', top);
   function finish(){
     if(done) return; done=true;
-    clearTimeout(timer); clearTimeout(show); clearTimeout(pop);
+    clearTimeout(timer); clearTimeout(show);
     window.removeEventListener('load', top);
     op.classList.add('is-out');
     root.classList.remove('op'); root.classList.add('op-in');
@@ -1756,7 +1757,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   var timer=setTimeout(finish, 7150);
   var show=setTimeout(function(){ root.classList.add('op-show'); }, 3900);
-  var pop=setTimeout(function(){ root.classList.add('op-in'); }, 4100);
   op.addEventListener('click', finish);
   // Navigation skips the opening before its existing handlers open a menu or follow a link.
   document.querySelector('.header').addEventListener('click', function(e){
