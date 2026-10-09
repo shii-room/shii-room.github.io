@@ -328,9 +328,10 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   .hero__name .heart { width: .3em; height: .3em; margin-left: .08em; }
   /* Separate arrival, float and squash layers so taps do not interrupt the float. */
-  .hero__logo { width: min(100%, 400px); margin: 6px 0 0 -8px; line-height: 0; animation: logo-arrive .9s ease-out both; }
+  .hero__logo { width: min(100%, 400px); margin: 6px 0 0 -8px; line-height: 0; animation: none; }
   html.op .hero__logo { animation: none; }
-  html.op-in .hero__logo { animation: logo-arrive .9s ease-out .15s both; }
+  html.op:not(.op-in) .hero__logo { visibility: hidden; }
+  html.op-in .hero__logo { animation: logo-arrive .9s ease-out .35s both; }
   .hero__logo-button { position: relative; display: block; width: 100%; padding: 0; border: 0; background: transparent; color: var(--rose); cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; animation: logo-float 5.6s ease-in-out 1s infinite; }
   .hero__logo-button:focus-visible { outline: 2px solid var(--rose-deep); outline-offset: 5px; border-radius: 12px; }
   .hero__logo img { display: block; width: 100%; height: auto; transform-origin: 50% 65%; animation: logo-quiver 12s ease-in-out 1s infinite; }
@@ -917,7 +918,10 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   html.op body { overflow: hidden; }
   /* 暗幕が届かない端（アプリ内ブラウザのバーの裏など）からページが見えないよう、幕が開くまで中身を隠す */
   html.op:not(.op-show), html.op:not(.op-show) body { background: #2A0F1A !important; }
-  html.op:not(.op-show) .header, html.op:not(.op-show) main, html.op:not(.op-show) .footer { visibility: hidden; }
+  html.op:not(.op-show) main, html.op:not(.op-show) .footer { visibility: hidden; }
+  /* Keep navigation available above the opening from the first frame. */
+  html.op .header { z-index: 101; }
+  html.op .menu { z-index: 102; }
   html.op .bubble { animation: none; opacity: 0; }
   .opening { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100vh + 160px); height: calc(100lvh + 160px); z-index: 100; overflow: hidden; background-color: #2A0F1A; cursor: pointer; transition: opacity .45s ease; animation: op-bg .8s ease 3.95s forwards; }
   @keyframes op-bg { to { background-color: rgba(42,15,26,0); } }
@@ -1736,23 +1740,28 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 <script>
 (function(){
   var root=document.documentElement, op=document.getElementById('opening');
-  if(!root.classList.contains('op')){ if(op) op.remove(); return; }
+  if(!root.classList.contains('op')){ if(op) op.remove(); root.classList.add('op-in'); return; }
   var done=false;
   function top(){ window.scrollTo(0,0); }
   top(); window.addEventListener('load', top);
   function finish(){
     if(done) return; done=true;
-    top();
+    clearTimeout(timer); clearTimeout(show); clearTimeout(pop);
+    window.removeEventListener('load', top);
     op.classList.add('is-out');
     root.classList.remove('op'); root.classList.add('op-in');
     setTimeout(function(){ root.classList.remove('op-show'); }, 600);
     setTimeout(function(){ op.remove(); }, 500);
-    setTimeout(function(){ root.classList.remove('op-in'); }, 1200);
+    // Keep the entrance state so the logo never starts its arrival twice.
   }
   var timer=setTimeout(finish, 7150);
   var show=setTimeout(function(){ root.classList.add('op-show'); }, 3900);
   var pop=setTimeout(function(){ root.classList.add('op-in'); }, 4100);
-  op.addEventListener('click', function(){ clearTimeout(timer); clearTimeout(show); clearTimeout(pop); finish(); });
+  op.addEventListener('click', finish);
+  // Navigation skips the opening before its existing handlers open a menu or follow a link.
+  document.querySelector('.header').addEventListener('click', function(e){
+    if(e.target.closest('a, button')) finish();
+  }, true);
 })();
 </script>
 <script>
