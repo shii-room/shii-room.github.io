@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009004226">
+<meta name="build" content="20261009043159">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -115,6 +115,17 @@
   .schNow__val small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--sub)}
   .schNow.is-empty .schNow__val{color:var(--sub);font-size:14px}
   .schNow__del{margin-top:12px;width:100%;height:44px;border-radius:999px;border:1.5px solid #E58AA5;background:#FFF2F6;color:#B3264A;font-size:14px}
+  .wallFile{height:auto;padding:12px;font-size:14px}
+  .seg{display:flex;flex-wrap:wrap;gap:8px}
+  .seg button{flex:1 1 auto;height:42px;padding:0 14px;border-radius:999px;font-size:13px;background:rgba(255,255,255,.6);color:var(--ink);border-color:var(--rule)}
+  .seg button[aria-pressed="true"]{background:var(--white);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
+  .seg--color button{background:var(--c)}
+  .seg--color button[aria-pressed="true"]{background:var(--c)}
+  .wallPos{margin-top:14px}
+  .wallPos .sub{font-size:12px;color:var(--sub)}
+  .wallPos input{width:100%;height:auto;padding:0;border:0;background:none;accent-color:var(--peri)}
+  .wallPrev{display:grid;place-items:center;margin-top:10px}
+  .wallPrev canvas{width:min(62%,240px);height:auto;border-radius:22px;box-shadow:0 8px 22px rgba(94,53,64,.25);background:#fff}
   .schSync{display:flex;align-items:center;gap:8px;margin:18px 0 0;font-size:13px;font-weight:700}
   .schSync input{width:20px;height:20px;margin:0;accent-color:var(--peri)}
   .schOut img{display:block;width:100%;border-radius:12px;box-shadow:0 6px 18px rgba(94,53,64,.2)}
@@ -143,6 +154,7 @@
       <button class="tab" id="tabPost" role="tab" aria-selected="false" type="button">X のポスト</button>
       <button class="tab" id="tabSong" role="tab" aria-selected="false" type="button">歌リスト</button>
       <button class="tab" id="tabSch" role="tab" aria-selected="false" type="button">予定表画像</button>
+      <button class="tab" id="tabWall" role="tab" aria-selected="false" type="button">ごほうび壁紙</button>
     </div>
 
     <div id="reqView">
@@ -193,6 +205,49 @@
         <div class="row"><button class="ghost" id="schAgain" type="button">直す</button><button class="primary" id="schShare" type="button">保存・Xに投稿</button></div>
         <p class="hint">画像を長押ししても保存できます。入力した内容はこのスマホに残ります。</p>
       </div>
+    </div>
+
+    <div id="wallView" hidden>
+      <div class="schNow" id="wallNow">
+        <p class="schNow__lbl">いまのごほうび壁紙（スタンプ10個で配られる）</p>
+        <p class="schNow__val" id="wallNowVal">確認中…</p>
+        <button class="schNow__del" id="wallClear" type="button" hidden>標準の壁紙に戻す</button>
+      </div>
+      <div class="card">
+        <label for="wallFile">① 使うイラストを選ぶ</label>
+        <input id="wallFile" type="file" accept="image/*" class="wallFile">
+        <p class="hint">選ばない時は、今のイラスト（キャンディを持ったしぃ）で作れます。</p>
+      </div>
+      <div class="card">
+        <label>② かざり方</label>
+        <div class="seg" id="wallMode">
+          <button type="button" data-v="card" aria-pressed="true">カード</button>
+          <button type="button" data-v="full" aria-pressed="false">全面</button>
+        </div>
+        <div class="wallPos" id="wallPosBox" hidden>
+          <label for="wallPos" class="sub">イラストの位置（上〜下）</label>
+          <input id="wallPos" type="range" min="0" max="100" value="40">
+        </div>
+      </div>
+      <div class="card">
+        <label>③ 色</label>
+        <div class="seg seg--color" id="wallColor">
+          <button type="button" data-v="pink" aria-pressed="true" style="--c:#F4CFDC">いちご</button>
+          <button type="button" data-v="lav" aria-pressed="false" style="--c:#DCCFF0">ラベンダー</button>
+          <button type="button" data-v="mint" aria-pressed="false" style="--c:#CDEEE2">ミント</button>
+          <button type="button" data-v="night" aria-pressed="false" style="--c:#3D3466;color:#fff">夜空</button>
+        </div>
+        <label class="schSync" style="margin-top:14px"><input type="checkbox" id="wallLogo" checked>名前ロゴを入れる</label>
+      </div>
+      <div class="card">
+        <label for="wallMsg">④ ひとこと<small class="opt">なしでもOK・2行まで</small></label>
+        <textarea id="wallMsg" rows="2" maxlength="40" placeholder="いつも来てくれてありがとう♡"></textarea>
+      </div>
+      <h2>できあがり</h2>
+      <div class="wallPrev"><canvas id="wallCv" width="1170" height="2532"></canvas></div>
+      <p class="hint" style="text-align:center">上のほうは時計が重なるので、イラストは少し下に置くと見やすいです</p>
+      <div class="row"><button class="ghost" id="wallSave" type="button">スマホに保存</button><button class="primary" id="wallSet" type="button">ごほうびに設定</button></div>
+      <p class="msg" id="wallMsgOut"></p>
     </div>
 
     <div id="songView" hidden>
@@ -346,7 +401,7 @@
   $('reqReload').onclick=loadReq;
 
   function showTab(name){
-    [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView'],['song','tabSong','songView'],['sch','tabSch','schView']].forEach(function(x){
+    [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView'],['song','tabSong','songView'],['sch','tabSch','schView'],['wall','tabWall','wallView']].forEach(function(x){
       var on=x[0]===name; $(x[1]).setAttribute('aria-selected',on?'true':'false'); $(x[2]).hidden=!on;
     });
   }
@@ -355,6 +410,90 @@
   $('tabPost').onclick=function(){ showTab('post'); };
   $('tabSong').onclick=function(){ showTab('song'); };
   $('tabSch').onclick=function(){ showTab('sch'); };
+  $('tabWall').onclick=function(){ showTab('wall'); };
+
+  // ---- ごほうび壁紙メーカー ----
+  (function(){
+    var cv=$('wallCv'), x=cv.getContext('2d'), W=1170, H=2532;
+    var KEY='shii_wall', st={mode:'card',color:'pink',logo:true,msg:'',pos:40};
+    try{ var s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s) for(var k in s) st[k]=s[k]; }catch(e){}
+    function saveSt(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
+    var THEME={ pink:['#FBE7EE','#F4CFDC','#EBB7CA','#C9557B','rgba(255,255,255,.55)'],
+                lav:['#F3EDFB','#E2D6F3','#CDBCE8','#7A5A9E','rgba(255,255,255,.55)'],
+                mint:['#EEF9F4','#D3EFE4','#B7E3D2','#3F8C72','rgba(255,255,255,.6)'],
+                night:['#2B2350','#3D3466','#5B4A8A','#FFD6E6','rgba(255,255,255,.35)'] };
+    var imgs={}, userImg=null;
+    function load(src){ return new Promise(function(ok){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=function(){ok(null);}; i.src=src; }); }
+    var ready=Promise.all([load('../img/menu-candy-transparent.webp'),load('../img/logo.webp')]).then(function(r){ imgs.def=r[0]; imgs.logo=r[1]; });
+    function rr(X,Y,w,h,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
+    function heart(cx,cy,s,col){ x.save(); x.translate(cx,cy); x.scale(s/24,s/24); x.fillStyle=col; x.beginPath(); x.moveTo(12,21.5); x.bezierCurveTo(0,14.2,0,10,0,6.6); x.bezierCurveTo(0,3,2.8,.3,6.3,.3); x.bezierCurveTo(8.7,.3,10.8,1.7,12,3.9); x.bezierCurveTo(13.2,1.7,15.3,.3,17.7,.3); x.bezierCurveTo(21.2,.3,24,3,24,6.6); x.bezierCurveTo(24,10,24,14.2,12,21.5); x.fill(); x.restore(); }
+    function draw(){
+      var T=THEME[st.color]||THEME.pink, F='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
+      var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,T[0]); g.addColorStop(.55,T[1]); g.addColorStop(1,T[2]); x.fillStyle=g; x.fillRect(0,0,W,H);
+      x.fillStyle=T[4]; for(var yy=20;yy<H;yy+=46) for(var xx=20+(yy/46%2)*23;xx<W;xx+=46){ x.beginPath(); x.arc(xx,yy,3.2,0,7); x.fill(); }
+      var im=userImg||imgs.def, bottom=H*.9;
+      if(im){
+        if(st.mode==='full' && userImg){
+          var s=Math.max(W/im.width,H/im.height), w=im.width*s, h=im.height*s;
+          x.drawImage(im,(W-w)/2,(H-h)*(st.pos/100),w,h);
+          var sh=x.createLinearGradient(0,H*.78,0,H); sh.addColorStop(0,'rgba(0,0,0,0)'); sh.addColorStop(1,st.color==='night'?'rgba(20,10,40,.55)':'rgba(255,255,255,.6)'); x.fillStyle=sh; x.fillRect(0,H*.78,W,H*.22);
+        } else if(userImg){
+          var cw=W*.78, chh=Math.min(cw*im.height/im.width, H*.55), cww=chh*im.width/im.height, X=(W-cww)/2, Y=H*.33;
+          x.save(); x.shadowColor='rgba(150,70,95,.3)'; x.shadowBlur=40; x.shadowOffsetY=16; x.fillStyle='#fff'; rr(X-22,Y-22,cww+44,chh+44,56); x.fill(); x.restore();
+          x.save(); rr(X,Y,cww,chh,40); x.clip(); x.drawImage(im,X,Y,cww,chh); x.restore();
+          bottom=Y+chh+22;
+        } else {
+          x.save(); x.globalAlpha=st.color==='night'?.25:.9; x.fillStyle='#fff'; x.beginPath(); x.arc(W/2,H*.58,W*.47,0,7); x.fill(); x.restore();
+          var ch_h=H*.56, ch_w=im.width*ch_h/im.height; x.drawImage(im,(W-ch_w)/2,H*.325,ch_w,ch_h);
+        }
+      }
+      if(st.logo && imgs.logo && !(st.mode==='full'&&userImg&&st.pos<30)){ var lw=W*.6, lh=imgs.logo.height*lw/imgs.logo.width; x.drawImage(imgs.logo,(W-lw)/2,H*.14,lw,lh); }
+      [[130,560,64,'#FF8FB1'],[1030,520,50,'#fff'],[110,1600,44,'#fff'],[1060,1450,58,'#FF8FB1']].forEach(function(h){ heart(h[0],h[1],h[2],h[3]); });
+      var lines=(st.msg||'').split(/\n/).filter(Boolean).slice(0,2);
+      if(lines.length){
+        x.textAlign='center'; x.font='700 56px '+F;
+        var ty=(userImg&&st.mode==='card')?Math.min(bottom+120,H*.95-(lines.length-1)*70):Math.min(Math.max(bottom+90,H*.9),H*.95)-(lines.length-1)*70;
+        lines.forEach(function(l,i){ x.lineWidth=12; x.strokeStyle=st.color==='night'?'rgba(43,35,80,.8)':'rgba(255,255,255,.9)'; x.strokeText(l,W/2,ty+i*70); x.fillStyle=T[3]; x.fillText(l,W/2,ty+i*70); });
+      }
+    }
+    function redraw(){ ready.then(draw); }
+    function seg(id,key){ var box=$(id); Array.prototype.forEach.call(box.children,function(b){ b.setAttribute('aria-pressed',b.dataset.v===st[key]?'true':'false');
+      b.onclick=function(){ st[key]=b.dataset.v; saveSt(); Array.prototype.forEach.call(box.children,function(c){ c.setAttribute('aria-pressed',c===b?'true':'false'); }); $('wallPosBox').hidden=!(st.mode==='full'); redraw(); }; }); }
+    seg('wallMode','mode'); seg('wallColor','color');
+    $('wallPosBox').hidden=!(st.mode==='full');
+    $('wallLogo').checked=st.logo; $('wallLogo').onchange=function(){ st.logo=this.checked; saveSt(); redraw(); };
+    $('wallMsg').value=st.msg||''; $('wallMsg').oninput=function(){ st.msg=this.value; saveSt(); redraw(); };
+    $('wallPos').value=st.pos; $('wallPos').oninput=function(){ st.pos=+this.value; saveSt(); redraw(); };
+    $('wallFile').onchange=function(){
+      var f=this.files&&this.files[0]; if(!f) return;
+      var u=URL.createObjectURL(f); load(u).then(function(i){ userImg=i; if(!i) say($('wallMsgOut'),'画像を読み込めませんでした',true); redraw(); });
+    };
+    function md(d){ return (d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+('0'+d.getMinutes()).slice(-2); }
+    function showNow(r){
+      var u=r&&r.updated_at?new Date(r.updated_at):null;
+      if(u&&!isNaN(u)){ $('wallNowVal').innerHTML='しぃが作った壁紙<small>'+md(u)+' に設定</small>'; $('wallClear').hidden=false; $('wallNow').classList.remove('is-empty'); }
+      else { $('wallNowVal').textContent='標準の壁紙（キャンディのしぃ）'; $('wallClear').hidden=true; $('wallNow').classList.add('is-empty'); }
+    }
+    function loadNow(){ return fetch(SB+'shii_wallpaper_info',{method:'POST',headers:{'apikey':SBKEY,'Content-Type':'application/json'},body:'{}'}).then(function(r){ return r.ok?r.json():null; }).then(showNow).catch(function(){ $('wallNowVal').textContent='確認できませんでした'; }); }
+    $('tabWall').addEventListener('click',function(){ loadNow(); redraw(); });
+    $('wallSave').onclick=function(){
+      cv.toBlob(function(b){ var f=new File([b],'shii-wallpaper.png',{type:'image/png'});
+        if(navigator.canShare&&navigator.canShare({files:[f]})){ navigator.share({files:[f]}).catch(function(){}); return; }
+        var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='shii-wallpaper.png'; document.body.appendChild(a); a.click(); a.remove(); },'image/png');
+    };
+    $('wallSet').onclick=function(){
+      if(!confirm('この壁紙を、スタンプ10個のごほうびに設定します。よろしいですか？')) return;
+      var b=this; b.disabled=true; say($('wallMsgOut'),'設定しています…');
+      var data=cv.toDataURL('image/jpeg',.85);
+      if(data.length>2400000) data=cv.toDataURL('image/jpeg',.7);
+      call('shii_wallpaper_admin',{p_action:'save',p_image:data}).then(function(r){ showNow(r); say($('wallMsgOut'),'設定しました！これからスタンプ10個の人にはこの壁紙が届きます'); $('wallNow').scrollIntoView({behavior:'smooth',block:'center'}); })
+        .catch(function(e){ fail(e,$('wallMsgOut')); }).then(function(){ b.disabled=false; });
+    };
+    $('wallClear').onclick=function(){
+      if(!confirm('ごほうび壁紙を、標準の壁紙に戻します。よろしいですか？')) return;
+      call('shii_wallpaper_admin',{p_action:'clear'}).then(function(r){ showNow(r); say($('wallMsgOut'),'標準の壁紙に戻しました'); }).catch(function(e){ fail(e,$('wallMsgOut')); });
+    };
+  })();
 
   // ---- 予定表画像メーカー（入力はこのスマホに保存。サーバーは使わない） ----
   (function(){

@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009004226">
+<meta name="build" content="20261009043159">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1869,8 +1869,21 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // ---- ごほうび壁紙（スマホの待ち受けサイズ） ----
   function loadImg(src){ return new Promise(function(ok,ng){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=ng; i.src=src; }); }
   var wallURL=null, wallBlob=null;
+  // しぃ管理の「ごほうび壁紙」で設定された壁紙があればそれを使い、なければ標準の壁紙を作る
+  function customWall(){
+    return fetch('https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/shii_wallpaper_get',{method:'POST',headers:{'apikey':'sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC','Content-Type':'application/json'},body:'{}'})
+      .then(function(r){ return r.ok?r.json():null; })
+      .then(function(d){ if(!d||!d.image) return null; return fetch(d.image).then(function(r){ return r.blob(); }); })
+      .catch(function(){ return null; });
+  }
   function makeWall(){
     if(wallURL) return Promise.resolve(wallURL);
+    return customWall().then(function(b){
+      if(b){ wallBlob=b; wallURL=URL.createObjectURL(b); return wallURL; }
+      return defaultWall();
+    });
+  }
+  function defaultWall(){
     return Promise.all([loadImg('img/menu-candy-transparent.webp'),loadImg('img/logo.webp')]).then(function(im){
       var W=1170,H=2532,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
       var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#FBE7EE'); g.addColorStop(.55,'#F4CFDC'); g.addColorStop(1,'#EBB7CA'); x.fillStyle=g; x.fillRect(0,0,W,H);
@@ -1897,7 +1910,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   $('stamp-reward-open').addEventListener('click',openReward);
   $('stamp-save').addEventListener('click',function(){
     makeWall().then(function(u){
-      var file=wallBlob&&new File([wallBlob],'shii-wallpaper.png',{type:'image/png'});
+      var file=wallBlob&&new File([wallBlob],'shii-wallpaper.'+(wallBlob.type==='image/jpeg'?'jpg':'png'),{type:wallBlob.type||'image/png'});
       if(file && navigator.canShare && navigator.canShare({files:[file]})){ navigator.share({files:[file]}).catch(function(){}); return; }
       var a=document.createElement('a'); a.href=u; a.download='shii-wallpaper.png'; document.body.appendChild(a); a.click(); a.remove();
     });
