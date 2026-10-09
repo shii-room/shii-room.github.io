@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009081214">
+<meta name="build" content="20261009081812">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -201,7 +201,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @media(prefers-reduced-motion:reduce){.menu-confetti__piece{animation:shii-heart-fade 3s ease-out both;}@keyframes shii-heart-fade{0%,100%{opacity:1;}}}
 
   /* Hero */
-  .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 32px; display: grid; gap: 28px; }
+  .hero__in { position: relative; width: var(--wrap); margin-inline: auto; padding-block: 28px 32px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  /* iPhoneの文字幅でも横にはみ出さないように（中身が広がって列を押し広げない） */
+  .hero__text, .hero__in > * { min-width: 0; }
+  .quick a { min-width: 0; overflow-wrap: anywhere; }
+  @media (max-width: 400px) { .quick a { font-size: clamp(12px, 3.5vw, 14px); letter-spacing: 0; } .hero__sns a { font-size: 12px; } }
   .hero__identity { display: contents; }
   .hero__menu-title { display: flex; align-items: center; gap: 9px; margin: 26px 0 12px; max-width: 420px; color: var(--rose-deep); font-family: var(--maru); font-weight: 700; font-size: 15px; letter-spacing: .12em; }
   .hero__menu-title svg { width: 20px; height: 20px; flex: none; color: var(--rose); }
@@ -209,7 +213,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .hero__menu-title + .quick { margin-top: 0; }
   .hero__external { margin-top: 18px; }
   .hero__external .menu__label { font-family: var(--maru); letter-spacing: .1em; }
-  .hero__sns { margin-top: 0; margin-bottom: 0; display: grid; grid-template-columns: 1fr .6fr 1.9fr; max-width: 420px; gap: 8px; }
+  .hero__sns { margin-top: 0; margin-bottom: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .6fr) minmax(0, 1.9fr); max-width: 420px; gap: 8px; }
   .hero__sns a { width: 100%; justify-content: center; padding-inline: 6px; font-size: 13px; letter-spacing: 0; white-space: nowrap; }
   .hero__sns a { display: inline-flex; align-items: center; min-height: 44px; }
   .hero__photo { position: relative; justify-self: center; width: min(100%, 420px); }
@@ -365,7 +369,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @media (prefers-reduced-motion: reduce) { .watch__play { animation: none; } }
   .hero__btns { display: flex; flex-wrap: wrap; gap: 0 18px; }
   /* ヒーロー下のコンパクトなメニュー（3列×2段） */
-  .quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 26px; max-width: 420px; }
+  .quick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 26px; max-width: 420px; }
   .quick a {
     position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
@@ -378,7 +382,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .quick a::before { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(255,255,255,.9); border-radius: 12px; pointer-events: none; }
   .quick a::after { content: "♡"; position: absolute; top: 7px; right: 10px; font-size: 12px; line-height: 1; color: var(--rose); opacity: .5; pointer-events: none; }
   .quick a.quick__omikuji::after { color: #916DB0; }
-  .quick { grid-template-columns: repeat(6, 1fr); }
+  .quick { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .quick a { grid-column: span 2; }
   .quick a.quick__half { grid-column: span 3; flex-direction: row; gap: 8px; min-height: 54px; font-size: 13px;
     background: linear-gradient(90deg, rgba(255,255,255,.85), rgba(255,236,242,.9)); }
@@ -762,7 +766,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .stamp__ttl { text-align: left; font-family: var(--maru); font-weight: 700; font-size: 12px; line-height: 1.3; color: var(--ink-sub); }
   .stamp__ttl b { font-family: var(--en); font-weight: 500; font-size: 20px; letter-spacing: .14em; color: var(--rose); }
   .stamp__no { flex: none; padding: 4px 12px; border-radius: 999px; background: var(--rose); color: #fff; font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .1em; }
-  .stamp__grid { position: relative; list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 4px; }
+  .stamp__grid { position: relative; list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 4px; }
   .stamp__grid li { position: relative; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; border: 2px dashed #F3B7CA; background: #fff;
     font-family: var(--en); font-weight: 500; font-size: 14px; color: #F0A9C0; }
   .stamp__grid li.is-on { border: 0; background: radial-gradient(circle at 35% 30%, #FFB3CC, #EE6F9B); color: #fff; transform: rotate(var(--rot, -8deg));
