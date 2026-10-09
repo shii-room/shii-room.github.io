@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009225300">
+<meta name="build" content="20261009225800">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -914,7 +914,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @media (max-width: 767px) {
     .hero__logo { position: absolute; z-index: 4; top: 12px; left: 4px; width: min(39%, 200px); margin: 0; }
   }
-  /* OPENING：歓迎の文字（約3秒）→ ゆっくり開幕 → 開ききる直前から顔のスポットライト → 明転（全体 約8秒） */
+  /* OPENING：暗闇に歓迎の文字（約3秒）→ 暗いまま開幕 → ライトがさまよって顔でストップ → 明転（全体 約10秒） */
   .opening { display: none; }
   html.op .opening { display: block; }
   html.op body { overflow: hidden; }
@@ -931,8 +931,13 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   html.op .bubble { animation: none; opacity: 0; }
   .opening { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100vh + 160px); height: calc(100lvh + 160px); z-index: 100; overflow: hidden; background: transparent; cursor: pointer; transition: opacity .45s ease; }
   /* Dim the closed curtain while only the welcome lettering is lit. */
-  .opening::before { content: ""; position: absolute; inset: 0; z-index: 3; background: radial-gradient(ellipse min(48vw, 320px) 105px at 50% calc(50svh - 4px), rgba(20,4,12,.3) 0%, rgba(20,4,12,.48) 58%, rgba(20,4,12,.96) 100%); pointer-events: none; animation: op-intro-dark .8s ease 3s forwards; }
+  .opening::before { content: ""; position: absolute; inset: 0; z-index: 3; background: radial-gradient(ellipse min(48vw, 320px) 105px at 50% calc(50svh - 4px), rgba(20,4,12,.3) 0%, rgba(20,4,12,.48) 58%, rgba(20,4,12,.96) 100%); pointer-events: none; animation: op-intro-dark .3s ease 5.8s forwards; }
   @keyframes op-intro-dark { to { opacity: 0; } }
+  /* 文字が消えたら、文字のまわりの明かりも落とす（幕は暗闇の中でうっすら動くだけ） */
+  .op-shade { position: absolute; inset: 0; z-index: 3; background: rgba(20,4,12,.9); opacity: 0; pointer-events: none;
+    animation: op-shade-in .6s ease 2.5s forwards, op-shade-out .3s ease 5.8s forwards; }
+  @keyframes op-shade-in { to { opacity: 1; } }
+  @keyframes op-shade-out { from { opacity: 1; } to { opacity: 0; } }
   .opening.is-out { opacity: 0; pointer-events: none; }
   .op-curtain {
     position: absolute; top: 0; bottom: 0; z-index: 1; width: 82vw; transform-origin: 50% 0;
@@ -994,10 +999,18 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     width: 300vmax; height: 300vmax; margin: -150vmax 0 0 -150vmax;
     background: radial-gradient(circle, rgba(255,240,220,.06) 0, rgba(255,240,220,.06) var(--op-radius, 80px), rgba(20,4,12,.9) calc(var(--op-radius, 80px) * 1.6));
     will-change: transform, opacity;
-    animation: op-flood .95s ease-in-out 7.2s forwards;
+    animation: op-wander 2.4s 5.8s both, op-flood .95s ease-in-out 8.9s forwards;
+  }
+  @keyframes op-wander {
+    0%   { translate: -30vw 34vh; animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    24%  { translate: 26vw 16vh;  animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    48%  { translate: -20vw -8vh; animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    70%  { translate: 12vw 5vh;   animation-timing-function: cubic-bezier(.45,0,.55,1); }
+    86%  { translate: -3vw -1.5vh; animation-timing-function: cubic-bezier(.3,0,.3,1); }
+    100% { translate: 0 0; }
   }
   /* Keep the face dark until the curtains have finished opening, then fade its light in. */
-  .op-dark::after { content: ""; position: absolute; inset: 0; background: rgba(20,4,12,.9); animation: op-face-light .8s ease 5.4s forwards; }
+  .op-dark::after { content: ""; position: absolute; inset: 0; background: rgba(20,4,12,.9); animation: op-face-light .5s ease 5.75s forwards; }
   @keyframes op-face-light { to { opacity: 0; } }
   @keyframes op-flood { from { transform: translate(0,0) scale(1); opacity: 1; } to { transform: translate(0,0) scale(12); opacity: 0; } }
   .op-title {
@@ -1009,7 +1022,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .op-title small { display: block; margin-top: 6px; font-family: var(--en); font-size: .45em; letter-spacing: .4em; }
   @keyframes op-title { 0%, 87% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.02); } }
   .op-burst { position: absolute; left: 50%; top: 50vh; top: 50svh; z-index: 4; width: 0; height: 0; }
-  .op-burst span { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; color: #FFE3EC; filter: drop-shadow(0 0 6px rgba(255,180,205,.95)); opacity: 0; animation: op-burst 1.1s cubic-bezier(.2,.8,.3,1) 7.25s forwards; }
+  .op-burst span { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; color: #FFE3EC; filter: drop-shadow(0 0 6px rgba(255,180,205,.95)); opacity: 0; animation: op-burst 1.1s cubic-bezier(.2,.8,.3,1) 8.95s forwards; }
   .op-burst span svg { display: block; width: 100%; height: 100%; }
   .op-burst span:nth-child(1) { --a: 0deg; } .op-burst span:nth-child(2) { --a: 45deg; width: 12px; height: 12px; }
   .op-burst span:nth-child(3) { --a: 90deg; } .op-burst span:nth-child(4) { --a: 135deg; width: 12px; height: 12px; }
@@ -1101,6 +1114,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   <div class="op-curtain op-l"></div>
   <div class="op-curtain op-r"></div>
   <div class="op-valance"></div>
+  <div class="op-shade"></div>
   <div class="op-dark"></div>
   <p class="op-title">しぃの部屋へようこそ<small>SHII'S ROOM</small></p>
   <div class="op-burst"><span><svg><use href="#kira"/></svg></span><span><svg><use href="#heart"/></svg></span><span><svg><use href="#kira"/></svg></span><span><svg><use href="#heart"/></svg></span><span><svg><use href="#kira"/></svg></span><span><svg><use href="#heart"/></svg></span><span><svg><use href="#kira"/></svg></span><span><svg><use href="#heart"/></svg></span></div>
@@ -1762,8 +1776,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     setTimeout(function(){ op.remove(); }, 500);
     // Keep the entrance state so the logo never starts its arrival twice.
   }
-  var timer=setTimeout(finish, 8250);
-  var reveal=setTimeout(function(){ root.classList.add('op-in'); }, 7250);
+  var timer=setTimeout(finish, 9950);
+  var reveal=setTimeout(function(){ root.classList.add('op-in'); }, 8950);
   op.addEventListener('click', finish);
   // Navigation skips the opening before its existing handlers open a menu or follow a link.
   document.querySelector('.header').addEventListener('click', function(e){
