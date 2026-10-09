@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009073016">
+<meta name="build" content="20261009073303">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -137,7 +137,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .ticker__txt .w { color: #FFFFFF; text-shadow: 0 0 3px #FFB3D1, 0 0 9px rgba(255,179,209,.8); }
   .ticker__txt .sep { margin: 0 .9em; color: #FF8FBF; }
   @media (prefers-reduced-motion: reduce) { .ticker__txt { transform: translate(10px, -50%); } }
-  @media (min-width: 768px) { .ticker { display: none; } }
+  .logo__name { display: none; }
+  .ticker { margin-left: 10px; }
+  @media (min-width: 768px) { .ticker { display: none; } .logo__name { display: inline; } }
   .header .nav { display: none; }
 
   .menu {
@@ -1046,7 +1048,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
 <header class="header">
   <div class="header__in">
-    <a class="logo" href="#top"><img src="img/icon.webp" alt="" width="34" height="34">しぃ</a>
+    <a class="logo" href="#top" aria-label="しぃ（トップへ）"><img src="img/icon.webp" alt="" width="34" height="34"><span class="logo__name">しぃ</span></a>
     <a class="ticker" id="ticker" href="#schedule" aria-label="お知らせ"><span class="ticker__win"><span class="ticker__txt" id="ticker-txt"></span></span></a>
     <div class="header__right">
       <nav class="nav" aria-label="メイン">
