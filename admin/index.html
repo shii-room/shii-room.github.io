@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009081812">
+<meta name="build" content="20261009222600">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1138,7 +1138,8 @@
   function check(){
     if(shown||document.visibilityState==='hidden') return;
     fetch(base+'version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(v){
-      if(v&&v.build&&v.build!==mine){ shown=true; el.hidden=false; requestAnimationFrame(function(){ el.classList.add('is-show'); }); }
+      var latest=v&&v.pages&&v.pages['admin/index.html']||v&&v.build;
+      if(latest&&latest!==mine){ shown=true; el.hidden=false; requestAnimationFrame(function(){ el.classList.add('is-show'); }); }
     }).catch(function(){});
   }
   el.addEventListener('click',function(){
