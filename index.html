@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009231200">
+<meta name="build" content="20261009231800">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -914,7 +914,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @media (max-width: 767px) {
     .hero__logo { position: absolute; z-index: 4; top: 12px; left: 4px; width: min(39%, 200px); margin: 0; }
   }
-  /* OPENING：暗闇に歓迎の文字（約3秒）→ 暗いまま開幕しながらライトがしぃを探す → 顔でストップ → 明転（全体 約8秒） */
+  /* OPENING：暗闇に歓迎の文字（約3秒）→ 暗いまま開幕しながらライトが いちご → サイン → 顔 と探す → 明転（全体 約9秒） */
   .opening { display: none; }
   html.op .opening { display: block; }
   html.op body { overflow: hidden; }
@@ -976,18 +976,17 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .op-dark {
     position: absolute; left: var(--op-face-x, 50vw); top: var(--op-face-y, 30vh); z-index: 0;
     width: 300vmax; height: 300vmax; margin: -150vmax 0 0 -150vmax;
-    background: radial-gradient(circle, rgba(255,240,220,.06) 0, rgba(255,240,220,.06) var(--op-radius, 80px), rgba(20,4,12,.9) calc(var(--op-radius, 80px) * 1.6));
+    background: radial-gradient(circle, rgba(255,240,220,.06) 0, rgba(255,240,220,.06) var(--op-radius, 80px), rgba(20,4,12,.97) calc(var(--op-radius, 80px) * 1.45));
     will-change: transform, opacity;
-    animation: op-wander 3.4s 3s both, op-flood .95s ease-in-out 7.2s forwards;
+    animation: op-wander 4.3s 3s both, op-flood .95s ease-in-out 7.9s forwards;
   }
   @keyframes op-wander {
-    /* 開いたすき間の下から点いて、左右をきょろきょろ探しながら、だんだん顔に寄っていく */
-    0%   { translate: 2vw 32vh;   animation-timing-function: cubic-bezier(.45,0,.55,1); }
-    20%  { translate: -9vw 14vh;  animation-timing-function: cubic-bezier(.45,0,.55,1); }
-    40%  { translate: 24vw 18vh;  animation-timing-function: cubic-bezier(.45,0,.55,1); }
-    60%  { translate: -22vw -6vh; animation-timing-function: cubic-bezier(.45,0,.55,1); }
-    78%  { translate: 10vw 4vh;   animation-timing-function: cubic-bezier(.45,0,.55,1); }
-    91%  { translate: -3vw -1.5vh; animation-timing-function: cubic-bezier(.3,0,.3,1); }
+    /* すき間の奥で点いて → 左のいちごで止まる → 右下のサインで止まる → しぃの顔でぴたっと */
+    0%   { translate: 0 28vh; animation-timing-function: cubic-bezier(.45,0,.4,1); }
+    47%  { translate: var(--op-s1x, -34vw) var(--op-s1y, 22vh); }
+    58%  { translate: var(--op-s1x, -34vw) var(--op-s1y, 22vh); animation-timing-function: cubic-bezier(.45,0,.35,1); }
+    72%  { translate: var(--op-s2x, 22vw) var(--op-s2y, 36vh); }
+    83%  { translate: var(--op-s2x, 22vw) var(--op-s2y, 36vh); animation-timing-function: cubic-bezier(.45,0,.25,1); }
     100% { translate: 0 0; }
   }
   /* Keep the face dark until the curtains have finished opening, then fade its light in. */
@@ -1003,7 +1002,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .op-title small { display: block; margin-top: 6px; font-family: var(--en); font-size: .45em; letter-spacing: .4em; }
   @keyframes op-title { 0%, 87% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.02); } }
   .op-burst { position: absolute; left: 50%; top: 50vh; top: 50svh; z-index: 4; width: 0; height: 0; }
-  .op-burst span { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; color: #FFE3EC; filter: drop-shadow(0 0 6px rgba(255,180,205,.95)); opacity: 0; animation: op-burst 1.1s cubic-bezier(.2,.8,.3,1) 7.25s forwards; }
+  .op-burst span { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; color: #FFE3EC; filter: drop-shadow(0 0 6px rgba(255,180,205,.95)); opacity: 0; animation: op-burst 1.1s cubic-bezier(.2,.8,.3,1) 7.95s forwards; }
   .op-burst span svg { display: block; width: 100%; height: 100%; }
   .op-burst span:nth-child(1) { --a: 0deg; } .op-burst span:nth-child(2) { --a: 45deg; width: 12px; height: 12px; }
   .op-burst span:nth-child(3) { --a: 90deg; } .op-burst span:nth-child(4) { --a: 135deg; width: 12px; height: 12px; }
@@ -1744,6 +1743,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     op.style.setProperty('--op-face-x', (r.left+r.width*.52)+'px');
     op.style.setProperty('--op-face-y', (r.top+r.height*.225)+'px');
     op.style.setProperty('--op-radius', Math.max(48,r.width*.22)+'px');
+    // ライトが立ち寄る場所（顔からの距離）：左のいちご → 右下のサイン
+    op.style.setProperty('--op-s1x', (r.width*(.09-.52))+'px'); op.style.setProperty('--op-s1y', (r.height*(.62-.225))+'px');
+    op.style.setProperty('--op-s2x', (r.width*(.79-.52))+'px'); op.style.setProperty('--op-s2y', (r.height*(.88-.225))+'px');
   }
   top(); aim(); window.addEventListener('load', aim); window.addEventListener('resize', aim);
   function finish(){
@@ -1755,8 +1757,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     setTimeout(function(){ op.remove(); }, 500);
     // Keep the entrance state so the logo never starts its arrival twice.
   }
-  var timer=setTimeout(finish, 8250);
-  var reveal=setTimeout(function(){ root.classList.add('op-in'); }, 7250);
+  var timer=setTimeout(finish, 8950);
+  var reveal=setTimeout(function(){ root.classList.add('op-in'); }, 7950);
   op.addEventListener('click', finish);
   // Navigation skips the opening before its existing handlers open a menu or follow a link.
   document.querySelector('.header').addEventListener('click', function(e){
