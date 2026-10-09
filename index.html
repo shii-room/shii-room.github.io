@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009061244">
+<meta name="build" content="20261009061836">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -463,6 +463,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .req__pic .floater { animation: fuwa-s 5.5s ease-in-out infinite; }
   @keyframes fuwa-s { 0%, 100% { transform: translateY(0) rotate(.4deg); } 50% { transform: translateY(-7px) rotate(-.5deg); } }
   .req__lead { font-size: 15px; line-height: 2; letter-spacing: .05em; }
+  .req__notice { margin-top: 6px; font-size: 11px; line-height: 1.7; color: var(--ink-sub); }
   .req__form { margin-top: 26px; display: grid; gap: 18px; }
   .req__row { display: grid; gap: 18px; }
   .req__f label { display: block; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .1em; margin-bottom: 6px; }
@@ -1202,7 +1203,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <div class="req__f"><label for="req-song">曲名</label><input id="req-song" name="song" type="text" maxlength="80" autocomplete="off" required></div>
           <div class="req__f"><label for="req-artist">歌ってる人<small>わかれば</small></label><input id="req-artist" name="artist" type="text" maxlength="60" autocomplete="off"></div>
         </div>
-        <div class="req__f"><label for="req-name">リクエストする人のなまえ<small>ニックネームでOK・なしでもOK</small></label><input id="req-name" name="name" type="text" maxlength="24" autocomplete="nickname"></div>
+        <div class="req__f"><label for="req-name">リクエストする人のなまえ<small>ニックネームでOK・なしでもOK</small></label><input id="req-name" name="name" type="text" maxlength="24" autocomplete="nickname"><p class="req__notice">※ 届いたリクエストは、しぃがXや配信で紹介することがあります（ここに入れたなまえ・ひとことも載ります）。出したくない時は、なまえを空けて送ってね。</p></div>
         <div class="req__f"><label for="req-comment">ひとこと<small>なしでもOK</small></label><textarea id="req-comment" name="comment" maxlength="140" placeholder="この曲の好きなところ、聴きたい理由など"></textarea></div>
         <div class="req__hp" aria-hidden="true"><label for="req-web">website</label><input id="req-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
         <button class="btn btn--main" type="submit">リクエストを送る</button>
