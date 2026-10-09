@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009074311">
+<meta name="build" content="20261009080233">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -110,14 +110,19 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .nav a:hover { color: var(--rose); }
 
   .menu-btn {
-    display: inline-flex; flex-direction: column; justify-content: center; gap: 6px;
-    width: 44px; height: 44px; margin-right: -10px; padding: 0 10px;
-    background: none; border: 0; cursor: pointer; color: var(--rose);
+    position: relative; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    width: 46px; height: 44px; margin-right: -4px; padding: 0; border-radius: 14px;
+    background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid #fff; box-shadow: 0 3px 0 #E6A6BE;
+    cursor: pointer; color: var(--rose); -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s;
   }
-  .menu-btn span { display: block; height: 1.5px; background: currentColor; border-radius: 1px; transition: transform .2s, opacity .2s; }
-  .menu-btn span:nth-child(2) { width: 70%; margin-left: auto; }
-  .menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(3.75px) rotate(45deg); }
-  .menu-btn[aria-expanded="true"] span:nth-child(2) { width: 100%; transform: translateY(-3.75px) rotate(-45deg); }
+  .menu-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
+  .menu-btn .mb-l { display: block; width: 20px; height: 2.4px; border-radius: 2px; background: currentColor; transition: transform .2s, opacity .2s; }
+  .menu-btn .mb-t { display: block; margin-top: 1px; font-family: var(--en); font-weight: 600; font-size: 8px; line-height: 1; letter-spacing: .12em; color: var(--rose); }
+  .menu-btn .mb-t::before { content: "MENU"; }
+  .menu-btn[aria-expanded="true"] .mb-t::before { content: "CLOSE"; }
+  .menu-btn[aria-expanded="true"] .mb-l:nth-child(1) { transform: translateY(6.4px) rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .mb-l:nth-child(2) { opacity: 0; }
+  .menu-btn[aria-expanded="true"] .mb-l:nth-child(3) { transform: translateY(-6.4px) rotate(-45deg); }
   .header__right { display: flex; align-items: center; gap: 28px; }
   /* お菓子の電光掲示板（ヘッダーのまんなか） */
   .ticker { flex: 1; min-width: 0; max-width: 360px; height: 32px; margin: 0 8px 0 12px; padding: 3px; border-radius: 999px;
@@ -1075,7 +1080,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <a href="#omikuji">OMIKUJI</a>
         <a href="#link">外部リンク</a>
       </nav>
-      <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+      <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><i class="mb-l"></i><i class="mb-l"></i><i class="mb-l"></i><b class="mb-t" aria-hidden="true"></b></button>
     </div>
   </div>
 </header>

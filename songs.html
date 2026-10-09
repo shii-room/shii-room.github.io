@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261009074311"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261009080233"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -61,14 +61,19 @@
   .nav a:hover { color: var(--rose); }
 
   .menu-btn {
-    display: inline-flex; flex-direction: column; justify-content: center; gap: 6px;
-    width: 44px; height: 44px; margin-right: -10px; padding: 0 10px;
-    background: none; border: 0; cursor: pointer; color: var(--rose);
+    position: relative; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    width: 46px; height: 44px; margin-right: -4px; padding: 0; border-radius: 14px;
+    background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid #fff; box-shadow: 0 3px 0 #E6A6BE;
+    cursor: pointer; color: var(--rose); -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s;
   }
-  .menu-btn span { display: block; height: 1.5px; background: currentColor; border-radius: 1px; transition: transform .2s, opacity .2s; }
-  .menu-btn span:nth-child(2) { width: 70%; margin-left: auto; }
-  .menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(3.75px) rotate(45deg); }
-  .menu-btn[aria-expanded="true"] span:nth-child(2) { width: 100%; transform: translateY(-3.75px) rotate(-45deg); }
+  .menu-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
+  .menu-btn .mb-l { display: block; width: 20px; height: 2.4px; border-radius: 2px; background: currentColor; transition: transform .2s, opacity .2s; }
+  .menu-btn .mb-t { display: block; margin-top: 1px; font-family: var(--en); font-weight: 600; font-size: 8px; line-height: 1; letter-spacing: .12em; color: var(--rose); }
+  .menu-btn .mb-t::before { content: "MENU"; }
+  .menu-btn[aria-expanded="true"] .mb-t::before { content: "CLOSE"; }
+  .menu-btn[aria-expanded="true"] .mb-l:nth-child(1) { transform: translateY(6.4px) rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .mb-l:nth-child(2) { opacity: 0; }
+  .menu-btn[aria-expanded="true"] .mb-l:nth-child(3) { transform: translateY(-6.4px) rotate(-45deg); }
   .header__right { display: flex; align-items: center; gap: 28px; }
   .header .nav { display: none; }
 
@@ -858,7 +863,7 @@
   <symbol id="i-bag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></g></symbol>
   <symbol id="i-letter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3.5 6h17v12h-17z"/><path d="m3.5 6.5 8.5 7 8.5-7"/></g></symbol>
 </svg><button class="upd" id="upd" type="button" hidden><span class="upd__dot" aria-hidden="true"></span><span>新しいバージョンがあります<small>タップで更新</small></span></button>
-<header class="header"><div class="header__in"><a class="logo" href="./"><img src="img/icon.webp" alt="" width="34" height="34">しぃ</a><div class="header__right"><a class="header__home" href="./">公式HPへ ↗</a><button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><span></span><span></span></button></div></div></header>
+<header class="header"><div class="header__in"><a class="logo" href="./"><img src="img/icon.webp" alt="" width="34" height="34">しぃ</a><div class="header__right"><a class="header__home" href="./">公式HPへ ↗</a><button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><i class="mb-l"></i><i class="mb-l"></i><i class="mb-l"></i><b class="mb-t" aria-hidden="true"></b></button></div></div></header>
 <nav class="menu" id="menu" aria-label="メニュー">
   <div class="menu__in">
     <p class="menu__label">メニュー</p>
