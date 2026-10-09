@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009064141">
+<meta name="build" content="20261009064615">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -723,6 +723,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .stamp-modal__in { width: min(360px, 100%); max-height: 100%; overflow: auto; padding: 20px 18px 16px; border-radius: 24px; background: #FFF8FA; text-align: center; animation: omi-pop .6s cubic-bezier(.3,1.6,.5,1) both; }
   .stamp-modal__ttl { font-family: var(--en); font-weight: 500; font-size: 20px; letter-spacing: .18em; background: linear-gradient(110deg, #E6AD4A, #FF8FBF 50%, #E6AD4A); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .stamp-modal__sub { margin-top: 6px; font-family: var(--maru); font-weight: 700; font-size: 14px; line-height: 1.7; color: var(--ink); }
+  .stamp-modal__sub small { display: block; margin-top: 6px; font-size: 12px; font-weight: 500; line-height: 1.6; color: var(--ink-sub); }
   .stamp-modal__img { display: block; width: 62%; margin: 14px auto 0; border-radius: 14px; box-shadow: 0 6px 18px rgba(150,70,95,.25); background: #F6E4E9; aspect-ratio: 9 / 19.5; object-fit: cover; }
   .stamp-modal__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 12px; }
   .stamp-modal__btns .btn { min-width: 0; height: 46px; padding-inline: 22px; font-size: 14px; cursor: pointer; }
@@ -1901,14 +1902,31 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       return new Promise(function(ok){ c.toBlob(function(b){ wallBlob=b; wallURL=URL.createObjectURL(b); ok(wallURL); },'image/png'); });
     });
   }
-  function openReward(){
+  // ---- 壁紙の「かぶり」チェック：前にもらった壁紙と同じなら、しぃ管理にお知らせ ----
+  var SBU='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', SBK='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
+  function sb(fn,body){ return fetch(SBU+fn,{method:'POST',headers:{'apikey':SBK,'Content-Type':'application/json'},body:JSON.stringify(body||{})}); }
+  function wallKey(){ return sb('shii_wallpaper_info').then(function(r){ return r.ok?r.json():null; }).then(function(d){ return d&&d.updated_at?d.updated_at:'default'; }).catch(function(){ return null; }); }
+  function devId(){ try{ var v=localStorage.getItem('shii_dev'); if(!v||!/^[a-z0-9]{8,40}$/.test(v)){ v=(Math.random().toString(36).slice(2)+Date.now().toString(36)).replace(/[^a-z0-9]/g,'').slice(0,24); localStorage.setItem('shii_dev',v); } return v; }catch(e){ return null; } }
+  function checkDup(complete){
+    return wallKey().then(function(k){
+      if(!k) return false;
+      if(!Array.isArray(st.got)) st.got=[];
+      var had=st.got.indexOf(k)>=0, n=st.d.length;
+      if(complete && !had){ st.got.push(k); if(st.got.length>20) st.got=st.got.slice(-20); save(st); }
+      if(had && n>=7){ var id=devId(); if(id) sb('shii_stamp_report',{p_dev:id,p_wall:k,p_cnt:n}).catch(function(){}); }
+      return complete && had;
+    });
+  }
+  var SUB0=$('stamp-modal').querySelector('.stamp-modal__sub').innerHTML;
+  function openReward(dup){
+    $('stamp-modal').querySelector('.stamp-modal__sub').innerHTML=dup===true?'スタンプ10個たまったよ！いつもありがとう♡<br><small>前と同じ壁紙だけど…<br>新しい壁紙、しぃにお願いしておいたよ！</small>':SUB0;
     var m=$('stamp-modal'); m.hidden=false; document.body.classList.add('menu-open');
     makeWall().then(function(u){ $('stamp-wall').src=u; }).catch(function(){ $('stamp-wall').src='img/menu-large.jpg'; });
   }
   function closeReward(){ $('stamp-modal').hidden=true; document.body.classList.remove('menu-open'); }
   $('stamp-close').addEventListener('click',closeReward);
   $('stamp-modal').addEventListener('click',function(e){ if(e.target.id==='stamp-modal') closeReward(); });
-  $('stamp-reward-open').addEventListener('click',openReward);
+  $('stamp-reward-open').addEventListener('click',function(){ openReward(false); });
   $('stamp-save').addEventListener('click',function(){
     makeWall().then(function(u){
       var file=wallBlob&&new File([wallBlob],'shii-wallpaper.'+(wallBlob.type==='image/jpeg'?'jpg':'png'),{type:wallBlob.type||'image/png'});
@@ -1922,7 +1940,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     st.d.push(today()); st.last=today(); st.total=(st.total||0)+1;
     var complete=st.d.length===10; if(complete) st.reward=true;
     save(st); render(true);
-    if(complete) setTimeout(openReward,900);
+    var t0=Date.now();
+    checkDup(complete).then(function(dup){ if(complete) setTimeout(function(){ openReward(dup); },Math.max(0,900-(Date.now()-t0))); });
   });
   render(false);
 })();

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009064141">
+<meta name="build" content="20261009064615">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -118,6 +118,15 @@
   .schOff input{width:18px;height:18px;margin:0;accent-color:var(--peri)}
   .schRow.is-off .schF input[type=text]{opacity:.4}
   .schOut{margin-top:20px}
+  .dupAlert{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:12px 14px;border-radius:16px;border:1.5px solid #F2D2A8;background:linear-gradient(110deg,#FFF8EC,#FDEBD6);box-shadow:0 3px 0 #E7BE86;color:#7A4E1E;text-align:left;cursor:pointer;height:auto}
+  .dupAlert__i{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#fff;font-size:20px;animation:dupPon 1.6s ease-in-out infinite}
+  @keyframes dupPon{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg) scale(1.08)}}
+  .dupAlert__t{display:block;font-size:13px;line-height:1.55}
+  .dupAlert__t>b{display:block;font-family:var(--maru);font-size:15px;color:#B0662A}
+  .dupAlert__t span b{color:#B0662A;white-space:nowrap}
+  .dupAlert__t small{display:block;margin-top:2px;font-size:11px;color:#B0662A}
+  .dupNote{margin-top:10px;padding:10px 12px;border-radius:12px;background:#FFF5E6;color:#7A4E1E;font-size:13px;line-height:1.6}
+  .dupNote b{color:#B0662A}
   .schNow{margin-top:20px;padding:14px 16px;border-radius:14px;background:var(--white);border:1.5px solid var(--rule)}
   .schNow__lbl{font-size:12px;font-weight:700;color:var(--sub)}
   .schNow__val{margin-top:2px;font-family:var(--maru);font-weight:700;font-size:16px}
@@ -182,8 +191,12 @@
       <button class="tab" id="tabPost" role="tab" aria-selected="false" type="button">X のポスト</button>
       <button class="tab" id="tabSong" role="tab" aria-selected="false" type="button">歌リスト</button>
       <button class="tab" id="tabSch" role="tab" aria-selected="false" type="button">予定表画像</button>
-      <button class="tab" id="tabWall" role="tab" aria-selected="false" type="button">ごほうび壁紙</button>
+      <button class="tab" id="tabWall" role="tab" aria-selected="false" type="button">ごほうび壁紙<b id="wallCount"></b></button>
     </div>
+    <button class="dupAlert" id="dupAlert" type="button" hidden>
+      <span class="dupAlert__i" aria-hidden="true">🎁</span>
+      <span class="dupAlert__t"><b>ごほうび壁紙がかぶりそう！</b><span id="dupAlertTxt"></span><small>タップして新しい壁紙をつくる →</small></span>
+    </button>
 
     <div id="reqView">
       <div id="reqBody">
@@ -241,6 +254,7 @@
         <p class="schNow__lbl">いまのごほうび壁紙（スタンプ10個で配られる）</p>
         <p class="schNow__val" id="wallNowVal">確認中…</p>
         <button class="schNow__del" id="wallClear" type="button" hidden>標準の壁紙に戻す</button>
+        <p class="dupNote" id="dupNote" hidden></p>
       </div>
       <div class="wallPrev wallPrev--top" id="wallTop"><canvas id="wallCv" width="1170" height="2532"></canvas></div>
       <button class="wallMini" id="wallMini" type="button" aria-label="見本を大きく見る"><canvas id="wallMiniCv" width="320" height="692"></canvas><span>見本 ▲</span></button>
@@ -499,6 +513,7 @@
     [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView'],['song','tabSong','songView'],['sch','tabSch','schView'],['wall','tabWall','wallView']].forEach(function(x){
       var on=x[0]===name; $(x[1]).setAttribute('aria-selected',on?'true':'false'); $(x[2]).hidden=!on;
     });
+    var da=$('dupAlert'); if(da) da.hidden=!(typeof dupOn!=='undefined'&&dupOn)||name==='wall';
   }
   $('tabReq').onclick=function(){ showTab('req'); };
   $('tabMsg').onclick=function(){ showTab('msg'); };
@@ -681,12 +696,12 @@
       if(!confirm('この壁紙を、スタンプ10個のごほうびに設定します。よろしいですか？')) return;
       var b=this; b.disabled=true; say($('wallMsgOut'),'設定しています…');
       var data=cv.toDataURL('image/jpeg',.85); if(data.length>2400000) data=cv.toDataURL('image/jpeg',.7);
-      call('shii_wallpaper_admin',{p_action:'save',p_image:data}).then(function(r){ showNow(r); say($('wallMsgOut'),'設定しました！これからスタンプ10個の人にはこの壁紙が届きます'); $('wallNow').scrollIntoView({behavior:'smooth',block:'center'}); })
+      call('shii_wallpaper_admin',{p_action:'save',p_image:data}).then(function(r){ showNow(r); loadDup(); say($('wallMsgOut'),'設定しました！これからスタンプ10個の人にはこの壁紙が届きます'); $('wallNow').scrollIntoView({behavior:'smooth',block:'center'}); })
         .catch(function(e){ fail(e,$('wallMsgOut')); }).then(function(){ b.disabled=false; });
     };
     $('wallClear').onclick=function(){
       if(!confirm('ごほうび壁紙を、標準の壁紙に戻します。よろしいですか？')) return;
-      call('shii_wallpaper_admin',{p_action:'clear'}).then(function(r){ showNow(r); say($('wallMsgOut'),'標準の壁紙に戻しました'); }).catch(function(e){ fail(e,$('wallMsgOut')); });
+      call('shii_wallpaper_admin',{p_action:'clear'}).then(function(r){ showNow(r); loadDup(); say($('wallMsgOut'),'標準の壁紙に戻しました'); }).catch(function(e){ fail(e,$('wallMsgOut')); });
     };
   })();
 
@@ -991,7 +1006,22 @@
   };
 
   initFontSegs();
-  function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadM(); loadPosts(); loadSongs(); }
+  // ---- ごほうび壁紙の「かぶり」お知らせ ----
+  var dupOn=false;
+  function loadDup(){
+    return call('shii_stamp_admin',{p_action:'list'}).then(function(d){
+      var soon=(d&&d.soon)||0, got=(d&&d.got)||0, on=soon+got>0, parts=[];
+      if(got) parts.push('同じ壁紙をもう一度受け取った人 <b>'+got+'人</b>');
+      if(soon) parts.push('前と同じ壁紙になりそうな人（スタンプ7〜9個） <b>'+soon+'人</b>');
+      dupOn=on; $('dupAlert').hidden=!on||$('tabWall').getAttribute('aria-selected')==='true'; $('wallCount').textContent=on?'!':'';
+      $('dupAlertTxt').innerHTML=(got?'同じ壁紙をまた受け取った人 <b>'+got+'人</b>'+(soon?'<br>':''):'')+(soon?'もうすぐかぶりそうな人 <b>'+soon+'人</b>':'');
+      $('dupNote').hidden=!on;
+      $('dupNote').innerHTML=on?parts.join('<br>')+'<br>新しい壁紙を「この壁紙にする」で設定すると、このお知らせは消えます♡':'';
+    }).catch(function(){ $('dupAlert').hidden=true; $('dupNote').hidden=true; });
+  }
+  $('dupAlert').onclick=function(){ $('tabWall').click(); window.scrollTo({top:0,behavior:'smooth'}); };
+  $('tabWall').addEventListener('click',loadDup);
+  function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadM(); loadPosts(); loadSongs(); loadDup(); }
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };
   $('key').addEventListener('keydown',function(e){ if(e.key==='Enter') $('saveKey').click(); });
