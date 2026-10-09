@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009080453">
+<meta name="build" content="20261009080851">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -116,6 +116,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     cursor: pointer; color: var(--rose); -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s;
   }
   .menu-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
+  /* スマホ：MENUボタンは画面の右端に固定（レイアウトの幅に左右されないように） */
+  @media (max-width: 767px) {
+    .header__in { padding-right: 46px; }
+    .menu-btn { position: absolute; right: calc(8px + env(safe-area-inset-right, 0px)); top: 50%; margin: -22px 0 0 0; }
+  }
   .menu-btn .mb-l { display: block; width: 20px; height: 2.4px; border-radius: 2px; background: currentColor; transition: transform .2s, opacity .2s; }
   .menu-btn .mb-t { display: block; margin-top: 1px; font-family: var(--en); font-weight: 600; font-size: 8px; line-height: 1; letter-spacing: .12em; color: var(--rose); }
   .menu-btn .mb-t::before { content: "MENU"; }

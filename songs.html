@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261009080453"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261009080851"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -67,6 +67,11 @@
     cursor: pointer; color: var(--rose); -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s;
   }
   .menu-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
+  /* スマホ：MENUボタンは画面の右端に固定（レイアウトの幅に左右されないように） */
+  @media (max-width: 767px) {
+    .header__in { padding-right: 46px; }
+    .menu-btn { position: absolute; right: calc(8px + env(safe-area-inset-right, 0px)); top: 50%; margin: -22px 0 0 0; }
+  }
   .menu-btn .mb-l { display: block; width: 20px; height: 2.4px; border-radius: 2px; background: currentColor; transition: transform .2s, opacity .2s; }
   .menu-btn .mb-t { display: block; margin-top: 1px; font-family: var(--en); font-weight: 600; font-size: 8px; line-height: 1; letter-spacing: .12em; color: var(--rose); }
   .menu-btn .mb-t::before { content: "MENU"; }
