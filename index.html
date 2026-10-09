@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009204603">
+<meta name="build" content="20261009210208">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -331,7 +331,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .hero__logo { width: min(100%, 400px); margin: 6px 0 0 -8px; line-height: 0; animation: none; }
   html.op .hero__logo { animation: none; }
   html.op:not(.op-in) .hero__logo { visibility: hidden; }
-  html.op-in .hero__logo { animation: logo-arrive .9s ease-out .85s both; }
+  html.op-in .hero__logo { animation: logo-arrive .9s ease-out .35s both; }
   .hero__logo-button { position: relative; display: block; width: 100%; padding: 0; border: 0; background: transparent; color: var(--rose); cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; animation: logo-float 5.6s ease-in-out 1s infinite; }
   .hero__logo-button:focus-visible { outline: 2px solid var(--rose-deep); outline-offset: 5px; border-radius: 12px; }
   .hero__logo img { display: block; width: 100%; height: auto; transform-origin: 50% 65%; animation: logo-quiver 12s ease-in-out 1s infinite; }
@@ -916,19 +916,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .opening { display: none; }
   html.op .opening { display: block; }
   html.op body { overflow: hidden; }
-  /* 暗幕が届かない端（アプリ内ブラウザのバーの裏など）からページが見えないよう、幕が開くまで中身を隠す */
-  html.op:not(.op-show), html.op:not(.op-show) body { background: #2A0F1A !important; }
-  html.op:not(.op-show) main, html.op:not(.op-show) .footer { visibility: hidden; }
   /* Keep navigation available above the opening from the first frame. */
   html.op .header { z-index: 101; }
   html.op .menu { z-index: 102; }
-  html.op .hero__photo { visibility: hidden; }
+  html.op .hero__photo .floater, html.op .hero__photo .holo { animation-play-state: paused; }
   html.op .bubble { animation: none; opacity: 0; }
-  .opening { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100vh + 160px); height: calc(100lvh + 160px); z-index: 100; overflow: hidden; background-color: #2A0F1A; cursor: pointer; transition: opacity .45s ease; animation: op-bg .8s ease 3.95s forwards; }
+  .opening { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100vh + 160px); height: calc(100lvh + 160px); z-index: 100; overflow: hidden; background: transparent; cursor: pointer; transition: opacity .45s ease; }
   @keyframes op-bg { to { background-color: rgba(42,15,26,0); } }
   .opening.is-out { opacity: 0; pointer-events: none; }
   .op-curtain {
-    position: absolute; top: 0; bottom: 0; width: 82vw; transform-origin: 50% 0;
+    position: absolute; top: 0; bottom: 0; z-index: 1; width: 82vw; transform-origin: 50% 0;
     background:
       linear-gradient(180deg, rgba(255,255,255,.16), transparent 22%, transparent 78%, rgba(50,8,24,.55) 100%),
       linear-gradient(90deg, #9E3459 0%, #D2628A 22%, #F4AFC5 44%, #E07496 64%, #A93C63 100%);
@@ -940,9 +937,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   /* 横の移動（なめらかに減速）と、裾の揺れ（振り子）を別々に動かす */
   .op-l { left: -30vw; background-position: 0 0, right 0 top 0;
-    animation: op-slide-l 3s cubic-bezier(.4,.05,.2,1) 3.9s forwards, op-swing-l 3.2s linear 3.9s forwards; }
+    animation: op-slide-l 1.8s cubic-bezier(.4,.05,.2,1) .35s forwards, op-swing-l 2s linear .35s forwards; }
   .op-r { right: -30vw; background-position: 0 0, 0 0;
-    animation: op-slide-r 3s cubic-bezier(.4,.05,.2,1) 3.9s forwards, op-swing-r 3.2s linear 3.9s forwards; }
+    animation: op-slide-r 1.8s cubic-bezier(.4,.05,.2,1) .35s forwards, op-swing-r 2s linear .35s forwards; }
   @keyframes op-slide-l { from { translate: 0 0; } to { translate: -45vw 0; } }
   @keyframes op-slide-r { from { translate: 0 0; } to { translate: 45vw 0; } }
   @keyframes op-swing-l {
@@ -970,7 +967,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
             mask: radial-gradient(28px 22px at 28px 100%, transparent 98%, #000) 0 0 / 56px 100% repeat-x;
     box-shadow: 0 6px 18px rgba(60,10,30,.4);
     will-change: transform;
-    animation: op-valance 2.8s cubic-bezier(.55,-0.25,.25,1) 4.1s forwards, op-valance-sway 1.6s ease-in-out 3.9s 1;
+    animation: op-valance 1.8s cubic-bezier(.55,-0.25,.25,1) .35s forwards, op-valance-sway 1.6s ease-in-out .35s 1;
   }
   /* 一瞬ぐっと下に引かれてから、ふわっと上へ巻き上がる */
   @keyframes op-valance { from { translate: 0 0; } to { translate: 0 -115%; } }
@@ -981,31 +978,32 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     80% { transform: rotate(.3deg); }
   }
   @keyframes op-up { to { transform: translateY(-110%); } }
+  /* The light follows the original illustration's face at every viewport size. */
   .op-dark {
-    position: absolute; left: 50%; top: 50vh; top: 50svh; z-index: 3; width: 300vmax; height: 300vmax; margin: -150vmax 0 0 -150vmax;
-    background: radial-gradient(circle, rgba(255,240,200,.18) 0, rgba(255,240,200,.08) 13vmin, transparent 17vmin, rgba(20,4,12,.94) 24vmin);
-    transform: translate(-60vw, -40vh) scale(.6);
+    position: absolute; left: var(--op-face-x, 50vw); top: var(--op-face-y, 30vh); z-index: 0;
+    width: 300vmax; height: 300vmax; margin: -150vmax 0 0 -150vmax;
+    background: radial-gradient(circle, rgba(255,240,220,.06) 0, rgba(255,240,220,.06) var(--op-radius, 80px), rgba(20,4,12,.9) calc(var(--op-radius, 80px) * 1.6));
+    transform: translate(-55vw, 12vh);
     will-change: transform, opacity;
-    animation: op-spot 2s ease-in-out .8s forwards, op-flood 1.1s ease-in 3.85s forwards;
+    animation: op-spot 2.2s ease-in-out .4s forwards, op-flood .85s ease-in-out 3.3s forwards;
   }
   @keyframes op-spot {
-    0%   { transform: translate(-60vw, -40vh) scale(.6); }
-    35%  { transform: translate(22vw, -14vh) scale(.75); }
-    60%  { transform: translate(-16vw, 10vh) scale(.85); }
-    82%  { transform: translate(3vw, -2vh) scale(.95); }
-    100% { transform: translate(0, 0) scale(1); }
+    0% { transform: translate(-55vw, 12vh); }
+    35% { transform: translate(16vw, -8vh); }
+    65% { transform: translate(-10vw, 10vh); }
+    100% { transform: translate(0, 0); }
   }
-  @keyframes op-flood { from { transform: translate(0,0) scale(1); opacity: 1; } to { transform: translate(0,0) scale(7); opacity: 0; } }
+  @keyframes op-flood { from { transform: translate(0,0) scale(1); opacity: 1; } to { transform: translate(0,0) scale(12); opacity: 0; } }
   .op-title {
     position: absolute; left: 0; right: 0; top: 50vh; top: 50svh; z-index: 4; margin-top: -1.2em; text-align: center;
     font-family: var(--hand); font-size: clamp(22px, 6.4vw, 34px); letter-spacing: .1em; color: var(--white);
     text-shadow: 0 0 12px rgba(224,116,150,.9), 0 0 2px rgba(255,255,255,.9);
-    opacity: 0; animation: op-title 1.7s ease 2.35s forwards;
+    opacity: 0; animation: op-title 1s ease .1s forwards;
   }
   .op-title small { display: block; margin-top: 6px; font-family: var(--en); font-size: .45em; letter-spacing: .4em; }
   @keyframes op-title { 0% { opacity: 0; transform: scale(.85); } 35% { opacity: 1; transform: scale(1); } 75% { opacity: 1; } 100% { opacity: 0; transform: scale(1.08); } }
   .op-burst { position: absolute; left: 50%; top: 50vh; top: 50svh; z-index: 4; width: 0; height: 0; }
-  .op-burst span { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; color: #FFE3EC; filter: drop-shadow(0 0 6px rgba(255,180,205,.95)); opacity: 0; animation: op-burst 1.1s cubic-bezier(.2,.8,.3,1) 3.9s forwards; }
+  .op-burst span { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; color: #FFE3EC; filter: drop-shadow(0 0 6px rgba(255,180,205,.95)); opacity: 0; animation: op-burst 1.1s cubic-bezier(.2,.8,.3,1) 3.35s forwards; }
   .op-burst span svg { display: block; width: 100%; height: 100%; }
   .op-burst span:nth-child(1) { --a: 0deg; } .op-burst span:nth-child(2) { --a: 45deg; width: 12px; height: 12px; }
   .op-burst span:nth-child(3) { --a: 90deg; } .op-burst span:nth-child(4) { --a: 135deg; width: 12px; height: 12px; }
@@ -1017,8 +1015,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     100% { opacity: 0; transform: rotate(var(--a)) translateY(-34vmin) scale(1.1) rotate(180deg); }
   }
   .op-skip { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 5; font-size: 11px; letter-spacing: .1em; color: rgba(255,255,255,.55); }
-  html.op-in .hero__photo { animation: op-appear .9s cubic-bezier(.3,1.5,.5,1) .5s both; }
-  @keyframes op-appear { 0% { opacity: 0; transform: scale(.82) translateY(20px); } 100% { opacity: 1; transform: none; } }
 
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
@@ -1744,19 +1740,24 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   if(!root.classList.contains('op')){ if(op) op.remove(); root.classList.add('op-in'); return; }
   var done=false;
   function top(){ window.scrollTo(0,0); }
-  top(); window.addEventListener('load', top);
+  function aim(){
+    var image=document.querySelector('.hero__photo img'), r=image.getBoundingClientRect();
+    op.style.setProperty('--op-face-x', (r.left+r.width*.52)+'px');
+    op.style.setProperty('--op-face-y', (r.top+r.height*.225)+'px');
+    op.style.setProperty('--op-radius', Math.max(48,r.width*.22)+'px');
+  }
+  top(); aim(); window.addEventListener('load', aim); window.addEventListener('resize', aim);
   function finish(){
     if(done) return; done=true;
-    clearTimeout(timer); clearTimeout(show);
-    window.removeEventListener('load', top);
+    clearTimeout(timer); clearTimeout(reveal);
+    window.removeEventListener('load', aim); window.removeEventListener('resize', aim);
     op.classList.add('is-out');
     root.classList.remove('op'); root.classList.add('op-in');
-    setTimeout(function(){ root.classList.remove('op-show'); }, 600);
     setTimeout(function(){ op.remove(); }, 500);
     // Keep the entrance state so the logo never starts its arrival twice.
   }
-  var timer=setTimeout(finish, 7150);
-  var show=setTimeout(function(){ root.classList.add('op-show'); }, 3900);
+  var timer=setTimeout(finish, 4250);
+  var reveal=setTimeout(function(){ root.classList.add('op-in'); }, 3350);
   op.addEventListener('click', finish);
   // Navigation skips the opening before its existing handlers open a menu or follow a link.
   document.querySelector('.header').addEventListener('click', function(e){
