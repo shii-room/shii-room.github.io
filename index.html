@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009211517">
+<meta name="build" content="20261009212639">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -922,7 +922,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   html.op .hero__photo .floater, html.op .hero__photo .holo { animation-play-state: paused; }
   html.op .bubble { animation: none; opacity: 0; }
   .opening { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100vh + 160px); height: calc(100lvh + 160px); z-index: 100; overflow: hidden; background: transparent; cursor: pointer; transition: opacity .45s ease; }
-  @keyframes op-bg { to { background-color: rgba(42,15,26,0); } }
+  /* Dim the closed curtain while only the welcome lettering is lit. */
+  .opening::before { content: ""; position: absolute; inset: 0; z-index: 3; background: rgba(20,4,12,.88); pointer-events: none; animation: op-intro-dark .8s ease 3.9s forwards; }
+  @keyframes op-intro-dark { to { opacity: 0; } }
   .opening.is-out { opacity: 0; pointer-events: none; }
   .op-curtain {
     position: absolute; top: 0; bottom: 0; z-index: 1; width: 82vw; transform-origin: 50% 0;
@@ -983,16 +985,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     position: absolute; left: var(--op-face-x, 50vw); top: var(--op-face-y, 30vh); z-index: 0;
     width: 300vmax; height: 300vmax; margin: -150vmax 0 0 -150vmax;
     background: radial-gradient(circle, rgba(255,240,220,.06) 0, rgba(255,240,220,.06) var(--op-radius, 80px), rgba(20,4,12,.9) calc(var(--op-radius, 80px) * 1.6));
-    transform: translate(-55vw, 12vh);
     will-change: transform, opacity;
-    animation: op-spot 2.6s ease-in-out 4.25s forwards, op-flood .95s ease-in-out 7.75s forwards;
+    animation: op-flood .95s ease-in-out 8.6s forwards;
   }
-  @keyframes op-spot {
-    0% { transform: translate(-55vw, 12vh); }
-    35% { transform: translate(16vw, -8vh); }
-    65% { transform: translate(-10vw, 10vh); }
-    100% { transform: translate(0, 0); }
-  }
+  /* Keep the face dark until the curtains have finished opening, then fade its light in. */
+  .op-dark::after { content: ""; position: absolute; inset: 0; background: rgba(20,4,12,.9); animation: op-face-light .65s ease 7s forwards; }
+  @keyframes op-face-light { to { opacity: 0; } }
   @keyframes op-flood { from { transform: translate(0,0) scale(1); opacity: 1; } to { transform: translate(0,0) scale(12); opacity: 0; } }
   .op-title {
     position: absolute; left: 0; right: 0; top: 50vh; top: 50svh; z-index: 4; margin-top: -1.2em; text-align: center;
@@ -1003,7 +1001,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .op-title small { display: block; margin-top: 6px; font-family: var(--en); font-size: .45em; letter-spacing: .4em; }
   @keyframes op-title { 0% { opacity: 0; transform: scale(.96); } 18% { opacity: 1; transform: scale(1); } 85% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.02); } }
   .op-burst { position: absolute; left: 50%; top: 50vh; top: 50svh; z-index: 4; width: 0; height: 0; }
-  .op-burst span { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; color: #FFE3EC; filter: drop-shadow(0 0 6px rgba(255,180,205,.95)); opacity: 0; animation: op-burst 1.1s cubic-bezier(.2,.8,.3,1) 7.8s forwards; }
+  .op-burst span { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; color: #FFE3EC; filter: drop-shadow(0 0 6px rgba(255,180,205,.95)); opacity: 0; animation: op-burst 1.1s cubic-bezier(.2,.8,.3,1) 8.65s forwards; }
   .op-burst span svg { display: block; width: 100%; height: 100%; }
   .op-burst span:nth-child(1) { --a: 0deg; } .op-burst span:nth-child(2) { --a: 45deg; width: 12px; height: 12px; }
   .op-burst span:nth-child(3) { --a: 90deg; } .op-burst span:nth-child(4) { --a: 135deg; width: 12px; height: 12px; }
@@ -1756,8 +1754,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     setTimeout(function(){ op.remove(); }, 500);
     // Keep the entrance state so the logo never starts its arrival twice.
   }
-  var timer=setTimeout(finish, 8800);
-  var reveal=setTimeout(function(){ root.classList.add('op-in'); }, 7800);
+  var timer=setTimeout(finish, 9650);
+  var reveal=setTimeout(function(){ root.classList.add('op-in'); }, 8650);
   op.addEventListener('click', finish);
   // Navigation skips the opening before its existing handlers open a menu or follow a link.
   document.querySelector('.header').addEventListener('click', function(e){
