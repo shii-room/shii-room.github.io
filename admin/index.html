@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009222600">
+<meta name="build" content="20261009224900">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -659,7 +659,8 @@
     }
     var EN=['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
     function calInfo(){
-      var n=new Date(), y=n.getFullYear(), m=n.getMonth();
+      // ごほうび壁紙は月末に受け取って翌月使うものなので、カレンダーは自動で「翌月」（12月なら翌年1月）
+      var n=new Date(), nx=new Date(n.getFullYear(),n.getMonth()+1,1), y=nx.getFullYear(), m=nx.getMonth();
       var first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate();
       return {y:y,m:m,first:first,days:days,rows:Math.ceil((first+days)/7)};
     }
@@ -779,7 +780,7 @@
     $('wallCalMarks').oninput=function(){ st.calMarks=this.value; saveSt(); redraw(); };
     function calHint(){ var on=st.cal!=='none', c=calInfo();
       $('wallCalMarks').disabled=!on;
-      $('wallCalHint').textContent=!on?'カレンダーなしの壁紙になります。':(c.m+1)+'月のカレンダーが、イラストの上にすりガラス風に重なります。日曜・祝日はピンク、土曜は水色。ひとことはカレンダーの中に1行で入ります。'; }
+      $('wallCalHint').textContent=!on?'カレンダーなしの壁紙になります。':'来月（'+(c.m+1)+'月）のカレンダーが自動で入り、イラストの上にすりガラス風に重なります。日曜・祝日はピンク、土曜は水色。ひとことはカレンダーの中に1行で入ります。'; }
     $('wallPos').oninput=function(){ st.pos=+this.value; saveSt(); redraw(); };
     $('wallZoom').oninput=function(){ st.zoom=+this.value; saveSt(); redraw(); };
     $('wallRand').onclick=function(){
