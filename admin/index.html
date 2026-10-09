@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009065935">
+<meta name="build" content="20261009070040">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -125,6 +125,17 @@
   .schNow.is-empty .schNow__val{color:var(--sub);font-size:14px}
   .schNow__del{margin-top:12px;width:100%;height:44px;border-radius:999px;border:1.5px solid #E58AA5;background:#FFF2F6;color:#B3264A;font-size:14px}
   .wallFile{height:auto;padding:12px;font-size:14px}
+  .acc{margin-top:12px;border-radius:18px;background:rgba(255,255,255,.55);border:1.5px solid var(--rule);overflow:hidden}
+  .acc[open]{background:rgba(255,255,255,.75);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
+  .acc summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 46px 10px 14px;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
+  .acc summary::-webkit-details-marker{display:none}
+  .acc summary::after{content:"";position:absolute;right:20px;top:50%;width:9px;height:9px;border-right:2.5px solid var(--peri);border-bottom:2.5px solid var(--peri);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+  .acc[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+  .acc__i{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#fff;font-size:18px}
+  .acc__t{display:block;font-family:var(--maru);font-weight:700;font-size:15px;letter-spacing:.06em}
+  .acc__v{display:block;margin-top:2px;font-family:var(--sans);font-weight:400;font-size:12px;letter-spacing:0;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}
+  .acc__b{padding:4px 16px 18px}
+  .acc__sep{height:1px;margin:18px 0 16px;background:var(--rule)}
   .seg{display:flex;flex-wrap:wrap;gap:8px}
   .seg button{flex:1 1 auto;height:42px;padding:0 14px;border-radius:999px;font-size:13px;background:rgba(255,255,255,.6);color:var(--ink);border-color:var(--rule)}
   .seg button[aria-pressed="true"]{background:var(--white);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
@@ -244,15 +255,16 @@
       </div>
       <div class="wallPrev wallPrev--top" id="wallTop"><canvas id="wallCv" width="1170" height="2532"></canvas></div>
       <button class="wallMini" id="wallMini" type="button" aria-label="見本を大きく見る"><canvas id="wallMiniCv" width="320" height="692"></canvas><span>見本 ▲</span></button>
-      <p class="hint" style="text-align:center">下の項目を変えると、すぐ見本に反映されます</p>
       <button class="wallRand" id="wallRand" type="button">🎲 おまかせで組み合わせる</button>
 
-      <div class="card">
+      <p class="hint" style="text-align:center;margin-top:18px">タップで開きます・変えるとすぐ見本に反映</p>
+      <details class="acc" name="wallAcc" data-acc="ill">
+        <summary><span class="acc__i" aria-hidden="true">🎀</span><span class="acc__t">イラスト・かざり方<small class="acc__v" id="accV_ill"></small></span></summary>
+        <div class="acc__b">
         <label for="wallFile">イラスト</label>
         <input id="wallFile" type="file" accept="image/*" class="wallFile">
         <p class="hint">選ばない時は、キャンディを持ったしぃで作れます。<button class="linkBtn" id="wallReset" type="button">標準のイラストに戻す</button></p>
-      </div>
-      <div class="card">
+        <div class="acc__sep"></div>
         <label>かざり方</label>
         <div class="seg segIco" id="wallMode">
           <button type="button" data-v="standard"><svg viewBox="0 0 24 24"><circle cx="12" cy="15" r="7"/><path d="M12 4v13" class="ln"/><circle cx="12" cy="7" r="3" class="fg"/></svg>ふつう</button>
@@ -269,12 +281,14 @@
           <label for="wallZoom" class="sub">イラストの大きさ</label>
           <input id="wallZoom" type="range" min="70" max="130" value="100">
         </div>
-      </div>
-      <div class="card">
+        </div>
+      </details>
+      <details class="acc" name="wallAcc" data-acc="color">
+        <summary><span class="acc__i" aria-hidden="true">🎨</span><span class="acc__t">色・背景のもよう<small class="acc__v" id="accV_color"></small></span></summary>
+        <div class="acc__b">
         <label>色</label>
         <div class="swatch" id="wallColor"></div>
-      </div>
-      <div class="card">
+        <div class="acc__sep"></div>
         <label>背景のもよう</label>
         <div class="seg" id="wallPattern">
           <button type="button" data-v="dot">水玉</button>
@@ -284,8 +298,11 @@
           <button type="button" data-v="star">星空</button>
           <button type="button" data-v="plain">なし</button>
         </div>
-      </div>
-      <div class="card">
+        </div>
+      </details>
+      <details class="acc" name="wallAcc" data-acc="deco">
+        <summary><span class="acc__i" aria-hidden="true">✨</span><span class="acc__t">かざり・名前ロゴ<small class="acc__v" id="accV_deco"></small></span></summary>
+        <div class="acc__b">
         <label>まわりのかざり</label>
         <div class="seg" id="wallDeco">
           <button type="button" data-v="heart">ハート</button>
@@ -296,26 +313,30 @@
           <button type="button" data-v="none">なし</button>
         </div>
         <label class="schSync" style="margin-top:14px"><input type="checkbox" id="wallIcing">上にとろ〜りアイシング</label>
-      </div>
-      <div class="card">
+        <div class="acc__sep"></div>
         <label>名前ロゴ</label>
         <div class="seg" id="wallLogo">
           <button type="button" data-v="top">上</button>
           <button type="button" data-v="bottom">下</button>
           <button type="button" data-v="none">なし</button>
         </div>
-      </div>
-      <div class="card">
-        <label>カレンダー</label>
-        <div class="seg" id="wallCal">
+        </div>
+      </details>
+      <details class="acc" name="wallAcc" data-acc="cal">
+        <summary><span class="acc__i" aria-hidden="true">📅</span><span class="acc__t">カレンダー<small class="acc__v" id="accV_cal"></small></span></summary>
+        <div class="acc__b">
+        <div class="seg" id="wallCal" style="margin-top:4px">
           <button type="button" data-v="on">あり</button>
           <button type="button" data-v="none">なし</button>
         </div>
         <label for="wallCalMarks" class="sub" style="margin-top:12px">♡をつける日<small class="opt">なしでもOK・数字を「,」で区切る</small></label>
         <input id="wallCalMarks" type="text" inputmode="numeric" maxlength="60" placeholder="例）3, 15, 24">
         <p class="hint" id="wallCalHint">日曜・祝日はピンク、土曜は水色になります。記念日や特別な配信の日に♡をつけられます。</p>
-      </div>
-      <div class="card">
+        </div>
+      </details>
+      <details class="acc" name="wallAcc" data-acc="msg">
+        <summary><span class="acc__i" aria-hidden="true">💬</span><span class="acc__t">ひとこと・フォント<small class="acc__v" id="accV_msg"></small></span></summary>
+        <div class="acc__b">
         <label for="wallMsg">ひとこと<small class="opt">なしでもOK・2行まで</small></label>
         <textarea id="wallMsg" rows="2" maxlength="40" placeholder="いつも来てくれてありがとう♡"></textarea>
         <div class="seg" id="wallMsgStyle" style="margin-top:10px">
@@ -324,7 +345,8 @@
           <button type="button" data-v="ribbon">リボン帯</button>
         </div>
         <label class="fontLbl">文字のフォント</label><div class="seg fontSeg"></div>
-      </div>
+        </div>
+      </details>
       <div class="row"><button class="ghost" id="wallSave" type="button">スマホに保存</button><button class="primary" id="wallSet" type="button">ごほうびに設定</button></div>
       <p class="msg" id="wallMsgOut"></p>
     </div>
@@ -712,7 +734,7 @@
     var mini=$('wallMiniCv'), mx=mini.getContext('2d');
     var HINT={standard:'イラストを白いまるの上にそのまま立たせます（標準のイラスト向き）',card:'白フチの角まるカードに入れます',polaroid:'チェキ（インスタントカメラの写真）風。少し傾けて、上にマステを貼ります',circle:'まるく切り抜いて白フチを付けます',heart:'ハートの形に切り抜きます',full:'画面いっぱいにイラストを広げます'};
     function hint(){ $('wallModeHint').textContent=HINT[st.mode]||''; }
-    function redraw(){ hint(); ready.then(fontReady).then(draw).then(function(){ mx.drawImage(cv,0,0,mini.width,mini.height); }); }
+    function redraw(){ hint(); if(typeof accSum==='function') accSum(); ready.then(fontReady).then(draw).then(function(){ mx.drawImage(cv,0,0,mini.width,mini.height); }); }
     // 見本が画面から外れたら、右下に小さな見本を出す（タップで上に戻る）
     (function(){
       var top=$('wallTop'), btn=$('wallMini'), vis=true;
@@ -725,6 +747,20 @@
     // ---- 入力 ----
     var sw=$('wallColor'); Object.keys(THEME).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.style.setProperty('--c',THEME[k].c[1]); b.innerHTML='<i></i>'+THEME[k].n; sw.appendChild(b); });
     var SEGS=[['wallMode','mode'],['wallColor','color'],['wallPattern','pattern'],['wallDeco','deco'],['wallLogo','logo'],['wallMsgStyle','msgStyle'],['wallCal','cal']];
+    // アコーディオン：1つ開くと他は閉じる。見出しに今の設定を小さく出す
+    var accs=document.querySelectorAll('#wallView .acc');
+    Array.prototype.forEach.call(accs,function(d){ d.addEventListener('toggle',function(){ if(!d.open) return;
+      Array.prototype.forEach.call(accs,function(o){ if(o!==d) o.open=false; });
+      setTimeout(function(){ var r=d.getBoundingClientRect(); if(r.top<0||r.top>innerHeight*.6) d.scrollIntoView({behavior:'smooth',block:'start'}); },60); }); });
+    function segTxt(id){ var b=document.querySelector('#'+id+' [aria-pressed="true"]'); return b?b.textContent.trim():''; }
+    function accSum(){
+      var set=function(k,t){ var e=$('accV_'+k); if(e) e.textContent=t; };
+      set('ill',(userImg?'選んだイラスト':'標準のイラスト')+'・'+segTxt('wallMode'));
+      set('color',segTxt('wallColor')+'・'+segTxt('wallPattern'));
+      set('deco',segTxt('wallDeco')+(st.icing?'・アイシング':'')+'・ロゴ '+segTxt('wallLogo'));
+      set('cal',st.cal==='none'?'なし':'あり'+(st.calMarks?'・♡ '+st.calMarks:''));
+      set('msg',(st.msg?st.msg.replace(/\n/g,' '):'なし')+'・'+(segTxt('wallMsgStyle')));
+    }
     function syncUI(){
       SEGS.forEach(function(p){ Array.prototype.forEach.call($(p[0]).children,function(b){ b.setAttribute('aria-pressed',b.dataset.v===st[p[1]]?'true':'false'); }); });
       $('wallIcing').checked=!!st.icing; $('wallMsg').value=st.msg||''; $('wallCalMarks').value=st.calMarks||''; calHint(); $('wallPos').value=st.pos; $('wallZoom').value=st.zoom;
