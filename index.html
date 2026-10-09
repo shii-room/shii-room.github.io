@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009065317">
+<meta name="build" content="20261009065504">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -976,6 +976,10 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__in { gap: 18px 20px; padding-block: 28px 40px; }
     .prof { grid-template-columns: 1fr; gap: 28px; max-width: 680px; }
   }
+
+  /* 画像の保存よけ（長押し・右クリック・ドラッグ）。ごほうび壁紙だけは保存OK */
+  img, svg image, canvas, picture { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
+  img[data-save] { -webkit-touch-callout: default; -webkit-user-select: auto; user-select: auto; -webkit-user-drag: auto; }
 </style>
 </head>
 <body>
@@ -1346,7 +1350,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="stamp-modal__in">
       <p class="stamp-modal__ttl">CONGRATULATIONS!</p>
       <p class="stamp-modal__sub" id="stamp-sub">今月のスタンプ20個たまったよ！<br>いつも来てくれてありがとう♡</p>
-      <img class="stamp-modal__img" id="stamp-wall" alt="しぃの特別壁紙">
+      <img class="stamp-modal__img" id="stamp-wall" alt="しぃの特別壁紙" data-save>
       <div class="stamp-modal__btns">
         <button class="btn btn--main" id="stamp-save" type="button">壁紙を保存する</button>
         <button class="btn" id="stamp-close" type="button">とじる</button>
@@ -1992,6 +1996,14 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 (function(){
   var b=document.getElementById('tomenu'), mb=document.querySelector('.menu-btn'); if(!b||!mb) return;
   b.addEventListener('click',function(){ if(mb.getAttribute('aria-expanded')!=='true') mb.click(); });
+})();
+</script>
+<script>
+(function(){
+  // 画像の保存よけ：長押しメニュー・右クリック・ドラッグを止める（ごほうび壁紙 data-save は除く）
+  function guard(e){ var t=e.target; if(!t||!t.closest) return; var el=t.closest('img,picture,canvas,svg'); if(!el) return; if(el.hasAttribute&&el.hasAttribute('data-save')) return; e.preventDefault(); }
+  document.addEventListener('contextmenu',guard,true);
+  document.addEventListener('dragstart',guard,true);
 })();
 </script>
 </body>
