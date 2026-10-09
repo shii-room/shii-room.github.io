@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009063628">
+<meta name="build" content="20261009064141">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -136,11 +136,11 @@
   .wallPrev{display:grid;place-items:center;margin-top:10px}
   .wallPrev--top{margin-top:18px}
   .wallPrev--top canvas{width:min(52%,210px)}
-  .wallMini{position:fixed;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:15;width:76px;height:auto;padding:0;border:3px solid #fff;border-radius:14px;overflow:hidden;background:#fff;
-    box-shadow:0 6px 18px rgba(94,53,64,.35);opacity:0;visibility:hidden;transform:translateY(12px) scale(.9);transition:opacity .2s,transform .25s,visibility .2s}
+  .wallMini{position:fixed;right:10px;top:calc(10px + env(safe-area-inset-top,0px));z-index:15;width:106px;height:auto;padding:0;border:3px solid #fff;border-radius:14px;overflow:hidden;background:#fff;
+    box-shadow:0 6px 18px rgba(94,53,64,.35);opacity:0;visibility:hidden;transform:translateY(-12px) scale(.9);transition:opacity .2s,transform .25s,visibility .2s}
   .wallMini.is-show{opacity:1;visibility:visible;transform:none}
   .wallMini canvas{display:block;width:100%;height:auto}
-  .wallMini span{position:absolute;left:0;right:0;bottom:0;padding:2px 0;background:rgba(240,98,143,.9);color:#fff;font-size:9px;font-weight:700;text-align:center;letter-spacing:.04em}
+  .wallMini span{position:absolute;left:0;right:0;bottom:0;padding:3px 0;background:rgba(240,98,143,.9);color:#fff;font-size:11px;font-weight:700;text-align:center;letter-spacing:.04em}
   .wallRand{display:block;margin:12px auto 0;height:40px;padding:0 18px;border-radius:999px;font-size:13px;background:var(--white);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
   .swatch{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
   .swatch button{height:auto;padding:6px 0 4px;border-radius:12px;font-size:10px;font-weight:700;background:rgba(255,255,255,.55);border-color:var(--rule);display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:0}
@@ -243,7 +243,7 @@
         <button class="schNow__del" id="wallClear" type="button" hidden>標準の壁紙に戻す</button>
       </div>
       <div class="wallPrev wallPrev--top" id="wallTop"><canvas id="wallCv" width="1170" height="2532"></canvas></div>
-      <button class="wallMini" id="wallMini" type="button" aria-label="見本を大きく見る"><canvas id="wallMiniCv" width="234" height="506"></canvas><span>見本 ▲</span></button>
+      <button class="wallMini" id="wallMini" type="button" aria-label="見本を大きく見る"><canvas id="wallMiniCv" width="320" height="692"></canvas><span>見本 ▲</span></button>
       <p class="hint" style="text-align:center">下の項目を変えると、すぐ見本に反映されます</p>
       <button class="wallRand" id="wallRand" type="button">🎲 おまかせで組み合わせる</button>
 
