@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261009080233"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261009080453"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -62,7 +62,7 @@
 
   .menu-btn {
     position: relative; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-    width: 46px; height: 44px; margin-right: -4px; padding: 0; border-radius: 14px;
+    width: 46px; height: 44px; margin-right: -8px; padding: 0; border-radius: 14px;
     background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid #fff; box-shadow: 0 3px 0 #E6A6BE;
     cursor: pointer; color: var(--rose); -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s;
   }
@@ -508,6 +508,15 @@
   .tomenu:active { transform: scale(.92); }
   .tomenu svg { width: 22px; height: 22px; }
   .tomenu small { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-family: var(--en); font-weight: 500; font-size: 9px; letter-spacing: .15em; color: var(--rose-deep); white-space: nowrap; }
+  /* 右下のボタンもヘッダーのMENUボタンと同じお菓子タイル風に */
+  .tomenu, .totop { right: 8px; width: 52px; height: 54px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    background: linear-gradient(145deg, #FFFCFD, #FBEAF0); color: var(--rose); border: 1.5px solid #fff;
+    box-shadow: 0 3px 0 #E6A6BE, 0 8px 16px rgba(150,70,95,.22); }
+  .totop { background: linear-gradient(145deg, #F68FB4, #EE6F9B); color: #fff; box-shadow: 0 3px 0 #C9557B, 0 8px 16px rgba(150,70,95,.25); }
+  .tomenu svg, .totop svg { width: 24px; height: 24px; }
+  .tomenu small, .totop small { position: static; transform: none; font-family: var(--en); font-weight: 600; font-size: 8px; line-height: 1; letter-spacing: .12em; color: inherit; }
+  .tomenu:active, .totop:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
+  .tomenu { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   body.menu-open .tomenu, body.menu-open .totop { opacity: 0; visibility: hidden; }
 
   /* 更新のお知らせ */
@@ -888,7 +897,7 @@
     <a class="menu__top" href="./">↑ 公式HPのトップへ</a>
   </div>
 </nav>
-<button class="tomenu" id="tomenu" type="button" aria-label="メニューを開く"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><small>MENU</small></button>
+<button class="tomenu" id="tomenu" type="button" aria-label="メニューを開く"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12M6 12h12M6 17h12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><small>MENU</small></button>
 <button class="totop" id="totop" type="button" aria-label="いちばん上へ戻る"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 11.5 12 5.5l6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><small>TOP</small></button>
 <main>  <section class="sec" id="songs">
     <div class="sec__head"><h1 class="sec__en">Songs</h1><span class="sec__ja">歌える（かも）リスト</span></div>

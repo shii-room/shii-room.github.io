@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261009080233">
+<meta name="build" content="20261009080453">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -111,7 +111,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
   .menu-btn {
     position: relative; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-    width: 46px; height: 44px; margin-right: -4px; padding: 0; border-radius: 14px;
+    width: 46px; height: 44px; margin-right: -12px; padding: 0; border-radius: 14px;
     background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid #fff; box-shadow: 0 3px 0 #E6A6BE;
     cursor: pointer; color: var(--rose); -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s;
   }
@@ -636,6 +636,15 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .tomenu:active { transform: scale(.92); }
   .tomenu svg { width: 22px; height: 22px; }
   .tomenu small { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-family: var(--en); font-weight: 500; font-size: 9px; letter-spacing: .15em; color: var(--rose-deep); white-space: nowrap; }
+  /* 右下のボタンもヘッダーのMENUボタンと同じお菓子タイル風に */
+  .tomenu, .totop { right: 8px; width: 52px; height: 54px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    background: linear-gradient(145deg, #FFFCFD, #FBEAF0); color: var(--rose); border: 1.5px solid #fff;
+    box-shadow: 0 3px 0 #E6A6BE, 0 8px 16px rgba(150,70,95,.22); }
+  .totop { background: linear-gradient(145deg, #F68FB4, #EE6F9B); color: #fff; box-shadow: 0 3px 0 #C9557B, 0 8px 16px rgba(150,70,95,.25); }
+  .tomenu svg, .totop svg { width: 24px; height: 24px; }
+  .tomenu small, .totop small { position: static; transform: none; font-family: var(--en); font-weight: 600; font-size: 8px; line-height: 1; letter-spacing: .12em; color: inherit; }
+  .tomenu:active, .totop:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
+  .tomenu { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   body.menu-open .tomenu, body.menu-open .totop { opacity: 0; visibility: hidden; }
 
   /* 更新のお知らせ */
@@ -1062,7 +1071,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 </div>
 
 <div class="season-fx" id="season-fx" aria-hidden="true"></div>
-<button class="tomenu" id="tomenu" type="button" aria-label="メニューを開く"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><small>MENU</small></button>
+<button class="tomenu" id="tomenu" type="button" aria-label="メニューを開く"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12M6 12h12M6 17h12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><small>MENU</small></button>
 <button class="totop" id="totop" type="button" aria-label="いちばん上へ戻る"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 11.5 12 5.5l6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><small>TOP</small></button>
 <button class="upd" id="upd" type="button" hidden><span class="upd__dot" aria-hidden="true"></span><span>新しいバージョンがあります<small>タップで更新</small></span></button>
 
