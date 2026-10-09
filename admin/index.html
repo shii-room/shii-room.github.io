@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009062005">
+<meta name="build" content="20261009062750">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -131,6 +131,14 @@
   .wallPos .sub{font-size:12px;color:var(--sub)}
   .wallPos input{width:100%;height:auto;padding:0;border:0;background:none;accent-color:var(--peri)}
   .wallPrev{display:grid;place-items:center;margin-top:10px}
+  .wallPrev--top{position:sticky;top:8px;z-index:3;margin-top:18px}
+  .wallPrev--top canvas{width:min(46%,200px)}
+  .wallRand{display:block;margin:12px auto 0;height:40px;padding:0 18px;border-radius:999px;font-size:13px;background:var(--white);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
+  .swatch{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .swatch button{height:auto;padding:6px 0 4px;border-radius:12px;font-size:10px;font-weight:700;background:rgba(255,255,255,.55);border-color:var(--rule);display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:0}
+  .swatch button i{width:30px;height:30px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 2px #fff}
+  .swatch button[aria-pressed="true"]{background:var(--white);border-color:var(--peri);box-shadow:2px 2px 0 var(--peri)}
+  .linkBtn{display:inline;height:auto;padding:0;margin-left:6px;border:0;background:none;font-size:12px;color:var(--peri);text-decoration:underline}
   .wallPrev canvas{width:min(62%,240px);height:auto;border-radius:22px;box-shadow:0 8px 22px rgba(94,53,64,.25);background:#fff}
   .schSync{display:flex;align-items:center;gap:8px;margin:18px 0 0;font-size:13px;font-weight:700}
   .schSync input{width:20px;height:20px;margin:0;accent-color:var(--peri)}
@@ -219,39 +227,75 @@
         <p class="schNow__val" id="wallNowVal">確認中…</p>
         <button class="schNow__del" id="wallClear" type="button" hidden>標準の壁紙に戻す</button>
       </div>
+      <div class="wallPrev wallPrev--top"><canvas id="wallCv" width="1170" height="2532"></canvas></div>
+      <p class="hint" style="text-align:center">下の項目を変えると、すぐ見本に反映されます</p>
+      <button class="wallRand" id="wallRand" type="button">🎲 おまかせで組み合わせる</button>
+
       <div class="card">
-        <label for="wallFile">① 使うイラストを選ぶ</label>
+        <label for="wallFile">イラスト</label>
         <input id="wallFile" type="file" accept="image/*" class="wallFile">
-        <p class="hint">選ばない時は、今のイラスト（キャンディを持ったしぃ）で作れます。</p>
+        <p class="hint">選ばない時は、キャンディを持ったしぃで作れます。<button class="linkBtn" id="wallReset" type="button">標準のイラストに戻す</button></p>
       </div>
       <div class="card">
-        <label>② かざり方</label>
+        <label>かざり方</label>
         <div class="seg" id="wallMode">
-          <button type="button" data-v="card" aria-pressed="true">カード</button>
-          <button type="button" data-v="full" aria-pressed="false">全面</button>
+          <button type="button" data-v="card">カード</button>
+          <button type="button" data-v="polaroid">チェキ風</button>
+          <button type="button" data-v="circle">まる</button>
+          <button type="button" data-v="heart">ハート</button>
+          <button type="button" data-v="full">全面</button>
         </div>
-        <div class="wallPos" id="wallPosBox" hidden>
+        <div class="wallPos" id="wallPosBox">
           <label for="wallPos" class="sub">イラストの位置（上〜下）</label>
-          <input id="wallPos" type="range" min="0" max="100" value="40">
+          <input id="wallPos" type="range" min="0" max="100" value="45">
+          <label for="wallZoom" class="sub">イラストの大きさ</label>
+          <input id="wallZoom" type="range" min="70" max="130" value="100">
         </div>
       </div>
       <div class="card">
-        <label>③ 色</label>
-        <div class="seg seg--color" id="wallColor">
-          <button type="button" data-v="pink" aria-pressed="true" style="--c:#F4CFDC">いちご</button>
-          <button type="button" data-v="lav" aria-pressed="false" style="--c:#DCCFF0">ラベンダー</button>
-          <button type="button" data-v="mint" aria-pressed="false" style="--c:#CDEEE2">ミント</button>
-          <button type="button" data-v="night" aria-pressed="false" style="--c:#3D3466;color:#fff">夜空</button>
-        </div>
-        <label class="schSync" style="margin-top:14px"><input type="checkbox" id="wallLogo" checked>名前ロゴを入れる</label>
+        <label>色</label>
+        <div class="swatch" id="wallColor"></div>
       </div>
       <div class="card">
-        <label for="wallMsg">④ ひとこと<small class="opt">なしでもOK・2行まで</small></label>
+        <label>背景のもよう</label>
+        <div class="seg" id="wallPattern">
+          <button type="button" data-v="dot">水玉</button>
+          <button type="button" data-v="heart">ハート柄</button>
+          <button type="button" data-v="gingham">ギンガム</button>
+          <button type="button" data-v="stripe">ストライプ</button>
+          <button type="button" data-v="star">星空</button>
+          <button type="button" data-v="plain">なし</button>
+        </div>
+      </div>
+      <div class="card">
+        <label>まわりのかざり</label>
+        <div class="seg" id="wallDeco">
+          <button type="button" data-v="heart">ハート</button>
+          <button type="button" data-v="sparkle">キラキラ</button>
+          <button type="button" data-v="sweets">お菓子</button>
+          <button type="button" data-v="ribbon">リボン</button>
+          <button type="button" data-v="music">音符</button>
+          <button type="button" data-v="none">なし</button>
+        </div>
+        <label class="schSync" style="margin-top:14px"><input type="checkbox" id="wallIcing">上にとろ〜りアイシング</label>
+      </div>
+      <div class="card">
+        <label>名前ロゴ</label>
+        <div class="seg" id="wallLogo">
+          <button type="button" data-v="top">上</button>
+          <button type="button" data-v="bottom">下</button>
+          <button type="button" data-v="none">なし</button>
+        </div>
+      </div>
+      <div class="card">
+        <label for="wallMsg">ひとこと<small class="opt">なしでもOK・2行まで</small></label>
         <textarea id="wallMsg" rows="2" maxlength="40" placeholder="いつも来てくれてありがとう♡"></textarea>
+        <div class="seg" id="wallMsgStyle" style="margin-top:10px">
+          <button type="button" data-v="plain">ふつう</button>
+          <button type="button" data-v="bubble">ふきだし</button>
+          <button type="button" data-v="ribbon">リボン帯</button>
+        </div>
       </div>
-      <h2>できあがり</h2>
-      <div class="wallPrev"><canvas id="wallCv" width="1170" height="2532"></canvas></div>
-      <p class="hint" style="text-align:center">上のほうは時計が重なるので、イラストは少し下に置くと見やすいです</p>
       <div class="row"><button class="ghost" id="wallSave" type="button">スマホに保存</button><button class="primary" id="wallSet" type="button">ごほうびに設定</button></div>
       <p class="msg" id="wallMsgOut"></p>
     </div>
@@ -429,59 +473,140 @@
   // ---- ごほうび壁紙メーカー ----
   (function(){
     var cv=$('wallCv'), x=cv.getContext('2d'), W=1170, H=2532;
-    var KEY='shii_wall', st={mode:'card',color:'pink',logo:true,msg:'',pos:40};
+    var KEY='shii_wall2', st={mode:'card',color:'pink',pattern:'dot',deco:'heart',icing:true,logo:'top',msg:'',msgStyle:'plain',pos:45,zoom:100};
     try{ var s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s) for(var k in s) st[k]=s[k]; }catch(e){}
     function saveSt(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
-    var THEME={ pink:['#FBE7EE','#F4CFDC','#EBB7CA','#C9557B','rgba(255,255,255,.55)'],
-                lav:['#F3EDFB','#E2D6F3','#CDBCE8','#7A5A9E','rgba(255,255,255,.55)'],
-                mint:['#EEF9F4','#D3EFE4','#B7E3D2','#3F8C72','rgba(255,255,255,.6)'],
-                night:['#2B2350','#3D3466','#5B4A8A','#FFD6E6','rgba(255,255,255,.35)'] };
+    // 色：[上, 中, 下, 文字・アクセント, もよう, かざり1, かざり2, アイシング]
+    var THEME={
+      pink:  {n:'いちご',   c:['#FBE7EE','#F4CFDC','#EBB7CA','#C9557B','rgba(255,255,255,.55)','#FF8FB1','#FFFFFF','#FC9BBC']},
+      sakura:{n:'さくら',   c:['#FFF3F6','#FBE0E8','#F6C9D7','#D06A8E','rgba(255,255,255,.7)','#FFB3C9','#FFFFFF','#FFC2D4']},
+      peach: {n:'ピーチ',   c:['#FFF1EA','#FFD9C9','#FBC0AA','#D2694B','rgba(255,255,255,.6)','#FF9E86','#FFFFFF','#FFB59C']},
+      lemon: {n:'レモン',   c:['#FFFBEA','#FFF0BF','#FFE199','#C98A1E','rgba(255,255,255,.65)','#FFC94D','#FFFFFF','#FFE07A']},
+      mint:  {n:'ミント',   c:['#EEF9F4','#D3EFE4','#B7E3D2','#3F8C72','rgba(255,255,255,.6)','#7FD6B6','#FFFFFF','#A6E6CF']},
+      soda:  {n:'ソーダ',   c:['#EEF8FF','#D3ECFB','#B5DCF5','#3A7FB0','rgba(255,255,255,.6)','#7CC6F2','#FFFFFF','#A9DBF7']},
+      lav:   {n:'ラベンダー',c:['#F3EDFB','#E2D6F3','#CDBCE8','#7A5A9E','rgba(255,255,255,.55)','#B79BE0','#FFFFFF','#CDB6F0']},
+      choco: {n:'チョコ',   c:['#F7EEE8','#E6D0C2','#CFAE99','#7A4A35','rgba(255,255,255,.45)','#F08DB0','#FFFFFF','#8B5A44']},
+      milk:  {n:'ミルク',   c:['#FFFFFF','#FFF7F9','#FCEBF1','#C9557B','rgba(240,141,176,.18)','#FFB3CC','#F7D774','#FFFFFF']},
+      night: {n:'夜空',     c:['#2B2350','#3D3466','#5B4A8A','#FFD6E6','rgba(255,255,255,.3)','#FFD27A','#FFB3CC','#FFC2D9']}
+    };
     var imgs={}, userImg=null;
     function load(src){ return new Promise(function(ok){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=function(){ok(null);}; i.src=src; }); }
     var ready=Promise.all([load('../img/menu-candy-transparent.webp'),load('../img/logo.webp')]).then(function(r){ imgs.def=r[0]; imgs.logo=r[1]; });
+    // ---- かたち ----
     function rr(X,Y,w,h,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
-    function heart(cx,cy,s,col){ x.save(); x.translate(cx,cy); x.scale(s/24,s/24); x.fillStyle=col; x.beginPath(); x.moveTo(12,21.5); x.bezierCurveTo(0,14.2,0,10,0,6.6); x.bezierCurveTo(0,3,2.8,.3,6.3,.3); x.bezierCurveTo(8.7,.3,10.8,1.7,12,3.9); x.bezierCurveTo(13.2,1.7,15.3,.3,17.7,.3); x.bezierCurveTo(21.2,.3,24,3,24,6.6); x.bezierCurveTo(24,10,24,14.2,12,21.5); x.fill(); x.restore(); }
-    function draw(){
-      var T=THEME[st.color]||THEME.pink, F='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
+    function heartPath(cx,cy,s){ x.beginPath(); x.moveTo(cx,cy+s*.42); x.bezierCurveTo(cx-s*.62,cy-s*.02,cx-s*.55,cy-s*.58,cx,cy-s*.3); x.bezierCurveTo(cx+s*.55,cy-s*.58,cx+s*.62,cy-s*.02,cx,cy+s*.42); x.closePath(); }
+    function heart(cx,cy,s,col){ x.fillStyle=col; heartPath(cx,cy,s); x.fill(); }
+    function sparkle(cx,cy,s,col){ x.fillStyle=col; x.beginPath(); x.moveTo(cx,cy-s); x.quadraticCurveTo(cx+s*.12,cy-s*.12,cx+s,cy); x.quadraticCurveTo(cx+s*.12,cy+s*.12,cx,cy+s); x.quadraticCurveTo(cx-s*.12,cy+s*.12,cx-s,cy); x.quadraticCurveTo(cx-s*.12,cy-s*.12,cx,cy-s); x.fill(); }
+    function star(cx,cy,s,col){ x.fillStyle=col; x.beginPath(); for(var i=0;i<10;i++){ var r=i%2?s*.45:s, a=-Math.PI/2+i*Math.PI/5; x.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a)); } x.closePath(); x.fill(); }
+    function note(cx,cy,s,col){ x.fillStyle=col; x.save(); x.translate(cx,cy); x.rotate(-.35); x.beginPath(); x.ellipse(-s*.25,s*.35,s*.32,s*.24,0,0,7); x.fill(); x.restore(); x.fillRect(cx-s*.02,cy-s*.7,s*.12,s*1.05); x.beginPath(); x.moveTo(cx+s*.1,cy-s*.7); x.quadraticCurveTo(cx+s*.6,cy-s*.5,cx+s*.45,cy-s*.1); x.quadraticCurveTo(cx+s*.4,cy-s*.4,cx+s*.1,cy-s*.42); x.fill(); }
+    function bow(cx,cy,s,col){ x.fillStyle=col; x.beginPath(); x.moveTo(cx,cy); x.bezierCurveTo(cx-s*.4,cy-s*.55,cx-s,cy-s*.45,cx-s*.9,cy); x.bezierCurveTo(cx-s,cy+s*.45,cx-s*.4,cy+s*.55,cx,cy); x.bezierCurveTo(cx+s*.4,cy-s*.55,cx+s,cy-s*.45,cx+s*.9,cy); x.bezierCurveTo(cx+s,cy+s*.45,cx+s*.4,cy+s*.55,cx,cy); x.fill(); x.beginPath(); x.arc(cx,cy,s*.2,0,7); x.fill(); x.beginPath(); x.moveTo(cx-s*.1,cy+s*.1); x.lineTo(cx-s*.4,cy+s*.85); x.lineTo(cx-s*.15,cy+s*.75); x.lineTo(cx,cy+s*.1); x.moveTo(cx+s*.1,cy+s*.1); x.lineTo(cx+s*.4,cy+s*.85); x.lineTo(cx+s*.15,cy+s*.75); x.lineTo(cx,cy+s*.1); x.fill(); }
+    function candy(cx,cy,s,col){ x.fillStyle=col; x.beginPath(); x.moveTo(cx-s*.45,cy); x.lineTo(cx-s,cy-s*.4); x.lineTo(cx-s,cy+s*.4); x.closePath(); x.moveTo(cx+s*.45,cy); x.lineTo(cx+s,cy-s*.4); x.lineTo(cx+s,cy+s*.4); x.closePath(); x.fill(); x.beginPath(); x.arc(cx,cy,s*.5,0,7); x.fill(); x.strokeStyle='rgba(255,255,255,.8)'; x.lineWidth=s*.1; x.beginPath(); x.arc(cx,cy,s*.28,.4,2.6); x.stroke(); }
+    function lolli(cx,cy,s,col){ x.fillStyle='#fff'; x.fillRect(cx-s*.06,cy,s*.12,s*1.1); x.fillStyle=col; x.beginPath(); x.arc(cx,cy,s*.55,0,7); x.fill(); x.strokeStyle='rgba(255,255,255,.85)'; x.lineWidth=s*.09; x.beginPath(); for(var t=0;t<11;t+=.2){ var r=s*.05*t; x.lineTo(cx+r*Math.cos(t),cy+r*Math.sin(t)); } x.stroke(); }
+    function shapeFor(set,i){
+      return {heart:[heart,heart,sparkle],sparkle:[sparkle,star,sparkle],sweets:[lolli,candy,heart],ribbon:[bow,heart,bow],music:[note,note,sparkle]}[set][i%3];
+    }
+    // ---- 背景 ----
+    function bg(T){
       var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,T[0]); g.addColorStop(.55,T[1]); g.addColorStop(1,T[2]); x.fillStyle=g; x.fillRect(0,0,W,H);
-      x.fillStyle=T[4]; for(var yy=20;yy<H;yy+=46) for(var xx=20+(yy/46%2)*23;xx<W;xx+=46){ x.beginPath(); x.arc(xx,yy,3.2,0,7); x.fill(); }
-      var im=userImg||imgs.def, bottom=H*.9;
-      if(im){
-        if(st.mode==='full' && userImg){
-          var s=Math.max(W/im.width,H/im.height), w=im.width*s, h=im.height*s;
-          x.drawImage(im,(W-w)/2,(H-h)*(st.pos/100),w,h);
-          var sh=x.createLinearGradient(0,H*.78,0,H); sh.addColorStop(0,'rgba(0,0,0,0)'); sh.addColorStop(1,st.color==='night'?'rgba(20,10,40,.55)':'rgba(255,255,255,.6)'); x.fillStyle=sh; x.fillRect(0,H*.78,W,H*.22);
-        } else if(userImg){
-          var cw=W*.78, chh=Math.min(cw*im.height/im.width, H*.55), cww=chh*im.width/im.height, X=(W-cww)/2, Y=H*.33;
-          x.save(); x.shadowColor='rgba(150,70,95,.3)'; x.shadowBlur=40; x.shadowOffsetY=16; x.fillStyle='#fff'; rr(X-22,Y-22,cww+44,chh+44,56); x.fill(); x.restore();
-          x.save(); rr(X,Y,cww,chh,40); x.clip(); x.drawImage(im,X,Y,cww,chh); x.restore();
-          bottom=Y+chh+22;
-        } else {
-          x.save(); x.globalAlpha=st.color==='night'?.25:.9; x.fillStyle='#fff'; x.beginPath(); x.arc(W/2,H*.58,W*.47,0,7); x.fill(); x.restore();
-          var ch_h=H*.56, ch_w=im.width*ch_h/im.height; x.drawImage(im,(W-ch_w)/2,H*.325,ch_w,ch_h);
-        }
+      x.fillStyle=T[4]; x.strokeStyle=T[4];
+      if(st.pattern==='dot'){ for(var y=20;y<H;y+=46) for(var xx=20+(y/46%2)*23;xx<W;xx+=46){ x.beginPath(); x.arc(xx,y,3.4,0,7); x.fill(); } }
+      else if(st.pattern==='heart'){ for(var y2=40;y2<H;y2+=110) for(var x2=40+(Math.round(y2/110)%2)*55;x2<W;x2+=110) heart(x2,y2,30,T[4]); }
+      else if(st.pattern==='gingham'){ for(var gx=0;gx<W;gx+=90) x.fillRect(gx,0,45,H); for(var gy=0;gy<H;gy+=90) x.fillRect(0,gy,W,45); }
+      else if(st.pattern==='stripe'){ x.save(); x.translate(W/2,H/2); x.rotate(-Math.PI/8); for(var sx=-H;sx<H;sx+=80) x.fillRect(sx,-H,34,H*2); x.restore(); }
+      else if(st.pattern==='star'){ var R=mulberry(7); for(var i=0;i<140;i++){ var px=R()*W, py=R()*H, sz=4+R()*14; i%4?(x.beginPath(),x.arc(px,py,sz*.3,0,7),x.fill()):sparkle(px,py,sz,T[4]); } }
+    }
+    function mulberry(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+    function icing(col,acc){
+      var base=78; x.fillStyle=col; x.beginPath(); x.moveTo(0,0); x.lineTo(W,0); x.lineTo(W,base);
+      var drips={120:46,330:80,560:36,760:96,980:56};
+      for(var px=W;px>0;px-=45){ var nx=px-45, mid=px-22.5, d=null; for(var k in drips){ if(Math.abs(+k-mid)<22.5) d=[+k,drips[k]]; }
+        if(d){ x.lineTo(d[0]+16,base); x.lineTo(d[0]+16,base+d[1]-16); x.arc(d[0],base+d[1]-16,16,0,Math.PI); x.lineTo(d[0]-16,base); x.lineTo(nx,base); }
+        else x.quadraticCurveTo(mid,base+22,nx,base); }
+      x.closePath(); x.fill();
+      x.fillStyle='rgba(255,255,255,.55)'; for(var k2 in drips){ x.beginPath(); x.ellipse(+k2+6,base+drips[k2]-22,4,7,0,0,7); x.fill(); }
+      var R=mulberry(3), cols=['#FFFFFF','#FFE68A','#9FE3C7','#C7B2FF','#8FD3FF',acc];
+      for(var i=0;i<36;i++){ var sx=R()*W, sy=12+R()*50, an=R()*3; x.save(); x.translate(sx,sy); x.rotate(an); x.fillStyle=cols[i%cols.length]; rr(-11,-3.5,22,7,3.5); x.fill(); x.restore(); }
+    }
+    // ---- イラスト ----
+    function drawIllust(T){
+      var im=userImg||imgs.def; if(!im) return {top:H*.33,bottom:H*.85};
+      var z=st.zoom/100, posY=st.pos/100;
+      if(!userImg && st.mode!=='full'){
+        // 標準イラスト（切り抜き）：まるい台の上に立たせる
+        var cy=H*(.5+posY*.16);
+        x.save(); x.globalAlpha=st.color==='night'?.22:.88; x.fillStyle='#fff'; x.beginPath(); x.arc(W/2,cy,W*.45*z,0,7); x.fill(); x.restore();
+        x.save(); x.setLineDash([22,16]); x.lineWidth=6; x.strokeStyle='rgba(255,255,255,.8)'; x.beginPath(); x.arc(W/2,cy,W*.45*z+26,0,7); x.stroke(); x.restore();
+        var hh=H*.56*z, ww=im.width*hh/im.height, ty=cy-hh*.48; x.drawImage(im,(W-ww)/2,ty,ww,hh); return {top:ty,bottom:ty+hh};
       }
-      if(st.logo && imgs.logo && !(st.mode==='full'&&userImg&&st.pos<30)){ var lw=W*.6, lh=imgs.logo.height*lw/imgs.logo.width; x.drawImage(imgs.logo,(W-lw)/2,H*.14,lw,lh); }
-      [[130,560,64,'#FF8FB1'],[1030,520,50,'#fff'],[110,1600,44,'#fff'],[1060,1450,58,'#FF8FB1']].forEach(function(h){ heart(h[0],h[1],h[2],h[3]); });
+      if(st.mode==='full'){
+        var s=Math.max(W/im.width,H/im.height)*z, w=im.width*s, h=im.height*s; x.drawImage(im,(W-w)/2,(H-h)*posY,w,h);
+        var sh=x.createLinearGradient(0,H*.76,0,H); sh.addColorStop(0,'rgba(255,255,255,0)'); sh.addColorStop(1,st.color==='night'?'rgba(20,10,40,.6)':'rgba(255,255,255,.65)'); x.fillStyle=sh; x.fillRect(0,H*.76,W,H*.24);
+        return {top:0,bottom:H*.84};
+      }
+      var maxW=W*.78*z, maxH=H*.5*z, r=im.width/im.height, iw=Math.min(maxW,maxH*r), ih=iw/r;
+      if(st.mode==='circle'||st.mode==='heart'){ iw=ih=Math.min(maxW,maxH); }
+      var X=(W-iw)/2, Y=H*(.28+posY*.18);
+      function cover(dx,dy,dw,dh){ var s2=Math.max(dw/im.width,dh/im.height), w2=im.width*s2, h2=im.height*s2; x.drawImage(im,dx+(dw-w2)/2,dy+(dh-h2)/2,w2,h2); }
+      x.save(); x.shadowColor='rgba(150,70,95,.3)'; x.shadowBlur=40; x.shadowOffsetY=16; x.fillStyle='#fff';
+      if(st.mode==='card'){ rr(X-22,Y-22,iw+44,ih+44,56); x.fill(); x.restore(); x.save(); rr(X,Y,iw,ih,40); x.clip(); cover(X,Y,iw,ih); x.restore(); return {top:Y-22,bottom:Y+ih+22}; }
+      if(st.mode==='polaroid'){ x.translate(W/2,Y+ih/2); x.rotate(-.04); x.fillRect(-iw/2-34,-ih/2-34,iw+68,ih+190); x.restore();
+        x.save(); x.translate(W/2,Y+ih/2); x.rotate(-.04); x.beginPath(); x.rect(-iw/2,-ih/2,iw,ih); x.clip(); cover(-iw/2,-ih/2,iw,ih); x.restore();
+        x.save(); x.translate(W/2,Y-20); x.rotate(.08); x.fillStyle='rgba(255,182,206,.75)'; x.fillRect(-90,-26,180,52); x.restore();
+        return {top:Y-34,bottom:Y+ih+150}; }
+      if(st.mode==='circle'){ x.beginPath(); x.arc(W/2,Y+ih/2,iw/2+22,0,7); x.fill(); x.restore(); x.save(); x.beginPath(); x.arc(W/2,Y+ih/2,iw/2,0,7); x.clip(); cover(X,Y,iw,ih); x.restore(); return {top:Y-22,bottom:Y+ih+22}; }
+      if(st.mode==='heart'){ var S=iw*1.25, cx=W/2, cy2=Y+ih*.48; heartPath(cx,cy2,S+60); x.fill(); x.restore(); x.save(); heartPath(cx,cy2,S); x.clip(); cover(cx-S*.62,cy2-S*.58,S*1.24,S*1.0); x.restore(); return {top:cy2-S*.6,bottom:cy2+S*.48}; }
+      x.restore(); return {top:Y,bottom:Y+ih};
+    }
+    function draw(){
+      var T=(THEME[st.color]||THEME.pink).c, F='"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Sans",sans-serif';
+      x.setTransform(1,0,0,1,0,0); x.globalAlpha=1;
+      bg(T);
+      var box=drawIllust(T);
+      if(st.icing && st.mode!=='full') icing(T[7],T[5]);
+      if(st.deco!=='none'){
+        var P=[[125,600,96],[1040,500,80],[100,1260,72],[1070,1120,90],[150,1960,80],[1020,1890,72],[520,330,50],[300,2170,46],[880,2210,54]];
+        P.forEach(function(p,i){ shapeFor(st.deco,i)(p[0],p[1],p[2],i%2?T[6]:T[5]); });
+      }
+      if(st.logo!=='none' && imgs.logo){ var lw=W*.58, lh=imgs.logo.height*lw/imgs.logo.width, ly=st.logo==='top'?H*.13:Math.min(box.bottom+30,H*.8-lh*.2); x.drawImage(imgs.logo,(W-lw)/2,ly,lw,lh); if(st.logo==='bottom') box.bottom=ly+lh; }
       var lines=(st.msg||'').split(/\n/).filter(Boolean).slice(0,2);
       if(lines.length){
-        x.textAlign='center'; x.font='700 56px '+F;
-        var ty=(userImg&&st.mode==='card')?Math.min(bottom+120,H*.95-(lines.length-1)*70):Math.min(Math.max(bottom+90,H*.9),H*.95)-(lines.length-1)*70;
-        lines.forEach(function(l,i){ x.lineWidth=12; x.strokeStyle=st.color==='night'?'rgba(43,35,80,.8)':'rgba(255,255,255,.9)'; x.strokeText(l,W/2,ty+i*70); x.fillStyle=T[3]; x.fillText(l,W/2,ty+i*70); });
+        x.textAlign='center'; x.textBaseline='middle'; x.font='700 56px '+F;
+        var lh2=72, ty=Math.min(Math.max(box.bottom+110,H*.86),H*.95-(lines.length-1)*lh2), tw=Math.max.apply(null,lines.map(function(l){ return x.measureText(l).width; }));
+        var bh=lines.length*lh2+50, by=ty-lh2/2-25;
+        if(st.msgStyle==='bubble'){ x.save(); x.shadowColor='rgba(150,70,95,.2)'; x.shadowBlur=20; x.shadowOffsetY=8; x.fillStyle='#fff'; rr(W/2-tw/2-60,by,tw+120,bh,bh/2>60?50:bh/2); x.fill(); x.beginPath(); x.moveTo(W/2-30,by+2); x.lineTo(W/2,by-34); x.lineTo(W/2+30,by+2); x.fill(); x.restore(); }
+        if(st.msgStyle==='ribbon'){ x.fillStyle=T[5]; x.beginPath(); x.moveTo(W/2-tw/2-120,by); x.lineTo(W/2+tw/2+120,by); x.lineTo(W/2+tw/2+80,by+bh/2); x.lineTo(W/2+tw/2+120,by+bh); x.lineTo(W/2-tw/2-120,by+bh); x.lineTo(W/2-tw/2-80,by+bh/2); x.closePath(); x.fill(); }
+        lines.forEach(function(l,i){ var yy=ty+i*lh2;
+          if(st.msgStyle==='plain'){ x.lineWidth=12; x.strokeStyle=st.color==='night'?'rgba(43,35,80,.85)':'rgba(255,255,255,.92)'; x.strokeText(l,W/2,yy); }
+          x.fillStyle=st.msgStyle==='ribbon'?'#fff':T[3]; if(st.msgStyle==='bubble'&&st.color==='night') x.fillStyle='#7A5A9E';
+          x.fillText(l,W/2,yy); });
+        x.textBaseline='alphabetic';
       }
     }
     function redraw(){ ready.then(draw); }
-    function seg(id,key){ var box=$(id); Array.prototype.forEach.call(box.children,function(b){ b.setAttribute('aria-pressed',b.dataset.v===st[key]?'true':'false');
-      b.onclick=function(){ st[key]=b.dataset.v; saveSt(); Array.prototype.forEach.call(box.children,function(c){ c.setAttribute('aria-pressed',c===b?'true':'false'); }); $('wallPosBox').hidden=!(st.mode==='full'); redraw(); }; }); }
-    seg('wallMode','mode'); seg('wallColor','color');
-    $('wallPosBox').hidden=!(st.mode==='full');
-    $('wallLogo').checked=st.logo; $('wallLogo').onchange=function(){ st.logo=this.checked; saveSt(); redraw(); };
-    $('wallMsg').value=st.msg||''; $('wallMsg').oninput=function(){ st.msg=this.value; saveSt(); redraw(); };
-    $('wallPos').value=st.pos; $('wallPos').oninput=function(){ st.pos=+this.value; saveSt(); redraw(); };
+    // ---- 入力 ----
+    var sw=$('wallColor'); Object.keys(THEME).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.style.setProperty('--c',THEME[k].c[1]); b.innerHTML='<i></i>'+THEME[k].n; sw.appendChild(b); });
+    var SEGS=[['wallMode','mode'],['wallColor','color'],['wallPattern','pattern'],['wallDeco','deco'],['wallLogo','logo'],['wallMsgStyle','msgStyle']];
+    function syncUI(){
+      SEGS.forEach(function(p){ Array.prototype.forEach.call($(p[0]).children,function(b){ b.setAttribute('aria-pressed',b.dataset.v===st[p[1]]?'true':'false'); }); });
+      $('wallIcing').checked=!!st.icing; $('wallMsg').value=st.msg||''; $('wallPos').value=st.pos; $('wallZoom').value=st.zoom;
+    }
+    SEGS.forEach(function(p){ Array.prototype.forEach.call($(p[0]).children,function(b){ b.onclick=function(){ st[p[1]]=b.dataset.v; saveSt(); syncUI(); redraw(); }; }); });
+    $('wallIcing').onchange=function(){ st.icing=this.checked; saveSt(); redraw(); };
+    $('wallMsg').oninput=function(){ st.msg=this.value; saveSt(); redraw(); };
+    $('wallPos').oninput=function(){ st.pos=+this.value; saveSt(); redraw(); };
+    $('wallZoom').oninput=function(){ st.zoom=+this.value; saveSt(); redraw(); };
+    $('wallRand').onclick=function(){
+      function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+      st.color=pick(Object.keys(THEME)); st.pattern=pick(['dot','heart','gingham','stripe','star','plain']); st.deco=pick(['heart','sparkle','sweets','ribbon','music']);
+      st.mode=userImg?pick(['card','polaroid','circle','heart','full']):pick(['card','circle']); st.icing=Math.random()<.6; st.logo=pick(['top','top','bottom']); st.msgStyle=pick(['plain','bubble','ribbon']);
+      saveSt(); syncUI(); redraw();
+    };
+    syncUI();
     $('wallFile').onchange=function(){
       var f=this.files&&this.files[0]; if(!f) return;
       var u=URL.createObjectURL(f); load(u).then(function(i){ userImg=i; if(!i) say($('wallMsgOut'),'画像を読み込めませんでした',true); redraw(); });
     };
+    $('wallReset').onclick=function(){ userImg=null; $('wallFile').value=''; redraw(); };
     function md(d){ return (d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+('0'+d.getMinutes()).slice(-2); }
     function showNow(r){
       var u=r&&r.updated_at?new Date(r.updated_at):null;
@@ -498,8 +623,7 @@
     $('wallSet').onclick=function(){
       if(!confirm('この壁紙を、スタンプ10個のごほうびに設定します。よろしいですか？')) return;
       var b=this; b.disabled=true; say($('wallMsgOut'),'設定しています…');
-      var data=cv.toDataURL('image/jpeg',.85);
-      if(data.length>2400000) data=cv.toDataURL('image/jpeg',.7);
+      var data=cv.toDataURL('image/jpeg',.85); if(data.length>2400000) data=cv.toDataURL('image/jpeg',.7);
       call('shii_wallpaper_admin',{p_action:'save',p_image:data}).then(function(r){ showNow(r); say($('wallMsgOut'),'設定しました！これからスタンプ10個の人にはこの壁紙が届きます'); $('wallNow').scrollIntoView({behavior:'smooth',block:'center'}); })
         .catch(function(e){ fail(e,$('wallMsgOut')); }).then(function(){ b.disabled=false; });
     };
