@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010132500">
+<meta name="build" content="20261010133500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -383,18 +383,26 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes sig-star { 0%, 100% { opacity: 0; transform: scale(.2) rotate(0); } 50% { opacity: 1; transform: scale(1) rotate(90deg); } }
   .bubble { cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
   .bubble__t { display: inline-block; }
-  .bubble { transition: background-color .5s ease, color .5s ease, box-shadow .5s ease; white-space: nowrap; }
-  /* いつもの吹き出しも、ふちをつけてくっきり */
-  /* ふちは吹き出し＋しっぽをまとめて縁取り（しっぽの形にも輪郭がつく） */
-  .bubble { box-shadow: none; filter: drop-shadow(2px 0 0 #F3B7CA) drop-shadow(-2px 0 0 #F3B7CA) drop-shadow(0 2px 0 #F3B7CA) drop-shadow(0 -2px 0 #F3B7CA) drop-shadow(0 5px 8px rgba(150,70,95,.2)); }
-  /* ランクのセリフ：ランクの色の吹き出しに、白い文字＋濃い色の縁取り */
-  .bubble.is-rank { background: linear-gradient(160deg, var(--bb1,#FFB3CC), var(--bb2,#E0578A)); color: #fff;
-    text-shadow: 1px 0 0 var(--bbs), -1px 0 0 var(--bbs), 0 1px 0 var(--bbs), 0 -1px 0 var(--bbs), 1px 1px 0 var(--bbs), -1px -1px 0 var(--bbs), 1px -1px 0 var(--bbs), -1px 1px 0 var(--bbs);
-    box-shadow: none; filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(1.5px 0 0 var(--bbs)) drop-shadow(-1.5px 0 0 var(--bbs)) drop-shadow(0 1.5px 0 var(--bbs)) drop-shadow(0 -1.5px 0 var(--bbs)) drop-shadow(0 5px 8px rgba(150,70,95,.25)); }
-  .bubble.is-rank::after { background: var(--bb2,#E0578A); }
+  /* 吹き出しの形はSVGで描く（だ円＋しぃの方へ伸びるしっぽ。ふちもしっぽまで一続き） */
+  .bubble { white-space: nowrap; background: none !important; box-shadow: none !important; border-radius: 0; padding: 18px 30px 26px; transition: color .5s ease; }
+  .bubble.is-long .bubble__t { font-size: .84em; }
+  .bubble::after { display: none !important; }
+  .bubble__t { position: relative; z-index: 1; }
+  .bubble__bg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; overflow: visible; filter: drop-shadow(0 4px 6px rgba(150,70,95,.22)); }
+  .bubble__bg path { vector-effect: non-scaling-stroke; stroke-linejoin: round; transition: fill .5s ease, stroke .5s ease; }
+  .bb-out { fill: none; stroke: #F3B7CA; stroke-width: 5; }
+  .bb-mid { fill: none; stroke: transparent; stroke-width: 0; }
+  .bb-fill { fill: #fff; stroke: none; }
+  .bbg1 { stop-color: var(--bb1,#FFB3CC); } .bbg2 { stop-color: var(--bb2,#E0578A); }
+  /* ランクのセリフ：ランクの色の吹き出し、ふちは白＋濃い色の二重。文字は白に濃い色の縁取り */
+  .bubble.is-rank { color: #fff;
+    text-shadow: 1px 0 0 var(--bbs), -1px 0 0 var(--bbs), 0 1px 0 var(--bbs), 0 -1px 0 var(--bbs), 1px 1px 0 var(--bbs), -1px -1px 0 var(--bbs), 1px -1px 0 var(--bbs), -1px 1px 0 var(--bbs); }
+  .bubble.is-rank .bb-out { stroke: var(--bbs); stroke-width: 9; }
+  .bubble.is-rank .bb-mid { stroke: #fff; stroke-width: 5; }
+  .bubble.is-rank .bb-fill { fill: url(#bbg); }
   .bubble__t.is-swap { animation: bubble-swap .45s cubic-bezier(.3,1.6,.5,1); }
   @keyframes bubble-swap { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-  .bubble::after { content: ""; position: absolute; left: 6px; bottom: 4px; width: 16px; height: 16px; background: var(--white); clip-path: polygon(100% 0, 0 100%, 60% 30%); }
+  .bubble::after { content: none; }
   .hero__en { font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .4em; color: var(--ink-sub); }
   /* 「しぃの部屋へようこそ」：背景のピンクに埋もれないよう、濃いピンクのリボン帯に白い手書き文字。両はしは切り込み、中にちいさなハート */
   .hero__welcome { margin-top: 12px; font-family: var(--hand); font-size: clamp(16px, 5.4vw, 24px); line-height: 1.4; letter-spacing: .1em; white-space: nowrap;
@@ -1468,7 +1476,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="hero__in">
       <figure class="hero__photo">
         <span class="tilt"><span class="floater"><span class="holo"><img src="img/main.webp" fetchpriority="high" alt="ケーキの上に座るメイド服のしぃ" width="900" height="1273"><span class="sig" style="left:57.778%;top:77.219%;width:41.778%;height:22.467%" aria-hidden="true"><span class="sig__ink"></span><svg class="sig__star"><use href="#kira"/></svg><svg class="sig__star s2"><use href="#kira"/></svg></span></span></span></span>
-        <p class="bubble" id="bubble" role="button" tabindex="0" aria-label="しぃのひとこと"><span class="bubble__t" id="bubble-t">来てくれて<br>ありがとう！</span></p>
+        <p class="bubble" id="bubble" role="button" tabindex="0" aria-label="しぃのひとこと"><svg class="bubble__bg" viewBox="0 0 200 120" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="bbg" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" class="bbg1"/><stop offset="1" class="bbg2"/></linearGradient></defs><path class="bb-out" d="M52.5 98.3Q30 108 5 117Q17 100 22.2 83.7A95 50 0 1 1 52.5 98.3Z"/><path class="bb-mid" d="M52.5 98.3Q30 108 5 117Q17 100 22.2 83.7A95 50 0 1 1 52.5 98.3Z"/><path class="bb-fill" d="M52.5 98.3Q30 108 5 117Q17 100 22.2 83.7A95 50 0 1 1 52.5 98.3Z"/></svg><span class="bubble__t" id="bubble-t">来てくれて<br>ありがとう！</span></p>
         <span class="floaty f1" aria-hidden="true"><svg><use href="#heart"/></svg></span>
         <span class="floaty f2 floaty--w" aria-hidden="true"><svg><use href="#heart"/></svg></span>
         <span class="floaty f3" aria-hidden="true"><svg><use href="#heart"/></svg></span>
@@ -2560,6 +2568,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   function show(it){
     tx.innerHTML=it.t;
+    b.classList.toggle('is-long', Math.max.apply(null,String(it.t).split('<br>').map(function(l){ return l.replace(/<[^>]+>/g,'').length; }))>9);
     b.classList.toggle('is-rank',!!it.rank);
     if(it.rank&&it.T){ b.style.setProperty('--bb1',it.T.c1); b.style.setProperty('--bb2',it.T.c2); b.style.setProperty('--bbr',it.T.ring); b.style.setProperty('--bbs',it.T.stroke||'color-mix(in srgb, '+it.T.c2+' 75%, #000)'); }
     tx.classList.remove('is-swap'); void tx.offsetWidth; tx.classList.add('is-swap');
