@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261009224900">
+<meta name="build" content="20261010111500">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -194,6 +194,7 @@
       <button class="tab" id="tabSong" role="tab" aria-selected="false" type="button">歌リスト</button>
       <button class="tab" id="tabSch" role="tab" aria-selected="false" type="button">予定表画像</button>
       <button class="tab" id="tabWall" role="tab" aria-selected="false" type="button">ごほうび壁紙</button>
+      <button class="tab" id="tabEvt" role="tab" aria-selected="false" type="button">カウントダウン</button>
     </div>
 
     <div id="reqView">
@@ -350,6 +351,47 @@
       </details>
       <div class="row"><button class="ghost" id="wallSave" type="button">スマホに保存</button><button class="primary" id="wallSet" type="button">ごほうびに設定</button></div>
       <p class="msg" id="wallMsgOut"></p>
+    </div>
+
+    <div id="evtView" hidden>
+      <div class="card">
+        <p class="hint" style="margin-top:0">誕生日・周年・イベントを登録すると、HPのトップに「あと◯日」が出ます。当日はHPが特別仕様（オープニング・背景・吹き出し）になります。</p>
+        <label style="margin-top:16px">種類</label>
+        <div class="seg" id="evtKind">
+          <button type="button" data-v="bday" aria-pressed="true">🎂 誕生日</button>
+          <button type="button" data-v="anniv" aria-pressed="false">🎉 周年</button>
+          <button type="button" data-v="event" aria-pressed="false">📣 イベント・告知</button>
+        </div>
+        <label for="evtTitle" style="margin-top:16px">名前</label>
+        <input id="evtTitle" maxlength="30" autocomplete="off">
+        <p class="hint" id="evtTitleHint"></p>
+        <label for="evtDay" style="margin-top:16px" id="evtDayLabel">日付</label>
+        <input id="evtDay" type="date">
+        <p class="hint" id="evtDayHint"></p>
+        <div id="evtTimeBox">
+          <label for="evtTime" style="margin-top:16px">時間<small style="font-weight:500;color:var(--sub)">（なくてもOK）</small></label>
+          <input id="evtTime" type="time">
+        </div>
+        <label for="evtNote" style="margin-top:16px">ひとこと<small style="font-weight:500;color:var(--sub)">（なくてもOK）</small></label>
+        <input id="evtNote" maxlength="40" autocomplete="off" placeholder="例）みんなで歌うよ♪">
+        <label for="evtUrl" style="margin-top:16px">タップしたときに開くリンク<small style="font-weight:500;color:var(--sub)">（なくてもOK）</small></label>
+        <input id="evtUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://x.com/…">
+        <label style="margin-top:16px">何日前から表示する？</label>
+        <div class="seg" id="evtShow">
+          <button type="button" data-v="7" aria-pressed="false">7日前</button>
+          <button type="button" data-v="14" aria-pressed="false">14日前</button>
+          <button type="button" data-v="30" aria-pressed="true">30日前</button>
+          <button type="button" data-v="60" aria-pressed="false">60日前</button>
+        </div>
+        <div class="row" style="margin-top:20px">
+          <button class="ghost" id="evtCancel" type="button" hidden>やめる</button>
+          <button class="primary" id="evtSave" type="button">追加する</button>
+        </div>
+        <p class="msg" id="evtMsg"></p>
+      </div>
+      <h2>登録しているもの</h2>
+      <ul id="evtList"><li class="empty">読み込み中…</li></ul>
+      <p class="hint">トップに出るのは、いちばん近い1つです（電光掲示板には近い2つまで流れます）。終わったイベントは自動で出なくなります。誕生日と周年は毎年くり返します。</p>
     </div>
 
     <div id="songView" hidden>
@@ -529,7 +571,7 @@
   $('reqReload').onclick=loadReq;
 
   function showTab(name){
-    [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView'],['song','tabSong','songView'],['sch','tabSch','schView'],['wall','tabWall','wallView']].forEach(function(x){
+    [['req','tabReq','reqView'],['msg','tabMsg','msgView'],['post','tabPost','postView'],['song','tabSong','songView'],['sch','tabSch','schView'],['wall','tabWall','wallView'],['evt','tabEvt','evtView']].forEach(function(x){
       var on=x[0]===name; $(x[1]).setAttribute('aria-selected',on?'true':'false'); $(x[2]).hidden=!on;
     });
   }
@@ -539,6 +581,64 @@
   $('tabSong').onclick=function(){ showTab('song'); };
   $('tabSch').onclick=function(){ showTab('sch'); };
   $('tabWall').onclick=function(){ showTab('wall'); };
+  $('tabEvt').onclick=function(){ showTab('evt'); loadEvt(); };
+
+  // ---- カウントダウン（誕生日・周年・イベント） ----
+  var evts=[], evt={kind:'bday',show:30,id:null}, evtLoaded=false;
+  var EK={bday:{ico:'🎂',name:'しぃの誕生日',th:'HPには「しぃの誕生日 まで あと◯日」と出ます',dl:'誕生日',dh:'年はなんでもOK（毎年この日にお祝いします）'},
+          anniv:{ico:'🎉',name:'デビュー',th:'うしろに「◯周年」が自動でつきます（例：デビュー2周年）',dl:'はじまった日（デビューした日など）',dh:'年も正しく入れてね。何周年かを自動で数えます'},
+          event:{ico:'📣',name:'',th:'例）歌枠リレー、誕生日配信、オフ会 など',dl:'その日',dh:'終わったら自動で出なくなります'}};
+  function ecall(act,id,data){ return call('shii_events_admin',{p_action:act,p_id:id||null,p_data:data||null}); }
+  function segSet(id,v){ Array.prototype.forEach.call($(id).children,function(b){ b.setAttribute('aria-pressed',b.dataset.v===String(v)?'true':'false'); }); }
+  function evtForm(){
+    var k=EK[evt.kind]; segSet('evtKind',evt.kind); segSet('evtShow',evt.show);
+    $('evtTitle').placeholder=k.name?'例）'+k.name:'例）歌枠リレー'; $('evtTitleHint').textContent=k.th;
+    $('evtDayLabel').textContent=k.dl; $('evtDayHint').textContent=k.dh;
+    $('evtTimeBox').hidden=evt.kind!=='event';
+    $('evtSave').textContent=evt.id?'この内容で保存する':'追加する'; $('evtCancel').hidden=!evt.id;
+  }
+  Array.prototype.forEach.call($('evtKind').children,function(b){ b.onclick=function(){
+    var was=evt.kind; evt.kind=b.dataset.v;
+    var t=$('evtTitle'); if(!t.value || t.value===EK[was].name) t.value=EK[evt.kind].name;
+    evtForm(); }; });
+  Array.prototype.forEach.call($('evtShow').children,function(b){ b.onclick=function(){ evt.show=+b.dataset.v; evtForm(); }; });
+  function evtReset(){ evt={kind:'bday',show:30,id:null}; $('evtTitle').value=EK.bday.name; $('evtDay').value=''; $('evtTime').value=''; $('evtNote').value=''; $('evtUrl').value=''; evtForm(); }
+  function nextOf(r){
+    var t=new Date(); t.setHours(0,0,0,0); var p=String(r.day).split('-'), d=new Date(+p[0],+p[1]-1,+p[2]), n=0;
+    if(r.repeat){ d=new Date(t.getFullYear(),+p[1]-1,+p[2]); if(d<t) d=new Date(t.getFullYear()+1,+p[1]-1,+p[2]); n=d.getFullYear()-(+p[0]); }
+    return {d:d,left:Math.round((d-t)/864e5),n:n,past:d<t};
+  }
+  function renderEvt(){
+    var ul=$('evtList'); ul.innerHTML='';
+    if(!evts.length){ ul.innerHTML='<li class="empty">まだありません。上から追加してね</li>'; return; }
+    evts.slice().sort(function(a,b){ return nextOf(a).d-nextOf(b).d; }).forEach(function(r){
+      var x=nextOf(r), name=r.title+(r.kind==='anniv'&&r.repeat?(x.n>=1?x.n+'周年':'（1周年は来年から）'):'');
+      var state=x.past?'終わりました':x.left===0?'今日！特別仕様になっています':x.left<=(r.show_days==null?30:r.show_days)?'HPに表示中・あと'+x.left+'日':'あと'+x.left+'日（'+(r.show_days==null?30:r.show_days)+'日前から表示）';
+      var li=document.createElement('li'); li.className='song';
+      var d=document.createElement('div'); var b=document.createElement('b'); b.textContent=EK[r.kind].ico+' '+name; d.appendChild(b);
+      var sm=document.createElement('small'); sm.textContent=(x.d.getMonth()+1)+'/'+x.d.getDate()+(r.time?' '+r.time+'〜':'')+'・'+state; d.appendChild(sm);
+      var bx=document.createElement('div'); bx.style.cssText='display:flex;gap:6px;flex:none';
+      var e=document.createElement('button'); e.className='del'; e.type='button'; e.textContent='直す';
+      e.onclick=function(){ evt={kind:r.kind,show:r.show_days==null?30:r.show_days,id:r.id}; $('evtTitle').value=r.title; $('evtDay').value=r.day; $('evtTime').value=r.time||''; $('evtNote').value=r.note||''; $('evtUrl').value=r.url||''; evtForm(); $('evtKind').scrollIntoView({behavior:'smooth',block:'center'}); };
+      var del=document.createElement('button'); del.className='del'; del.type='button'; del.textContent='消す';
+      del.onclick=function(){ if(!confirm('「'+name+'」を消す？')) return; del.disabled=true;
+        ecall('delete',r.id).then(function(d){ evts=d||[]; renderEvt(); if(evt.id===r.id) evtReset(); say($('evtMsg'),'消しました'); }).catch(function(err){ del.disabled=false; fail(err,$('evtMsg')); }); };
+      bx.appendChild(e); bx.appendChild(del); li.appendChild(d); li.appendChild(bx); ul.appendChild(li);
+    });
+  }
+  function loadEvt(){ if(evtLoaded) return; evtLoaded=true; ecall('list').then(function(d){ evts=d||[]; renderEvt(); }).catch(function(err){ evtLoaded=false; $('evtList').innerHTML='<li class="empty">読み込めませんでした</li>'; fail(err,$('evtMsg')); }); }
+  $('evtCancel').onclick=function(){ evtReset(); say($('evtMsg'),''); };
+  $('evtSave').onclick=function(){
+    var title=$('evtTitle').value.trim(), day=$('evtDay').value, url=$('evtUrl').value.trim();
+    if(!title){ say($('evtMsg'),'名前を入れてね',true); return; }
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(day)){ say($('evtMsg'),'日付を選んでね',true); return; }
+    if(url && !/^https:\/\//.test(url)){ say($('evtMsg'),'リンクは https:// から始まるものにしてね',true); return; }
+    var data={kind:evt.kind,title:title,day:day,time:evt.kind==='event'?$('evtTime').value:'',note:$('evtNote').value.trim(),url:url,show_days:evt.show,repeat:evt.kind!=='event'};
+    var b=this; b.disabled=true; say($('evtMsg'),'保存しています…');
+    ecall('save',evt.id,data).then(function(d){ evts=d||[]; renderEvt(); var was=evt.id; evtReset(); say($('evtMsg'),was?'保存しました！HPにも反映されます':'追加しました！HPにも反映されます'); })
+      .catch(function(err){ fail(err,$('evtMsg')); }).then(function(){ b.disabled=false; });
+  };
+  evtReset();
 
   // ---- ごほうび壁紙メーカー ----
   (function(){

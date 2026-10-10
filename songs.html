@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261009223000"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261010111500"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -1135,13 +1135,19 @@
   function pickSong(s,button){
     var txt='🎤リクエスト：'+s.title+(s.artist?'／'+s.artist:'')+(s.keyNotes.length?'（'+s.keyNotes.join(' ／ ')+'）':'');
     copyText(txt).then(function(){
+      // 見守り隊ランクのEXP（1日1回 +3）。トップページと同じ記録を使う
+      try{ var d=new Date(), t=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+        var X=JSON.parse(localStorage.getItem('shii_xp')||'null');
+        if(!X||typeof X.xp!=='number'){ X={xp:0,got:{}}; var st=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(st&&st.total){ X.xp=st.total*10; if(st.last) X.got.visit=st.last; } }
+        if(X.got.song!==t){ X.got.song=t; X.xp+=3; localStorage.setItem('shii_xp',JSON.stringify(X)); var gx=1; }
+      }catch(e){}
       if(button){
         var previous=button.dataset.copyLabel||button.innerHTML;
         button.dataset.copyLabel=previous; clearTimeout(button.copyReset);
         button.textContent='コピー済 ✓'; button.classList.add('is-copied');
         button.copyReset=setTimeout(function(){button.innerHTML=previous;button.classList.remove('is-copied');},4000);
       }
-      toast('<b>コピーしたよ！</b>配信のコメント欄に貼り付けてね♡<a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を開く</a>');
+      toast('<b>コピーしたよ！'+(gx?' <span style="color:#8C6BD6">+3 EXP</span>':'')+'</b>配信のコメント欄に貼り付けてね♡<a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を開く</a>');
     }).catch(function(){
       toast('<b>このコメントをコピーしてね</b>下の文字を長押し・選択してコピーできます<textarea readonly rows="3" aria-label="手動でコピーするリクエストコメント">'+esc(txt)+'</textarea>',0);
     });

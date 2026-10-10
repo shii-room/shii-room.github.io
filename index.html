@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010104000">
+<meta name="build" content="20261010111500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -41,6 +41,29 @@
   else if(m===2 && day<=14) s='valentine';
   else if((m===3 && day>=20) || (m===4 && day<=10)) s='sakura';
   else if(m===9 && day<=3) s='anniv';
+  // 記念日・イベント（しぃ管理で登録）：前回読んだ内容で、今日が記念日なら特別モードに
+  window.shiiEvt={
+    ord:function(n){ var v=n%100; return n+((v>10&&v<14)?'TH':({1:'ST',2:'ND',3:'RD'})[n%10]||'TH'); },
+    // それぞれの「次の日付」と「あと何日」を出す。毎年くり返すものは今年（過ぎていたら来年）
+    list:function(rows){
+      var t=new Date(); t.setHours(0,0,0,0); var out=[];
+      (rows||[]).forEach(function(r){
+        var p=String(r.day||'').split('-'); if(p.length<3) return;
+        var base=new Date(+p[0],+p[1]-1,+p[2]), d=base, n=0;
+        if(r.repeat){ d=new Date(t.getFullYear(),+p[1]-1,+p[2]); if(d<t) d=new Date(t.getFullYear()+1,+p[1]-1,+p[2]); n=d.getFullYear()-(+p[0]); }
+        if(d<t) return;
+        var left=Math.round((d-t)/864e5), name=r.title||'';
+        if(r.kind==='anniv'&&r.repeat){ if(n<1) return; name=name+n+'周年'; }
+        out.push({id:r.id,kind:r.kind||'event',name:name,n:n,date:d,left:left,time:r.time||'',note:r.note||'',url:r.url||'',show:r.show_days==null?30:+r.show_days});
+      });
+      return out.sort(function(a,b){ return a.left-b.left; });
+    }
+  };
+  try{
+    var ev=JSON.parse(localStorage.getItem('shii_events')||'null'), td=ev&&shiiEvt.list(ev).filter(function(e){ return e.left===0; })[0];
+    try{ var qe=new URLSearchParams(location.search).get('event'); if(qe) td={kind:qe,name:qe==='bday'?'しぃの誕生日':qe==='anniv'?'デビュー1周年':'スペシャル配信',n:1,left:0}; }catch(e){}
+    if(td){ window.SHII_EVENT=td; s=td.kind==='bday'?'bday':td.kind==='anniv'?'anniv':'event'; }
+  }catch(e){}
   try{ var q=new URLSearchParams(location.search).get('season'); if(q!==null) s=q; }catch(e){}
   if(s) document.documentElement.setAttribute('data-season',s);
 })();
@@ -812,6 +835,58 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .stamp__btn:disabled { opacity: .6; cursor: default; transform: none; box-shadow: 4px 4px 0 var(--white); }
   .stamp__note { margin-top: 10px; min-height: 1.6em; font-size: 12px; color: var(--ink-sub); }
   .stamp__reward-open { margin-top: 4px; padding: 6px 14px; border: 0; border-radius: 999px; background: #FDEBD6; color: #9A6A2E; font-family: var(--maru); font-weight: 700; font-size: 12px; cursor: pointer; }
+  /* 記念日・イベントのカウントダウン（トップ） */
+  .count { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; max-width: 420px; margin-top: 14px; padding: 10px 14px 10px 12px; border-radius: 20px;
+    background: #FFF8FA; box-shadow: 0 3px 0 #F2C4D4, 0 0 0 1.5px #F6C9D8 inset; color: var(--ink); text-decoration: none; }
+  a.count::after { content: "›"; flex: none; font-size: 22px; color: #E8A0B8; }
+  .count__i { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; font-size: 22px; background: #FDE4EC; }
+  .count__body { flex: 1; min-width: 0; }
+  .count__ttl { font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .04em; color: var(--rose-deep); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .count__sub { margin-top: 2px; font-size: 11px; color: var(--ink-sub); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .count__left { flex: none; text-align: right; font-family: var(--maru); font-weight: 700; font-size: 11px; color: var(--ink-sub); line-height: 1.1; }
+  .count__left b { display: block; font-family: var(--en); font-weight: 600; font-size: 30px; color: var(--rose); letter-spacing: 0; }
+  .count.is-soon .count__left b { color: #E59A3A; }
+  .count.is-today { background: linear-gradient(110deg, #FFF3D6, #FFE1EC 55%, #FFF3D6); background-size: 200% 100%; box-shadow: 0 3px 0 #E7BE86, 0 0 0 1.5px #F2D2A8 inset, 0 0 18px rgba(231,174,74,.35); animation: count-shine 4s linear infinite; }
+  .count.is-today .count__i { background: #fff; animation: count-hop 1.6s ease-in-out infinite; }
+  .count.is-today .count__ttl { color: #B9772A; font-size: 15px; }
+  @keyframes count-shine { to { background-position: -200% 0; } }
+  @keyframes count-hop { 0%, 100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-4px) rotate(6deg); } }
+  @media (prefers-reduced-motion: reduce) { .count.is-today, .count.is-today .count__i { animation: none; } }
+  /* 見守り隊ランク（EXP） */
+  .rank { position: relative; display: flex; align-items: center; gap: 14px; max-width: 380px; margin: 18px auto 0; padding: 14px 16px; border-radius: 20px; text-align: left;
+    background: linear-gradient(135deg, #FFF8FA, #FDEAF1); box-shadow: 0 4px 0 #F2C4D4, 0 0 0 1.5px #F6C9D8 inset; }
+  .rank__badge { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 62px; height: 62px; border-radius: 50%; color: #fff;
+    background: radial-gradient(circle at 35% 30%, #FFB3CC, #E0578A); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #F3B7CA; font-family: var(--en); line-height: 1; }
+  .rank__badge small { font-size: 10px; letter-spacing: .1em; opacity: .9; }
+  .rank__badge b { font-size: 26px; font-weight: 600; }
+  .rank[data-lv="5"] .rank__badge, .rank[data-lv="6"] .rank__badge { background: radial-gradient(circle at 35% 30%, #FFF1C2, #E7AE4A); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #E7BE86, 0 0 16px rgba(231,174,74,.55); }
+  .rank__body { flex: 1; min-width: 0; }
+  .rank__cap { font-size: 11px; letter-spacing: .12em; color: var(--ink-sub); }
+  .rank__ttl { margin-top: 1px; font-family: var(--maru); font-weight: 700; font-size: 18px; letter-spacing: .06em; color: var(--rose-deep); }
+  .rank__bar { height: 8px; margin-top: 6px; border-radius: 999px; background: #F8DCE5; overflow: hidden; }
+  .rank__bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, #FFB3CC, #EE6F9B); transition: width .8s ease; }
+  .rank__sub { margin-top: 5px; font-size: 11px; color: var(--ink-sub); }
+  .rank__sub b { color: var(--rose); }
+  .rank.is-up { animation: rank-up .9s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes rank-up { 0% { transform: scale(1); } 35% { transform: scale(1.06); } 100% { transform: scale(1); } }
+  .rank__how { max-width: 380px; margin: 10px auto 0; text-align: left; font-size: 13px; }
+  .rank__how summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 6px; font-family: var(--maru); font-weight: 700; color: var(--rose-deep); }
+  .rank__how summary::-webkit-details-marker { display: none; }
+  .rank__how summary::after { content: "＋"; font-size: 12px; color: #E8A0B8; }
+  .rank__how[open] summary::after { content: "－"; }
+  .rank__how summary small { padding: 1px 8px; border-radius: 999px; background: #fff; font-size: 11px; color: var(--ink-sub); font-weight: 500; }
+  .rank__how ul { list-style: none; margin-top: 4px; padding: 6px 14px; border-radius: 16px; background: rgba(255,255,255,.7); }
+  .rank__how li { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px dashed #F3C9D7; }
+  .rank__how li:last-child { border-bottom: 0; }
+  .rank__how li span { flex: 1; }
+  .rank__how li b { font-family: var(--en); font-weight: 600; color: var(--rose); white-space: nowrap; }
+  .rank__how li i { flex: none; width: 18px; height: 18px; border-radius: 50%; border: 1.5px dashed #F3B7CA; font-style: normal; font-size: 11px; line-height: 15px; text-align: center; color: #fff; }
+  .rank__how li.is-done i { border: 0; background: #EE6F9B; line-height: 18px; }
+  .rank__how li.is-done span { color: var(--ink-sub); }
+  .rank__note { margin-top: 6px; font-size: 11px; color: var(--ink-sub); text-align: center; }
+  .stamp-toast__mark.is-xp { background: radial-gradient(circle at 35% 30%, #D9C8FF, #9B7BE0); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #D3C2F5; }
+  .stamp-toast__mark.is-up { background: radial-gradient(circle at 35% 30%, #FFF1C2, #E7AE4A); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #E7BE86, 0 0 14px rgba(231,174,74,.6); }
+  .stamp-toast__txt small em { font-style: normal; color: #8C6BD6; font-weight: 700; }
   /* 自動スタンプのお知らせ（下からふわっと出て、スタンプがポンッ） */
   .stamp-toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 95; width: min(330px, calc(100% - 32px));
     display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; border: 0; border-radius: 22px; text-align: left; cursor: pointer;
@@ -1068,7 +1143,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) {
     :root { --wrap: min(1040px, 100% - 64px); }
     .header .nav { display: none; }
-    .hero__in { max-width: 900px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "identity photo" "cta cta" "menuheading menuheading" "quick quick" "social social"; gap: 18px 28px; align-items: center; padding-block: 32px 48px; min-height: auto; }
+    .hero__in { max-width: 900px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "identity photo" "cta cta" "count count" "menuheading menuheading" "quick quick" "social social"; gap: 18px 28px; align-items: center; padding-block: 32px 48px; min-height: auto; }
     .hero__text { display: contents; }
     .hero__identity { display: block; grid-area: identity; min-width: 0; text-align: center; }
     .hero__logo { margin-inline: auto; width: min(100%, 320px); }
@@ -1076,6 +1151,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__logo img { width: min(100%, 320px); margin-inline: auto; }
     .hero__photo { grid-area: photo; order: 0; width: min(100%, 300px); }
     .hero__text > .hero__btns { grid-area: cta; justify-content: center; }
+    .hero__text > .count { grid-area: count; margin: 0 auto; width: min(100%, 520px); }
     .hero__menu-title { grid-area: menuheading; margin: 4px 0 -6px; max-width: none; }
     .hero__text > .quick { grid-area: quick; margin-top: 0; }
     .hero__text > .hero__external { grid-area: social; margin-top: 0; text-align: center; }
@@ -1246,6 +1322,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <div class="hero__btns">
           <a class="watch" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener"><span class="watch__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9.2 7.2v9.6l8-4.8z"/></svg></span><span class="watch__t">配信を見にいく<small class="watch__sub">Mirrativ・夜22時からほぼ毎日</small></span><span class="watch__go" aria-hidden="true">›</span></a>
         </div>
+        <div class="count" id="count" hidden></div>
         <h2 class="hero__menu-title"><svg aria-hidden="true"><use href="#bow"/></svg>メニュー</h2>
         <nav class="quick" aria-label="メニュー">
           <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
@@ -1478,6 +1555,20 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#lolli"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#cake"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#bow"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#kira"/></svg></span>
       <div class="stamp">
         <p class="req__lead">1日1回、遊びに来ると自動でスタンプが押されるよ🍭 その月に20個たまると、今月だけの特別なしぃの壁紙がもらえるよ♡<br><small>カードは毎月1日に新しくなります</small></p>
+        <div class="rank" id="rank">
+          <div class="rank__badge" aria-hidden="true"><small>Lv</small><b id="rank-lv">1</b></div>
+          <div class="rank__body">
+            <p class="rank__cap">見守り隊ランク</p>
+            <p class="rank__ttl" id="rank-ttl">見習いさん</p>
+            <div class="rank__bar"><i id="rank-bar"></i></div>
+            <p class="rank__sub" id="rank-sub"></p>
+          </div>
+        </div>
+        <details class="rank__how">
+          <summary>EXPのもらい方<small id="rank-today"></small></summary>
+          <ul id="rank-list"></ul>
+          <p class="rank__note">EXPはこのスマホ（ブラウザ）に記録されます。毎日のものは1日1回までです。</p>
+        </details>
         <div class="stamp__card">
           <div class="stamp__top">
             <span class="stamp__ttl">しぃの見守り隊<br><b>STAMP CARD</b></span>
@@ -1529,6 +1620,127 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   <span>しぃの見守り隊</span>
   <span>FM 🍭🍰꙳.*</span>
 </footer>
+<script>
+(function(){
+  // ---- 見守り隊ランク：サイトの機能を使うとEXPがたまる（この端末に保存） ----
+  var KEY='shii_xp';
+  var RANKS=[[0,'見習いさん'],[60,'見守り隊'],[200,'見守り隊エース'],[450,'親衛隊'],[900,'親衛隊長'],[1600,'伝説の見守り隊']];
+  // 毎日1回もらえるもの（key: [EXP, 説明]）。complete は月に1回、event は記念日に1回
+  var WAYS={visit:[10,'遊びに来る（スタンプ）'],watch:[5,'「配信を見にいく」を押す'],omikuji:[5,'おみくじを引く'],req:[15,'歌のリクエストを送る'],msg:[15,'メッセージを送る'],song:[3,'歌える曲リストでコピーする'],complete:[50,'20個コンプリート（月1回）'],event:[30,'記念日・イベントの日に来る']};
+  var DAILY=['visit','watch','omikuji','req','msg','song'];
+  function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function load(){
+    try{ var v=JSON.parse(localStorage.getItem(KEY)||'null'); if(v&&typeof v.xp==='number') return v; }catch(e){}
+    // はじめて：これまで来てくれた回数ぶんをプレゼント
+    var v={xp:0,got:{}};
+    try{ var st=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(st&&st.total){ v.xp=st.total*10; if(st.last) v.got.visit=st.last; } }catch(e){}
+    return v;
+  }
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(X)); }catch(e){} }
+  var X=load(); save();
+  function rankOf(xp){ var i=0; while(i<RANKS.length-1 && xp>=RANKS[i+1][0]) i++; return i; }
+  function info(xp){
+    var i=rankOf(xp), cur=RANKS[i][0], nx=RANKS[i+1];
+    return {lv:i+1, title:RANKS[i][1], next:nx?nx[1]:null, need:nx?nx[0]-xp:0, pct:nx?(xp-cur)/(nx[0]-cur)*100:100};
+  }
+  var $=function(id){ return document.getElementById(id); };
+  function render(up){
+    var r=info(X.xp), card=$('rank'); if(!card) return;
+    card.dataset.lv=r.lv; $('rank-lv').textContent=r.lv; $('rank-ttl').textContent=r.title;
+    $('rank-bar').style.width=r.pct+'%';
+    $('rank-sub').innerHTML='いま <b>'+X.xp+'</b> EXP'+(r.next?'・あと '+r.need+' で「'+r.next+'」':'・最高ランク！いつもありがとう♡');
+    var t=today(), n=0, html='';
+    DAILY.concat(['complete','event']).forEach(function(k){
+      var done=(k==='complete')?X.got.complete===t.slice(0,7):X.got[k]===t; if(done && DAILY.indexOf(k)>=0) n++;
+      html+='<li class="'+(done?'is-done':'')+'"><i>'+(done?'✓':'')+'</i><span>'+WAYS[k][1]+'</span><b>+'+WAYS[k][0]+'</b></li>';
+    });
+    $('rank-list').innerHTML=html; $('rank-today').textContent='今日 '+n+' / '+DAILY.length;
+    if(up){ card.classList.remove('is-up'); void card.offsetWidth; card.classList.add('is-up'); }
+  }
+  // 小さなお知らせ（スタンプのお知らせと同じ見た目）
+  var toast=null, tHide=0, queue=[], busy=false;
+  function el(){
+    if(toast) return toast;
+    toast=document.createElement('button'); toast.type='button'; toast.className='stamp-toast'; toast.hidden=true; toast.setAttribute('aria-live','polite');
+    toast.innerHTML='<span class="stamp-toast__mark is-xp" aria-hidden="true"></span><span class="stamp-toast__txt"><b></b><small></small><span class="stamp-toast__bar"><i></i></span></span><span class="stamp-toast__go" aria-hidden="true">›</span>';
+    toast.addEventListener('click',function(){ hide(); var c=$('rank'); if(c) c.scrollIntoView({behavior:'smooth',block:'center'}); });
+    document.body.appendChild(toast); return toast;
+  }
+  function hide(){ clearTimeout(tHide); if(!toast) return; toast.classList.remove('is-show'); setTimeout(function(){ toast.hidden=true; busy=false; next(); },420); }
+  function next(){
+    if(busy||!queue.length) return; busy=true;
+    var q=queue.shift(), t=el(), m=t.querySelector('.stamp-toast__mark'), bar=t.querySelector('.stamp-toast__bar i');
+    m.className='stamp-toast__mark '+(q.up?'is-up':'is-xp');
+    m.innerHTML='<svg viewBox="0 0 24 24"><use href="#'+(q.up?'star':'kira')+'"/></svg>';
+    t.querySelector('b').textContent=q.ttl; t.querySelector('small').innerHTML=q.sub;
+    bar.style.transition='none'; bar.style.width=q.from+'%';
+    t.hidden=false; t.classList.remove('is-show'); void t.offsetWidth; t.classList.add('is-show');
+    bar.style.transition=''; bar.style.width=q.to+'%';
+    tHide=setTimeout(hide,q.up?4200:2600);
+  }
+  // gain('omikuji') など。opt.silent: お知らせを出さない（スタンプのお知らせに乗せるとき）。opt.delay: 出すまでの待ち時間
+  function gain(k,opt){
+    opt=opt||{}; var w=WAYS[k]; if(!w) return 0;
+    var t=today(), mark=(k==='complete')?t.slice(0,7):t;
+    if(X.got[k]===mark) return 0;
+    var before=info(X.xp); X.got[k]=mark; X.xp+=w[0]; save();
+    var after=info(X.xp), up=after.lv>before.lv;
+    render(up);
+    var show=function(){
+      if(!opt.silent) queue.push({ttl:'+'+w[0]+' EXP '+(opt.label||''), sub:'<em>Lv'+after.lv+' '+after.title+'</em>'+(after.next?'・あと '+after.need:''), from:up?0:before.pct, to:after.pct});
+      if(up) queue.push({up:true, ttl:'ランクアップ！「'+after.title+'」', sub:'Lv'+after.lv+' になったよ♡ いつもありがとう', from:0, to:after.pct});
+      next();
+    };
+    if(opt.delay) setTimeout(show,opt.delay); else show();
+    return w[0];
+  }
+  window.shiiXP={gain:gain, info:function(){ return info(X.xp); }, xp:function(){ return X.xp; }};
+  document.addEventListener('DOMContentLoaded',function(){ render(false); });
+  if(document.readyState!=='loading') render(false);
+  // 配信を見にいく
+  document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('a.watch')) gain('watch',{label:'配信に行ってらっしゃい♪'}); });
+})();
+</script>
+<script>
+(function(){
+  // ---- 記念日・イベントのカウントダウン（しぃ管理の「カウントダウン」で登録） ----
+  var box=document.getElementById('count'); if(!box) return;
+  var ICON={bday:'🎂',anniv:'🎉',event:'📣'};
+  var WD=['日','月','火','水','木','金','土'];
+  function esc(v){ return String(v||'').replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function md(d){ return (d.getMonth()+1)+'/'+d.getDate()+'（'+WD[d.getDay()]+'）'; }
+  function safeUrl(u){ return /^https:\/\//.test(u||'')?u:''; }
+  var rows=null; try{ rows=JSON.parse(localStorage.getItem('shii_events')||'null'); }catch(e){}
+  function render(){
+    var list=shiiEvt.list(rows||[]), shown=list.filter(function(e){ return e.left<=e.show; });
+    window.shiiEvents=shown;
+    document.dispatchEvent(new CustomEvent('shii:events',{detail:shown}));
+    var e=shown[0];
+    if(!e){ box.hidden=true; box.innerHTML=''; return; }
+    var url=safeUrl(e.url), tag=url?'a':'div', today=e.left===0;
+    var ttl=today?(e.kind==='bday'?'今日は '+e.name+'！':e.kind==='anniv'?'今日で '+e.name+'！':'今日は '+e.name+'！'):e.name+(e.kind==='event'?'':' まで');
+    var sub=today?(e.note||(e.kind==='bday'?'お祝いに来てくれてありがとう♡':e.kind==='anniv'?'いつも応援ありがとう♡':'配信で待ってるね♡'))
+      :md(e.date)+(e.time?' '+e.time+'〜':'')+(e.note?'・'+e.note:'');
+    var html='<span class="count__i" aria-hidden="true">'+(ICON[e.kind]||'📣')+'</span><span class="count__body"><span class="count__ttl" style="display:block">'+esc(ttl)+'</span><span class="count__sub" style="display:block">'+esc(sub)+'</span></span>'
+      +(today?'':'<span class="count__left">あと<b>'+e.left+'</b>日</span>');
+    var el=document.createElement(tag); el.className='count'+(today?' is-today':e.left<=3?' is-soon':''); el.id='count';
+    if(url){ el.href=url; el.target='_blank'; el.rel='noopener'; }
+    el.innerHTML=html; box.replaceWith(el); box=el;
+    // 当日：特別モード（オープニング前に読めていなかったときも、ここで切り替え）
+    if(today){
+      window.SHII_EVENT=e;
+      var want=e.kind==='bday'?'bday':e.kind==='anniv'?'anniv':'event';
+      if(document.documentElement.getAttribute('data-season')!==want && window.shiiApplySeason) shiiApplySeason(want);
+      if(window.shiiXP) shiiXP.gain('event',{label:'お祝いに来てくれてありがとう！',delay:6200});
+    }
+  }
+  if(rows) render();
+  fetch('https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/shii_events_get',{method:'POST',headers:{'apikey':'sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC','Content-Type':'application/json'},body:'{}'})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(d){ if(!Array.isArray(d)) return; rows=d; try{ localStorage.setItem('shii_events',JSON.stringify(d)); }catch(e){} render(); })
+    .catch(function(){});
+})();
+</script>
 <script>
 // A small logo-only surprise. Replace the last burst instead of accumulating particles.
 (function(){
@@ -1709,7 +1921,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     btn.disabled=true; say('送っています…');
     if(f.website.value){ form.reset(); form.hidden=true; $('req-done').hidden=false; btn.disabled=false; return; }
     rpc('shii_req_submit',{p_song:song, p_artist:f.artist.value.trim(), p_name:f.name.value.trim(), p_comment:f.comment.value.trim()})
-    .then(function(){ mark(); form.reset(); say(''); form.hidden=true; $('req-done').hidden=false; })
+    .then(function(){ mark(); form.reset(); say(''); form.hidden=true; $('req-done').hidden=false; if(window.shiiXP) shiiXP.gain('req',{label:'リクエストありがとう♪'}); })
     .catch(function(err){
       if(err.message==='closed'){ closed(); return; }
       say(err.message==='busy'?'いま混み合っています。少し待ってからもう一度送ってね'
@@ -1757,7 +1969,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     btn.disabled=true; say('送っています…');
     if(form.elements.website.value){ form.reset(); count(); form.hidden=true; $('msg-done').hidden=false; btn.disabled=false; return; }
     rpc('shii_msg_submit',{p_body:body})
-    .then(function(){ mark(); form.reset(); count(); say(''); form.hidden=true; $('msg-done').hidden=false; })
+    .then(function(){ mark(); form.reset(); count(); say(''); form.hidden=true; $('msg-done').hidden=false; if(window.shiiXP) shiiXP.gain('msg',{label:'メッセージありがとう♡'}); })
     .catch(function(err){
       if(err.message==='closed'){ closed(); return; }
       say(err.message==='busy'?'いま混み合っています。少し待ってからもう一度送ってね'
@@ -1806,6 +2018,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 <script>
 (function(){
   var root=document.documentElement, op=document.getElementById('opening');
+  try{ var E=window.SHII_EVENT; if(E&&op){ var sm=op.querySelector('.op-title small'); if(sm) sm.textContent=E.kind==='bday'?'HAPPY BIRTHDAY':E.kind==='anniv'?shiiEvt.ord(E.n)+' ANNIVERSARY':'SPECIAL DAY'; } }catch(e){}
   if(!root.classList.contains('op')){ if(op) op.remove(); root.classList.add('op-in'); return; }
   var done=false;
   function top(){ window.scrollTo(0,0); }
@@ -1981,6 +2194,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       var res=$('omi-res'); res.style.animation=''; show(v,true);
       res.classList.remove('is-pop'); void res.offsetWidth;
       $('omi-again').hidden=false; busy=false;
+      if(window.shiiXP) shiiXP.gain('omikuji',{label:'今日の運勢ゲット！',delay:1400});
       setTimeout(function(){ res.scrollIntoView({behavior:'smooth',block:'center'}); }, 250);
     }, 2650);
   });
@@ -2009,22 +2223,28 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 </script>
 <script>
 (function(){
-  // ---- 季節のきせかえ ----
-  var s=document.documentElement.getAttribute('data-season'); if(!s) return;
-  var T={
+  // ---- 季節のきせかえ（記念日の日は記念日の演出が優先） ----
+  function T_of(s){
+    var E=window.SHII_EVENT||null;
+    return {
     halloween:{label:'HAPPY HALLOWEEN 🎃', bubble:'Trick or<br>Treat！🎃', items:[['pumpkin',26],['ghost',24],['bat',34,'fly'],['pumpkin',20],['ghost',20]], tap:'pumpkin'},
     xmas:{label:'MERRY CHRISTMAS 🎄', bubble:'メリー<br>クリスマス！', items:[['snow',14],['snow',10],['snow',18],['kira',12]], tap:'snow', color:'#fff'},
     newyear:{label:'HAPPY NEW YEAR 🎍', bubble:'あけまして<br>おめでとう！', items:[['kira',14],['kira',10],['heart',12]], tap:'kira', color:'#F3C25B'},
     valentine:{label:'HAPPY VALENTINE ♡', bubble:'ハッピー<br>バレンタイン♡', items:[['heart',14],['heart',10],['heart',18]], tap:'heart', color:'#C9557B'},
     sakura:{label:'SPRING 🌸', bubble:'春だね〜<br>🌸', items:[['petal',14],['petal',11],['petal',17]], tap:'petal'},
-    anniv:{label:'1ST ANNIVERSARY ✨', bubble:'1周年<br>ありがとう！', items:[['kira',14],['heart',14],['star',12]], tap:'kira', color:'#F3C25B'}
-  }[s];
-  if(!T) return;
-  var en=document.getElementById('hero-en'); if(en){ en.textContent=T.label; en.classList.add('is-season'); }
-  window.SHII_BUBBLE=T.bubble;
-  window.SHII_TAP=T.tap;
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var fx=document.getElementById('season-fx'), n=window.innerWidth<600?10:14;
+    anniv:{label:(E&&E.kind==='anniv'?shiiEvt.ord(E.n):'1ST')+' ANNIVERSARY ✨', bubble:(E&&E.kind==='anniv'?E.n:1)+'周年<br>ありがとう！', items:[['kira',14],['heart',14],['star',12]], tap:'kira', color:'#F3C25B'},
+    bday:{label:'HAPPY BIRTHDAY 🎂', bubble:'お祝い<br>ありがとう♡', items:[['heart',14],['kira',12],['star',12],['heart',10]], tap:'heart', color:'#F3C25B'},
+    event:{label:'SPECIAL DAY ✨', bubble:'今日は<br>特別な日♡', items:[['kira',14],['star',12],['heart',12]], tap:'kira', color:'#F3C25B'}
+    }[s];
+  }
+  function apply(s){
+    var T=T_of(s); if(!T) return;
+    document.documentElement.setAttribute('data-season',s);
+    var en=document.getElementById('hero-en'); if(en){ en.textContent=T.label; en.classList.add('is-season'); }
+    window.SHII_BUBBLE=T.bubble;
+    window.SHII_TAP=T.tap;
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var fx=document.getElementById('season-fx'), n=window.innerWidth<600?10:14; fx.innerHTML='';
 
   function r(a,b){ return a+Math.random()*(b-a); }
   for(var i=0;i<n;i++){
@@ -2037,6 +2257,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     else { el.style.left=r(0,94)+'vw'; el.style.setProperty('--sw',r(-22,22)+'px'); el.style.setProperty('--rot',r(-360,360)+'deg'); el.style.animationDuration=r(12,22)+'s'; el.style.animationDelay=(-r(0,22))+'s'; }
     fx.appendChild(el);
   }
+  }
+  window.shiiApplySeason=apply;
+  var s0=document.documentElement.getAttribute('data-season'); if(s0) apply(s0);
 })();
 </script>
 <script>
@@ -2044,9 +2267,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // 吹き出し：いつもは「来てくれてありがとう！」。タップで季節のセリフ（季節外はおまけのセリフ）と交互に
   var b=document.getElementById('bubble'), tx=document.getElementById('bubble-t'); if(!b||!tx) return;
   var base=tx.innerHTML;
-  var lines=window.SHII_BUBBLE ? [window.SHII_BUBBLE] : ['配信<br>来てね♡','いつも<br>ありがとう♡','今日も<br>おつかれさま！'];
-  var i=-1;
+  var i=-1, lines;
   function next(){
+    lines=window.SHII_BUBBLE ? [window.SHII_BUBBLE] : ['配信<br>来てね♡','いつも<br>ありがとう♡','今日も<br>おつかれさま！'];
     i=(i+1)%(lines.length+1);
     tx.innerHTML = i===lines.length ? base : lines[i];
     tx.classList.remove('is-swap'); void tx.offsetWidth; tx.classList.add('is-swap');
@@ -2151,6 +2374,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   $('stamp-btn').addEventListener('click',function(){
     var r=stamp(); if(!r){ render(false); return; }
+    if(window.shiiXP){ shiiXP.gain('visit',{label:'来てくれてありがとう♡'}); if(r==='complete') shiiXP.gain('complete',{label:'コンプリート！',delay:3000}); }
     if(r==='complete') setTimeout(openReward,900);
   });
   // ---- 来たら自動でポンッ：オープニングが明けてから、下から小さなカードで知らせる ----
@@ -2160,7 +2384,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     $('stamp-toast-mark').className='stamp-toast__mark'+(gold?' is-gold':'');
     $('stamp-toast-mark').innerHTML='<svg viewBox="0 0 24 24"><use href="#'+ICONS[i%10]+'"/></svg>';
     $('stamp-toast-ttl').textContent=gold?'20個目のスタンプ！':'今日のスタンプ ポンッ♡';
-    $('stamp-toast-sub').innerHTML='今月 <b>'+st.d.length+'</b> / '+GOAL+' 個';
+    var got=0; if(window.shiiXP){ got=shiiXP.gain('visit',{silent:true,delay:4700}); if(gold) got+=shiiXP.gain('complete',{silent:true,delay:4700}); }
+    $('stamp-toast-sub').innerHTML='今月 <b>'+st.d.length+'</b> / '+GOAL+' 個'+(got?'・<em>+'+got+' EXP</em>':'');
     var bar=$('stamp-toast-bar'); bar.style.transition='none'; bar.style.width=((st.d.length-1)/GOAL*100)+'%';
     toast.hidden=false; toast.classList.remove('is-show'); void toast.offsetWidth; toast.classList.add('is-show');
     bar.style.transition=''; bar.style.width=(st.d.length/GOAL*100)+'%';
@@ -2267,6 +2492,10 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   function msgs(){
     var a=['<span class="w">WELCOME</span> ♡ しぃの部屋へようこそ'];
     if(today){ a.push(today.off?'<span class="y">TODAY</span> 今日はおやすみ ☾ また明日ね':'<span class="y">TODAY</span> '+esc(today.time)+' から '+esc(today.what||'配信')+' ♪ 待ってるね'); }
+    (window.shiiEvents||[]).slice(0,2).forEach(function(e){
+      a.push(e.left===0?'<span class="y">TODAY</span> '+esc(e.name)+' ♡ '+(e.kind==='bday'?'HAPPY BIRTHDAY':e.kind==='anniv'?'THANK YOU':'SPECIAL DAY')
+        :'<span class="y">COUNTDOWN</span> '+esc(e.name)+(e.kind==='event'?'':' まで')+' あと'+e.left+'日');
+    });
     var se=document.documentElement.getAttribute('data-season');
     var S={halloween:'<span class="y">TRICK OR TREAT</span> ♡ HAPPY HALLOWEEN',xmas:'<span class="m">MERRY CHRISTMAS</span> ★ すてきな夜を',newyear:'<span class="y">HAPPY NEW YEAR</span> ♡ ことしもよろしくね',valentine:'<span class="w">HAPPY VALENTINE</span> ♡ チョコより甘い時間を',sakura:'<span class="w">SPRING</span> ✿ さくらの季節だよ'};
     if(se&&S[se]) a.push(S[se]);
@@ -2304,6 +2533,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     anim=t.animate([{transform:'translate('+W+'px,-50%)'},{transform:'translate('+(-w)+'px,-50%)'}],{duration:(W+w)/48*1000,iterations:Infinity});
   }
   document.addEventListener('shii:today',function(e){ today=e.detail; run(); });
+  document.addEventListener('shii:events',function(){ run(); });
   if(window.shiiToday!==undefined) today=window.shiiToday;
   function start(){ run(); }
   if(document.fonts&&document.fonts.load){ document.fonts.load('15px "DotGothic16"','しぃ').then(start,start); } else start();
