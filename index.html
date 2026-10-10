@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010121000">
+<meta name="build" content="20261010123500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -131,6 +131,17 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .header__in { width: var(--wrap); margin-inline: auto; height: 56px; display: flex; align-items: center; justify-content: space-between; }
   .logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--maru); font-weight: 700; font-size: 17px; letter-spacing: .08em; color: var(--ink); }
   .logo img { width: 34px; height: 34px; }
+  /* 左上：見守り隊ランク（ランクの色の丸バッジ。タップでランク欄へ） */
+  .hrank { position: relative; flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: #fff; text-decoration: none; -webkit-tap-highlight-color: transparent;
+    background: radial-gradient(circle at 35% 30%, var(--c1,#FFE6EE), var(--c2,#F09BB9)); box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px var(--ring,#F6C9D8), 0 0 var(--glow,0) var(--ring,#F6C9D8); transition: transform .15s; }
+  .hrank:active { transform: scale(.92); }
+  .hrank__n { display: flex; flex-direction: column; align-items: center; line-height: .85; font-family: "Playfair Display", "Bodoni 72", Didot, "Times New Roman", serif; font-style: italic; font-variant-numeric: lining-nums; }
+  .hrank__n small { font-weight: 700; font-size: 8px; }
+  .hrank__n b { font-weight: 900; font-size: 16px; text-shadow: 1px 1px 0 var(--c2,#E0578A); }
+  .hrank .tico { top: -6px; right: -7px; width: 15px; height: 15px; }
+  .hrank .tico svg { width: 9px; height: 9px; }
+  .hrank.is-pop { animation: mblv-pop .7s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes mblv-pop { 0% { transform: scale(1); } 40% { transform: scale(1.3); } 100% { transform: scale(1); } }
   .nav { display: flex; gap: clamp(14px, 3.4vw, 32px); font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .18em; color: var(--ink-sub); }
   .nav a { transition: color .2s; }
   .nav a:hover { color: var(--rose); }
@@ -1343,7 +1354,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
 <header class="header">
   <div class="header__in">
-    <a class="logo" href="#top" aria-label="しぃ（トップへ）"><img src="img/icon.webp" alt="" width="34" height="34"><span class="logo__name">しぃ</span></a>
+    <span class="logo"><a class="hrank" id="hrank" href="#rank" aria-label="見守り隊ランクを見る"><span class="hrank__n"><small>Lv.</small><b id="hrank-lv">1</b></span></a><a class="logo__name" href="#top" aria-label="しぃ（トップへ）">しぃ</a></span>
     <a class="ticker" id="ticker" href="#schedule" aria-label="お知らせ"><span class="ticker__win"><span class="ticker__txt" id="ticker-txt"></span></span></a>
     <div class="header__right">
       <nav class="nav" aria-label="メイン">
@@ -1775,6 +1786,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     card.dataset.lv=r.lv; $('rank-lv').textContent=r.lv; $('rank-ttl').textContent=r.title;
     paint(card.querySelector('.rank__badge'),T); card.style.setProperty('--c2',T.c2); card.style.setProperty('--ring',T.ring);
     $('rank-tier').textContent=T.col;
+    var hr=$('hrank'); if(hr){ var was=$('hrank-lv').textContent; $('hrank-lv').textContent=r.lv; paint(hr,T); hr.setAttribute('aria-label','見守り隊ランク Lv'+r.lv+' '+r.title+'を見る'); if(up&&was!==String(r.lv)){ hr.classList.remove('is-pop'); void hr.offsetWidth; hr.classList.add('is-pop'); } }
     var mr=$('mrank'); if(mr){ mr.dataset.lv=r.lv; $('mrank-lv').textContent=r.lv; $('mrank-ttl').textContent=r.title; $('mrank-bar').style.width=r.pct+'%'; $('mrank-xp').textContent=X.xp+' EXP'; paint(mr.querySelector('.mrank__lv'),T); mr.setAttribute('aria-label','見守り隊ランク Lv'+r.lv+' '+r.title+'（'+X.xp+' EXP）を見る'); }
     $('rank-bar').style.width=r.pct+'%';
     $('rank-sub').innerHTML=r.max?'いま <b>'+X.xp+'</b> EXP・最高レベル！いつもありがとう♡'
