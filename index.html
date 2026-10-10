@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010110500">
+<meta name="build" content="20261010111000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -214,6 +214,22 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .menu-peek--large img{display:block;width:100%;height:auto;pointer-events:none;}
   .menu-peek--large.is-peeking{opacity:1;transform:translate(-50%,0);transition:transform .65s cubic-bezier(.2,.8,.3,1),opacity .3s;}
   .menu-peek:not(.is-peeking){pointer-events:none;}
+  /* デカしぃ：タップすると楽しそうにゆらゆら → スッと下へ */
+  .menu-peek--large img{transform-origin:50% 100%;}
+  .menu-peek--large.is-happy img{animation:big-happy 1.9s ease-in-out both;}
+  @keyframes big-happy{
+    0%{transform:translateY(0) rotate(0)}
+    10%{transform:translateY(-14px) rotate(-6deg) scale(1.03)}
+    22%{transform:translateY(0) rotate(5deg)}
+    34%{transform:translateY(-10px) rotate(-5deg) scale(1.02)}
+    46%{transform:translateY(0) rotate(4deg)}
+    58%{transform:translateY(-7px) rotate(-3deg)}
+    70%{transform:translateY(0) rotate(2.5deg)}
+    82%{transform:translateY(-3px) rotate(-1.5deg)}
+    100%{transform:translateY(0) rotate(0)}
+  }
+  .menu-peek--large.is-leaving{transition:transform .75s cubic-bezier(.55,0,.75,.2),opacity .3s .5s;}
+  @media(prefers-reduced-motion:reduce){.menu-peek--large.is-happy img{animation:none;}}
   @media(prefers-reduced-motion:reduce){.menu-peek,.menu-peek--mini.is-peeking,.menu-peek--large.is-peeking{transition:opacity .15s;}}
 
 
@@ -1886,7 +1902,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     }
     document.body.appendChild(party);partyFade=setTimeout(function(){if(party) party.classList.add('is-fading');},3500);partyTimer=setTimeout(clearParty,4300);
   }
-  function hideLarge(){large.classList.remove('is-peeking');large.disabled=true;}
+  var happyT=null;
+  function hideLarge(){clearTimeout(happyT);large.classList.remove('is-peeking','is-happy');large.disabled=true;setTimeout(function(){large.classList.remove('is-leaving');},800);}
   function revealLarge(){
     if(!active) return;
     large.style.setProperty('--large-x',(45+Math.random()*25)+'%');
@@ -1906,7 +1923,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     clearTimeout(miniTimer);
     miniTimer=setTimeout(function(){mini.classList.remove('is-peeking');miniTimer=setTimeout(revealMini,650);},120);
   });
-  large.addEventListener('click',function(){clearTimeout(bigHide);hideLarge();heartParty();});
+  large.addEventListener('click',function(){
+    if(large.disabled||large.classList.contains('is-happy')) return;
+    clearTimeout(bigHide); heartParty();
+    large.classList.add('is-happy');                                     // 楽しそうにゆらゆら
+    happyT=setTimeout(function(){ large.classList.add('is-leaving'); hideLarge(); },1900);   // そのあとスッと下へ
+  });
   document.addEventListener('visibilitychange',function(){
     if(document.hidden) peekMenu(false);
     else if(btn.getAttribute('aria-expanded')==='true') peekMenu(true);
