@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010163000">
+<meta name="build" content="20261010163500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2590,7 +2590,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     setTimeout(function(){ box.classList.add('is-shake'); }, 550);  // 振る
     var v=done||pick(), tier=RANKS[v.i].tier||'';                  // 結果は先に決めておく（棒の色・演出用）
     var calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(!v.seq){ v.seq=plan(RANKS[v.i]); v.ch=Math.floor(Math.random()*TEASE.length); if(done) save(v); }   // 演出は1回目に決めて保存 → 2回目以降も同じ演出
+    if(!v.seq||!v.seq.length){ v.seq=plan(RANKS[v.i]); v.ch=Math.floor(Math.random()*TEASE.length); if(done) save(v); }   // 演出は1回目に決めて保存 → 2回目以降も同じ演出
     var seq=calm?[]:v.seq;
     box.dataset.tier=seq.length?seq[0]:'';                            // 棒は「最初の段階」の色で光る（＝フェイクもあり）
     var wait=seq.reduce(function(t,k){ return t+DUR[k]; },0);
@@ -2615,8 +2615,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var r=Math.random();
     if(R.tier==='rainbow') return r<.25?['rainbow']:r<.65?['tease','rainbow']:['chance','tease','rainbow'];
     if(R.tier==='gold') return r<.7?['gold']:['chance','gold'];
-    var p={'中吉':.35,'小吉':.25,'吉':.2,'末吉':.2}[R.r]||0;          // 下位でもときどき「チャンス…？」
-    return r<p?['chance']:[];
+    return ['chance'];                                                // 中吉〜末吉も毎回「これは…？」などで煽る
   }
   function stage(k,last,ch){
     var el=document.createElement('div'); el.className='cutin cutin--'+k+(last?' is-last':' is-mid'); el.setAttribute('aria-hidden','true');
