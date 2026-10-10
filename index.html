@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010111500">
+<meta name="build" content="20261010105500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1626,7 +1626,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var KEY='shii_xp';
   var RANKS=[[0,'見習いさん'],[60,'見守り隊'],[200,'見守り隊エース'],[450,'親衛隊'],[900,'親衛隊長'],[1600,'伝説の見守り隊']];
   // 毎日1回もらえるもの（key: [EXP, 説明]）。complete は月に1回、event は記念日に1回
-  var WAYS={visit:[10,'遊びに来る（スタンプ）'],watch:[5,'「配信を見にいく」を押す'],omikuji:[5,'おみくじを引く'],req:[15,'歌のリクエストを送る'],msg:[15,'メッセージを送る'],song:[3,'歌える曲リストでコピーする'],complete:[50,'20個コンプリート（月1回）'],event:[30,'記念日・イベントの日に来る']};
+  var WAYS={visit:[10,'遊びに来る（スタンプ）'],watch:[5,'「配信を見にいく」を押す'],omikuji:[5,'おみくじを引く'],req:[15,'歌のリクエストを送る'],msg:[15,'メッセージを送る'],song:[3,'歌える曲リストでコピーする'],bonus:[20,'スタンプ5個ごとのボーナス'],complete:[50,'20個コンプリート（月1回）']};
   var DAILY=['visit','watch','omikuji','req','msg','song'];
   function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
   function load(){
@@ -1650,8 +1650,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     $('rank-bar').style.width=r.pct+'%';
     $('rank-sub').innerHTML='いま <b>'+X.xp+'</b> EXP'+(r.next?'・あと '+r.need+' で「'+r.next+'」':'・最高ランク！いつもありがとう♡');
     var t=today(), n=0, html='';
-    DAILY.concat(['complete','event']).forEach(function(k){
-      var done=(k==='complete')?X.got.complete===t.slice(0,7):X.got[k]===t; if(done && DAILY.indexOf(k)>=0) n++;
+    var cnt=0; try{ var sp=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(sp&&sp.m===t.slice(0,7)) cnt=sp.d.length; }catch(e){}
+    DAILY.concat(['bonus','complete']).forEach(function(k){
+      var done=(k==='complete')?X.got.complete===t.slice(0,7):(k==='bonus')?(cnt>=5&&X.got.bonus===t.slice(0,7)+'-'+Math.min(15,cnt-cnt%5)):X.got[k]===t; if(done && DAILY.indexOf(k)>=0) n++;
       html+='<li class="'+(done?'is-done':'')+'"><i>'+(done?'✓':'')+'</i><span>'+WAYS[k][1]+'</span><b>+'+WAYS[k][0]+'</b></li>';
     });
     $('rank-list').innerHTML=html; $('rank-today').textContent='今日 '+n+' / '+DAILY.length;
@@ -1681,7 +1682,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // gain('omikuji') など。opt.silent: お知らせを出さない（スタンプのお知らせに乗せるとき）。opt.delay: 出すまでの待ち時間
   function gain(k,opt){
     opt=opt||{}; var w=WAYS[k]; if(!w) return 0;
-    var t=today(), mark=(k==='complete')?t.slice(0,7):t;
+    var t=today(), mark=opt.mark||((k==='complete')?t.slice(0,7):t);
     if(X.got[k]===mark) return 0;
     var before=info(X.xp); X.got[k]=mark; X.xp+=w[0]; save();
     var after=info(X.xp), up=after.lv>before.lv;
@@ -1731,7 +1732,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       window.SHII_EVENT=e;
       var want=e.kind==='bday'?'bday':e.kind==='anniv'?'anniv':'event';
       if(document.documentElement.getAttribute('data-season')!==want && window.shiiApplySeason) shiiApplySeason(want);
-      if(window.shiiXP) shiiXP.gain('event',{label:'お祝いに来てくれてありがとう！',delay:6200});
     }
   }
   if(rows) render();
@@ -2374,7 +2374,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   $('stamp-btn').addEventListener('click',function(){
     var r=stamp(); if(!r){ render(false); return; }
-    if(window.shiiXP){ shiiXP.gain('visit',{label:'来てくれてありがとう♡'}); if(r==='complete') shiiXP.gain('complete',{label:'コンプリート！',delay:3000}); }
+    if(window.shiiXP){ shiiXP.gain('visit',{label:'来てくれてありがとう♡'}); var c=st.d.length; if(c%5===0&&c<GOAL) shiiXP.gain('bonus',{label:c+'個ボーナス！',mark:st.m+'-'+c}); if(r==='complete') shiiXP.gain('complete',{label:'コンプリート！',delay:3000}); }
     if(r==='complete') setTimeout(openReward,900);
   });
   // ---- 来たら自動でポンッ：オープニングが明けてから、下から小さなカードで知らせる ----
@@ -2383,8 +2383,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var i=st.d.length-1, gold=i===GOAL-1;
     $('stamp-toast-mark').className='stamp-toast__mark'+(gold?' is-gold':'');
     $('stamp-toast-mark').innerHTML='<svg viewBox="0 0 24 24"><use href="#'+ICONS[i%10]+'"/></svg>';
-    $('stamp-toast-ttl').textContent=gold?'20個目のスタンプ！':'今日のスタンプ ポンッ♡';
-    var got=0; if(window.shiiXP){ got=shiiXP.gain('visit',{silent:true,delay:4700}); if(gold) got+=shiiXP.gain('complete',{silent:true,delay:4700}); }
+    $('stamp-toast-ttl').textContent=gold?'20個目のスタンプ！':(i+1)%5===0?(i+1)+'個目！ボーナスゲット♡':'今日のスタンプ ポンッ♡';
+    var got=0, c=st.d.length; if(window.shiiXP){ got=shiiXP.gain('visit',{silent:true,delay:4700}); if(c%5===0&&c<GOAL) got+=shiiXP.gain('bonus',{silent:true,delay:4700,mark:st.m+'-'+c}); if(gold) got+=shiiXP.gain('complete',{silent:true,delay:4700}); }
     $('stamp-toast-sub').innerHTML='今月 <b>'+st.d.length+'</b> / '+GOAL+' 個'+(got?'・<em>+'+got+' EXP</em>':'');
     var bar=$('stamp-toast-bar'); bar.style.transition='none'; bar.style.width=((st.d.length-1)/GOAL*100)+'%';
     toast.hidden=false; toast.classList.remove('is-show'); void toast.offsetWidth; toast.classList.add('is-show');
