@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010120000">
+<meta name="build" content="20261010121000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&text=1stAnniversary&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Yomogi&text=%E6%9D%A5%E3%81%A6%E3%81%8F%E3%82%8C%E3%81%A6%E3%81%82%E3%82%8A%E3%81%8C%E3%81%A8%E3%81%86%EF%BC%81%E3%81%97%E3%81%83%E3%81%AE%E9%83%A8%E5%B1%8B%E3%81%B8%E3%82%88%E3%81%86%E3%81%93%E3%81%9D&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700;1,900&text=0123456789Lv.&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <script>
@@ -353,6 +353,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes sig-star { 0%, 100% { opacity: 0; transform: scale(.2) rotate(0); } 50% { opacity: 1; transform: scale(1) rotate(90deg); } }
   .bubble { cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
   .bubble__t { display: inline-block; }
+  .bubble { transition: background-color .5s ease, color .5s ease, box-shadow .5s ease; white-space: nowrap; }
+  .bubble.is-rank { background: color-mix(in srgb, var(--bb1,#FFE6EE) 70%, #fff); color: var(--bb2,#E0578A); box-shadow: 0 0 0 2px var(--bbr,#F3B7CA) inset, 0 4px 16px color-mix(in srgb, var(--bb2,#E0578A) 30%, transparent); }
+  .bubble.is-rank::after { background: color-mix(in srgb, var(--bb1,#FFE6EE) 70%, #fff); }
   .bubble__t.is-swap { animation: bubble-swap .45s cubic-bezier(.3,1.6,.5,1); }
   @keyframes bubble-swap { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
   .bubble::after { content: ""; position: absolute; left: 6px; bottom: 4px; width: 16px; height: 16px; background: var(--white); clip-path: polygon(100% 0, 0 100%, 60% 30%); }
@@ -1745,8 +1748,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function load(){
     try{ var v=JSON.parse(localStorage.getItem(KEY)||'null'); if(v&&typeof v.xp==='number') return v; }catch(e){}
     // はじめて：これまで来てくれた回数ぶんをプレゼント
-    var v={xp:0,got:{}};
-    try{ var st=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(st&&st.total){ v.xp=st.total*10; if(st.last) v.got.visit=st.last; } }catch(e){}
+    var v={xp:0,got:{}}; window.SHII_NEW=true;
+    try{ var st=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(st&&st.total){ v.xp=st.total*10; if(st.last) v.got.visit=st.last; window.SHII_NEW=false; } }catch(e){}
     return v;
   }
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(X)); }catch(e){} }
@@ -1830,7 +1833,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     if(opt.delay) setTimeout(show,opt.delay); else show();
     return w[0];
   }
-  window.shiiXP={gain:gain, info:function(){ return info(X.xp); }, xp:function(){ return X.xp; }};
+  // しぃが呼ぶときの名前（「見習いさん」はそのまま、ほかは「◯◯さん」）
+  function callName(t){ return /さん$/.test(t)?t:t+'さん'; }
+  window.shiiXP={gain:gain, info:function(){ return info(X.xp); }, xp:function(){ return X.xp; }, callName:callName, tiers:TIERS};
   document.addEventListener('DOMContentLoaded',function(){ render(false); });
   if(document.readyState!=='loading') render(false);
   // 配信を見にいく
@@ -2433,16 +2438,38 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 (function(){
   // 吹き出し：いつもは「来てくれてありがとう！」。タップで季節のセリフ（季節外はおまけのセリフ）と交互に
   var b=document.getElementById('bubble'), tx=document.getElementById('bubble-t'); if(!b||!tx) return;
+  // ＋ 見守り隊ランクで呼んでくれるセリフ（ランクの色の吹き出し）を、ふつうのセリフと交互に自動で
   var base=tx.innerHTML;
-  var i=-1, lines;
-  function next(){
-    lines=window.SHII_BUBBLE ? [window.SHII_BUBBLE] : ['配信<br>来てね♡','いつも<br>ありがとう♡','今日も<br>おつかれさま！'];
-    i=(i+1)%(lines.length+1);
-    tx.innerHTML = i===lines.length ? base : lines[i];
+  var i=-1, lines, auto=0, pick=Math.floor(Math.random()*10);
+  function rankLines(){
+    if(!window.shiiXP) return [];
+    var r=shiiXP.info(), nm=shiiXP.callName(r.title), out=[];
+    if(window.SHII_NEW) out.push('はじめまして<br>'+nm+'♡');
+    else out.push(['おかえり<br>'+nm+'♡', nm+'<br>いつもありがとう♡', 'Lv'+r.lv+'だね<br>すごい！♡', '今日も来てくれた<br>'+nm+'♡'][pick%4]);
+    if(r.nextTier && r.nextTier.lv-r.lv<=1) out.push('もうすぐ<br>'+r.nextTier.name+'だよ♡');
+    else if(!window.SHII_NEW) out.push(['会えてうれしいな<br>'+nm+'♡','Lv'+r.lv+'の<br>'+nm+'♡','ゆっくりしてってね<br>'+nm+'♡'][pick%3]);
+    return out.map(function(t){ return {t:t, rank:true, T:r.tier}; });
+  }
+  function build(){
+    var rk=rankLines(), ex=window.SHII_BUBBLE ? [window.SHII_BUBBLE] : ['配信<br>来てね♡','いつも<br>ありがとう♡','今日も<br>おつかれさま！'];
+    // ランク → いつもの → ランク → 季節・おまけ … の順
+    var L=[]; if(rk[0]) L.push(rk[0]); L.push({t:base}); if(rk[1]) L.push(rk[1]); L.push({t:ex[pick%ex.length]});
+    return L;
+  }
+  function show(it){
+    tx.innerHTML=it.t;
+    b.classList.toggle('is-rank',!!it.rank);
+    if(it.rank&&it.T){ b.style.setProperty('--bb1',it.T.c1); b.style.setProperty('--bb2',it.T.c2); b.style.setProperty('--bbr',it.T.ring); }
     tx.classList.remove('is-swap'); void tx.offsetWidth; tx.classList.add('is-swap');
   }
-  b.addEventListener('click',next);
-  b.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); next(); } });
+  function next(){ lines=build(); i=(i+1)%lines.length; show(lines[i]); }
+  function loop(){ clearInterval(auto); auto=setInterval(function(){ if(!document.hidden) next(); },6500); }
+  // オープニングが明けて、スタンプのお知らせが出たあとに最初のランクのセリフ
+  var root=document.documentElement;
+  function start(){ setTimeout(function(){ next(); loop(); },2600); }
+  if(root.classList.contains('op')&&!root.classList.contains('op-in')){ var mo=new MutationObserver(function(){ if(root.classList.contains('op-in')){ mo.disconnect(); start(); } }); mo.observe(root,{attributes:true,attributeFilter:['class']}); } else start();
+  b.addEventListener('click',function(){ next(); loop(); });
+  b.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); next(); loop(); } });
 })();
 </script>
 
@@ -2658,6 +2685,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   function ymd(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
   function msgs(){
     var a=['<span class="w">WELCOME</span> ♡ しぃの部屋へようこそ'];
+    if(window.shiiXP){ var rr=shiiXP.info(); a.push(window.SHII_NEW?'<span class="m">NICE TO MEET YOU</span> ♡ はじめまして '+shiiXP.callName(rr.title):'<span class="m">WELCOME BACK</span> ♡ Lv'+rr.lv+' '+shiiXP.callName(rr.title)); }
     if(today){ a.push(today.off?'<span class="y">TODAY</span> 今日はおやすみ ☾ また明日ね':'<span class="y">TODAY</span> '+esc(today.time)+' から '+esc(today.what||'配信')+' ♪ 待ってるね'); }
     (window.shiiEvents||[]).slice(0,2).forEach(function(e){
       a.push(e.left===0?'<span class="y">TODAY</span> '+esc(e.name)+' ♡ '+(e.kind==='bday'?'HAPPY BIRTHDAY':e.kind==='anniv'?'THANK YOU':'SPECIAL DAY')
