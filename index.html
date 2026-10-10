@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010172500">
+<meta name="build" content="20261010173500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2594,7 +2594,10 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var tot=RANKS.reduce(function(s,x){return s+x.w;},0), n=Math.random()*tot, i=0;
     for(;i<RANKS.length;i++){ n-=RANKS[i].w; if(n<0) break; }
     var R=RANKS[Math.min(i,RANKS.length-1)];
-    return { d:today(), i:RANKS.indexOf(R), m:Math.floor(Math.random()*R.m.length), s:Math.floor(Math.random()*SWEETS.length), c:Math.floor(Math.random()*COLORS.length) };
+    // ラッキースイーツ・カラーは、前に引いた日と同じものは出さない
+    var prev=null; try{ prev=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){}
+    function other(len,last){ var k=Math.floor(Math.random()*(last==null?len:len-1)); return (last!=null&&k>=last)?k+1:k; }
+    return { d:today(), i:RANKS.indexOf(R), m:Math.floor(Math.random()*R.m.length), s:other(SWEETS.length,prev&&prev.s), c:other(COLORS.length,prev&&prev.c) };
   }
   function show(v, animate){
     var R=RANKS[v.i];
