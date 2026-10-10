@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010131500">
+<meta name="build" content="20261010132000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -384,8 +384,13 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .bubble { cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
   .bubble__t { display: inline-block; }
   .bubble { transition: background-color .5s ease, color .5s ease, box-shadow .5s ease; white-space: nowrap; }
-  .bubble.is-rank { background: color-mix(in srgb, var(--bb1,#FFE6EE) 70%, #fff); color: var(--bb2,#E0578A); box-shadow: 0 0 0 2px var(--bbr,#F3B7CA) inset, 0 4px 16px color-mix(in srgb, var(--bb2,#E0578A) 30%, transparent); }
-  .bubble.is-rank::after { background: color-mix(in srgb, var(--bb1,#FFE6EE) 70%, #fff); }
+  /* いつもの吹き出しも、ふちをつけてくっきり */
+  .bubble { box-shadow: 0 0 0 2px #F3B7CA, 0 6px 16px rgba(150,70,95,.22); }
+  /* ランクのセリフ：ランクの色の吹き出しに、白い文字＋濃い色の縁取り */
+  .bubble.is-rank { background: linear-gradient(160deg, var(--bb1,#FFB3CC), var(--bb2,#E0578A)); color: #fff;
+    text-shadow: 1px 0 0 var(--bbs), -1px 0 0 var(--bbs), 0 1px 0 var(--bbs), 0 -1px 0 var(--bbs), 1px 1px 0 var(--bbs), -1px -1px 0 var(--bbs), 1px -1px 0 var(--bbs), -1px 1px 0 var(--bbs);
+    box-shadow: 0 0 0 2.5px #fff, 0 0 0 4.5px var(--bbs), 0 6px 18px color-mix(in srgb, var(--bbs) 40%, transparent); }
+  .bubble.is-rank::after { background: var(--bb2,#E0578A); }
   .bubble__t.is-swap { animation: bubble-swap .45s cubic-bezier(.3,1.6,.5,1); }
   @keyframes bubble-swap { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
   .bubble::after { content: ""; position: absolute; left: 6px; bottom: 4px; width: 16px; height: 16px; background: var(--white); clip-path: polygon(100% 0, 0 100%, 60% 30%); }
@@ -2541,7 +2546,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function show(it){
     tx.innerHTML=it.t;
     b.classList.toggle('is-rank',!!it.rank);
-    if(it.rank&&it.T){ b.style.setProperty('--bb1',it.T.c1); b.style.setProperty('--bb2',it.T.c2); b.style.setProperty('--bbr',it.T.ring); }
+    if(it.rank&&it.T){ b.style.setProperty('--bb1',it.T.c1); b.style.setProperty('--bb2',it.T.c2); b.style.setProperty('--bbr',it.T.ring); b.style.setProperty('--bbs',it.T.stroke||'color-mix(in srgb, '+it.T.c2+' 75%, #000)'); }
     tx.classList.remove('is-swap'); void tx.offsetWidth; tx.classList.add('is-swap');
   }
   function next(){ lines=build(); i=(i+1)%lines.length; show(lines[i]); }
