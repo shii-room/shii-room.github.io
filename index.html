@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010164500">
+<meta name="build" content="20261010165000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1200,8 +1200,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes ci-card { 0%, 8% { transform: translate(80%, -50%) rotate(8deg) scale(.8); opacity: 0; } 22% { transform: translate(0, -62%) rotate(-4deg) scale(1.05); opacity: 1; } 30% { transform: translate(0, -60%) rotate(-3deg) scale(1); } 78% { transform: translate(-4%, -60%) rotate(-3deg); opacity: 1; } 92%, 100% { transform: translate(-30%, -60%) rotate(-3deg); opacity: 0; } }
   .cutin--rainbow .cutin__txt { top: 64%; }
   /* ぷちゅん（しぃ吉の前のブラックアウト） */
-  .blackout { position: fixed; inset: 0; z-index: 160; pointer-events: none; background: #000; animation: bo-bg 1.2s linear both; }
-  .blackout i { position: absolute; left: 0; right: 0; top: 50%; height: 100%; margin-top: -50%; background: #fff; transform-origin: 50% 50%; animation: bo-line .28s cubic-bezier(.6,0,.4,1) both; }
+  .blackout { position: fixed; inset: 0; z-index: 160; pointer-events: none; background: #000; animation: bo-bg 1.9s linear both; }
+  .blackout i { position: absolute; left: 0; right: 0; top: 50%; height: 100%; margin-top: -50%; background: #fff; transform-origin: 50% 50%; animation: bo-line .5s cubic-bezier(.6,0,.4,1) both; }
   @keyframes bo-line { 0% { transform: scale(1, 1); opacity: 1; } 45% { transform: scale(1, .004); opacity: 1; } 80% { transform: scale(.002, .004); opacity: 1; } 100% { transform: scale(0, 0); opacity: 0; } }
   @keyframes bo-bg { 0%, 92% { opacity: 1; } 100% { opacity: 0; } }
   /* 画面がドンッとゆれる */
@@ -2613,7 +2613,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   });
   // ---- レア演出：カットイン（画面を横切る帯＋しぃ＋文字 → 白く光る） ----
   // 段階：chance（ピンク・どの結果でも出ることがある）／tease（金→割れて昇格）／gold（大吉）／rainbow（しぃ吉）
-  var DUR={chance:1300, tease:1500, gold:2000, black:1200, rainbow:2500};
+  var DUR={chance:2100, tease:2700, gold:2800, black:1900, rainbow:3800};   // ゆっくりめ：何が起きたか分かるように
   // 「チャンス」の段階で出る言葉（毎回どれか1つ）
   var TEASE=[['CHANCE','チャンス','…？'],['HMM…?','これは','…？'],['OH…?','おや','…？'],['MAYBE…?','もしかして','…？'],['WAIT…!','ちょっと待って','…！']];
   function plan(R){
@@ -2640,7 +2640,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     el.innerHTML='<i class="cutin__dim"></i>'+(k==='rainbow'?'':'')+'<div class="cutin__band"><i class="cutin__lines"></i></div>'+chara+'<p class="cutin__txt">'+txt+'</p>'
       +(k==='tease'?'<i class="cutin__crack"></i>':'')+'<i class="cutin__flash"></i>';
     document.body.appendChild(el);
-    if(k==='rainbow') setTimeout(function(){ document.body.classList.add('is-quake'); setTimeout(function(){ document.body.classList.remove('is-quake'); },500); },650);
+    if(k==='rainbow') setTimeout(function(){ document.body.classList.add('is-quake'); setTimeout(function(){ document.body.classList.remove('is-quake'); },500); },950);
     if(k==='tease') setTimeout(function(){ document.body.classList.add('is-quake'); setTimeout(function(){ document.body.classList.remove('is-quake'); },350); },DUR.tease*.72);
     setTimeout(function(){ el.remove(); },DUR[k]+80);
   }
