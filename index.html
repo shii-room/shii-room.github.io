@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010161500">
+<meta name="build" content="20261010163000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2590,11 +2590,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     setTimeout(function(){ box.classList.add('is-shake'); }, 550);  // 振る
     var v=done||pick(), tier=RANKS[v.i].tier||'';                  // 結果は先に決めておく（棒の色・演出用）
     var calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var seq=calm?[]:plan(RANKS[v.i]);                                 // 煽り演出の流れ（ガチャの昇格演出みたいに）
+    if(!v.seq){ v.seq=plan(RANKS[v.i]); v.ch=Math.floor(Math.random()*TEASE.length); if(done) save(v); }   // 演出は1回目に決めて保存 → 2回目以降も同じ演出
+    var seq=calm?[]:v.seq;
     box.dataset.tier=seq.length?seq[0]:'';                            // 棒は「最初の段階」の色で光る（＝フェイクもあり）
     var wait=seq.reduce(function(t,k){ return t+DUR[k]; },0);
     setTimeout(function(){ box.classList.remove('is-shake'); box.classList.add('is-draw'); }, 1550); // 棒が下向きに出る
-    if(seq.length) setTimeout(function(){ play(seq); }, 2150);
+    if(seq.length) setTimeout(function(){ play(seq,v.ch||0); }, 2150);
     setTimeout(function(){ box.classList.remove('is-flip'); box.classList.remove('is-draw'); }, 2450+wait); // 元に戻す
     setTimeout(function(){
       if(!done) save(v);
@@ -2608,6 +2609,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // ---- レア演出：カットイン（画面を横切る帯＋しぃ＋文字 → 白く光る） ----
   // 段階：chance（ピンク・どの結果でも出ることがある）／tease（金→割れて昇格）／gold（大吉）／rainbow（しぃ吉）
   var DUR={chance:1300, tease:1500, gold:2000, rainbow:2500};
+  // 「チャンス」の段階で出る言葉（毎回どれか1つ）
+  var TEASE=[['CHANCE','チャンス','…？'],['HMM…?','これは','…？'],['OH…?','おや','…？'],['MAYBE…?','もしかして','…？'],['WAIT…!','ちょっと待って','…！']];
   function plan(R){
     var r=Math.random();
     if(R.tier==='rainbow') return r<.25?['rainbow']:r<.65?['tease','rainbow']:['chance','tease','rainbow'];
@@ -2615,13 +2618,14 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var p={'中吉':.35,'小吉':.25,'吉':.2,'末吉':.2}[R.r]||0;          // 下位でもときどき「チャンス…？」
     return r<p?['chance']:[];
   }
-  function stage(k,last){
+  function stage(k,last,ch){
     var el=document.createElement('div'); el.className='cutin cutin--'+k+(last?' is-last':' is-mid'); el.setAttribute('aria-hidden','true');
     el.style.setProperty('--d',DUR[k]+'ms');
     var chara=k==='chance'?'<img class="cutin__chara cutin__chara--mini" src="img/chibi-a.webp" alt="">'
       :k==='rainbow'?'<div class="cutin__rays"></div><figure class="cutin__card"><img src="img/sing.webp" alt=""></figure>'
       :'<img class="cutin__chara" src="img/menu-candy-transparent.webp" alt="">';
-    var txt=k==='chance'?'<small>CHANCE</small>チャンス<b>…？</b>'
+    var T=TEASE[ch||0]||TEASE[0];
+    var txt=k==='chance'?'<small>'+T[0]+'</small>'+T[1]+'<b>'+T[2]+'</b>'
       :k==='tease'?'<small>LUCKY…!?</small>大吉<b>…!?</b>'
       :k==='gold'?'<small>LUCKY</small>大吉<b>！！</b>'
       :'<small>SUPER RARE</small>しぃ吉<b>降臨…！</b>';
@@ -2632,7 +2636,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     if(k==='tease') setTimeout(function(){ document.body.classList.add('is-quake'); setTimeout(function(){ document.body.classList.remove('is-quake'); },350); },DUR.tease*.72);
     setTimeout(function(){ el.remove(); },DUR[k]+80);
   }
-  function play(seq){ var t=0; seq.forEach(function(k,i){ setTimeout(function(){ stage(k,i===seq.length-1); },t); t+=DUR[k]; }); }
+  function play(seq,ch){ var t=0; seq.forEach(function(k,i){ setTimeout(function(){ stage(k,i===seq.length-1,ch); },t); t+=DUR[k]; }); }
   // ---- 結果が出た瞬間に、星がはじける ----
   function burst(res,tier){
     var C=tier==='rainbow'?['#FF8FB1','#FFD27A','#9EE6B8','#8CCBF5','#C9A8FF','#fff']:['#FFE08A','#F3C25B','#fff','#FFD27A'];
