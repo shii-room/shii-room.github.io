@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010173500">
+<meta name="build" content="20261010180000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -979,6 +979,27 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .is-rainbow { background: conic-gradient(from 200deg, #FF9AB8, #FFD27A, #9EE6B8, #8CCBF5, #C9A8FF, #FF9AB8) !important; animation: rb-hue 6s linear infinite; }
   @keyframes rb-hue { to { filter: hue-rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .is-rainbow { animation: none; } }
+  /* 伝説の見守り隊：あざやかな虹がぐるぐる回る＋まわりの光も虹色に変わり続ける */
+  .rank__badge.is-rainbow, .mrank__lv.is-rainbow, .tbadge.is-rainbow { background: #fff !important; animation: none; filter: none; box-shadow: 0 0 0 3px #fff !important; }
+  .hrank.is-rainbow .hrank__face--lv { background: #fff !important; animation: none; filter: none; overflow: hidden; }
+  .rank__badge.is-rainbow::before, .mrank__lv.is-rainbow::before, .tbadge.is-rainbow::before, .hrank.is-rainbow .hrank__face--lv::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, rgba(255,255,255,.55), rgba(255,255,255,0) 48%),
+      conic-gradient(#FF4F8B, #FF9A3D, #FFE14D, #4FD98A, #3FB4FF, #8A6BFF, #E05CFF, #FF4F8B);
+    animation: rb-spin 2.6s linear infinite; }
+  @keyframes rb-spin { to { transform: rotate(360deg); } }
+  .hrank.is-rainbow { animation: rb-glow 3s linear infinite !important; }
+  .rank__badge.is-rainbow::after, .mrank__lv.is-rainbow::after, .tbadge.is-rainbow::after { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; z-index: 0; animation: rb-glow 3s linear infinite; }
+  @keyframes rb-glow {
+    0%   { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #FF6FA0, 0 0 16px 2px #FF6FA0; }
+    20%  { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #FFB14D, 0 0 16px 2px #FFB14D; }
+    40%  { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #5ED98F, 0 0 16px 2px #5ED98F; }
+    60%  { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #4FB6FF, 0 0 16px 2px #4FB6FF; }
+    80%  { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #A07BFF, 0 0 16px 2px #A07BFF; }
+    100% { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #FF6FA0, 0 0 16px 2px #FF6FA0; } }
+  .rank__badge.is-rainbow, .mrank__lv.is-rainbow, .tbadge.is-rainbow { --sk: #7A3FB0; }
+  .hrank.is-rainbow { --sk: #7A3FB0; }
+  @media (prefers-reduced-motion: reduce) { .rank__badge.is-rainbow::before, .mrank__lv.is-rainbow::before, .tbadge.is-rainbow::before, .hrank.is-rainbow .hrank__face--lv::before { animation: none; } .hrank.is-rainbow, .rank__badge.is-rainbow::after, .mrank__lv.is-rainbow::after, .tbadge.is-rainbow::after { animation: none !important; } }
   .rank__tier { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; vertical-align: 2px; background: #fff; color: var(--stroke,var(--c2,#E0578A)); box-shadow: 0 0 0 1px var(--ring,#F3B7CA) inset; letter-spacing: .04em; }
   /* キラキラバッジ：上のツヤ＋ときどき光が横切る＋まわりで小さな星がまたたく */
   .rank__badge, .hrank__face--lv, .mrank__lv { isolation: isolate; }
