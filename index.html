@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010103000">
+<meta name="build" content="20261010104000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -812,6 +812,25 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .stamp__btn:disabled { opacity: .6; cursor: default; transform: none; box-shadow: 4px 4px 0 var(--white); }
   .stamp__note { margin-top: 10px; min-height: 1.6em; font-size: 12px; color: var(--ink-sub); }
   .stamp__reward-open { margin-top: 4px; padding: 6px 14px; border: 0; border-radius: 999px; background: #FDEBD6; color: #9A6A2E; font-family: var(--maru); font-weight: 700; font-size: 12px; cursor: pointer; }
+  /* 自動スタンプのお知らせ（下からふわっと出て、スタンプがポンッ） */
+  .stamp-toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 95; width: min(330px, calc(100% - 32px));
+    display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 10px; border: 0; border-radius: 22px; text-align: left; cursor: pointer;
+    background: #FFF8FA; box-shadow: 0 10px 28px rgba(150,70,95,.28), 0 0 0 1.5px #F3B7CA inset; color: var(--ink); font-family: var(--maru);
+    transform: translate(-50%, 140%); opacity: 0; transition: transform .45s cubic-bezier(.3,1.3,.5,1), opacity .3s ease; -webkit-tap-highlight-color: transparent; }
+  .stamp-toast.is-show { transform: translate(-50%, 0); opacity: 1; }
+  .stamp-toast__mark { flex: none; display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; color: #fff;
+    background: radial-gradient(circle at 35% 30%, #FFB3CC, #EE6F9B); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #F3B7CA; transform: rotate(-8deg); }
+  .stamp-toast__mark.is-gold { background: radial-gradient(circle at 35% 30%, #FFF1C2, #E7AE4A); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #E7BE86; }
+  .stamp-toast__mark svg { width: 56%; height: 56%; filter: drop-shadow(0 1px 0 rgba(160,40,80,.25)); }
+  .stamp-toast.is-show .stamp-toast__mark { animation: stamp-pon .6s cubic-bezier(.3,1.6,.5,1) .35s both; }
+  .stamp-toast__txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .stamp-toast__txt b { font-weight: 700; font-size: 15px; color: var(--rose-deep); letter-spacing: .04em; }
+  .stamp-toast__txt small { font-size: 12px; color: var(--ink-sub); }
+  .stamp-toast__txt small b { font-size: 14px; color: var(--rose); }
+  .stamp-toast__bar { display: block; height: 6px; margin-top: 3px; border-radius: 999px; background: #F8DCE5; overflow: hidden; }
+  .stamp-toast__bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #FFB3CC, #EE6F9B); transition: width .8s ease .6s; }
+  .stamp-toast__go { flex: none; font-size: 22px; line-height: 1; color: #E8A0B8; }
+  @media (prefers-reduced-motion: reduce) { .stamp-toast { transition: opacity .3s ease; transform: translate(-50%, 0); } .stamp-toast.is-show .stamp-toast__mark { animation: none; } }
   .stamp-modal { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: 20px; background: rgba(94,53,64,.5); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
   .stamp-modal__in { width: min(360px, 100%); max-height: 100%; overflow: auto; padding: 20px 18px 16px; border-radius: 24px; background: #FFF8FA; text-align: center; animation: omi-pop .6s cubic-bezier(.3,1.6,.5,1) both; }
   .stamp-modal__ttl { font-family: var(--en); font-weight: 500; font-size: 20px; letter-spacing: .18em; background: linear-gradient(110deg, #E6AD4A, #FF8FBF 50%, #E6AD4A); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -1458,7 +1477,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="deco deco--stamp">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#lolli"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#cake"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#bow"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#kira"/></svg></span>
       <div class="stamp">
-        <p class="req__lead">1日1回、遊びに来たらスタンプを押してね🍭 その月に20個たまると、今月だけの特別なしぃの壁紙がもらえるよ♡<br><small>カードは毎月1日に新しくなります</small></p>
+        <p class="req__lead">1日1回、遊びに来ると自動でスタンプが押されるよ🍭 その月に20個たまると、今月だけの特別なしぃの壁紙がもらえるよ♡<br><small>カードは毎月1日に新しくなります</small></p>
         <div class="stamp__card">
           <div class="stamp__top">
             <span class="stamp__ttl">しぃの見守り隊<br><b>STAMP CARD</b></span>
@@ -1474,6 +1493,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     </div>
   </section>
 
+  <button class="stamp-toast" id="stamp-toast" type="button" hidden aria-live="polite">
+    <span class="stamp-toast__mark" id="stamp-toast-mark" aria-hidden="true"></span>
+    <span class="stamp-toast__txt"><b id="stamp-toast-ttl"></b><small id="stamp-toast-sub"></small><span class="stamp-toast__bar"><i id="stamp-toast-bar"></i></span></span>
+    <span class="stamp-toast__go" aria-hidden="true">›</span>
+  </button>
   <div class="stamp-modal" id="stamp-modal" hidden role="dialog" aria-modal="true" aria-label="スタンプ20個達成">
     <div class="stamp-modal__in">
       <p class="stamp-modal__ttl">CONGRATULATIONS!</p>
@@ -2064,7 +2088,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var mo=+st.m.slice(5);
     $('stamp-no').textContent=mo+'月';
     $('stamp-count').innerHTML='今月 <b>'+st.d.length+'</b> / '+GOAL+' 個'+(st.total?'<br><small>これまで '+st.total+' 回来てくれたよ♡</small>':'');
-    var b=$('stamp-btn'); b.disabled=done(); b.textContent=full()?'今月はコンプリート♡':done()?'今日はもう押したよ♡':'今日のスタンプを押す';
+    var b=$('stamp-btn'); b.disabled=done(); b.textContent=full()?'今月はコンプリート♡':done()?'今日のスタンプ ゲット♡':'今日のスタンプを押す';
     $('stamp-note').textContent=full()?'来月1日に新しいカードになるよ！':done()?'また明日来てね！':'';
     $('stamp-reward-open').hidden=!st.reward;
     document.querySelectorAll('.quick__dot').forEach(function(d){ d.hidden=done(); });
@@ -2118,14 +2142,48 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       var a=document.createElement('a'); a.href=u; a.download='shii-wallpaper.png'; document.body.appendChild(a); a.click(); a.remove();
     });
   });
-  $('stamp-btn').addEventListener('click',function(){
-    fresh(); if(done()){ render(false); return; }
+  function stamp(){
+    fresh(); if(done()) return false;
     st.d.push(today()); st.last=today(); st.total=(st.total||0)+1;
     var complete=st.d.length===GOAL; if(complete) st.reward=true;
     save(st); render(true);
-    if(complete) setTimeout(openReward,900);
+    return complete?'complete':true;
+  }
+  $('stamp-btn').addEventListener('click',function(){
+    var r=stamp(); if(!r){ render(false); return; }
+    if(r==='complete') setTimeout(openReward,900);
   });
+  // ---- 来たら自動でポンッ：オープニングが明けてから、下から小さなカードで知らせる ----
+  var toast=$('stamp-toast'), tHide=0;
+  function showToast(){
+    var i=st.d.length-1, gold=i===GOAL-1;
+    $('stamp-toast-mark').className='stamp-toast__mark'+(gold?' is-gold':'');
+    $('stamp-toast-mark').innerHTML='<svg viewBox="0 0 24 24"><use href="#'+ICONS[i%10]+'"/></svg>';
+    $('stamp-toast-ttl').textContent=gold?'20個目のスタンプ！':'今日のスタンプ ポンッ♡';
+    $('stamp-toast-sub').innerHTML='今月 <b>'+st.d.length+'</b> / '+GOAL+' 個';
+    var bar=$('stamp-toast-bar'); bar.style.transition='none'; bar.style.width=((st.d.length-1)/GOAL*100)+'%';
+    toast.hidden=false; toast.classList.remove('is-show'); void toast.offsetWidth; toast.classList.add('is-show');
+    bar.style.transition=''; bar.style.width=(st.d.length/GOAL*100)+'%';
+    clearTimeout(tHide); tHide=setTimeout(hideToast,gold?2200:4200);
+  }
+  function hideToast(){ clearTimeout(tHide); toast.classList.remove('is-show'); setTimeout(function(){ if(!toast.classList.contains('is-show')) toast.hidden=true; },400); }
+  toast.addEventListener('click',function(){ hideToast(); var c=document.querySelector('#stamp .stamp__card'); if(c) c.scrollIntoView({behavior:'smooth',block:'center'}); });
+  function autoStamp(){
+    if(document.hidden) return;
+    var r=stamp(); if(!r) return;
+    showToast();
+    if(r==='complete') setTimeout(function(){ hideToast(); openReward(); },1800);
+  }
+  var root=document.documentElement;
+  function afterOpening(fn){
+    if(!root.classList.contains('op') || root.classList.contains('op-in')){ setTimeout(fn,1200); return; }
+    var mo=new MutationObserver(function(){ if(root.classList.contains('op-in')){ mo.disconnect(); setTimeout(fn,1100); } });
+    mo.observe(root,{attributes:true,attributeFilter:['class']});
+  }
   render(false);
+  afterOpening(autoStamp);
+  // 開いたまま日付をまたいだときも、戻ってきたら押す
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) setTimeout(autoStamp,600); });
 })();
 </script>
 <script>
@@ -2212,7 +2270,6 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     var se=document.documentElement.getAttribute('data-season');
     var S={halloween:'<span class="y">TRICK OR TREAT</span> ♡ HAPPY HALLOWEEN',xmas:'<span class="m">MERRY CHRISTMAS</span> ★ すてきな夜を',newyear:'<span class="y">HAPPY NEW YEAR</span> ♡ ことしもよろしくね',valentine:'<span class="w">HAPPY VALENTINE</span> ♡ チョコより甘い時間を',sakura:'<span class="w">SPRING</span> ✿ さくらの季節だよ'};
     if(se&&S[se]) a.push(S[se]);
-    try{ var st=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(!st||st.last!==ymd()) a.push('<span class="m">STAMP</span> 今日のスタンプ まだだよ → 押してね'); }catch(e){}
     // リクエストのお知らせは、今日が歌の配信の日だけ
     if(today && !today.off && /歌|うた|ウタ|カラオケ|リクエスト|sing|karaoke/i.test(today.what||'')) a.push('<span class="m">REQUEST</span> 今日は歌の配信！ 歌ってほしい曲 まってるよ ♪');
     return a;
