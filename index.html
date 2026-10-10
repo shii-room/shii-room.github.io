@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010114500">
+<meta name="build" content="20261010115000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -917,13 +917,14 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* ランクの色（JSで --c1/--c2/--ring を入れる）＋右上の小さな飾り */
   .rank__badge { position: relative; background: radial-gradient(circle at 35% 30%, var(--c1,#FFB3CC), var(--c2,#E0578A)) !important; box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--ring,#F3B7CA), 0 0 var(--glow,0) var(--ring,#F3B7CA) !important; }
   /* ランクの数字：細めのセリフ体イタリックで、白い数字に色つきの影（雑誌のロゴっぽく） */
-  .rank__badge b, .mrank__lv b, .tbadge b { font-family: "Playfair Display", Georgia, serif; font-style: italic; font-weight: 900; letter-spacing: -.02em; line-height: .9;
+  .rank__badge b, .mrank__lv b, .tbadge b, .rank__badge small, .mrank__lv small { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+  .rank__badge b, .mrank__lv b, .tbadge b { font-family: "Playfair Display", "Bodoni 72", Didot, "Times New Roman", serif; font-style: italic; font-weight: 900; letter-spacing: -.02em; line-height: .9;
     color: #fff; text-shadow: 1.5px 1.5px 0 var(--c2,#E0578A), 0 2px 6px rgba(60,20,40,.25); }
-  .rank__badge small, .mrank__lv small { font-family: "Playfair Display", Georgia, serif; font-style: italic; font-weight: 700; letter-spacing: .02em; opacity: .95; }
+  .rank__badge small, .mrank__lv small { font-family: "Playfair Display", "Bodoni 72", Didot, "Times New Roman", serif; font-style: italic; font-weight: 700; letter-spacing: .02em; opacity: .95; }
   .rank__badge small::after, .mrank__lv small::after { content: "."; }
-  .rank__badge b { font-size: 30px; margin-top: -1px; }
+  .rank__badge b { font-size: 34px; margin-top: -1px; }
   .mrank__lv b { font-size: 16px; }
-  .rank__how .tiers li .tbadge b { font-family: "Playfair Display", Georgia, serif; font-style: italic; font-weight: 900; font-size: 16px; }
+  .rank__how .tiers li .tbadge b { font-family: "Playfair Display", "Bodoni 72", Didot, "Times New Roman", serif; font-style: italic; font-weight: 900; font-size: 16px; }
   .tico { position: absolute; top: -7px; right: -8px; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #fff; color: var(--c2,#E0578A); box-shadow: 0 1px 3px rgba(150,70,95,.3); }
   .tico svg { width: 15px; height: 15px; }
   .is-rainbow { background: conic-gradient(from 200deg, #FF9AB8, #FFD27A, #9EE6B8, #8CCBF5, #C9A8FF, #FF9AB8) !important; animation: rb-hue 6s linear infinite; }
