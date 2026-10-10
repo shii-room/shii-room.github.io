@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010111800">
+<meta name="build" content="20261010112200">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -188,7 +188,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .menu.is-open { opacity: 1; visibility: visible; }
   .menu__in { width: var(--wrap); margin-inline: auto; padding-block: 32px 48px; }
   .menu__label { margin: 4px 0 10px; font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .3em; color: var(--rose-deep); }
-  .menu__label + .quick { margin-top: 0; }
+  .menu__label + .quick, .menu__head + .quick { margin-top: 0; }
   .quick--menu { max-width: none; margin-bottom: 28px; }
   .menu__sns { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
   .menu__sns a { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 16px; border-radius: 999px; background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid var(--white); box-shadow: 0 3px 0 #E6A6BE; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .06em; transition: transform .15s, box-shadow .15s; }
@@ -871,21 +871,22 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .mribbon__dots i.is-on { background: #E0578A; transform: scale(1.25); }
   @media (prefers-reduced-motion: reduce) { .mribbon__item { transition: opacity .3s ease; transform: none; } }
   /* メニューの「いまのランク」小さな表示 */
-  .mrank { display: flex; align-items: center; gap: 10px; width: fit-content; min-width: 220px; max-width: 100%; margin: 0 auto 22px; padding: 6px 14px 6px 6px; border-radius: 999px;
+  .menu__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  .menu__head .menu__label { margin: 0; }
+  .mrank { display: flex; align-items: center; gap: 8px; width: fit-content; min-width: 0; max-width: 72%; margin: 0; padding: 4px 12px 4px 4px; border-radius: 999px;
     background: linear-gradient(145deg, #FFFCFD, #FBEAF0); border: 1.5px solid #fff; box-shadow: 0 3px 0 #E6A6BE; color: var(--ink); text-decoration: none; -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s; }
   .mrank:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
   .mrank::after { content: "›"; font-size: 18px; line-height: 1; color: #E8A0B8; }
-  .mrank__lv { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; color: #fff; line-height: 1; font-family: var(--en);
+  .mrank__lv { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: #fff; line-height: 1; font-family: var(--en);
     background: radial-gradient(circle at 35% 30%, #FFB3CC, #E0578A); box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #F3B7CA; }
   .mrank__lv small { font-size: 8px; letter-spacing: .08em; }
-  .mrank__lv b { font-size: 16px; font-weight: 600; }
+  .mrank__lv b { font-size: 14px; font-weight: 600; }
   .mrank[data-lv="5"] .mrank__lv, .mrank[data-lv="6"] .mrank__lv { background: radial-gradient(circle at 35% 30%, #FFF1C2, #E7AE4A); box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #E7BE86; }
   .mrank__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-  .mrank__ttl { font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .04em; color: var(--rose-deep); white-space: nowrap; }
-  .mrank__bar { display: block; width: 100%; min-width: 90px; height: 5px; border-radius: 999px; background: #F8DCE5; overflow: hidden; }
+  .mrank__ttl { font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .04em; color: var(--rose-deep); white-space: nowrap; }
+  .mrank__bar { display: block; width: 100%; min-width: 70px; height: 4px; border-radius: 999px; background: #F8DCE5; overflow: hidden; }
   .mrank__bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #FFB3CC, #EE6F9B); }
   .mrank__xp { flex: none; font-family: var(--en); font-weight: 600; font-size: 11px; color: var(--ink-sub); white-space: nowrap; }
-  .mribbon:not([hidden]) + .mrank { margin-top: -6px; }
   /* 記念日・イベントのカウントダウン（トップ） */
   .count { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; max-width: 420px; margin-top: 14px; padding: 10px 14px 10px 12px; border-radius: 20px;
     background: #FFF8FA; box-shadow: 0 3px 0 #F2C4D4, 0 0 0 1.5px #F6C9D8 inset; color: var(--ink); text-decoration: none; }
@@ -1320,8 +1321,10 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 <nav class="menu" id="menu" aria-label="メニュー">
   <div class="menu__in">
     <div class="mribbon" id="mribbon" hidden><div class="mribbon__track" id="mribbon-track"></div><div class="mribbon__dots" id="mribbon-dots" aria-hidden="true"></div></div>
-    <a class="mrank" id="mrank" href="#rank" aria-label="見守り隊ランクを見る"><span class="mrank__lv"><small>Lv</small><b id="mrank-lv">1</b></span><span class="mrank__body"><span class="mrank__ttl" id="mrank-ttl">見習いさん</span><span class="mrank__bar"><i id="mrank-bar"></i></span></span><span class="mrank__xp" id="mrank-xp"></span></a>
-    <p class="menu__label">メニュー</p>
+    <div class="menu__head">
+      <p class="menu__label">メニュー</p>
+      <a class="mrank" id="mrank" href="#rank" aria-label="見守り隊ランクを見る"><span class="mrank__lv"><small>Lv</small><b id="mrank-lv">1</b></span><span class="mrank__body"><span class="mrank__ttl" id="mrank-ttl">見習いさん</span><span class="mrank__bar"><i id="mrank-bar"></i></span></span><span class="mrank__xp" id="mrank-xp"></span></a>
+    </div>
     <div class="quick quick--menu">
       <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
       <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信予定</a>
