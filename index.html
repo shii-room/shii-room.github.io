@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010165000">
+<meta name="build" content="20261010165500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1198,7 +1198,19 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .cutin__card { position: absolute; right: 4%; top: 50%; width: min(58vw, 340px); margin: 0; transform: translate(80%, -50%) rotate(8deg); animation: ci-card var(--d) cubic-bezier(.2,.9,.3,1) both; z-index: 1; }
   .cutin__card img { display: block; width: 100%; height: auto; border-radius: 14px; border: 5px solid #fff; box-shadow: 0 0 0 3px #C9A8FF, 0 12px 30px rgba(60,10,30,.45), 0 0 40px rgba(255,255,255,.8); }
   @keyframes ci-card { 0%, 8% { transform: translate(80%, -50%) rotate(8deg) scale(.8); opacity: 0; } 22% { transform: translate(0, -62%) rotate(-4deg) scale(1.05); opacity: 1; } 30% { transform: translate(0, -60%) rotate(-3deg) scale(1); } 78% { transform: translate(-4%, -60%) rotate(-3deg); opacity: 1; } 92%, 100% { transform: translate(-30%, -60%) rotate(-3deg); opacity: 0; } }
-  .cutin--rainbow .cutin__txt { top: 64%; }
+  /* しぃ吉：まんなかに大きく「しぃ吉」がドンッ。カードは上に小さく、帯と光線は控えめに */
+  .cutin--rainbow .cutin__band { height: 260px; margin-top: -130px; opacity: .55; }
+  .cutin--rainbow .cutin__rays { filter: saturate(.8); }
+  .cutin--rainbow .cutin__card { left: 50%; right: auto; top: 16%; width: min(46vw, 230px); animation-name: ci-card2; }
+  @keyframes ci-card2 { 0%, 10% { transform: translate(-50%, -40px) rotate(-6deg) scale(.6); opacity: 0; } 24% { transform: translate(-50%, 0) rotate(-4deg) scale(1.05); opacity: 1; } 32%, 82% { transform: translate(-50%, 0) rotate(-4deg) scale(1); opacity: 1; } 96%, 100% { transform: translate(-50%, 0) rotate(-4deg) scale(1); opacity: 0; } }
+  .cutin--rainbow .cutin__txt { left: 0; right: 0; top: 58%; text-align: center; transform: translateY(-50%); animation-name: ci-txt2; font-size: clamp(30px, 8vw, 46px);
+    text-shadow: 3px 0 0 #6B3FA0, -3px 0 0 #6B3FA0, 0 3px 0 #6B3FA0, 0 -3px 0 #6B3FA0, 3px 3px 0 #6B3FA0, -3px -3px 0 #6B3FA0, 3px -3px 0 #6B3FA0, -3px 3px 0 #6B3FA0; }
+  .cutin--rainbow .cutin__txt small { font-size: .5em; color: #fff; }
+  .cutin__big { display: block; margin: 2px 0 8px; font-size: clamp(96px, 30vw, 170px); line-height: 1; letter-spacing: .02em; color: #fff;
+    text-shadow: 5px 0px 0 #6B3FA0, -5px 0px 0 #6B3FA0, 0px 5px 0 #6B3FA0, 0px -5px 0 #6B3FA0, 4px 4px 0 #6B3FA0, -4px -4px 0 #6B3FA0, 4px -4px 0 #6B3FA0, -4px 4px 0 #6B3FA0, 3px 5px 0 #6B3FA0, -3px 5px 0 #6B3FA0, 5px 3px 0 #6B3FA0, -5px 3px 0 #6B3FA0, 8px 9px 0 #3D1F66, 0 0 26px #FF8FB1, 0 0 46px #8CCBF5; }
+  .cutin--rainbow .cutin__txt b { display: block; font-size: .95em; margin: 0; }
+  .cutin--rainbow::before { content: ""; position: absolute; left: 50%; top: 58%; width: 120vw; height: 340px; transform: translate(-50%,-50%); background: radial-gradient(closest-side, rgba(40,10,60,.55), transparent); z-index: 1; animation: ci-dim var(--d) ease both; }
+  @keyframes ci-txt2 { 0%, 14% { transform: translateY(-50%) scale(2.6); opacity: 0; } 24% { transform: translateY(-50%) scale(.92); opacity: 1; } 30%, 84% { transform: translateY(-50%) scale(1); opacity: 1; } 96%, 100% { transform: translateY(-50%) scale(1.15); opacity: 0; } }
   /* ぷちゅん（しぃ吉の前のブラックアウト） */
   .blackout { position: fixed; inset: 0; z-index: 160; pointer-events: none; background: #000; animation: bo-bg 1.9s linear both; }
   .blackout i { position: absolute; left: 0; right: 0; top: 50%; height: 100%; margin-top: -50%; background: #fff; transform-origin: 50% 50%; animation: bo-line .5s cubic-bezier(.6,0,.4,1) both; }
@@ -2636,7 +2648,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var txt=k==='chance'?T[1]+'<b>'+T[2]+'</b>'
       :k==='tease'?'<small>LUCKY…!?</small>大吉<b>…!?</b>'
       :k==='gold'?'<small>LUCKY</small>大吉<b>！！</b>'
-      :'<small>SUPER RARE</small>しぃ吉<b>降臨…！</b>';
+      :'<small>SUPER RARE</small><span class="cutin__big">しぃ吉</span><b>降臨…！</b>';
     el.innerHTML='<i class="cutin__dim"></i>'+(k==='rainbow'?'':'')+'<div class="cutin__band"><i class="cutin__lines"></i></div>'+chara+'<p class="cutin__txt">'+txt+'</p>'
       +(k==='tease'?'<i class="cutin__crack"></i>':'')+'<i class="cutin__flash"></i>';
     document.body.appendChild(el);
