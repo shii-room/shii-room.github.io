@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010170000">
+<meta name="build" content="20261010172500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1204,7 +1204,15 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* しぃ吉：まんなかに大きく「しぃ吉」がドンッ。カードは上に小さく、帯と光線は控えめに */
   .cutin--rainbow .cutin__band { height: 260px; margin-top: -130px; opacity: .55; }
   .cutin--rainbow .cutin__rays { filter: saturate(.8); }
-  .cutin--rainbow .cutin__card { left: 50%; right: auto; top: 11%; width: min(78vw, 400px); animation-name: ci-card2; }
+  .cutin--rainbow .cutin__card { left: 50%; right: auto; top: 11%; width: min(82vw, 420px); animation-name: ci-card2; }
+  /* しぃ吉のイラスト：背景を抜いたしぃの後ろで、虹がゆっくり流れる */
+  .cutin--rainbow .cutin__card::before { content: ""; position: absolute; inset: 0; border-radius: 16px; border: 5px solid #fff;
+    background: linear-gradient(115deg, #FF9AB8, #FFD27A, #9EE6B8, #8CCBF5, #C9A8FF, #FF9AB8, #FFD27A); background-size: 300% 300%; animation: ci-rbbg 3s linear infinite;
+    box-shadow: 0 0 0 3px #C9A8FF, 0 12px 30px rgba(60,10,30,.45), 0 0 40px rgba(255,255,255,.8); }
+  .cutin--rainbow .cutin__card::after { content: ""; position: absolute; inset: 5px; border-radius: 12px; pointer-events: none;
+    background: repeating-linear-gradient(115deg, rgba(255,255,255,0) 0 22px, rgba(255,255,255,.35) 22px 26px); background-size: 200% 200%; animation: ci-rbbg 2s linear infinite; }
+  @keyframes ci-rbbg { to { background-position: 150% 150%; } }
+  .cutin--rainbow .cutin__card img { position: relative; z-index: 1; border: 0; box-shadow: none; border-radius: 0; background: none; filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 2px #fff) drop-shadow(0 4px 10px rgba(80,20,60,.35)); }
   .cutin--rainbow .cutin__txt { top: 66%; }
   @keyframes ci-card2 { 0%, 10% { transform: translate(-50%, -40px) rotate(-6deg) scale(.6); opacity: 0; } 24% { transform: translate(-50%, 0) rotate(-4deg) scale(1.05); opacity: 1; } 32%, 82% { transform: translate(-50%, 0) rotate(-4deg) scale(1); opacity: 1; } 96%, 100% { transform: translate(-50%, 0) rotate(-4deg) scale(1); opacity: 0; } }
   .cutin--rainbow .cutin__txt { left: 0; right: 0; top: 58%; text-align: center; transform: translateY(-50%); animation-name: ci-txt2; font-size: clamp(30px, 8vw, 46px);
