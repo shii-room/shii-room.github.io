@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010101200">
+<meta name="build" content="20261010101800">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -317,7 +317,13 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes bubble-swap { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
   .bubble::after { content: ""; position: absolute; left: 6px; bottom: 4px; width: 16px; height: 16px; background: var(--white); clip-path: polygon(100% 0, 0 100%, 60% 30%); }
   .hero__en { font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .4em; color: var(--ink-sub); }
-  .hero__welcome { margin-top: 10px; font-family: var(--hand); font-size: clamp(18px, 5vw, 22px); letter-spacing: .08em; color: var(--ink-sub); }
+  /* オープニングの「しぃの部屋へようこそ」と同じ手書き文字で、ピンクに白フチ＋両側にちいさなハート */
+  .hero__welcome { margin-top: 10px; font-family: var(--hand); font-size: clamp(20px, 6vw, 28px); line-height: 1.4; letter-spacing: .1em; white-space: nowrap; color: var(--rose-deep);
+    text-shadow: 0 2px 0 #fff, 0 -1px 0 #fff, 2px 0 0 #fff, -2px 0 0 #fff, 0 0 12px rgba(255,170,200,.8); }
+  .hero__welcome::before, .hero__welcome::after { content: "♡"; display: inline-block; margin: 0 .35em; font-size: .6em; vertical-align: .25em; color: #F08AAE; text-shadow: none; animation: welcome-beat 2.4s ease-in-out infinite; }
+  .hero__welcome::after { animation-delay: 1.2s; }
+  @keyframes welcome-beat { 0%, 70%, 100% { transform: scale(1); } 80% { transform: scale(1.35); } 90% { transform: scale(.95); } }
+  @media (prefers-reduced-motion: reduce) { .hero__welcome::before, .hero__welcome::after { animation: none; } }
   .hero__name {
     margin-top: 4px;
     font-family: var(--maru); font-weight: 700; font-size: clamp(72px, 20vw, 120px); line-height: 1.05; letter-spacing: .04em;
@@ -1041,6 +1047,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__text { display: contents; }
     .hero__identity { display: block; grid-area: identity; min-width: 0; text-align: center; }
     .hero__logo { margin-inline: auto; width: min(100%, 320px); }
+    .hero__welcome { font-size: clamp(20px, 2.6vw, 26px); letter-spacing: .06em; }
     .hero__logo img { width: min(100%, 320px); margin-inline: auto; }
     .hero__photo { grid-area: photo; order: 0; width: min(100%, 300px); }
     .hero__text > .hero__btns { grid-area: cta; justify-content: center; }
