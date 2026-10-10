@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010165500">
+<meta name="build" content="20261010170000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1156,6 +1156,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .cutin { position: fixed; inset: 0; z-index: 150; pointer-events: none; overflow: hidden; }
   .cutin__dim { position: absolute; inset: 0; background: rgba(30,8,20,.6); animation: ci-dim var(--d,2s) ease both; }
   .cutin.is-mid .cutin__dim { animation-name: ci-dim-mid; }
+  .cutin--rainbow { z-index: 170; }
+  .cutin--rainbow .cutin__dim { background: #000; animation: ci-dim-from-black var(--d) ease both; }
+  @keyframes ci-dim-from-black { 0% { opacity: 1; background: #000; } 18% { opacity: 1; background: rgba(30,8,20,.6); } 80% { opacity: 1; background: rgba(30,8,20,.6); } 100% { opacity: 0; } }
   @keyframes ci-dim-mid { 0% { opacity: 0; } 12%, 100% { opacity: 1; } }
   @keyframes ci-dim { 0% { opacity: 0; } 12%, 80% { opacity: 1; } 100% { opacity: 0; } }
   .cutin__band { position: absolute; left: -15%; right: -15%; top: 50%; height: 210px; margin-top: -105px; transform: skewY(-9deg) scaleY(0); overflow: hidden; animation: ci-band var(--d,2s) cubic-bezier(.2,.9,.3,1) both;
@@ -1201,7 +1204,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* しぃ吉：まんなかに大きく「しぃ吉」がドンッ。カードは上に小さく、帯と光線は控えめに */
   .cutin--rainbow .cutin__band { height: 260px; margin-top: -130px; opacity: .55; }
   .cutin--rainbow .cutin__rays { filter: saturate(.8); }
-  .cutin--rainbow .cutin__card { left: 50%; right: auto; top: 16%; width: min(46vw, 230px); animation-name: ci-card2; }
+  .cutin--rainbow .cutin__card { left: 50%; right: auto; top: 11%; width: min(78vw, 400px); animation-name: ci-card2; }
+  .cutin--rainbow .cutin__txt { top: 66%; }
   @keyframes ci-card2 { 0%, 10% { transform: translate(-50%, -40px) rotate(-6deg) scale(.6); opacity: 0; } 24% { transform: translate(-50%, 0) rotate(-4deg) scale(1.05); opacity: 1; } 32%, 82% { transform: translate(-50%, 0) rotate(-4deg) scale(1); opacity: 1; } 96%, 100% { transform: translate(-50%, 0) rotate(-4deg) scale(1); opacity: 0; } }
   .cutin--rainbow .cutin__txt { left: 0; right: 0; top: 58%; text-align: center; transform: translateY(-50%); animation-name: ci-txt2; font-size: clamp(30px, 8vw, 46px);
     text-shadow: 3px 0 0 #6B3FA0, -3px 0 0 #6B3FA0, 0 3px 0 #6B3FA0, 0 -3px 0 #6B3FA0, 3px 3px 0 #6B3FA0, -3px -3px 0 #6B3FA0, 3px -3px 0 #6B3FA0, -3px 3px 0 #6B3FA0; }
@@ -1213,13 +1217,13 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes ci-txt2 { 0%, 14% { transform: translateY(-50%) scale(2.6); opacity: 0; } 24% { transform: translateY(-50%) scale(.92); opacity: 1; } 30%, 84% { transform: translateY(-50%) scale(1); opacity: 1; } 96%, 100% { transform: translateY(-50%) scale(1.15); opacity: 0; } }
   /* ぷちゅん（しぃ吉の前のブラックアウト） */
   .blackout { position: fixed; inset: 0; z-index: 160; pointer-events: none; background: #000; animation: bo-bg 1.9s linear both; }
-  .blackout i { position: absolute; left: 0; right: 0; top: 50%; height: 100%; margin-top: -50%; background: #fff; transform-origin: 50% 50%; animation: bo-line .5s cubic-bezier(.6,0,.4,1) both; }
+  .blackout i { position: absolute; inset: 0; background: #fff; transform-origin: 50% 40%; animation: bo-line .5s cubic-bezier(.6,0,.4,1) both; }
   @keyframes bo-line { 0% { transform: scale(1, 1); opacity: 1; } 45% { transform: scale(1, .004); opacity: 1; } 80% { transform: scale(.002, .004); opacity: 1; } 100% { transform: scale(0, 0); opacity: 0; } }
-  @keyframes bo-bg { 0%, 92% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes bo-bg { 0%, 100% { opacity: 1; } }
   /* 画面がドンッとゆれる */
-  body.is-quake { animation: quake .45s cubic-bezier(.36,.07,.19,.97); }
+  .cutin.is-quake { animation: quake .45s cubic-bezier(.36,.07,.19,.97); }
   @keyframes quake { 10%, 90% { transform: translate(-2px, 1px); } 20%, 80% { transform: translate(4px, -2px); } 30%, 50%, 70% { transform: translate(-6px, 2px); } 40%, 60% { transform: translate(6px, -1px); } }
-  @media (prefers-reduced-motion: reduce) { body.is-quake { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .cutin.is-quake { animation: none; } }
   @keyframes ci-flash { 0%, 84% { opacity: 0; } 90% { opacity: .95; } 100% { opacity: 0; } }
   .omi__msg { margin-top: 10px; font-size: 15px; line-height: 1.9; letter-spacing: .04em; color: var(--ink); }
   .omi__lucky { display: grid; gap: 6px; margin: 16px 0 0; padding-top: 14px; border-top: 1px dashed #F3C2D2; text-align: left; font-size: 13px; }
@@ -2637,12 +2641,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function stage(k,last,ch){
     if(k==='black'){   // ぷちゅん：テレビが切れたみたいに一瞬で真っ暗 → 静かな間
       var bk=document.createElement('div'); bk.className='blackout'; bk.setAttribute('aria-hidden','true'); bk.innerHTML='<i></i>';
-      document.body.appendChild(bk); setTimeout(function(){ bk.remove(); },DUR.black+120); return;
+      document.body.appendChild(bk); setTimeout(function(){ bk.remove(); },DUR.black+700); return;
     }
     var el=document.createElement('div'); el.className='cutin cutin--'+k+(last?' is-last':' is-mid'); el.setAttribute('aria-hidden','true');
     el.style.setProperty('--d',DUR[k]+'ms');
     var chara=k==='chance'?'<img class="cutin__chara cutin__chara--mini" src="img/chibi-a.webp" alt="">'
-      :k==='rainbow'?'<div class="cutin__rays"></div><figure class="cutin__card"><img src="img/sing.webp" alt=""></figure>'
+      :k==='rainbow'?'<div class="cutin__rays"></div><figure class="cutin__card"><img src="img/sing-hand.webp" alt=""></figure>'
       :'<img class="cutin__chara" src="img/menu-candy-transparent.webp" alt="">';
     var T=TEASE[ch||0]||TEASE[0];
     var txt=k==='chance'?T[1]+'<b>'+T[2]+'</b>'
@@ -2652,8 +2656,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     el.innerHTML='<i class="cutin__dim"></i>'+(k==='rainbow'?'':'')+'<div class="cutin__band"><i class="cutin__lines"></i></div>'+chara+'<p class="cutin__txt">'+txt+'</p>'
       +(k==='tease'?'<i class="cutin__crack"></i>':'')+'<i class="cutin__flash"></i>';
     document.body.appendChild(el);
-    if(k==='rainbow') setTimeout(function(){ document.body.classList.add('is-quake'); setTimeout(function(){ document.body.classList.remove('is-quake'); },500); },950);
-    if(k==='tease') setTimeout(function(){ document.body.classList.add('is-quake'); setTimeout(function(){ document.body.classList.remove('is-quake'); },350); },DUR.tease*.72);
+    if(k==='rainbow') setTimeout(function(){ el.classList.add('is-quake'); setTimeout(function(){ el.classList.remove('is-quake'); },500); },950);
+    if(k==='tease') setTimeout(function(){ el.classList.add('is-quake'); setTimeout(function(){ el.classList.remove('is-quake'); },350); },DUR.tease*.72);
     setTimeout(function(){ el.remove(); },DUR[k]+80);
   }
   function play(seq,ch){ var t=0; seq.forEach(function(k,i){ setTimeout(function(){ stage(k,i===seq.length-1,ch); },t); t+=DUR[k]; }); }
