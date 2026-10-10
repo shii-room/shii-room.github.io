@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010115000">
+<meta name="build" content="20261010115500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -150,6 +150,14 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .menu-btn .mb-l { display: block; width: 20px; height: 2.4px; border-radius: 2px; background: currentColor; transition: transform .2s, opacity .2s; }
   .menu-btn .mb-t { display: block; margin-top: 1px; font-family: var(--en); font-weight: 600; font-size: 8px; line-height: 1; letter-spacing: .12em; color: var(--rose); }
   .menu-btn .mb-t::before { content: "MENU"; }
+  /* MENUボタンの角の小さなランク（色はランクの色） */
+  .menu-btn .mb-lv { position: absolute; top: -7px; left: -10px; display: inline-flex; align-items: baseline; gap: 1px; padding: 2px 6px 2px 5px; border-radius: 999px; color: #fff; line-height: 1;
+    background: linear-gradient(135deg, var(--c1,#FFB3CC), var(--c2,#E0578A)); box-shadow: 0 0 0 1.5px #fff, 0 2px 4px rgba(150,70,95,.3);
+    font-family: "Playfair Display", "Bodoni 72", Didot, "Times New Roman", serif; font-style: italic; font-weight: 700; font-size: 9px; letter-spacing: 0; font-variant-numeric: lining-nums; pointer-events: none; }
+  .menu-btn .mb-lv b { font-weight: 900; font-size: 12px; text-shadow: 1px 1px 0 var(--c2,#E0578A); }
+  .menu-btn .mb-lv.is-rainbow { background: conic-gradient(from 200deg, #FF9AB8, #FFD27A, #9EE6B8, #8CCBF5, #C9A8FF, #FF9AB8) !important; }
+  .menu-btn .mb-lv.is-pop { animation: mblv-pop .7s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes mblv-pop { 0% { transform: scale(1); } 40% { transform: scale(1.45); } 100% { transform: scale(1); } }
   .menu-btn[aria-expanded="true"] .mb-t::before { content: "CLOSE"; }
   .menu-btn[aria-expanded="true"] .mb-l:nth-child(1) { transform: translateY(6.4px) rotate(45deg); }
   .menu-btn[aria-expanded="true"] .mb-l:nth-child(2) { opacity: 0; }
@@ -1352,7 +1360,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <a href="#omikuji">OMIKUJI</a>
         <a href="#link">外部リンク</a>
       </nav>
-      <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><i class="mb-l"></i><i class="mb-l"></i><i class="mb-l"></i><b class="mb-t" aria-hidden="true"></b></button>
+      <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><i class="mb-l"></i><i class="mb-l"></i><i class="mb-l"></i><b class="mb-t" aria-hidden="true"></b><span class="mb-lv" id="mb-lv" aria-hidden="true" hidden>Lv.<b>1</b></span></button>
     </div>
   </div>
 </header>
@@ -1772,6 +1780,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     card.dataset.lv=r.lv; $('rank-lv').textContent=r.lv; $('rank-ttl').textContent=r.title;
     paint(card.querySelector('.rank__badge'),T); card.style.setProperty('--c2',T.c2); card.style.setProperty('--ring',T.ring);
     $('rank-tier').textContent=T.col;
+    var mb=$('mb-lv'); if(mb){ var was=mb.querySelector('b').textContent; mb.hidden=false; mb.querySelector('b').textContent=r.lv; mb.style.setProperty('--c1',T.c1); mb.style.setProperty('--c2',T.c2); mb.classList.toggle('is-rainbow',!!T.rainbow); if(up&&was!==String(r.lv)){ mb.classList.remove('is-pop'); void mb.offsetWidth; mb.classList.add('is-pop'); } }
     var mr=$('mrank'); if(mr){ mr.dataset.lv=r.lv; $('mrank-lv').textContent=r.lv; $('mrank-ttl').textContent=r.title; $('mrank-bar').style.width=r.pct+'%'; $('mrank-xp').textContent=X.xp+' EXP'; paint(mr.querySelector('.mrank__lv'),T); mr.setAttribute('aria-label','見守り隊ランク Lv'+r.lv+' '+r.title+'（'+X.xp+' EXP）を見る'); }
     $('rank-bar').style.width=r.pct+'%';
     $('rank-sub').innerHTML=r.max?'いま <b>'+X.xp+'</b> EXP・最高レベル！いつもありがとう♡'
