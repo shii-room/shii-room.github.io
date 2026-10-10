@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010130500">
+<meta name="build" content="20261010131500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -156,7 +156,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .hrank:active { transform: scale(.92); }
   .hrank__n { display: flex; flex-direction: column; align-items: center; line-height: .85; font-family: "Playfair Display", "Bodoni 72", Didot, "Times New Roman", serif; font-style: italic; font-variant-numeric: lining-nums; }
   .hrank__n small { font-weight: 700; font-size: 8px; }
-  .hrank__n b { font-weight: 900; font-size: 22px; letter-spacing: -.03em; margin-right: 1px; text-shadow: 1.5px 1.5px 0 color-mix(in srgb, var(--c2,#E0578A) 85%, #000); }
+  .hrank__n b { font-weight: 900; font-size: 22px; letter-spacing: -.03em; margin-right: 1px; color: #fff; text-shadow: 1px 0 0 var(--sk), -1px 0 0 var(--sk), 0 1px 0 var(--sk), 0 -1px 0 var(--sk), 1px 1px 0 var(--sk), -1px -1px 0 var(--sk), 1px -1px 0 var(--sk), -1px 1px 0 var(--sk), 2px 2px 0 var(--sk); }
   .hrank .tico { top: -6px; right: -7px; width: 15px; height: 15px; z-index: 2; transition: opacity .3s; }
   .hrank .tico svg { width: 9px; height: 9px; }
   .hrank.is-pop { animation: mblv-pop .7s cubic-bezier(.3,1.6,.5,1); }
@@ -952,7 +952,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* ランクの数字：細めのセリフ体イタリックで、白い数字に色つきの影（雑誌のロゴっぽく） */
   .rank__badge b, .mrank__lv b, .tbadge b, .rank__badge small, .mrank__lv small { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
   .rank__badge b, .mrank__lv b, .tbadge b { font-family: "Playfair Display", "Bodoni 72", Didot, "Times New Roman", serif; font-style: italic; font-weight: 900; letter-spacing: -.02em; line-height: .9;
-    color: #fff; text-shadow: 1.5px 1.5px 0 var(--c2,#E0578A), 0 2px 6px rgba(60,20,40,.25); }
+    color: #fff; text-shadow: 1px 0 0 var(--sk), -1px 0 0 var(--sk), 0 1px 0 var(--sk), 0 -1px 0 var(--sk), 1px 1px 0 var(--sk), -1px -1px 0 var(--sk), 1px -1px 0 var(--sk), -1px 1px 0 var(--sk), 2px 2px 0 var(--sk), 0 3px 6px rgba(60,20,40,.2); }
+  .rank__badge, .mrank__lv, .hrank, .tbadge, .rank { --sk: var(--stroke, color-mix(in srgb, var(--c2,#E0578A) 78%, #000)); }
+  .rank__badge small, .mrank__lv small { color: #fff; text-shadow: 0 0 2px var(--sk), 0 0 1px var(--sk), 0 0 1px var(--sk); }
   .rank__badge small, .mrank__lv small { font-family: "Playfair Display", "Bodoni 72", Didot, "Times New Roman", serif; font-style: italic; font-weight: 700; letter-spacing: .02em; opacity: .95; }
   .rank__badge small::after, .mrank__lv small::after { content: "."; }
   .rank__badge b { font-size: 34px; margin-top: -1px; }
@@ -963,7 +965,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .is-rainbow { background: conic-gradient(from 200deg, #FF9AB8, #FFD27A, #9EE6B8, #8CCBF5, #C9A8FF, #FF9AB8) !important; animation: rb-hue 6s linear infinite; }
   @keyframes rb-hue { to { filter: hue-rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .is-rainbow { animation: none; } }
-  .rank__tier { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; vertical-align: 2px; background: #fff; color: var(--c2,#E0578A); box-shadow: 0 0 0 1px var(--ring,#F3B7CA) inset; letter-spacing: .04em; }
+  .rank__tier { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; vertical-align: 2px; background: #fff; color: var(--stroke,var(--c2,#E0578A)); box-shadow: 0 0 0 1px var(--ring,#F3B7CA) inset; letter-spacing: .04em; }
   /* キラキラバッジ：上のツヤ＋ときどき光が横切る＋まわりで小さな星がまたたく */
   .rank__badge, .hrank__face--lv, .mrank__lv { isolation: isolate; }
   .rank__badge > small, .rank__badge > b, .hrank__n, .mrank__lv > small, .mrank__lv > b { position: relative; z-index: 2; }
@@ -1793,7 +1795,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var LV=[0,10,40,80,130,180,240,310,390,470,550,640,740,840,940,1050,1170,1290,1410,1540,1670,1800,1940,2090,2230,2380,2540,2700,2860,3020,3190,3360,3540,3720,3900,4090,4270,4470,4660,4860,5060,5260,5470,5680,5890,6110,6330,6550,6770,7000];
   // 肩書きとバッジの色（lv: このレベルから）
   var TIERS=[
-    {lv:1, name:'見習いさん',     col:'ミルク',       c1:'#FFCCDD',c2:'#E27CA2',ring:'#F2B6CB',ico:''},
+    {lv:1, name:'見習いさん',     col:'ミルク',       c1:'#FFFFFF',c2:'#F5E3DA',ring:'#F2C3D3',ico:'',stroke:'#DE7AA0'},
     {lv:5, name:'見守り隊',       col:'いちご',       c1:'#FFB3CC',c2:'#E0578A',ring:'#F3B7CA',ico:'heart'},
     {lv:10,name:'見守り隊エース', col:'ラベンダー',   c1:'#E6DAFF',c2:'#9070D8',ring:'#D3C2F5',ico:'star'},
     {lv:15,name:'親衛隊',         col:'ミント',       c1:'#CDF5E5',c2:'#2FA97C',ring:'#A9E3CC',ico:'bow'},
@@ -1826,6 +1828,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function paint(el,T){
     if(!el) return;
     el.style.setProperty('--c1',T.c1); el.style.setProperty('--c2',T.c2); el.style.setProperty('--ring',T.ring); el.style.setProperty('--glow',T.glow||'0');
+    if(T.stroke) el.style.setProperty('--stroke',T.stroke); else el.style.removeProperty('--stroke');
     el.classList.toggle('is-rainbow',!!T.rainbow);
     var ic=el.querySelector('.tico'); if(!ic){ ic=document.createElement('span'); ic.className='tico'; ic.setAttribute('aria-hidden','true'); el.appendChild(ic); }
     ic.hidden=!T.ico; ic.innerHTML=T.ico?'<svg viewBox="0 0 24 24"><use href="#'+T.ico+'"/></svg>':'';
@@ -1835,7 +1838,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var r=info(X.xp), card=$('rank'); if(!card) return;
     var T=r.tier;
     card.dataset.lv=r.lv; $('rank-lv').textContent=r.lv; $('rank-ttl').textContent=r.title;
-    paint(card.querySelector('.rank__badge'),T); card.style.setProperty('--c2',T.c2); card.style.setProperty('--ring',T.ring);
+    paint(card.querySelector('.rank__badge'),T); card.style.setProperty('--c2',T.c2); card.style.setProperty('--ring',T.ring); if(T.stroke) card.style.setProperty('--stroke',T.stroke); else card.style.removeProperty('--stroke');
     $('rank-tier').textContent=T.col;
     var hr=$('hrank'); if(hr){ var was=$('hrank-lv').textContent; $('hrank-lv').textContent=r.lv; paint(hr,T); hr.setAttribute('aria-label','見守り隊ランク Lv'+r.lv+' '+r.title+'を見る'); if(up&&was!==String(r.lv)){ hr.classList.remove('is-pop'); void hr.offsetWidth; hr.classList.add('is-pop'); } }
     var mr=$('mrank'); if(mr){ mr.dataset.lv=r.lv; $('mrank-lv').textContent=r.lv; $('mrank-ttl').textContent=r.title; $('mrank-bar').style.width=r.pct+'%'; $('mrank-xp').textContent=X.xp+' EXP'; paint(mr.querySelector('.mrank__lv'),T); mr.setAttribute('aria-label','見守り隊ランク Lv'+r.lv+' '+r.title+'（'+X.xp+' EXP）を見る'); }
@@ -1845,7 +1848,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var th='';
     TIERS.forEach(function(t,i){
       var to=TIERS[i+1]?TIERS[i+1].lv-1:50, rng=t.lv===to?'Lv'+t.lv:'Lv'+t.lv+'〜'+to;
-      th+='<li class="'+(i===r.ti?'is-now':i>r.ti?'is-future':'')+'" style="--c1:'+t.c1+';--c2:'+t.c2+';--ring:'+t.ring+'"><span class="tbadge'+(t.rainbow?' is-rainbow':'')+'"><b>'+t.lv+'</b>'+(t.ico?'<span class="tico"><svg viewBox="0 0 24 24"><use href="#'+t.ico+'"/></svg></span>':'')+'</span><span class="tiers__name">'+t.name+'<small>'+t.col+'・'+LV[t.lv-1]+' EXP〜</small></span><span class="tiers__lv">'+rng+'</span></li>';
+      th+='<li class="'+(i===r.ti?'is-now':i>r.ti?'is-future':'')+'" style="--c1:'+t.c1+';--c2:'+t.c2+';--ring:'+t.ring+(t.stroke?';--stroke:'+t.stroke:'')+'"><span class="tbadge'+(t.rainbow?' is-rainbow':'')+'"><b>'+t.lv+'</b>'+(t.ico?'<span class="tico"><svg viewBox="0 0 24 24"><use href="#'+t.ico+'"/></svg></span>':'')+'</span><span class="tiers__name">'+t.name+'<small>'+t.col+'・'+LV[t.lv-1]+' EXP〜</small></span><span class="tiers__lv">'+rng+'</span></li>';
     });
     $('rank-tiers').innerHTML=th; $('rank-tiers-now').textContent=(r.ti+1)+' / '+TIERS.length;
     var t=today(), n=0, html='';
