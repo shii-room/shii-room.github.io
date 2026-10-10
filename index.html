@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010101800">
+<meta name="build" content="20261010102200">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -317,13 +317,19 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes bubble-swap { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
   .bubble::after { content: ""; position: absolute; left: 6px; bottom: 4px; width: 16px; height: 16px; background: var(--white); clip-path: polygon(100% 0, 0 100%, 60% 30%); }
   .hero__en { font-family: var(--en); font-weight: 500; font-size: 12px; letter-spacing: .4em; color: var(--ink-sub); }
-  /* オープニングの「しぃの部屋へようこそ」と同じ手書き文字で、ピンクに白フチ＋両側にちいさなハート */
-  .hero__welcome { margin-top: 10px; font-family: var(--hand); font-size: clamp(20px, 6vw, 28px); line-height: 1.4; letter-spacing: .1em; white-space: nowrap; color: var(--rose-deep);
-    text-shadow: 0 2px 0 #fff, 0 -1px 0 #fff, 2px 0 0 #fff, -2px 0 0 #fff, 0 0 12px rgba(255,170,200,.8); }
-  .hero__welcome::before, .hero__welcome::after { content: "♡"; display: inline-block; margin: 0 .35em; font-size: .6em; vertical-align: .25em; color: #F08AAE; text-shadow: none; animation: welcome-beat 2.4s ease-in-out infinite; }
-  .hero__welcome::after { animation-delay: 1.2s; }
+  /* 「しぃの部屋へようこそ」：背景のピンクに埋もれないよう、濃いピンクのリボン帯に白い手書き文字。両はしは切り込み、中にちいさなハート */
+  .hero__welcome { margin-top: 12px; font-family: var(--hand); font-size: clamp(16px, 5.4vw, 24px); line-height: 1.4; letter-spacing: .1em; white-space: nowrap;
+    filter: drop-shadow(0 3px 0 rgba(176,54,96,.35)); }
+  .hero__welcome span { display: inline-block; padding: 6px 30px 7px; color: #fff;
+    background: linear-gradient(180deg, #F27AA3 0%, #E0578A 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 50%, 100% 100%, 0 100%, 14px 50%);
+            clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 50%, 100% 100%, 0 100%, 14px 50%);
+    text-shadow: 0 1px 0 rgba(150,30,70,.35); }
+  .hero__welcome span::before, .hero__welcome span::after { content: "♡"; display: inline-block; margin: 0 .4em; font-size: .6em; vertical-align: .2em; color: #FFE3EC; animation: welcome-beat 2.4s ease-in-out infinite; }
+  .hero__welcome span::after { animation-delay: 1.2s; }
   @keyframes welcome-beat { 0%, 70%, 100% { transform: scale(1); } 80% { transform: scale(1.35); } 90% { transform: scale(.95); } }
-  @media (prefers-reduced-motion: reduce) { .hero__welcome::before, .hero__welcome::after { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero__welcome span::before, .hero__welcome span::after { animation: none; } }
+  @media (max-width: 359px) { .hero__welcome { letter-spacing: .04em; } .hero__welcome span { padding-inline: 24px; } }
   .hero__name {
     margin-top: 4px;
     font-family: var(--maru); font-weight: 700; font-size: clamp(72px, 20vw, 120px); line-height: 1.05; letter-spacing: .04em;
@@ -1047,7 +1053,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__text { display: contents; }
     .hero__identity { display: block; grid-area: identity; min-width: 0; text-align: center; }
     .hero__logo { margin-inline: auto; width: min(100%, 320px); }
-    .hero__welcome { font-size: clamp(20px, 2.6vw, 26px); letter-spacing: .06em; }
+    .hero__welcome { font-size: clamp(18px, 2.3vw, 23px); letter-spacing: .06em; }
     .hero__logo img { width: min(100%, 320px); margin-inline: auto; }
     .hero__photo { grid-area: photo; order: 0; width: min(100%, 300px); }
     .hero__text > .hero__btns { grid-area: cta; justify-content: center; }
@@ -1214,7 +1220,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <div class="hero__text">
         <div class="hero__identity">
         <p class="hero__en" id="hero-en">SHII</p>
-        <p class="hero__welcome">しぃの部屋へようこそ</p>
+        <p class="hero__welcome"><span>しぃの部屋へようこそ</span></p>
         <h1 class="hero__logo"><button class="hero__logo-button" type="button" aria-label="しぃ"><img src="img/logo.webp" alt="しぃ" width="900" height="558"><span class="hero__logo-effects" aria-hidden="true"></span></button></h1>
         <p class="hero__tag">🌈 ほにゃららLIVERS所属</p>
         </div>
