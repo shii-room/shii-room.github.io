@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010112200">
+<meta name="build" content="20261010114000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -881,7 +881,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     background: radial-gradient(circle at 35% 30%, #FFB3CC, #E0578A); box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #F3B7CA; }
   .mrank__lv small { font-size: 8px; letter-spacing: .08em; }
   .mrank__lv b { font-size: 14px; font-weight: 600; }
-  .mrank[data-lv="5"] .mrank__lv, .mrank[data-lv="6"] .mrank__lv { background: radial-gradient(circle at 35% 30%, #FFF1C2, #E7AE4A); box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #E7BE86; }
+  .mrank__lv { position: relative; background: radial-gradient(circle at 35% 30%, var(--c1,#FFB3CC), var(--c2,#E0578A)) !important; box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px var(--ring,#F3B7CA) !important; }
+  .mrank__lv .tico { top: -5px; right: -6px; width: 15px; height: 15px; }
+  .mrank__lv .tico svg { width: 9px; height: 9px; }
   .mrank__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
   .mrank__ttl { font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .04em; color: var(--rose-deep); white-space: nowrap; }
   .mrank__bar { display: block; width: 100%; min-width: 70px; height: 4px; border-radius: 999px; background: #F8DCE5; overflow: hidden; }
@@ -911,7 +913,32 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     background: radial-gradient(circle at 35% 30%, #FFB3CC, #E0578A); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #F3B7CA; font-family: var(--en); line-height: 1; }
   .rank__badge small { font-size: 10px; letter-spacing: .1em; opacity: .9; }
   .rank__badge b { font-size: 26px; font-weight: 600; }
-  .rank[data-lv="5"] .rank__badge, .rank[data-lv="6"] .rank__badge { background: radial-gradient(circle at 35% 30%, #FFF1C2, #E7AE4A); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #E7BE86, 0 0 16px rgba(231,174,74,.55); }
+  /* ランクの色（JSで --c1/--c2/--ring を入れる）＋右上の小さな飾り */
+  .rank__badge { position: relative; background: radial-gradient(circle at 35% 30%, var(--c1,#FFB3CC), var(--c2,#E0578A)) !important; box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--ring,#F3B7CA), 0 0 var(--glow,0) var(--ring,#F3B7CA) !important; }
+  .rank__badge b, .mrank__lv b, .tbadge b { text-shadow: 0 1px 2px rgba(60,20,40,.28); }
+  .tico { position: absolute; top: -7px; right: -8px; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #fff; color: var(--c2,#E0578A); box-shadow: 0 1px 3px rgba(150,70,95,.3); }
+  .tico svg { width: 15px; height: 15px; }
+  .is-rainbow { background: conic-gradient(from 200deg, #FF9AB8, #FFD27A, #9EE6B8, #8CCBF5, #C9A8FF, #FF9AB8) !important; animation: rb-hue 6s linear infinite; }
+  @keyframes rb-hue { to { filter: hue-rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .is-rainbow { animation: none; } }
+  .rank__tier { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; vertical-align: 2px; background: #fff; color: var(--c2,#E0578A); box-shadow: 0 0 0 1px var(--ring,#F3B7CA) inset; letter-spacing: .04em; }
+  /* ランク一覧 */
+  .tiers { list-style: none; margin-top: 4px; padding: 6px 12px; border-radius: 16px; background: rgba(255,255,255,.7); }
+  .rank__how .tiers li { display: flex; align-items: center; gap: 12px; padding: 8px 4px; border-bottom: 1px dashed #F3C9D7; }
+  .rank__how .tiers li > span.tbadge { flex: none; }
+  .rank__how .tiers li .tbadge b { color: #fff; font-family: var(--en); font-weight: 600; }
+  .rank__how .tiers li .tico { flex: none; }
+  .tiers li:last-child { border-bottom: 0; }
+  .tiers li.is-future { opacity: .55; }
+  .tiers li.is-now { margin: 2px -6px; padding: 8px 10px; border-radius: 12px; border-bottom-color: transparent; background: #fff; box-shadow: 0 0 0 1.5px var(--ring,#F3B7CA) inset; }
+  .tbadge { position: relative; flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: #fff; font-family: var(--en); font-size: 13px;
+    background: radial-gradient(circle at 35% 30%, var(--c1), var(--c2)); box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px var(--ring); }
+  .tbadge .tico { top: -5px; right: -7px; width: 16px; height: 16px; }
+  .tbadge .tico svg { width: 10px; height: 10px; }
+  .tiers__name { flex: 1; min-width: 0; font-family: var(--maru); font-weight: 700; font-size: 14px; color: var(--ink); }
+  .tiers__name small { display: block; font-weight: 500; font-size: 11px; color: var(--ink-sub); }
+  .tiers__lv { flex: none; font-family: var(--en); font-weight: 600; font-size: 12px; color: var(--rose); }
+  .tiers li.is-now .tiers__lv::after { content: "いまここ"; display: block; font-family: var(--maru); font-size: 10px; color: var(--rose-deep); text-align: right; }
   .rank__body { flex: 1; min-width: 0; }
   .rank__cap { font-size: 11px; letter-spacing: .12em; color: var(--ink-sub); }
   .rank__ttl { margin-top: 1px; font-family: var(--maru); font-weight: 700; font-size: 18px; letter-spacing: .06em; color: var(--rose-deep); }
@@ -937,7 +964,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .rank__how li.is-done span { color: var(--ink-sub); }
   .rank__note { margin-top: 6px; font-size: 11px; color: var(--ink-sub); text-align: center; }
   .stamp-toast__mark.is-xp { background: radial-gradient(circle at 35% 30%, #D9C8FF, #9B7BE0); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #D3C2F5; }
-  .stamp-toast__mark.is-up { background: radial-gradient(circle at 35% 30%, #FFF1C2, #E7AE4A); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #E7BE86, 0 0 14px rgba(231,174,74,.6); }
+  .stamp-toast__mark.is-tier { background: radial-gradient(circle at 35% 30%, var(--c1,#FFF1C2), var(--c2,#E7AE4A)); box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--ring,#E7BE86), 0 0 14px var(--ring,#E7BE86); }
   .stamp-toast__txt small em { font-style: normal; color: #8C6BD6; font-weight: 700; }
   /* 自動スタンプのお知らせ（下からふわっと出て、スタンプがポンッ） */
   .stamp-toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 95; width: min(330px, calc(100% - 32px));
@@ -1260,6 +1287,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="crown" viewBox="0 0 24 24"><path fill="currentColor" d="M3 8l4.5 4L12 4l4.5 8L21 8l-1.6 10H4.6z"/><rect x="4.6" y="19" width="14.8" height="2.4" rx="1.2" fill="currentColor"/></symbol>
+  <symbol id="shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l8 3.2v6.1c0 5-3.4 9-8 10.7-4.6-1.7-8-5.7-8-10.7V5.2z"/><path fill="#fff" opacity=".85" d="M12 7.2l1.4 2.9 3.2.4-2.3 2.2.6 3.1L12 14.3l-2.9 1.5.6-3.1-2.3-2.2 3.2-.4z"/></symbol>
+  <symbol id="wing" viewBox="0 0 24 24"><path fill="currentColor" d="M22 5c-5 .4-9 2.6-11.6 6.4C8.6 14 7 15.6 3 16.4c2 2.4 5.6 3.2 8.8 2 3.8-1.4 5.6-4.4 6.6-7.6.8-2.4 2-4.4 3.6-5.8z"/><path fill="#fff" opacity=".7" d="M16.5 8.8c-2 .9-3.6 2.4-4.8 4.4 1.8-.6 3.4-1.8 4.8-4.4z"/></symbol>
   <symbol id="heart" viewBox="0 0 24 22"><path fill="currentColor" d="M12 21.5S0 14.2 0 6.6A6.3 6.3 0 0 1 12 3.9 6.3 6.3 0 0 1 24 6.6c0 7.6-12 14.9-12 14.9z"/></symbol>
   <symbol id="kira" viewBox="0 0 20 20"><path fill="currentColor" d="M10 0c.6 5.2 4.8 9.4 10 10-5.2.6-9.4 4.8-10 10-.6-5.2-4.8-9.4-10-10C5.2 9.4 9.4 5.2 10 0z"/></symbol>
   <symbol id="note1" viewBox="0 0 24 24"><path fill="currentColor" d="M10 3v11.55A4 4 0 1 0 12 18V7h6V3z"/></symbol>
@@ -1615,7 +1645,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <div class="rank__badge" aria-hidden="true"><small>Lv</small><b id="rank-lv">1</b></div>
           <div class="rank__body">
             <p class="rank__cap">見守り隊ランク</p>
-            <p class="rank__ttl" id="rank-ttl">見習いさん</p>
+            <p class="rank__ttl"><span id="rank-ttl">見習いさん</span><span class="rank__tier" id="rank-tier"></span></p>
             <div class="rank__bar"><i id="rank-bar"></i></div>
             <p class="rank__sub" id="rank-sub"></p>
           </div>
@@ -1624,6 +1654,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <summary>EXPのもらい方<small id="rank-today"></small></summary>
           <ul id="rank-list"></ul>
           <p class="rank__note">EXPはこのスマホ（ブラウザ）に記録されます。毎日のものは1日1回までです。</p>
+        </details>
+        <details class="rank__how">
+          <summary>ランク一覧<small id="rank-tiers-now"></small></summary>
+          <ul class="tiers" id="rank-tiers"></ul>
+          <p class="rank__note">レベルはLv50まで。5レベルごとに肩書きとバッジの色が変わります。</p>
         </details>
         <div class="stamp__card">
           <div class="stamp__top">
@@ -1680,7 +1715,20 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 (function(){
   // ---- 見守り隊ランク：サイトの機能を使うとEXPがたまる（この端末に保存） ----
   var KEY='shii_xp';
-  var RANKS=[[0,'見習いさん'],[60,'見守り隊'],[200,'見守り隊エース'],[450,'親衛隊'],[900,'親衛隊長'],[1600,'伝説の見守り隊']];
+  // レベル：Lv1〜50（その レベルになるのに必要な合計EXP）
+  var LV=[0,10,40,80,130,180,240,310,390,470,550,640,740,840,940,1050,1170,1290,1410,1540,1670,1800,1940,2090,2230,2380,2540,2700,2860,3020,3190,3360,3540,3720,3900,4090,4270,4470,4660,4860,5060,5260,5470,5680,5890,6110,6330,6550,6770,7000];
+  // 肩書きとバッジの色（lv: このレベルから）
+  var TIERS=[
+    {lv:1, name:'見習いさん',     col:'ミルク',       c1:'#FFE6EE',c2:'#F09BB9',ring:'#F6C9D8',ico:''},
+    {lv:5, name:'見守り隊',       col:'いちご',       c1:'#FFB3CC',c2:'#E0578A',ring:'#F3B7CA',ico:'heart'},
+    {lv:10,name:'見守り隊エース', col:'ラベンダー',   c1:'#E6DAFF',c2:'#9070D8',ring:'#D3C2F5',ico:'star'},
+    {lv:15,name:'親衛隊',         col:'ミント',       c1:'#CDF5E5',c2:'#2FA97C',ring:'#A9E3CC',ico:'bow'},
+    {lv:20,name:'親衛隊エース',   col:'ソーダ',       c1:'#D2EDFF',c2:'#3787CC',ring:'#A9D6F5',ico:'kira'},
+    {lv:25,name:'親衛隊長',       col:'ゴールド',     c1:'#FFF1C2',c2:'#DC9A33',ring:'#E7BE86',ico:'crown',glow:'12px'},
+    {lv:30,name:'しぃの騎士',     col:'ローズゴールド',c1:'#FFE2D8',c2:'#C26652',ring:'#E8B4A6',ico:'shield',glow:'12px'},
+    {lv:40,name:'しぃの守護天使', col:'パール',       c1:'#FFFFFF',c2:'#A996C4',ring:'#E6DDF0',ico:'wing',glow:'16px'},
+    {lv:50,name:'伝説の見守り隊', col:'虹色',         c1:'#FFD27A',c2:'#C9A8FF',ring:'#F7D2E4',ico:'crown',glow:'18px',rainbow:true}
+  ];
   // 毎日1回もらえるもの（key: [EXP, 説明]）。complete は月に1回、event は記念日に1回
   var WAYS={visit:[10,'遊びに来る（スタンプ）'],watch:[5,'「配信を見にいく」を押す'],omikuji:[5,'おみくじを引く'],req:[15,'歌のリクエストを送る'],msg:[15,'メッセージを送る'],song:[3,'歌える曲リストでコピーする'],bonus:[20,'スタンプ5個ごとのボーナス'],complete:[50,'20個コンプリート（月1回）']};
   var DAILY=['visit','watch','omikuji','req','msg','song'];
@@ -1694,18 +1742,37 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   function save(){ try{ localStorage.setItem(KEY,JSON.stringify(X)); }catch(e){} }
   var X=load(); save();
-  function rankOf(xp){ var i=0; while(i<RANKS.length-1 && xp>=RANKS[i+1][0]) i++; return i; }
+  function tierOf(lv){ var i=0; while(i<TIERS.length-1 && lv>=TIERS[i+1].lv) i++; return i; }
   function info(xp){
-    var i=rankOf(xp), cur=RANKS[i][0], nx=RANKS[i+1];
-    return {lv:i+1, title:RANKS[i][1], next:nx?nx[1]:null, need:nx?nx[0]-xp:0, pct:nx?(xp-cur)/(nx[0]-cur)*100:100};
+    var lv=1; while(lv<50 && xp>=LV[lv]) lv++;
+    var ti=tierOf(lv), T=TIERS[ti], nt=TIERS[ti+1]||null, max=lv>=50;
+    return {lv:lv, ti:ti, tier:T, title:T.name, need:max?0:LV[lv]-xp, pct:max?100:(xp-LV[lv-1])/(LV[lv]-LV[lv-1])*100, nextTier:nt, max:max};
+  }
+  // バッジに色と飾りをつける
+  function paint(el,T){
+    if(!el) return;
+    el.style.setProperty('--c1',T.c1); el.style.setProperty('--c2',T.c2); el.style.setProperty('--ring',T.ring); el.style.setProperty('--glow',T.glow||'0');
+    el.classList.toggle('is-rainbow',!!T.rainbow);
+    var ic=el.querySelector('.tico'); if(!ic){ ic=document.createElement('span'); ic.className='tico'; ic.setAttribute('aria-hidden','true'); el.appendChild(ic); }
+    ic.hidden=!T.ico; ic.innerHTML=T.ico?'<svg viewBox="0 0 24 24"><use href="#'+T.ico+'"/></svg>':'';
   }
   var $=function(id){ return document.getElementById(id); };
   function render(up){
     var r=info(X.xp), card=$('rank'); if(!card) return;
+    var T=r.tier;
     card.dataset.lv=r.lv; $('rank-lv').textContent=r.lv; $('rank-ttl').textContent=r.title;
-    var mr=$('mrank'); if(mr){ mr.dataset.lv=r.lv; $('mrank-lv').textContent=r.lv; $('mrank-ttl').textContent=r.title; $('mrank-bar').style.width=r.pct+'%'; $('mrank-xp').textContent=X.xp+' EXP'; mr.setAttribute('aria-label','見守り隊ランク Lv'+r.lv+' '+r.title+'（'+X.xp+' EXP）を見る'); }
+    paint(card.querySelector('.rank__badge'),T); card.style.setProperty('--c2',T.c2); card.style.setProperty('--ring',T.ring);
+    $('rank-tier').textContent=T.col;
+    var mr=$('mrank'); if(mr){ mr.dataset.lv=r.lv; $('mrank-lv').textContent=r.lv; $('mrank-ttl').textContent=r.title; $('mrank-bar').style.width=r.pct+'%'; $('mrank-xp').textContent=X.xp+' EXP'; paint(mr.querySelector('.mrank__lv'),T); mr.setAttribute('aria-label','見守り隊ランク Lv'+r.lv+' '+r.title+'（'+X.xp+' EXP）を見る'); }
     $('rank-bar').style.width=r.pct+'%';
-    $('rank-sub').innerHTML='いま <b>'+X.xp+'</b> EXP'+(r.next?'・あと '+r.need+' で「'+r.next+'」':'・最高ランク！いつもありがとう♡');
+    $('rank-sub').innerHTML=r.max?'いま <b>'+X.xp+'</b> EXP・最高レベル！いつもありがとう♡'
+      :'次のレベルまで あと <b>'+r.need+'</b> EXP'+(r.nextTier?'<br>Lv'+r.nextTier.lv+' で「'+r.nextTier.name+'」':'');
+    var th='';
+    TIERS.forEach(function(t,i){
+      var to=TIERS[i+1]?TIERS[i+1].lv-1:50, rng=t.lv===to?'Lv'+t.lv:'Lv'+t.lv+'〜'+to;
+      th+='<li class="'+(i===r.ti?'is-now':i>r.ti?'is-future':'')+'" style="--c1:'+t.c1+';--c2:'+t.c2+';--ring:'+t.ring+'"><span class="tbadge'+(t.rainbow?' is-rainbow':'')+'"><b>'+t.lv+'</b>'+(t.ico?'<span class="tico"><svg viewBox="0 0 24 24"><use href="#'+t.ico+'"/></svg></span>':'')+'</span><span class="tiers__name">'+t.name+'<small>'+t.col+'・'+LV[t.lv-1]+' EXP〜</small></span><span class="tiers__lv">'+rng+'</span></li>';
+    });
+    $('rank-tiers').innerHTML=th; $('rank-tiers-now').textContent=(r.ti+1)+' / '+TIERS.length;
     var t=today(), n=0, html='';
     var cnt=0; try{ var sp=JSON.parse(localStorage.getItem('shii_stamp')||'null'); if(sp&&sp.m===t.slice(0,7)) cnt=sp.d.length; }catch(e){}
     DAILY.concat(['bonus','complete']).forEach(function(k){
@@ -1728,8 +1795,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function next(){
     if(busy||!queue.length) return; busy=true;
     var q=queue.shift(), t=el(), m=t.querySelector('.stamp-toast__mark'), bar=t.querySelector('.stamp-toast__bar i');
-    m.className='stamp-toast__mark '+(q.up?'is-up':'is-xp');
-    m.innerHTML='<svg viewBox="0 0 24 24"><use href="#'+(q.up?'star':'kira')+'"/></svg>';
+    m.className='stamp-toast__mark '+(q.up?'is-tier':'is-xp'); m.removeAttribute('style');
+    if(q.T){ m.style.setProperty('--c1',q.T.c1); m.style.setProperty('--c2',q.T.c2); m.style.setProperty('--ring',q.T.ring); }
+    m.innerHTML='<svg viewBox="0 0 24 24"><use href="#'+(q.icon||'kira')+'"/></svg>';
     t.querySelector('b').textContent=q.ttl; t.querySelector('small').innerHTML=q.sub;
     bar.style.transition='none'; bar.style.width=q.from+'%';
     t.hidden=false; t.classList.remove('is-show'); void t.offsetWidth; t.classList.add('is-show');
@@ -1742,11 +1810,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var t=today(), mark=opt.mark||((k==='complete')?t.slice(0,7):t);
     if(X.got[k]===mark) return 0;
     var before=info(X.xp); X.got[k]=mark; X.xp+=w[0]; save();
-    var after=info(X.xp), up=after.lv>before.lv;
+    var after=info(X.xp), up=after.lv>before.lv, rankUp=after.ti>before.ti;
     render(up);
     var show=function(){
-      if(!opt.silent) queue.push({ttl:'+'+w[0]+' EXP '+(opt.label||''), sub:'<em>Lv'+after.lv+' '+after.title+'</em>'+(after.next?'・あと '+after.need:''), from:up?0:before.pct, to:after.pct});
-      if(up) queue.push({up:true, ttl:'ランクアップ！「'+after.title+'」', sub:'Lv'+after.lv+' になったよ♡ いつもありがとう', from:0, to:after.pct});
+      if(!opt.silent) queue.push({ttl:'+'+w[0]+' EXP '+(opt.label||''), sub:'<em>Lv'+after.lv+' '+after.title+'</em>'+(after.max?'':'・あと '+after.need), from:up?0:before.pct, to:after.pct});
+      if(rankUp) queue.push({up:true, T:after.tier, icon:after.tier.ico||'star', ttl:'ランクアップ！「'+after.title+'」', sub:'Lv'+after.lv+'・バッジが'+after.tier.col+'になったよ♡', from:0, to:after.pct});
+      else if(up) queue.push({up:true, T:after.tier, icon:'star', ttl:'レベルアップ！ Lv'+after.lv, sub:after.max?'最高レベル！':'次のレベルまで あと '+after.need+' EXP', from:0, to:after.pct});
       next();
     };
     if(opt.delay) setTimeout(show,opt.delay); else show();
