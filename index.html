@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010094000">
+<meta name="build" content="20261010094500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -926,7 +926,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   html.op:not(.op-in) .header .logo, html.op:not(.op-in) .header .nav, html.op:not(.op-in) .header .menu-btn { filter: brightness(.35) saturate(.7); }
   html.op:not(.op-in) .ticker { box-shadow: 0 0 10px rgba(255,111,168,.65), 0 0 22px rgba(255,111,168,.35), 0 0 0 1px rgba(255,170,200,.6); }
   html.op:not(.op-in) .ticker__txt { text-shadow: 0 0 4px #FF6FA8, 0 0 12px rgba(255,111,168,.95); }
-  /* オープニング中の電光掲示板：流さずにまんなかで「SHII'S ROOM → しぃ どこかな… → みつけた♡」 */
+  /* オープニング中の電光掲示板：流さずにまんなかで「SHII'S ROOM → WHERE IS SHII... → FOUND YOU ♡」 */
   .ticker__txt.is-op { left: 50%; transform: translate(-50%, -50%); transition: opacity .4s ease; }
   .ticker__txt.op-flick { animation: tk-flick 1.6s steps(1, end) both; }
   @keyframes tk-flick { 0% { opacity: 0; } 8% { opacity: 1; } 14% { opacity: .1; } 22% { opacity: 1; } 30% { opacity: .2; } 34% { opacity: 1; } 100% { opacity: 1; } }
@@ -2207,8 +2207,8 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     return a;
   }
   // ---- オープニング中だけの演出：流さずに、まんなかで物語を見せる ----
-  // 0秒「SHII'S ROOM」がネオンみたいにチカチカ点灯 → 3秒 幕が開いてライトが探す間「しぃ どこかな…」
-  // → 7.2秒 顔でライトが止まったら「みつけた ♡」 → 明るくなったら、いつものお知らせが流れ始める
+  // 0秒「SHII'S ROOM」がネオンみたいにチカチカ点灯 → 3秒 幕が開いてライトが探す間「WHERE IS SHII...」
+  // → 7.2秒 顔でライトが止まったら「FOUND YOU ♡」 → 明るくなったら、いつものお知らせが流れ始める
   var root=document.documentElement, opT=[], opOn=false;
   function inOpening(){ return root.classList.contains('op') && !root.classList.contains('op-in'); }
   function opStep(cls,html){ t.className='ticker__txt is-op '+cls; t.innerHTML=html; }
@@ -2216,8 +2216,8 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     if(opOn) return; opOn=true;
     var now=performance.now(), at=function(ms,fn){ opT.push(setTimeout(fn,Math.max(0,ms-now))); };
     at(0,function(){ opStep('op-flick','<span class="w">SHII\u2019S ROOM</span>'); });
-    at(3000,function(){ opStep('op-search','しぃ どこかな<span class="op-dots"><i>.</i><i>.</i><i>.</i></span>'); });
-    at(7200,function(){ opStep('op-found','<span class="y">みつけた ♡</span>'); });
+    at(3000,function(){ opStep('op-search','WHERE IS SHII<span class="op-dots"><i>.</i><i>.</i><i>.</i></span>'); });
+    at(7200,function(){ opStep('op-found','<span class="y">FOUND YOU ♡</span>'); });
   }
   function opEnd(){
     opT.forEach(clearTimeout); opT=[];
