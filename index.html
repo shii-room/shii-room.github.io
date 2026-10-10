@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010133500">
+<meta name="build" content="20261010134500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1476,7 +1476,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="hero__in">
       <figure class="hero__photo">
         <span class="tilt"><span class="floater"><span class="holo"><img src="img/main.webp" fetchpriority="high" alt="ケーキの上に座るメイド服のしぃ" width="900" height="1273"><span class="sig" style="left:57.778%;top:77.219%;width:41.778%;height:22.467%" aria-hidden="true"><span class="sig__ink"></span><svg class="sig__star"><use href="#kira"/></svg><svg class="sig__star s2"><use href="#kira"/></svg></span></span></span></span>
-        <p class="bubble" id="bubble" role="button" tabindex="0" aria-label="しぃのひとこと"><svg class="bubble__bg" viewBox="0 0 200 120" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="bbg" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" class="bbg1"/><stop offset="1" class="bbg2"/></linearGradient></defs><path class="bb-out" d="M52.5 98.3Q30 108 5 117Q17 100 22.2 83.7A95 50 0 1 1 52.5 98.3Z"/><path class="bb-mid" d="M52.5 98.3Q30 108 5 117Q17 100 22.2 83.7A95 50 0 1 1 52.5 98.3Z"/><path class="bb-fill" d="M52.5 98.3Q30 108 5 117Q17 100 22.2 83.7A95 50 0 1 1 52.5 98.3Z"/></svg><span class="bubble__t" id="bubble-t">来てくれて<br>ありがとう！</span></p>
+        <p class="bubble" id="bubble" role="button" tabindex="0" aria-label="しぃのひとこと"><svg class="bubble__bg" viewBox="0 0 200 120" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="bbg" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" class="bbg1"/><stop offset="1" class="bbg2"/></linearGradient></defs><path class="bb-out bb-p" d="M52.5 98.3Q30 108 5 117Q17 100 22.2 83.7A95 50 0 1 1 52.5 98.3Z"/><path class="bb-mid bb-p" d="M52.5 98.3Q30 108 5 117Q17 100 22.2 83.7A95 50 0 1 1 52.5 98.3Z"/><path class="bb-fill bb-p" d="M52.5 98.3Q30 108 5 117Q17 100 22.2 83.7A95 50 0 1 1 52.5 98.3Z"/></svg><span class="bubble__t" id="bubble-t">来てくれて<br>ありがとう！</span></p>
         <span class="floaty f1" aria-hidden="true"><svg><use href="#heart"/></svg></span>
         <span class="floaty f2 floaty--w" aria-hidden="true"><svg><use href="#heart"/></svg></span>
         <span class="floaty f3" aria-hidden="true"><svg><use href="#heart"/></svg></span>
@@ -2573,7 +2573,24 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     if(it.rank&&it.T){ b.style.setProperty('--bb1',it.T.c1); b.style.setProperty('--bb2',it.T.c2); b.style.setProperty('--bbr',it.T.ring); b.style.setProperty('--bbs',it.T.stroke||'color-mix(in srgb, '+it.T.c2+' 75%, #000)'); }
     tx.classList.remove('is-swap'); void tx.offsetWidth; tx.classList.add('is-swap');
   }
-  function next(){ lines=build(); i=(i+1)%lines.length; show(lines[i]); }
+  // しっぽは、吹き出しの大きさや位置が変わっても、いつもしぃの口元の方を向くように描き直す
+  var MOUTH={x:.53,y:.265};   // イラストの中の口の位置（横・縦の割合）
+  function aim(){
+    var img=document.querySelector('.hero__photo img'), svg=b.querySelector('.bubble__bg'); if(!img||!svg) return;
+    var ir=img.getBoundingClientRect(), br=b.getBoundingClientRect(), w=b.offsetWidth, h=b.offsetHeight; if(!w||!h||!ir.width) return;
+    var mx=ir.left+ir.width*MOUTH.x, my=ir.top+ir.height*MOUTH.y, cx=br.left+br.width/2, cy=br.top+br.height/2;
+    var rot=-8*Math.PI/180, dx=mx-cx, dy=my-cy;                       // 吹き出しは8°傾いているので、その分もどす
+    var lx=dx*Math.cos(rot)-dy*Math.sin(rot), ly=dx*Math.sin(rot)+dy*Math.cos(rot);
+    var vx=lx*200/w, vy=ly*120/h, a=Math.atan2(vy/50, vx/95);          // だ円の角度に直す
+    var X=function(t,r){ return (100+(95+(r||0))*Math.cos(t)).toFixed(1); }, Y=function(t,r){ return (55+(50+(r||0))*Math.sin(t)).toFixed(1); };
+    var d=.26, len=Math.min(30, Math.max(18, Math.hypot(vx,vy)*.25));
+    var b1=a-d, b2=a+d;
+    var path='M'+X(b1)+' '+Y(b1)+'Q'+X(a-.05,len*.45)+' '+Y(a-.05,len*.45)+' '+X(a,len)+' '+Y(a,len)+'Q'+X(a+.08,len*.4)+' '+Y(a+.08,len*.4)+' '+X(b2)+' '+Y(b2)+'A95 50 0 1 1 '+X(b1)+' '+Y(b1)+'Z';
+    Array.prototype.forEach.call(svg.querySelectorAll('.bb-p'),function(p){ p.setAttribute('d',path); });
+  }
+  function next(){ lines=build(); i=(i+1)%lines.length; show(lines[i]); requestAnimationFrame(aim); }
+  window.addEventListener('resize',function(){ requestAnimationFrame(aim); });
+  window.addEventListener('load',aim); setTimeout(aim,300);
   function loop(){ clearInterval(auto); auto=setInterval(function(){ if(!document.hidden) next(); },6500); }
   // オープニングが明けて、スタンプのお知らせが出たあとに最初のランクのセリフ
   var root=document.documentElement;
