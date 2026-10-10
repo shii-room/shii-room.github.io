@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010125500">
+<meta name="build" content="20261010130500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -132,22 +132,25 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--maru); font-weight: 700; font-size: 17px; letter-spacing: .08em; color: var(--ink); }
   .logo img { width: 34px; height: 34px; }
   /* 左上：見守り隊ランク（ランクの色の丸バッジ。タップでランク欄へ） */
-  .hrank { position: relative; flex: none; display: block; width: 36px; height: 36px; border-radius: 50%; color: #fff; text-decoration: none; -webkit-tap-highlight-color: transparent; perspective: 240px;
+  .hrank { position: relative; flex: none; display: block; width: 36px; height: 36px; border-radius: 50%; color: #fff; text-decoration: none; -webkit-tap-highlight-color: transparent; perspective: 900px;
     box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px var(--ring,#F6C9D8), 0 0 var(--glow,0) var(--ring,#F6C9D8); transition: transform .15s, box-shadow .6s; }
   .hrank.is-rainbow { background: none !important; animation: none; }
   /* 表：しぃのアイコン ／ 裏：レベル。ふだんは裏（レベル）を見せる */
-  .hrank__card { position: absolute; inset: 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transform: rotateY(180deg); }
-  .hrank__face { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 50%; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+  .hrank__card { position: absolute; inset: 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transform: rotateY(180deg); will-change: transform; }
+  .hrank__face { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 50%; -webkit-backface-visibility: hidden; backface-visibility: hidden; transform: translateZ(.1px); }
+  .hrank__face--icon img { border-radius: 50%; }
   .hrank__face--icon img { display: block; width: 100%; height: 100%; }
-  .hrank__face--lv { transform: rotateY(180deg); background: radial-gradient(circle at 35% 30%, var(--c1,#FFE6EE), var(--c2,#F09BB9)); }
+  .hrank__face--lv { transform: rotateY(180deg) translateZ(.1px); background: radial-gradient(circle at 35% 30%, var(--c1,#FFE6EE), var(--c2,#F09BB9)); }
   .hrank.is-rainbow .hrank__face--lv { background: conic-gradient(from 200deg, #FF9AB8, #FFD27A, #9EE6B8, #8CCBF5, #C9A8FF, #FF9AB8); animation: rb-hue 6s linear infinite; }
   /* オープニング中はアイコン → 明るくなったらクルクル回ってレベルに */
   html.op:not(.op-in) .hrank__card, .hrank.is-spin-wait:not(.is-spin) .hrank__card { transform: none; }
   html.op:not(.op-in) .hrank { box-shadow: 0 0 0 2px #fff; }
   html.op:not(.op-in) .hrank .tico { opacity: 0; }
-  .hrank.is-spin .hrank__card { animation: hrank-spin 1.7s cubic-bezier(.25,.7,.2,1) .4s both; }
-  .hrank.is-spin .tico { animation: tico-in .4s ease 2s both; }
-  @keyframes hrank-spin { from { transform: rotateY(0); } to { transform: rotateY(1260deg); } }
+  .hrank.is-spin .hrank__card { animation: hrank-spin 2s cubic-bezier(.45,.05,.2,1) 1s both; }
+  .hrank.is-spin { animation: hrank-hop 2s ease-in-out 1s both; }
+  .hrank.is-spin .tico { animation: tico-in .4s ease 2.9s both; }
+  @keyframes hrank-spin { from { transform: rotateY(0); } to { transform: rotateY(900deg); } }
+  @keyframes hrank-hop { 0%, 100% { transform: none; } 45% { transform: translateY(-3px) scale(1.12); } 85% { transform: scale(.96); } }
   @keyframes tico-in { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .hrank.is-spin .hrank__card, .hrank.is-spin .tico { animation: none; } }
   .hrank:active { transform: scale(.92); }
@@ -955,12 +958,42 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .rank__badge b { font-size: 34px; margin-top: -1px; }
   .mrank__lv b { font-size: 16px; }
   .rank__how .tiers li .tbadge b { font-family: "Playfair Display", "Bodoni 72", Didot, "Times New Roman", serif; font-style: italic; font-weight: 900; font-size: 16px; }
-  .tico { position: absolute; top: -7px; right: -8px; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #fff; color: var(--c2,#E0578A); box-shadow: 0 1px 3px rgba(150,70,95,.3); }
+  .tico { position: absolute; z-index: 3; top: -7px; right: -8px; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #fff; color: var(--c2,#E0578A); box-shadow: 0 1px 3px rgba(150,70,95,.3); }
   .tico svg { width: 15px; height: 15px; }
   .is-rainbow { background: conic-gradient(from 200deg, #FF9AB8, #FFD27A, #9EE6B8, #8CCBF5, #C9A8FF, #FF9AB8) !important; animation: rb-hue 6s linear infinite; }
   @keyframes rb-hue { to { filter: hue-rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .is-rainbow { animation: none; } }
   .rank__tier { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; vertical-align: 2px; background: #fff; color: var(--c2,#E0578A); box-shadow: 0 0 0 1px var(--ring,#F3B7CA) inset; letter-spacing: .04em; }
+  /* キラキラバッジ：上のツヤ＋ときどき光が横切る＋まわりで小さな星がまたたく */
+  .rank__badge, .hrank__face--lv, .mrank__lv { isolation: isolate; }
+  .rank__badge > small, .rank__badge > b, .hrank__n, .mrank__lv > small, .mrank__lv > b { position: relative; z-index: 2; }
+  .bshine { position: absolute; inset: 0; z-index: 1; border-radius: 50%; overflow: hidden; pointer-events: none;
+    box-shadow: inset 0 -3px 6px rgba(0,0,0,.12), inset 0 2px 3px rgba(255,255,255,.7); }
+  .bshine::before { content: ""; position: absolute; left: 14%; right: 14%; top: 6%; height: 42%; border-radius: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,0)); }
+  .bshine::after { content: ""; position: absolute; top: -20%; bottom: -20%; left: -60%; width: 40%; transform: skewX(-20deg);
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.85), rgba(255,255,255,0)); animation: b-sweep 3.6s ease-in-out infinite; }
+  .hrank__face--lv .bshine::after { animation-delay: 1.2s; }
+  .mrank__lv .bshine::after { animation-delay: .6s; }
+  @keyframes b-sweep { 0%, 55% { left: -60%; } 85%, 100% { left: 130%; } }
+  .bspark { position: absolute; z-index: 3; width: 12px; height: 12px; color: #fff; pointer-events: none; filter: drop-shadow(0 0 3px var(--c2,#E0578A)); animation: b-twinkle 2.4s ease-in-out infinite; }
+  .bspark svg { display: block; width: 100%; height: 100%; }
+  .bspark.s1 { left: -6px; top: 8px; }
+  .bspark.s2 { right: -5px; bottom: 4px; width: 9px; height: 9px; animation-delay: .8s; }
+  .bspark.s3 { left: 10px; bottom: -6px; width: 8px; height: 8px; animation-delay: 1.6s; }
+  @keyframes b-twinkle { 0%, 100% { opacity: 0; transform: scale(.3) rotate(0); } 40% { opacity: 1; transform: scale(1) rotate(45deg); } 70% { opacity: 0; transform: scale(.5) rotate(90deg); } }
+  @media (prefers-reduced-motion: reduce) { .bshine::after, .bspark { animation: none; } .bspark { opacity: .8; } }
+  /* 「EXPのもらい方」「ランク一覧」は横並びのボタン。押すと下に開く */
+  .rank__tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 380px; margin: 12px auto 0; }
+  .rank__tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; padding: 6px 8px; border-radius: 16px; cursor: pointer;
+    border: 1.5px solid #fff; background: linear-gradient(145deg, #FFFCFD, #FBEAF0); box-shadow: 0 3px 0 #E6A6BE; color: var(--rose-deep);
+    font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .04em; -webkit-tap-highlight-color: transparent; transition: transform .15s, box-shadow .15s, background .2s; }
+  .rank__tab:active { transform: translateY(2px); box-shadow: 0 1px 0 #E6A6BE; }
+  .rank__tab small { padding: 1px 8px; border-radius: 999px; background: #FDE4EC; font-size: 10px; font-weight: 500; color: var(--ink-sub); }
+  .rank__tab[aria-expanded="true"] { background: linear-gradient(145deg, #F68FB4, #EE6F9B); color: #fff; box-shadow: 0 3px 0 #C9557B; }
+  .rank__tab[aria-expanded="true"] small { background: rgba(255,255,255,.3); color: #fff; }
+  .rank__panel { margin-top: 10px; animation: panel-in .3s ease; }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
   /* ランク一覧 */
   .tiers { list-style: none; margin-top: 4px; padding: 6px 12px; border-radius: 16px; background: rgba(255,255,255,.7); }
   .rank__how .tiers li { display: flex; align-items: center; gap: 12px; padding: 8px 4px; border-bottom: 1px dashed #F3C9D7; }
@@ -1370,7 +1403,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
 <header class="header">
   <div class="header__in">
-    <span class="logo"><a class="hrank" id="hrank" href="#rank" aria-label="見守り隊ランクを見る"><span class="hrank__card"><span class="hrank__face hrank__face--icon"><img src="img/icon.webp" alt="" width="36" height="36"></span><span class="hrank__face hrank__face--lv"><span class="hrank__n"><b id="hrank-lv">1</b></span></span></span></a><a class="logo__name" href="#top" aria-label="しぃ（トップへ）">しぃ</a></span>
+    <span class="logo"><a class="hrank" id="hrank" href="#rank" aria-label="見守り隊ランクを見る"><span class="hrank__card"><span class="hrank__face hrank__face--icon"><img src="img/icon.webp" alt="" width="36" height="36"></span><span class="hrank__face hrank__face--lv"><span class="bshine"></span><span class="hrank__n"><b id="hrank-lv">1</b></span></span></span></a><a class="logo__name" href="#top" aria-label="しぃ（トップへ）">しぃ</a></span>
     <a class="ticker" id="ticker" href="#schedule" aria-label="お知らせ"><span class="ticker__win"><span class="ticker__txt" id="ticker-txt"></span></span></a>
     <div class="header__right">
       <nav class="nav" aria-label="メイン">
@@ -1392,7 +1425,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="mribbon" id="mribbon" hidden><div class="mribbon__track" id="mribbon-track"></div><div class="mribbon__dots" id="mribbon-dots" aria-hidden="true"></div></div>
     <div class="menu__head">
       <p class="menu__label">メニュー</p>
-      <a class="mrank" id="mrank" href="#rank" aria-label="見守り隊ランクを見る"><span class="mrank__lv"><small>Lv</small><b id="mrank-lv">1</b></span><span class="mrank__body"><span class="mrank__ttl" id="mrank-ttl">見習いさん</span><span class="mrank__bar"><i id="mrank-bar"></i></span></span><span class="mrank__xp" id="mrank-xp"></span></a>
+      <a class="mrank" id="mrank" href="#rank" aria-label="見守り隊ランクを見る"><span class="mrank__lv"><span class="bshine"></span><small>Lv</small><b id="mrank-lv">1</b></span><span class="mrank__body"><span class="mrank__ttl" id="mrank-ttl">見習いさん</span><span class="mrank__bar"><i id="mrank-bar"></i></span></span><span class="mrank__xp" id="mrank-xp"></span></a>
     </div>
     <div class="quick quick--menu">
       <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
@@ -1681,7 +1714,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <div class="stamp">
         <p class="req__lead">1日1回、遊びに来ると自動でスタンプが押されるよ🍭 その月に20個たまると、今月だけの特別なしぃの壁紙がもらえるよ♡<br><small>カードは毎月1日に新しくなります</small></p>
         <div class="rank" id="rank">
-          <div class="rank__badge" aria-hidden="true"><small>Lv</small><b id="rank-lv">1</b></div>
+          <div class="rank__badge" aria-hidden="true"><span class="bshine"></span><small>Lv</small><b id="rank-lv">1</b><span class="bspark s1"><svg viewBox="0 0 20 20"><use href="#kira"/></svg></span><span class="bspark s2"><svg viewBox="0 0 20 20"><use href="#kira"/></svg></span><span class="bspark s3"><svg viewBox="0 0 20 20"><use href="#kira"/></svg></span></div>
           <div class="rank__body">
             <p class="rank__cap">見守り隊ランク</p>
             <p class="rank__ttl"><span id="rank-ttl">見習いさん</span><span class="rank__tier" id="rank-tier"></span></p>
@@ -1689,16 +1722,18 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
             <p class="rank__sub" id="rank-sub"></p>
           </div>
         </div>
-        <details class="rank__how">
-          <summary>EXPのもらい方<small id="rank-today"></small></summary>
+        <div class="rank__tabs">
+          <button class="rank__tab" type="button" aria-expanded="false" aria-controls="rank-p-how">EXPのもらい方<small id="rank-today"></small></button>
+          <button class="rank__tab" type="button" aria-expanded="false" aria-controls="rank-p-tiers">ランク一覧<small id="rank-tiers-now"></small></button>
+        </div>
+        <div class="rank__how rank__panel" id="rank-p-how" hidden>
           <ul id="rank-list"></ul>
           <p class="rank__note">EXPはこのスマホ（ブラウザ）に記録されます。毎日のものは1日1回までです。</p>
-        </details>
-        <details class="rank__how">
-          <summary>ランク一覧<small id="rank-tiers-now"></small></summary>
+        </div>
+        <div class="rank__how rank__panel" id="rank-p-tiers" hidden>
           <ul class="tiers" id="rank-tiers"></ul>
           <p class="rank__note">レベルはLv50まで。5レベルごとに肩書きとバッジの色が変わります。</p>
-        </details>
+        </div>
         <div class="stamp__card">
           <div class="stamp__top">
             <span class="stamp__ttl">しぃの見守り隊<br><b>STAMP CARD</b></span>
@@ -1868,9 +1903,17 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var root=document.documentElement, hr=document.getElementById('hrank');
     if(!hr || !root.classList.contains('op') || root.classList.contains('op-in')) return;
     hr.classList.add('is-spin-wait');
-    var mo=new MutationObserver(function(){ if(root.classList.contains('op-in')){ mo.disconnect(); hr.classList.add('is-spin'); setTimeout(function(){ hr.classList.remove('is-spin','is-spin-wait'); },2600); } });
+    var mo=new MutationObserver(function(){ if(root.classList.contains('op-in')){ mo.disconnect(); hr.classList.add('is-spin'); setTimeout(function(){ hr.classList.remove('is-spin','is-spin-wait'); },3500); } });
     mo.observe(root,{attributes:true,attributeFilter:['class']});
   })();
+  // 「EXPのもらい方」「ランク一覧」：押した方だけ開く（もう一度押すと閉じる）
+  Array.prototype.forEach.call(document.querySelectorAll('.rank__tab'),function(btn,_,all){
+    btn.addEventListener('click',function(){
+      var open=btn.getAttribute('aria-expanded')!=='true';
+      Array.prototype.forEach.call(document.querySelectorAll('.rank__tab'),function(o){ o.setAttribute('aria-expanded','false'); document.getElementById(o.getAttribute('aria-controls')).hidden=true; });
+      if(open){ btn.setAttribute('aria-expanded','true'); document.getElementById(btn.getAttribute('aria-controls')).hidden=false; }
+    });
+  });
   window.shiiXP={gain:gain, info:function(){ return info(X.xp); }, xp:function(){ return X.xp; }, callName:callName, tiers:TIERS};
   document.addEventListener('DOMContentLoaded',function(){ render(false); });
   if(document.readyState!=='loading') render(false);
