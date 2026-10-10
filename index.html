@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010105500">
+<meta name="build" content="20261010110500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -835,6 +835,25 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .stamp__btn:disabled { opacity: .6; cursor: default; transform: none; box-shadow: 4px 4px 0 var(--white); }
   .stamp__note { margin-top: 10px; min-height: 1.6em; font-size: 12px; color: var(--ink-sub); }
   .stamp__reward-open { margin-top: 4px; padding: 6px 14px; border: 0; border-radius: 999px; background: #FDEBD6; color: #9A6A2E; font-family: var(--maru); font-weight: 700; font-size: 12px; cursor: pointer; }
+  /* メニューを開いたときの上のリボン：カウントダウンが複数あれば自動で切り替え */
+  .mribbon { position: relative; margin: -8px auto 22px; max-width: 460px; text-align: center; filter: drop-shadow(0 3px 0 rgba(176,54,96,.35)); }
+  .mribbon__track { position: relative; height: 44px; }
+  .mribbon__item { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 30px; color: #fff; text-decoration: none;
+    font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .04em; white-space: nowrap;
+    background: linear-gradient(180deg, #F27AA3 0%, #E0578A 100%);
+    -webkit-clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 50%, 100% 100%, 0 100%, 16px 50%);
+            clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 50%, 100% 100%, 0 100%, 16px 50%);
+    text-shadow: 0 1px 0 rgba(150,30,70,.35); opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; pointer-events: none; }
+  .mribbon__item.is-on { opacity: 1; transform: none; pointer-events: auto; }
+  .mribbon__item.is-out { opacity: 0; transform: translateY(-8px); }
+  .mribbon__item > span { overflow: hidden; text-overflow: ellipsis; }
+  .mribbon__item b { flex: none; padding: 1px 9px; border-radius: 999px; background: #fff; color: var(--rose-deep); font-size: 13px; text-shadow: none; }
+  .mribbon__item b em { font-style: normal; font-family: var(--en); font-weight: 600; font-size: 16px; margin: 0 1px; }
+  .mribbon__item.is-today { background: linear-gradient(180deg, #F7CF6E 0%, #E2A33F 100%); text-shadow: 0 1px 0 rgba(140,80,10,.35); }
+  .mribbon__dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
+  .mribbon__dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(224,87,138,.3); transition: background .3s, transform .3s; }
+  .mribbon__dots i.is-on { background: #E0578A; transform: scale(1.25); }
+  @media (prefers-reduced-motion: reduce) { .mribbon__item { transition: opacity .3s ease; transform: none; } }
   /* 記念日・イベントのカウントダウン（トップ） */
   .count { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; max-width: 420px; margin-top: 14px; padding: 10px 14px 10px 12px; border-radius: 20px;
     background: #FFF8FA; box-shadow: 0 3px 0 #F2C4D4, 0 0 0 1.5px #F6C9D8 inset; color: var(--ink); text-decoration: none; }
@@ -1268,6 +1287,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
 <nav class="menu" id="menu" aria-label="メニュー">
   <div class="menu__in">
+    <div class="mribbon" id="mribbon" hidden><div class="mribbon__track" id="mribbon-track"></div><div class="mribbon__dots" id="mribbon-dots" aria-hidden="true"></div></div>
     <p class="menu__label">メニュー</p>
     <div class="quick quick--menu">
       <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
@@ -1714,7 +1734,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var rows=null; try{ rows=JSON.parse(localStorage.getItem('shii_events')||'null'); }catch(e){}
   function render(){
     var list=shiiEvt.list(rows||[]), shown=list.filter(function(e){ return e.left<=e.show; });
-    window.shiiEvents=shown;
+    window.shiiEvents=shown; ribbon(shown);
     document.dispatchEvent(new CustomEvent('shii:events',{detail:shown}));
     var e=shown[0];
     if(!e){ box.hidden=true; box.innerHTML=''; return; }
@@ -1734,7 +1754,33 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       if(document.documentElement.getAttribute('data-season')!==want && window.shiiApplySeason) shiiApplySeason(want);
     }
   }
-  if(rows) render();
+  // ---- メニューの上のリボン ----
+  var rb=document.getElementById('mribbon'), rtrack=document.getElementById('mribbon-track'), rdots=document.getElementById('mribbon-dots'), menu=document.getElementById('menu'), rIdx=0, rTimer=0;
+  function ribbon(list){
+    if(!rb) return;
+    rtrack.innerHTML=''; rdots.innerHTML=''; clearInterval(rTimer); rIdx=0;
+    if(!list.length){ rb.hidden=true; return; }
+    rb.hidden=false;
+    list.forEach(function(e,i){
+      var url=safeUrl(e.url), a=document.createElement('a'), today=e.left===0;
+      a.className='mribbon__item'+(today?' is-today':'')+(i===0?' is-on':'');
+      a.href=url||'#count'; if(url){ a.target='_blank'; a.rel='noopener'; }
+      var name=today?(e.kind==='anniv'?'今日で ':'今日は ')+e.name+'！':(ICON[e.kind]||'📣')+' '+e.name+(e.kind==='event'?'':' まで');
+      a.innerHTML='<span>'+(today?(ICON[e.kind]||'🎉')+' ':'')+esc(name)+'</span>'+(today?'':'<b>あと<em>'+e.left+'</em>日</b>');
+      rtrack.appendChild(a);
+      if(list.length>1){ var d=document.createElement('i'); if(i===0) d.className='is-on'; rdots.appendChild(d); }
+    });
+    rdots.hidden=list.length<2;
+    if(list.length>1) rTimer=setInterval(function(){
+      if(!menu.classList.contains('is-open')) return;   // メニューを開いている間だけ切り替え
+      var items=rtrack.children, dots=rdots.children, cur=items[rIdx];
+      cur.classList.remove('is-on'); cur.classList.add('is-out'); setTimeout(function(){ cur.classList.remove('is-out'); },500);
+      if(dots[rIdx]) dots[rIdx].classList.remove('is-on');
+      rIdx=(rIdx+1)%items.length;
+      items[rIdx].classList.add('is-on'); if(dots[rIdx]) dots[rIdx].classList.add('is-on');
+    },3500);
+  }
+  if(rows) render(); else ribbon([]);
   fetch('https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/shii_events_get',{method:'POST',headers:{'apikey':'sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC','Content-Type':'application/json'},body:'{}'})
     .then(function(r){ return r.ok?r.json():null; })
     .then(function(d){ if(!Array.isArray(d)) return; rows=d; try{ localStorage.setItem('shii_events',JSON.stringify(d)); }catch(e){} render(); })
