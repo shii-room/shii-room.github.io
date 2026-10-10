@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010180500">
+<meta name="build" content="20261010232500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1353,6 +1353,13 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .ticker__txt.op-bye { opacity: 0; }
   html.op .menu { z-index: 102; }
   html.op .hero__photo .floater, html.op .hero__photo .holo { animation-play-state: paused; }
+  /* オープニング：スポットライトがサインで止まったとき、サインがキラッと光る */
+  html.op:not(.op-in) .sig { animation: op-sig 1.4s ease 5.95s both;
+    filter: drop-shadow(0 0 2px rgba(255,240,190,1)) drop-shadow(0 0 8px rgba(255,200,120,.95)) drop-shadow(0 0 16px rgba(255,150,195,.9)); }
+  html.op:not(.op-in) .sig__ink { animation: sig-shine .7s ease-in-out 6s 2 alternate; }
+  html.op:not(.op-in) .sig__star { animation: sig-star .9s ease-in-out 6.05s 2; }
+  html.op:not(.op-in) .sig__star.s2 { animation-delay: 6.35s; }
+  @keyframes op-sig { 0% { opacity: 0; } 18%, 72% { opacity: 1; } 100% { opacity: 0; } }
   html.op .bubble { animation: none; opacity: 0; }
   .opening { position: fixed; top: 0; left: 0; right: 0; bottom: auto; height: calc(100vh + 160px); height: calc(100lvh + 160px); z-index: 100; overflow: hidden; background: transparent; cursor: pointer; transition: opacity .45s ease; }
   /* Dim the closed curtain while only the welcome lettering is lit. */
