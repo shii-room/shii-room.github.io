@@ -6,7 +6,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010132000">
+<meta name="build" content="20261010132500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -385,11 +385,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .bubble__t { display: inline-block; }
   .bubble { transition: background-color .5s ease, color .5s ease, box-shadow .5s ease; white-space: nowrap; }
   /* いつもの吹き出しも、ふちをつけてくっきり */
-  .bubble { box-shadow: 0 0 0 2px #F3B7CA, 0 6px 16px rgba(150,70,95,.22); }
+  /* ふちは吹き出し＋しっぽをまとめて縁取り（しっぽの形にも輪郭がつく） */
+  .bubble { box-shadow: none; filter: drop-shadow(2px 0 0 #F3B7CA) drop-shadow(-2px 0 0 #F3B7CA) drop-shadow(0 2px 0 #F3B7CA) drop-shadow(0 -2px 0 #F3B7CA) drop-shadow(0 5px 8px rgba(150,70,95,.2)); }
   /* ランクのセリフ：ランクの色の吹き出しに、白い文字＋濃い色の縁取り */
   .bubble.is-rank { background: linear-gradient(160deg, var(--bb1,#FFB3CC), var(--bb2,#E0578A)); color: #fff;
     text-shadow: 1px 0 0 var(--bbs), -1px 0 0 var(--bbs), 0 1px 0 var(--bbs), 0 -1px 0 var(--bbs), 1px 1px 0 var(--bbs), -1px -1px 0 var(--bbs), 1px -1px 0 var(--bbs), -1px 1px 0 var(--bbs);
-    box-shadow: 0 0 0 2.5px #fff, 0 0 0 4.5px var(--bbs), 0 6px 18px color-mix(in srgb, var(--bbs) 40%, transparent); }
+    box-shadow: none; filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(1.5px 0 0 var(--bbs)) drop-shadow(-1.5px 0 0 var(--bbs)) drop-shadow(0 1.5px 0 var(--bbs)) drop-shadow(0 -1.5px 0 var(--bbs)) drop-shadow(0 5px 8px rgba(150,70,95,.25)); }
   .bubble.is-rank::after { background: var(--bb2,#E0578A); }
   .bubble__t.is-swap { animation: bubble-swap .45s cubic-bezier(.3,1.6,.5,1); }
   @keyframes bubble-swap { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
@@ -2531,10 +2532,24 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function rankLines(){
     if(!window.shiiXP) return [];
     var r=shiiXP.info(), nm=shiiXP.callName(r.title), out=[];
-    if(window.SHII_NEW) out.push('はじめまして<br>'+nm+'♡');
-    else out.push(['おかえり<br>'+nm+'♡', nm+'<br>いつもありがとう♡', 'Lv'+r.lv+'だね<br>すごい！♡', '今日も来てくれた<br>'+nm+'♡'][pick%4]);
+    // ランクが上がるほど、セリフもだんだん特別に（はじめのうちは褒めすぎない）
+    var A, B;
+    if(r.ti===0){        // 見習いさん
+      A=['また来てくれたんだね<br>うれしい♡','おかえり<br>'+nm+'♡','今日も<br>来てくれたんだ♡','会いに来てくれて<br>ありがと♡'];
+      B=['ゆっくりしてってね♡','また遊びに来てね♡','配信でも<br>会えたらうれしいな♡'];
+    } else if(r.ti<=2){  // 見守り隊・見守り隊エース
+      A=['おかえり<br>'+nm+'♡', nm+'<br>いつもありがとう♡','今日も来てくれた<br>'+nm+'♡','また会えたね<br>'+nm+'♡'];
+      B=['会えてうれしいな<br>'+nm+'♡','いつも来てくれて<br>ありがと♡','ゆっくりしてってね<br>'+nm+'♡'];
+    } else if(r.ti<=5){  // 親衛隊〜親衛隊長
+      A=['おかえり<br>'+nm+'♡', nm+'<br>いつも本当にありがとう♡','Lv'+r.lv+'だね<br>すごい！♡','頼りにしてるよ<br>'+nm+'♡'];
+      B=['会えてうれしいな<br>'+nm+'♡','Lv'+r.lv+'の<br>'+nm+'♡','いつもそばに<br>いてくれてありがと♡'];
+    } else {             // しぃの騎士〜伝説
+      A=['おかえり<br>'+nm+'♡','Lv'+r.lv+'なんて<br>すごすぎる…！♡','ずっと見守ってくれて<br>ありがとう♡', nm+'<br>だいすき♡'];
+      B=['いつも本当に<br>ありがとう♡','Lv'+r.lv+'の<br>'+nm+'♡','これからも<br>よろしくね♡'];
+    }
+    if(window.SHII_NEW) out.push('はじめまして<br>'+nm+'♡'); else out.push(A[pick%A.length]);
     if(r.nextTier && r.nextTier.lv-r.lv<=1) out.push('もうすぐ<br>'+r.nextTier.name+'だよ♡');
-    else if(!window.SHII_NEW) out.push(['会えてうれしいな<br>'+nm+'♡','Lv'+r.lv+'の<br>'+nm+'♡','ゆっくりしてってね<br>'+nm+'♡'][pick%3]);
+    else if(!window.SHII_NEW) out.push(B[pick%B.length]);
     return out.map(function(t){ return {t:t, rank:true, T:r.tier}; });
   }
   function build(){
