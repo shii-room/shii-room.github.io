@@ -7,7 +7,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261010232500">
+<meta name="build" content="20261011121640">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1503,7 +1503,10 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* iPad（タブレット版）の見やすさ */
   @media (min-width: 768px) and (max-width: 1366px) and (min-height: 600px) {
     /* 電光掲示板はiPadでも出す（ナビの代わりにヘッダーのまんなか） */
-    .ticker { display: block; max-width: 440px; margin: 0 16px; }
+    /* ロゴとMENUのあいだをいっぱいに使う（広すぎる画面では760pxまで・まんなか寄せ） */
+    .header__in { gap: 28px; }
+    .ticker { display: block; flex: 1 1 auto; max-width: 760px; height: 36px; margin: 0 auto; }
+    .ticker__txt { font-size: 17px; }
     /* リクエスト・メッセージのカードも、ほかのカードと同じ横幅にそろえる */
     .req, .mbox { max-width: none; }
     /* リクエストは「左に絵・右に説明とボタン」の2列。書くフォームは下に広く出る */
