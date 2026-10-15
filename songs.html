@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="canonical" href="https://shii-room.github.io/songs.html">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261011000500"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261015125500"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -856,6 +856,17 @@
   /* 横は画面内に収め、縦スクロールはルートに任せる（iOS Safari対応）。 */
   html { overflow-x: hidden; overflow-y: auto; }
   body { overflow-x: visible; }
+
+  /* 歌枠の弾幕コメント（コンパクト・タップでコピー） */
+  .dmk { margin: 12px 0 4px; padding: 8px 10px 10px; background: rgba(255,255,255,.6); border: 1.5px solid var(--white); border-radius: 14px; }
+  .dmk__ttl { margin: 0 0 6px; font-family: var(--maru); font-weight: 700; font-size: 12px; letter-spacing: .08em; color: var(--rose-deep); }
+  .dmk__ttl small { margin-left: 8px; font-family: var(--sans); font-weight: 400; font-size: 11px; color: var(--ink-sub); }
+  .dmk__row { display: flex; gap: 8px; }
+  .dmk__b { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 6px; min-height: 40px; padding: 4px 6px 4px 12px; background: var(--white); color: var(--ink); border: 1.5px solid var(--rose); border-radius: 999px; cursor: pointer; font: inherit; font-size: 12px; text-align: left; }
+  .dmk__t { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dmk__c { flex: none; padding: 5px 10px; border-radius: 999px; background: var(--rose); color: var(--white); font-family: var(--maru); font-weight: 700; font-size: 11px; letter-spacing: .06em; }
+  .dmk__b.is-copied { background: var(--rose); color: var(--white); }
+  .dmk__b.is-copied .dmk__c { background: var(--white); color: var(--rose); }
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="heart" viewBox="0 0 24 22"><path fill="currentColor" d="M12 21.5S0 14.2 0 6.6A6.3 6.3 0 0 1 12 3.9 6.3 6.3 0 0 1 24 6.6c0 7.6-12 14.9-12 14.9z"/></symbol>
   <symbol id="kira" viewBox="0 0 20 20"><path fill="currentColor" d="M10 0c.6 5.2 4.8 9.4 10 10-5.2.6-9.4 4.8-10 10-.6-5.2-4.8-9.4-10-10C5.2 9.4 9.4 5.2 10 0z"/></symbol>
@@ -915,6 +926,7 @@
       <div class="songs">
         <button class="songs__page-link" id="song-share" type="button">この曲リストを共有 ↗</button>
         <p class="req__lead">しぃが歌えるかも…な曲たち🎤「コピー」を押すとリクエスト用のコメントがコピーされるから、配信のコメント欄に貼ってね♡</p>
+        <div class="dmk" id="dmk"><p class="dmk__ttl">🎤 歌枠の弾幕<small>押すとコピー</small></p><div class="dmk__row"><button class="dmk__b" type="button" data-i="0" aria-label="弾幕コメント1をコピー"><span class="dmk__t"></span><span class="dmk__c">コピー</span></button><button class="dmk__b" type="button" data-i="1" aria-label="弾幕コメント2をコピー"><span class="dmk__t"></span><span class="dmk__c">コピー</span></button></div></div>
         <div class="songs__modes" role="group" aria-label="検索対象">
           <button type="button" data-mode="title" aria-pressed="true">曲名から</button><button type="button" data-mode="artist" aria-pressed="false">アーティストから</button>
         </div>
@@ -1199,6 +1211,21 @@
   fetch(SB+'shii_songs_list',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'})
     .then(function(r){ return r.ok?r.json():[]; }).then(function(d){ songs=Array.isArray(d)?uniqueSongs(d.map(prepareSong)):[]; if(utaemoReady) addUtaemoSearchData(); tags(); render(); loadUtaemoSearch(); })
     .catch(function(){ songs=[]; render(); });
+  // 歌枠の弾幕コメント（増やすときはこの配列に足す。ボタンは data-i の番号で対応）
+  var DANMAKU=["🍭🍰꙳.*し.•*¨*•.¸💗¸♬.•*¨*•.¸¸🍭🍰꙳.*ぃ.•*¨*•.¸🍭🍰꙳.*ち.•*¨*•.¸🍭🍰꙳.*ゃ•*¨*•.¸¸♪🍭🍰꙳.*ん.•*¨*•.¸💞¸♬❤", "✩∗*ﾟ⋆｡˚✩🍭🍰☪︎⋆｡˚✩˚✩∗*ﾟ🍭🍰 ⋆｡˚✩⋆｡˚✩ 🍭🍰 ˚✩∗*ﾟ⋆｡˚✩🍭🍰☪︎⋆｡˚✩˚✩∗*ﾟ🍭🍰 ⋆｡˚✩⋆｡˚✩ 🍭🍰"];
+  Array.prototype.forEach.call(document.querySelectorAll('#dmk .dmk__b'),function(b){
+    var txt=DANMAKU[+b.getAttribute('data-i')]; if(!txt){ b.hidden=true; return; }
+    b.querySelector('.dmk__t').textContent=txt;
+    b.addEventListener('click',function(){
+      copyText(txt).then(function(){
+        var c=b.querySelector('.dmk__c'); c.textContent='済 ✓'; b.classList.add('is-copied');
+        clearTimeout(b._t); b._t=setTimeout(function(){ c.textContent='コピー'; b.classList.remove('is-copied'); },4000);
+        toast('<b>コピーしたよ！</b>配信のコメント欄に貼り付けてね♡<a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を開く</a>');
+      }).catch(function(){
+        toast('<b>このコメントをコピーしてね</b>下の文字を長押し・選択してコピーできます<textarea readonly rows="3" aria-label="手動でコピーする弾幕コメント">'+esc(txt)+'</textarea>',0);
+      });
+    });
+  });
 })();
 </script><script>
 (function(){

@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261015124500">
+<meta name="build" content="20261015125500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1522,24 +1522,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   /* 画像の保存よけ（長押し・右クリック・ドラッグ）。ごほうび壁紙だけは保存OK */
   img, svg image, canvas, picture { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
   img[data-save] { -webkit-touch-callout: default; -webkit-user-select: auto; user-select: auto; -webkit-user-drag: auto; }
-
-  /* ── 弾幕コメント（歌枠用・タップでコピー） ── */
-  .dm__lead { font-size: 15px; line-height: 2; letter-spacing: .05em; }
-  .dm__flow { position: relative; margin-top: 20px; overflow: hidden; border-radius: 14px; background: rgba(255,255,255,.55); border: 1.5px solid var(--white); height: 76px; }
-  .dm__flow-row { position: absolute; left: 0; white-space: nowrap; font-size: 15px; line-height: 1; color: var(--rose-deep, var(--rose)); will-change: transform; animation: dmflow 22s linear infinite; }
-  .dm__flow-row:nth-child(1) { top: 10px; }
-  .dm__flow-row:nth-child(2) { top: 40px; animation-duration: 30s; animation-delay: -12s; }
-  @keyframes dmflow { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
-  @media (prefers-reduced-motion: reduce) { .dm__flow-row { animation: none; transform: none; position: static; display: block; padding: 8px 12px; overflow: hidden; text-overflow: ellipsis; } .dm__flow { height: auto; } }
-  .dm__list { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 16px; }
-  .dm__item { padding: 16px 16px 14px; background: rgba(255,255,255,.78); border: 1.5px solid var(--white); border-radius: 16px; box-shadow: 4px 4px 0 var(--rose); }
-  .dm__txt { margin: 0 0 12px; font-size: 16px; line-height: 1.8; letter-spacing: .02em; overflow-wrap: anywhere; word-break: break-all; color: var(--ink); }
-  .dm__copy { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; padding: 10px 18px; background: var(--rose); color: var(--white); border: 1.5px solid var(--white); border-radius: 999px; box-shadow: 3px 3px 0 var(--white); cursor: pointer; font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .1em; transition: transform .15s, box-shadow .15s, background-color .15s, color .15s; }
-  .dm__copy:hover { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--white); }
-  .dm__copy.is-copied { background: var(--white); color: var(--rose); border-color: var(--rose); }
-  .dm__msg { min-height: 1.8em; margin-top: 14px; font-size: 13px; line-height: 1.8; letter-spacing: .06em; color: var(--ink-sub); }
-  .dm__msg a { color: var(--ink); border-bottom: 1.5px solid var(--rose); }
-  .dm__manual { display: block; width: 100%; margin-top: 8px; padding: 8px; border: 1px solid var(--rose); border-radius: 8px; background: #fff; color: var(--ink); font: inherit; font-size: 16px; resize: none; }
 </style>
 </head>
 <body>
@@ -1800,16 +1782,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__i p5" aria-hidden="true"><svg><use href="#note2"/></svg></span><span class="deco__i p6 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__rise r1" aria-hidden="true"><svg><use href="#note1"/></svg></span><span class="deco__rise r2" aria-hidden="true"><svg><use href="#note2"/></svg></span>
       <p class="req__lead">歌える曲をさがして、リクエスト用のコメントをコピーできるよ🎤</p>
       <a class="acc__btn" href="songs.html">🎤 歌える曲リストを開く<span class="songs__arrow" aria-hidden="true">↗</span></a>
-    </div>
-  </section>
-
-  <section class="sec" id="danmaku">
-    <div class="sec__head"><h2 class="sec__en">Danmaku</h2><span class="sec__ja">歌枠の弾幕コメント</span></div>
-    <div class="req deco deco--songs">
-      <p class="dm__lead">歌枠のときに、コメント欄でみんなで流せる弾幕だよ🎤 ボタンを押すとコピーされるから、配信のコメント欄に貼ってね♡</p>
-      <div class="dm__flow" id="dm-flow" aria-hidden="true"><span class="dm__flow-row" id="dm-flow-1"></span><span class="dm__flow-row" id="dm-flow-2"></span></div>
-      <ul class="dm__list" id="dm-list" aria-label="弾幕コメント一覧"></ul>
-      <p class="dm__msg" id="dm-msg" role="status" aria-live="polite"></p>
     </div>
   </section>
 
@@ -3182,43 +3154,5 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 
 })();
 </script>
-<script>
-(function(){
-  // 歌枠の弾幕コメント。増やすときはこの配列に1行足すだけ
-  var DANMAKU=["🍭🍰꙳.*し.•*¨*•.¸💗¸♬.•*¨*•.¸¸🍭🍰꙳.*ぃ.•*¨*•.¸🍭🍰꙳.*ち.•*¨*•.¸🍭🍰꙳.*ゃ•*¨*•.¸¸♪🍭🍰꙳.*ん.•*¨*•.¸💞¸♬❤", "✩∗*ﾟ⋆｡˚✩🍭🍰☪︎⋆｡˚✩˚✩∗*ﾟ🍭🍰 ⋆｡˚✩⋆｡˚✩ 🍭🍰 ˚✩∗*ﾟ⋆｡˚✩🍭🍰☪︎⋆｡˚✩˚✩∗*ﾟ🍭🍰 ⋆｡˚✩⋆｡˚✩ 🍭🍰"];
-  var list=document.getElementById('dm-list'), msg=document.getElementById('dm-msg');
-  if(!list) return;
-  var f1=document.getElementById('dm-flow-1'), f2=document.getElementById('dm-flow-2');
-  if(f1) f1.textContent=(DANMAKU[0]||'')+'　　　'+(DANMAKU[0]||'');
-  if(f2) f2.textContent=(DANMAKU[1]||DANMAKU[0]||'')+'　　　'+(DANMAKU[1]||DANMAKU[0]||'');
-  function copyText(txt){
-    if(navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(txt);
-    return new Promise(function(ok,ng){
-      var ta=document.createElement('textarea'); ta.value=txt; ta.setAttribute('readonly',''); ta.style.position='fixed'; ta.style.opacity='0';
-      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,txt.length);
-      try{ document.execCommand('copy') ? ok() : ng(); }catch(e){ ng(e); } ta.remove();
-    });
-  }
-  DANMAKU.forEach(function(txt,i){
-    var li=document.createElement('li'); li.className='dm__item';
-    var p=document.createElement('p'); p.className='dm__txt'; p.textContent=txt;
-    var b=document.createElement('button'); b.type='button'; b.className='dm__copy'; b.textContent='コピーする';
-    b.setAttribute('aria-label','弾幕コメント'+(i+1)+'をコピーする');
-    b.addEventListener('click',function(){
-      copyText(txt).then(function(){
-        b.textContent='コピー済 ✓'; b.classList.add('is-copied');
-        clearTimeout(b._t); b._t=setTimeout(function(){ b.textContent='コピーする'; b.classList.remove('is-copied'); },4000);
-        msg.innerHTML='コピーしたよ！配信のコメント欄に貼り付けてね♡ <a href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener">配信を開く</a>';
-      }).catch(function(){
-        msg.textContent='自動でコピーできなかったよ。下の文字を長押ししてコピーしてね';
-        var ta=document.createElement('textarea'); ta.className='dm__manual'; ta.readOnly=true; ta.rows=3; ta.value=txt;
-        ta.setAttribute('aria-label','手動でコピーする弾幕コメント'); msg.appendChild(ta); ta.focus(); ta.select();
-      });
-    });
-    li.appendChild(p); li.appendChild(b); list.appendChild(li);
-  });
-})();
-</script>
-
 </body>
 </html>
