@@ -472,7 +472,6 @@
 
     <div class="foot">
       <a href="../" target="_blank" rel="noopener">サイトを見る</a>
-      <button id="resetKey" type="button">合言葉を入れ直す</button>
     </div>
   </section>
 </main>
@@ -1411,7 +1410,6 @@
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };
   $('key').addEventListener('keydown',function(e){ if(e.key==='Enter') $('saveKey').click(); });
-  $('resetKey').onclick=function(){ setPass(''); showKey(''); };
 
   getPass() ? start() : showKey('');
 })();
