@@ -400,7 +400,8 @@
         <label for="songPaste">歌える曲をまとめて貼り付け</label>
         <textarea id="songPaste" rows="9" placeholder="1行に1曲。&#10;曲名 / アーティスト　の形で書くと、アーティストも分かれます。&#10;【アニソン】のように書いた行は、その下の曲のジャンルになります。&#10;&#10;例）&#10;【J-POP】&#10;マリーゴールド / あいみょん&#10;夜に駆ける - YOASOBI"></textarea>
         <p class="hint" id="songPreview">setlinkの曲一覧を選択してコピーし、ここに貼り付けてもOKです。</p>
-        <div class="row"><button class="primary" id="songReplace" type="button">この内容でリストを更新</button></div>
+        <div class="row"><button class="primary" id="songAdd" type="button">この曲をリストに追加</button></div>
+        <div class="row"><button class="ghost" id="songReplace" type="button">全部入れ替える（上級者向け）</button></div>
         <p class="msg" id="songMsg"></p>
       </div>
       <h2>いま載っている曲<span id="songNum"></span></h2>
@@ -472,13 +473,13 @@
   function getPass(){ try{return localStorage.getItem(PASS)||'';}catch(e){return '';} }
   function setPass(v){ try{ v?localStorage.setItem(PASS,v):localStorage.removeItem(PASS);  }catch(e){} }
   function say(el,text,err){ el.textContent=text; el.classList.toggle('err',!!err); }
-  function errText(e){ return e.message==='dup'?'そのポストはもう載っています':'通信できなかったみたい。電波を確認してもう一度押してね'; }
+  function errText(e){ return e.message==='dup'?'そのポストはもう載っています':'通信できなかったみたい。電波を確認してもう一度押してね'+(e.detail?'（'+e.detail+'）':''); }
   function call(fn,body){
     body.p_pass=getPass();
     return fetch(SB+fn,{method:'POST',headers:{'apikey':SBKEY,'Content-Type':'application/json'},body:JSON.stringify(body)})
       .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){
-        if(!r.ok) throw new Error(d&&(d.message==='auth'||d.message==='dup')?d.message:'net');
-        return d; }); });
+        if(!r.ok){ var er=new Error(d&&(d.message==='auth'||d.message==='dup')?d.message:'net'); er.detail='HTTP '+r.status+(d&&d.message?' '+d.message:'')+(d&&d.code?' ['+d.code+']':''); throw er; }
+        return d; }); }, function(te){ var er=new Error('net'); er.detail='fetch失敗: '+(te&&te.message||te); throw er; });
   }
   function fail(e,el){ if(e.message==='auth'){ setPass(''); showKey('合言葉がちがうみたい。もう一度入れてね'); return; } say(el,errText(e),true); }
   function normalize(u){
@@ -1085,10 +1086,29 @@
     var p=parseSongs(this.value);
     $('songPreview').textContent = p.length ? p.length+'曲を読み取りました（例：'+p.slice(0,3).map(function(s){ return s.title+(s.artist?' / '+s.artist:''); }).join('、')+'）' : 'setlinkの曲一覧を選択してコピーし、ここに貼り付けてもOKです。';
   });
+  function songKey(s){ return (String(s.title||'')+'\u0001'+String(s.artist||'')).replace(/[\s　]/g,'').toLowerCase(); }
+  // 追加：いまのリストを読み込み → 新しい曲を後ろに足す（同じ曲名+アーティストは足さない）→ 保存
+  $('songAdd').onclick=function(){
+    var p=parseSongs($('songPaste').value);
+    if(!p.length){ say($('songMsg'),'曲が読み取れませんでした。1行に1曲で貼り付けてね',true); return; }
+    var btn=$('songAdd'); btn.disabled=true; say($('songMsg'),'追加しています…');
+    scall('list').then(function(cur){
+      cur=cur||[];
+      var seen={}, merged=[];
+      cur.forEach(function(s){ seen[songKey(s)]=1; merged.push({title:s.title,artist:s.artist||'',tag:s.tag||''}); });
+      var added=0, skipped=0;
+      p.forEach(function(s){ var k=songKey(s); if(seen[k]){ skipped++; return; } seen[k]=1; merged.push(s); added++; });
+      if(!added){ say($('songMsg'),'すべてリストに載っている曲でした（追加なし）'); songs=cur; renderSongs(); return; }
+      return scall('replace',merged).then(function(d){
+        songs=d||[]; renderSongs(); $('songPaste').value=''; $('songPreview').textContent='';
+        say($('songMsg'),added+'曲を追加しました！'+(skipped?'（すでにあった'+skipped+'曲は飛ばしました）':'')+' サイトにすぐ反映されます');
+      });
+    }).catch(function(e){ fail(e,$('songMsg')); }).then(function(){ btn.disabled=false; });
+  };
   $('songReplace').onclick=function(){
     var p=parseSongs($('songPaste').value);
     if(!p.length){ say($('songMsg'),'曲が読み取れませんでした。1行に1曲で貼り付けてね',true); return; }
-    if(!confirm(p.length+'曲で、今のリストを丸ごと入れ替えます。よい？')) return;
+    if(!confirm('【注意】今のリストは全部消えて、貼り付けた'+p.length+'曲だけになります。曲を足したいだけなら「この曲をリストに追加」を使ってね。本当に入れ替える？')) return;
     var btn=$('songReplace'); btn.disabled=true; say($('songMsg'),'更新しています…');
     scall('replace',p).then(function(d){ songs=d||[]; renderSongs(); $('songPaste').value=''; $('songPreview').textContent=''; say($('songMsg'),'リストを更新しました！サイトにすぐ反映されます'); })
       .catch(function(e){ fail(e,$('songMsg')); }).then(function(){ btn.disabled=false; });
