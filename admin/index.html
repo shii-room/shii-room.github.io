@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261018160000">
+<meta name="build" content="20261018173000">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -177,13 +177,25 @@
   .songFilter input[type=text]{flex:1 1 55%;min-width:0;height:42px;padding:0 12px;border:1.5px solid var(--peri);border-radius:10px;background:rgba(255,255,255,.92);font-size:16px;color:var(--ink);font-family:var(--sans)}
   .songFilter select{flex:1 1 40%;min-width:0;height:42px;padding:0 8px;border:1.5px solid var(--peri);border-radius:10px;background:rgba(255,255,255,.92);font-size:14px;color:var(--ink);font-family:var(--sans)}
   .song .tagSel{margin-top:6px;height:34px;padding:0 10px;border:1.5px solid var(--peri);border-radius:8px;background:rgba(255,255,255,.92);font-size:14px;color:var(--ink);font-family:var(--sans);max-width:100%}
+  /* ===== タッチパネル方式（大きなボタンで えらぶ） ===== */
+  .panel{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+  .panel button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:136px;height:auto;padding:14px 8px;border-radius:18px;border:2px solid var(--peri);background:rgba(255,255,255,.92);color:var(--ink);box-shadow:5px 5px 0 var(--peri);transition:transform .12s,box-shadow .12s;letter-spacing:.06em}
+  .panel button:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--peri)}
+  .panel .ic{font-size:34px;line-height:1;color:var(--peri)}
+  .panel .lb{font-family:var(--maru);font-weight:700;font-size:19px;line-height:1.3}
+  .panel .st{font-family:var(--sans);font-weight:500;font-size:12.5px;letter-spacing:.02em;color:var(--sub);line-height:1.4;min-height:1.4em}
+  .panel .n{position:absolute;top:-10px;right:-6px;min-width:26px;height:26px;padding:0 8px;border-radius:99px;background:var(--peri);color:#fff;font-family:var(--sans);font-size:14px;font-weight:800;line-height:26px;text-align:center;letter-spacing:0}
+  .panel .wide{grid-column:1/-1;min-height:112px}
+  .backbar{position:sticky;top:0;z-index:20;margin:0 -20px;padding:calc(10px + env(safe-area-inset-top)) 20px 10px;background:rgba(246,228,233,.94);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:12px}
+  .backbar button{flex:none;height:52px;padding:0 18px;font-size:16px;background:var(--white);color:var(--ink);box-shadow:3px 3px 0 var(--peri)}
+  .backbar b{font-family:var(--maru);font-size:18px;letter-spacing:.06em;color:var(--peri)}
   [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <button class="upd" id="upd" type="button" hidden><span class="upd__dot" aria-hidden="true"></span><span>新しいバージョンがあります<small>タップで更新</small></span></button>
 <main>
-  <h1>しぃ管理<small>リクエスト・メッセージ・X のポスト・歌リスト</small></h1>
+  <h1>しぃ管理<small>さわって えらんでね</small></h1>
 
   <section id="keyView" class="card" hidden>
     <label for="key">合言葉を入れてください</label>
@@ -193,7 +205,17 @@
   </section>
 
   <section id="mainView" hidden>
-    <div class="tabs" role="tablist">
+    <div class="panel" id="panel">
+      <button type="button" data-t="song"><span class="ic">♪</span><span class="lb">歌える曲</span><span class="st" id="tlSong">曲を足す・直す</span></button>
+      <button type="button" data-t="req"><span class="ic">♡</span><span class="lb">リクエスト</span><span class="n" id="reqN" hidden>0</span><span class="st" id="tlReq">届いた歌のお願い</span></button>
+      <button type="button" data-t="msg"><span class="ic">✉</span><span class="lb">メッセージ</span><span class="n" id="msgN" hidden>0</span><span class="st" id="tlMsg">匿名メッセージ</span></button>
+      <button type="button" data-t="post"><span class="ic">✕</span><span class="lb">Xのポスト</span><span class="st">HPにのせる</span></button>
+      <button type="button" data-t="sch"><span class="ic">◷</span><span class="lb">予定表の画像</span><span class="st">画像をつくる</span></button>
+      <button type="button" data-t="wall"><span class="ic">✿</span><span class="lb">ごほうび壁紙</span><span class="st">スタンプの壁紙</span></button>
+      <button type="button" data-t="evt" class="wide"><span class="ic">✦</span><span class="lb">カウントダウン</span><span class="st">誕生日・周年・イベント</span></button>
+    </div>
+    <div class="backbar" id="backbar" hidden><button type="button" id="backBtn">‹ もどる</button><b id="backTitle"></b></div>
+    <div class="tabs" role="tablist" style="display:none">
       <button class="tab" id="tabReq" role="tab" aria-selected="true" type="button">リクエスト<b id="reqCount"></b></button>
       <button class="tab" id="tabMsg" role="tab" aria-selected="false" type="button">メッセージ<b id="msgCount"></b></button>
       <button class="tab" id="tabPost" role="tab" aria-selected="false" type="button">X のポスト</button>
@@ -609,6 +631,25 @@
   $('tabSch').onclick=function(){ showTab('sch'); };
   $('tabWall').onclick=function(){ showTab('wall'); };
   $('tabEvt').onclick=function(){ showTab('evt'); loadEvt(); };
+
+  // ---- タッチパネル方式：トップは大きなボタン、えらぶと中身が開く ----
+  var TILE={song:['tabSong','歌える曲'],req:['tabReq','リクエスト'],msg:['tabMsg','メッセージ'],post:['tabPost','Xのポスト'],sch:['tabSch','予定表の画像'],wall:['tabWall','ごほうび壁紙'],evt:['tabEvt','カウントダウン']};
+  var VIEWS=['reqView','msgView','postView','songView','schView','wallView','evtView'];
+  function openPanel(){ VIEWS.forEach(function(id){ $(id).hidden=true; }); $('panel').hidden=false; $('backbar').hidden=true; window.scrollTo(0,0); }
+  function openTile(t,fromPop){
+    $(TILE[t][0]).click(); $('panel').hidden=true; $('backbar').hidden=false; $('backTitle').textContent=TILE[t][1]; window.scrollTo(0,0);
+    if(!fromPop){ try{ history.pushState({tile:t},''); }catch(e){} }
+  }
+  $('panel').addEventListener('click',function(e){ var b=e.target.closest('button'); if(b&&b.dataset.t) openTile(b.dataset.t); });
+  $('backBtn').onclick=function(){ if(history.state&&history.state.tile){ history.back(); } else openPanel(); };
+  window.addEventListener('popstate',function(e){ if(e.state&&e.state.tile) openTile(e.state.tile,true); else openPanel(); });
+  function syncTiles(){
+    var r=$('reqCount').textContent, m=$('msgCount').textContent, sn=($('songNum').textContent.match(/(\d+)曲/)||[])[1];
+    $('reqN').hidden=!r; $('reqN').textContent=r; $('tlReq').textContent=r?'まだ歌ってない曲あり':'届いた歌のお願い';
+    $('msgN').hidden=!m; $('msgN').textContent=m; $('tlMsg').textContent=m?'未読あり':'匿名メッセージ';
+    $('tlSong').textContent=sn?('いま '+sn+'曲'):'曲を足す・直す';
+  }
+  ['reqCount','msgCount','songNum'].forEach(function(id){ new MutationObserver(syncTiles).observe($(id),{childList:true,characterData:true,subtree:true}); });
 
   // ---- カウントダウン（誕生日・周年・イベント） ----
   var evts=[], evt={kind:'bday',show:30,id:null}, evtLoaded=false;
@@ -1366,7 +1407,7 @@
   };
 
   initFontSegs();
-  function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadM(); loadPosts(); loadSongs(); }
+  function start(){ $('keyView').hidden=true; $('mainView').hidden=false; openPanel(); loadReq(); loadM(); loadPosts(); loadSongs(); }
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };
   $('key').addEventListener('keydown',function(e){ if(e.key==='Enter') $('saveKey').click(); });
