@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261018154000">
+<meta name="build" content="20261018155000">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -173,6 +173,9 @@
   .song{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .song b{display:block;font-weight:700}
   .song small{display:block;color:var(--sub);font-size:12px}
+  .songFilter{display:flex;gap:8px;margin:10px 0 6px}
+  .songFilter input[type=text]{flex:1 1 55%;min-width:0;height:42px;padding:0 12px;border:1.5px solid var(--peri);border-radius:10px;background:rgba(255,255,255,.92);font-size:16px;color:var(--ink);font-family:var(--sans)}
+  .songFilter select{flex:1 1 40%;min-width:0;height:42px;padding:0 8px;border:1.5px solid var(--peri);border-radius:10px;background:rgba(255,255,255,.92);font-size:14px;color:var(--ink);font-family:var(--sans)}
   .song .tagSel{margin-top:6px;height:34px;padding:0 10px;border:1.5px solid var(--peri);border-radius:8px;background:rgba(255,255,255,.92);font-size:14px;color:var(--ink);font-family:var(--sans);max-width:100%}
   [hidden]{display:none!important}
 </style>
@@ -420,6 +423,13 @@
         <p class="msg" id="songMsg"></p>
       </div>
       <h2>いま載っている曲<span id="songNum"></span></h2>
+      <div class="songFilter">
+        <input id="songQ" type="text" autocomplete="off" placeholder="曲名・アーティストで絞り込み">
+        <select id="songG" aria-label="ジャンルで絞り込み">
+          <option value="">全ジャンル</option><option value="__none">自動（未指定）</option>
+          <option>J-POP</option><option>アニソン</option><option>ボカロ</option><option>アイドル曲</option><option>洋楽</option><option>演歌</option><option>その他</option>
+        </select>
+      </div>
       <ul id="songList"><li class="empty">読み込み中…</li></ul>
     </div>
 
@@ -1084,9 +1094,16 @@
     return out;
   }
   function renderSongs(){
-    var ul=$('songList'); ul.innerHTML=''; $('songNum').textContent=songs.length?'（'+songs.length+'曲）':'';
+    var ul=$('songList'); ul.innerHTML='';
+    var q=songNorm($('songQ').value), g=$('songG').value;
+    var view=songs.filter(function(s){
+      if(g==='__none'? !!s.tag : (g && s.tag!==g)) return false;
+      return !q || songNorm((s.title||'')+' '+(s.artist||'')).indexOf(q)>=0;
+    });
+    $('songNum').textContent=songs.length?'（'+(view.length<songs.length?view.length+' / ':'')+songs.length+'曲）':'';
     if(!songs.length){ ul.innerHTML='<li class="empty">まだ曲がありません</li>'; return; }
-    songs.forEach(function(s){
+    if(!view.length){ ul.innerHTML='<li class="empty">条件に合う曲がありません</li>'; return; }
+    view.forEach(function(s){
       var li=document.createElement('li'); li.className='song';
       var d=document.createElement('div'); var b=document.createElement('b'); b.textContent=s.title; d.appendChild(b);
       var sm=document.createElement('small'); sm.textContent=s.artist||''; d.appendChild(sm);
@@ -1106,6 +1123,9 @@
       li.appendChild(d); li.appendChild(x); ul.appendChild(li);
     });
   }
+  function songNorm(x){ return String(x||'').normalize('NFKC').toLowerCase().replace(/[\s\u3000]/g,'').replace(/[ァ-ヶ]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-0x60); }); }
+  $('songQ').addEventListener('input',function(){ renderSongs(); });
+  $('songG').addEventListener('change',function(){ renderSongs(); });
   function loadSongs(){ return scall('list').then(function(d){ songs=d||[]; renderSongs(); }).catch(function(e){ $('songList').innerHTML='<li class="empty">読み込めませんでした</li>'; fail(e,$('songMsg')); }); }
   $('songPaste').addEventListener('input',function(){
     var p=parseSongs(this.value);
