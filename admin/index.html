@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261018152000">
+<meta name="build" content="20261018153000">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -173,6 +173,7 @@
   .song{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .song b{display:block;font-weight:700}
   .song small{display:block;color:var(--sub);font-size:12px}
+  .song .tagSel{margin-top:6px;height:34px;padding:0 10px;border:1.5px solid var(--peri);border-radius:8px;background:rgba(255,255,255,.92);font-size:14px;color:var(--ink);font-family:var(--sans);max-width:100%}
   [hidden]{display:none!important}
 </style>
 </head>
@@ -1088,7 +1089,17 @@
     songs.forEach(function(s){
       var li=document.createElement('li'); li.className='song';
       var d=document.createElement('div'); var b=document.createElement('b'); b.textContent=s.title; d.appendChild(b);
-      var sm=document.createElement('small'); sm.textContent=[s.artist,s.tag?'#'+s.tag:''].filter(Boolean).join('  '); d.appendChild(sm);
+      var sm=document.createElement('small'); sm.textContent=s.artist||''; d.appendChild(sm);
+      var sel=document.createElement('select'); sel.className='tagSel'; sel.setAttribute('aria-label','ジャンルを変更');
+      var opts=['','J-POP','アニソン','ボカロ','アイドル曲','洋楽','演歌','その他']; if(s.tag&&opts.indexOf(s.tag)<0) opts.push(s.tag);
+      opts.forEach(function(o){ var op=document.createElement('option'); op.value=o; op.textContent=o||'ジャンルなし'; if(o===(s.tag||'')) op.selected=true; sel.appendChild(op); });
+      sel.onchange=function(){ var v=sel.value; sel.disabled=true; say($('songMsg'),'ジャンルを変えています…');
+        scall('list').then(function(cur){
+          var merged=(cur||[]).map(function(x){ return {title:x.title,artist:x.artist||'',tag:(x.id===s.id?v:(x.tag||''))}; });
+          return scall('replace',merged);
+        }).then(function(d){ songs=d||[]; renderSongs(); say($('songMsg'),'「'+s.title+'」のジャンルを「'+(v||'なし')+'」にしました'); })
+          .catch(function(e){ sel.disabled=false; renderSongs(); fail(e,$('songMsg')); }); };
+      d.appendChild(sel);
       var x=document.createElement('button'); x.className='del'; x.type='button'; x.textContent='消す';
       x.onclick=function(){ if(!confirm('「'+s.title+'」をリストから外す？'))return; x.disabled=true;
         scall('delete',null,s.id).then(function(d){ songs=d||[]; renderSongs(); }).catch(function(e){ x.disabled=false; fail(e,$('songMsg')); }); };
