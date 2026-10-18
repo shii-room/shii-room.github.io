@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="canonical" href="https://shii-room.github.io/songs.html">
 <title>しぃの歌える曲リスト｜リクエスト</title><meta name="description" content="しぃの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
-<meta name="build" content="20261015125500"><meta name="theme-color" content="#F3DDE3">
+<meta name="build" content="20261018154000"><meta name="theme-color" content="#F3DDE3">
 <meta property="og:title" content="しぃの歌える曲リスト"><meta property="og:description" content="歌のリクエストはこちらから ♡ 曲を検索してコメントをコピーできます。"><meta property="og:type" content="website"><meta property="og:url" content="https://shii-room.github.io/songs.html"><meta property="og:image" content="https://shii-room.github.io/img/ogp.jpg"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -1090,12 +1090,14 @@
       .then(function(){clearTimeout(timer);});
     return utaemoLoading;
   }
+  // 管理画面でジャンルを手動指定した曲は、UTAEMOの自動判定より手動指定を優先する
+  var GENRE_LIST=['J-POP','アニソン','ボカロ','アイドル曲','洋楽','演歌','その他'];
   function filteredSongs(){
     var nq=norm(q);
     var hits=songs.filter(function(s){
       var text=mode==='artist'?(s.artistSearch||s.artist):(s.titleSearch||s.title);
       var first=mode==='artist'?(s.artistKana||norm(s.artist).charAt(0)):(s.titleKana||norm(s.title).charAt(0));
-      return (!tag||s.tag===tag)&&matchesQuery(text,nq)&&(!kana||(kana==='abc'?/^[a-z]/.test(norm(mode==='artist'?s.artist:s.title)):kana.indexOf(first)>=0))&&(!genre||(s.searchGenres||[]).indexOf(genre)>=0||s.tag===genre);
+      return (!tag||s.tag===tag)&&matchesQuery(text,nq)&&(!kana||(kana==='abc'?/^[a-z]/.test(norm(mode==='artist'?s.artist:s.title)):kana.indexOf(first)>=0))&&(!genre||(GENRE_LIST.indexOf(s.tag)>=0?s.tag===genre:((s.searchGenres||[]).indexOf(genre)>=0||s.tag===genre)));
     });
     if(order!=='original') hits.sort(function(a,b){
       if(order==='artist') return collator.compare(a.artistSort||norm(a.artist),b.artistSort||norm(b.artist))||collator.compare(a.titleSort||norm(a.title),b.titleSort||norm(b.title));
