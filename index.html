@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261119000500">
+<meta name="build" content="20261119003000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1376,6 +1376,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .gift__lead { font-size: 14px; letter-spacing: .05em; margin-bottom: 18px; color: var(--ink-sub); }
 
   /* Footer */
+  .footer__visit { order: 3; flex-basis: 100%; font-family: var(--en); letter-spacing: .14em; font-size: 12px; color: var(--ink-sub); }
+  .footer__visit b { font-size: 15px; letter-spacing: .08em; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .footer__visit small { margin-left: 8px; font-family: var(--maru); font-size: 11px; letter-spacing: .06em; }
   .footer { width: var(--wrap); margin-inline: auto; padding-block: 40px 56px; border-top: 1px dashed var(--white); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-family: var(--maru); font-weight: 500; font-size: 13px; letter-spacing: .1em; }
 
   @media (min-width: 768px) {
@@ -2037,8 +2040,35 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 
 <footer class="footer">
   <span>しぃの見守り隊</span>
+  <span class="footer__visit" id="visit" hidden>VISITORS <b id="visit-total">–</b><small id="visit-today"></small></span>
   <span>FM 🍭🍰꙳.*</span>
 </footer>
+<script>
+(function(){
+  // ---- 来訪者カウンター：同じ端末は1日に1回だけ数える（日本時間で日がわり） ----
+  var el=document.getElementById('visit'); if(!el) return;
+  var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
+  var LK='shii_visit_day', today='';
+  try{ today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo'}).format(new Date()); }catch(e){ today=new Date().toISOString().slice(0,10); }
+  var seen=''; try{ seen=localStorage.getItem(LK)||''; }catch(e){}
+  var count=seen!==today;  // 今日まだ数えていない端末だけ +1
+  function call(fn){
+    return fetch(SB+fn,{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'})
+      .then(function(r){ if(!r.ok) throw new Error('server'); return r.json(); });
+  }
+  function show(d){
+    var t=Number(d&&d.total), n=Number(d&&d.today);
+    if(!isFinite(t)) return;
+    document.getElementById('visit-total').textContent=t.toLocaleString('ja-JP');
+    document.getElementById('visit-today').textContent=isFinite(n)?'今日 '+n.toLocaleString('ja-JP'):'';
+    el.hidden=false;
+  }
+  call(count?'shii_visit_hit':'shii_visit_stats').then(function(d){
+    show(d);
+    if(count){ try{ localStorage.setItem(LK,today); }catch(e){} }  // 数えられたときだけ記録
+  }).catch(function(){});  // うまくいかないときは、そっと非表示のまま
+})();
+</script>
 <script>
 (function(){
   // ---- 見守り隊ランク：サイトの機能を使うとEXPがたまる（この端末に保存） ----
