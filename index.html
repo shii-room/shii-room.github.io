@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261118135000">
+<meta name="build" content="20261118141000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -603,29 +603,39 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes popheart { 0% { opacity: 0; transform: translate(0,0) scale(.3); } 25% { opacity: 1; transform: translate(var(--dx), -20px) scale(1.1); } 100% { opacity: 0; transform: translate(calc(var(--dx) * 2), -80px) scale(.8); } }
   @media (min-width: 768px) { .prof { grid-template-columns: 1fr 1fr; gap: 0 64px; align-items: end; } }
 
-  /* CLAP：拍手カウンター（ミラティブの拍手みたいに連打できる） */
+  /* CLAP：拍手カウンター（しぃをタップしてぱちぱち。今月はみんなでケーキ作り） */
   .clap { max-width: 560px; text-align: center; }
   .clap .req__lead { text-align: left; }
-  .clap__stage { position: relative; display: flex; justify-content: center; margin: 26px 0 8px; padding-top: 40px; }
-  .clap__btn {
-    position: relative; z-index: 1; width: 164px; height: 164px; border-radius: 50%;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-    background: var(--rose); color: var(--white); border: 3px solid var(--white); box-shadow: 6px 6px 0 var(--rose-deep);
-    font-family: var(--maru); font-weight: 700; letter-spacing: .12em; cursor: pointer;
-    touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none;
-    transition: transform .08s, box-shadow .08s;
-  }
-  .clap__btn:active, .clap__btn.is-hit { transform: translate(4px,4px) scale(.96); box-shadow: 2px 2px 0 var(--rose-deep); }
-  .clap__emoji { font-size: 56px; line-height: 1; }
-  .clap__txt { font-size: 15px; }
-  .clap__nums { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 20px; margin-top: 18px; font-size: 13px; letter-spacing: .08em; color: var(--ink-sub); }
+  .clap__stage { position: relative; display: flex; justify-content: center; margin: 14px 0 4px; padding-top: 58px; }
+  .clap__bubble { position: absolute; top: 4px; left: 50%; z-index: 3; width: max-content; max-width: 92%; padding: 9px 16px; border-radius: 18px; background: var(--white); border: 1.5px solid var(--rose); box-shadow: 0 3px 0 rgba(224,116,150,.35); color: var(--ink); font-family: var(--hand); font-size: 15px; line-height: 1.6; letter-spacing: .04em; opacity: 0; transform: translate(-50%, 8px) scale(.9); transition: opacity .25s, transform .25s; pointer-events: none; }
+  .clap__bubble::after { content: ""; position: absolute; left: 50%; bottom: -7px; width: 11px; height: 11px; background: var(--white); border-right: 1.5px solid var(--rose); border-bottom: 1.5px solid var(--rose); transform: translateX(-50%) rotate(45deg); }
+  .clap__bubble.is-on { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  .clap__bubble.is-rare { background: linear-gradient(110deg, #FFF3C9, #FFE0EC 45%, #E4D8FF); border-color: #C9A8FF; }
+  .clap__bubble.is-rare::after { background: #E9DCFB; border-color: #C9A8FF; }
+  .clap__btn { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; background: none; border: 0; padding: 0; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; font-family: var(--maru); }
+  .clap__chara { position: relative; width: 136px; aspect-ratio: 320 / 569; transition: transform .08s; transform-origin: 50% 100%; }
+  .clap__chara img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; -webkit-user-drag: none; filter: drop-shadow(0 6px 8px rgba(174,92,120,.22)); }
+  .clap__b { opacity: 0; }
+  .clap__btn.is-hit .clap__chara { transform: translateY(-5px) scale(1.04, .97); }
+  .clap__btn.is-hit .clap__b { opacity: 1; }
+  .clap__btn.is-hit .clap__a { opacity: 0; }
+  .clap__pill { position: relative; margin-top: -10px; padding: 11px 26px; border-radius: 999px; background: var(--rose); color: var(--white); border: 2px solid var(--white); box-shadow: 4px 4px 0 var(--rose-deep); font-weight: 700; font-size: 15px; letter-spacing: .1em; transition: transform .08s, box-shadow .08s; }
+  .clap__btn:active .clap__pill, .clap__btn.is-hit .clap__pill { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--rose-deep); }
+  .clap__btn.is-rainbow .clap__chara { animation: clapglow 1.1s linear; }
+  @keyframes clapglow { 0% { filter: drop-shadow(0 0 12px #FFD27A); } 33% { filter: drop-shadow(0 0 18px #FF9BC2); } 66% { filter: drop-shadow(0 0 18px #C9A8FF); } 100% { filter: drop-shadow(0 0 12px #9ADFF5); } }
+  .clap__goal { margin: 22px auto 0; max-width: 380px; text-align: left; }
+  .clap__goalt { display: block; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .04em; color: var(--ink); }
+  .clap__goalt small { display: block; margin-top: 2px; font-weight: 500; font-size: 11px; color: var(--ink-sub); }
+  .clap__bar { position: relative; height: 16px; margin-top: 8px; border-radius: 999px; background: rgba(255,255,255,.85); border: 1.5px solid var(--white); box-shadow: inset 0 1px 3px rgba(174,92,120,.22); overflow: hidden; }
+  .clap__bar i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #F9BCCF, var(--rose)); transition: width .35s ease; }
+  .clap__nums { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-top: 22px; font-size: 12px; letter-spacing: .04em; color: var(--ink-sub); }
   .clap__nums b { display: block; font-family: var(--en); font-size: 26px; line-height: 1.3; letter-spacing: .04em; color: var(--ink); font-variant-numeric: tabular-nums; }
-  .clap__note { margin-top: 12px; font-size: 11px; line-height: 1.8; color: var(--ink-sub); }
-  .clap__fly { position: absolute; left: 50%; bottom: 40%; z-index: 2; width: 24px; height: 22px; margin-left: -12px; color: var(--rose); pointer-events: none; opacity: 0; animation: clapfly 1s ease-out both; }
+  .clap__note { margin-top: 10px; font-size: 11px; line-height: 1.8; color: var(--ink-sub); }
+  .clap__fly { position: absolute; left: 50%; bottom: 34%; z-index: 2; width: 24px; height: 22px; margin-left: -12px; color: var(--rose); pointer-events: none; opacity: 0; animation: clapfly 1.1s ease-out both; }
   .clap__fly svg { display: block; width: 100%; height: 100%; }
   .clap__fly.is-e { width: auto; height: auto; font-size: 24px; line-height: 1; }
   @keyframes clapfly { 0% { opacity: 0; transform: translate(0,0) scale(.4) rotate(0); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1) rotate(var(--rot)); } }
-  @media (prefers-reduced-motion: reduce) { .clap__fly { display: none; } .clap__btn { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .clap__fly { display: none; } .clap__chara, .clap__pill { transition: none; } .clap__btn.is-rainbow .clap__chara { animation: none; } }
 
   /* SCHEDULE */
   .sched__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; }
@@ -1847,11 +1857,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="sec__head"><h2 class="sec__en">Clap</h2><span class="sec__ja">拍手</span></div>
     <div class="clap deco deco--love">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span>
-      <p class="req__lead">配信を見ていたら、ぱちぱち押してね👏 みんなの拍手がどんどんたまっていくよ！</p>
+      <p class="req__lead">しぃをタップして、ぱちぱちを届けてね👏 見守り隊のみんなの分が、どんどんたまっていくよ！ 今月はみんなでケーキを作ろう🍰</p>
       <div class="clap__stage" id="clap-stage">
-        <button class="clap__btn" id="clap-btn" type="button" aria-label="拍手する"><span class="clap__emoji" aria-hidden="true">👏</span><span class="clap__txt">ぱちぱち</span></button>
+        <p class="clap__bubble" id="clap-bubble" role="status" aria-live="polite"></p>
+        <button class="clap__btn" id="clap-btn" type="button" aria-label="しぃをタップしてぱちぱちする"><span class="clap__chara" aria-hidden="true"><img class="clap__a" src="img/chibi-a.webp" alt="" width="320" height="569"><img class="clap__b" src="img/chibi-b.webp" alt="" width="320" height="569"></span><span class="clap__pill">ぱちぱち♡</span></button>
       </div>
-      <p class="clap__nums"><span>今月の拍手<b id="clap-month">–</b></span><span>みんなの累計<b id="clap-total">–</b></span><span>あなたの拍手<b id="clap-me">0</b></span></p>
+      <div class="clap__goal" id="clap-goal" hidden>
+        <p class="clap__goalt"><span id="clap-stagetxt">スポンジを焼いています🥚</span><small id="clap-goaln"></small></p>
+        <div class="clap__bar" aria-hidden="true"><i id="clap-bar"></i></div>
+      </div>
+      <p class="clap__nums"><span>今月のぱちぱち<b id="clap-month">–</b></span><span>見守り隊の累計<b id="clap-total">–</b></span><span>あなたのぱちぱち<b id="clap-me">0</b></span></p>
       <p class="clap__note" id="clap-note" role="status" aria-live="polite"></p>
     </div>
   </section>
@@ -2493,14 +2508,25 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 </script>
 <script>
 (function(){
-  // ---- 拍手カウンター：押した数をまとめて送り、みんなの合計を表示する ----
+  // ---- 拍手カウンター：しぃをタップ → ぱちぱち。押した数をまとめて送り、みんなの合計を表示する ----
   var btn=document.getElementById('clap-btn'); if(!btn) return;
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
   var $=function(id){return document.getElementById(id);};
-  var stage=$('clap-stage'), totalEl=$('clap-total'), monthEl=$('clap-month'), meEl=$('clap-me'), note=$('clap-note');
+  var stage=$('clap-stage'), bubble=$('clap-bubble'), totalEl=$('clap-total'), monthEl=$('clap-month'), meEl=$('clap-me'), note=$('clap-note');
   var ME='shii_clap_me', fmt=function(n){ return Number(n).toLocaleString('ja-JP'); };
   var me=0; try{ me=+localStorage.getItem(ME)||0; }catch(e){}
-  var total=null, month=null, ym=null, pending=0, sending=false, timer=0, pollT=0;
+  var total=null, month=null, ym=null, pending=0, sending=false, timer=0, lastK=null;
+
+  // 今月のケーキの目標（この数にとどくと1個完成。あとは1万ずつ）
+  var GOALS=[1000,3000,5000,10000];
+  function goalInfo(m){
+    var k=0, prev=0, g=GOALS[0], i;
+    for(i=0;i<GOALS.length;i++){ if(m>=GOALS[i]){ k++; prev=GOALS[i]; g=GOALS[i+1]||0; } else { g=GOALS[i]; break; } }
+    if(!g || m>=GOALS[GOALS.length-1]){ var base=Math.max(GOALS[GOALS.length-1],Math.floor(m/10000)*10000); k=GOALS.length+Math.max(0,Math.floor(m/10000)-1); prev=base; g=base+10000; }
+    return {k:k, prev:prev, g:g};
+  }
+  var STAGES=['スポンジを焼いています🥚','クリームをぬっています🍦','いちごをのせています🍓','ろうそくを立てています🕯️'];
+
   function rpc(fn,body,keep){
     return fetch(SB+fn,{method:'POST',keepalive:!!keep,headers:{'apikey':KEY,'Content-Type':'application/json'},body:JSON.stringify(body||{})})
       .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){ if(!r.ok) throw new Error('server'); return d; }); });
@@ -2508,16 +2534,21 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function draw(){
     meEl.textContent=fmt(me);
     if(total===null){ totalEl.textContent='–'; monthEl.textContent='–'; return; }
-    // 自分の押した分は、まだ送っていなくても先に足して見せる
-    totalEl.textContent=fmt(total+pending); monthEl.textContent=fmt(month+pending);
+    var m=month+pending;
+    totalEl.textContent=fmt(total+pending); monthEl.textContent=fmt(m);
+    var gi=goalInfo(m), pct=Math.min(100,Math.max(0,(m-gi.prev)/(gi.g-gi.prev)*100));
+    $('clap-goal').hidden=false; $('clap-bar').style.width=pct+'%';
+    $('clap-stagetxt').textContent=(gi.k?'🎂×'+gi.k+' ':'')+STAGES[Math.min(3,Math.floor(pct/25))];
+    $('clap-goaln').textContent='今月のケーキ作り：次の1個まであと '+fmt(gi.g-m)+'回';
+    if(lastK===null) lastK=gi.k;
+    else if(gi.k>lastK){ lastK=gi.k; say('ケーキが完成したよ〜！みんなありがとう🎂',4500,true); burst(14,['🎂','🍰','✨','🍓','🎉']); }
   }
   function setStats(d){
     if(!d || typeof d!=='object') return;
     var t=Number(d.total), m=Number(d.month);
     if(isFinite(t) && t>=0) total=Math.max(total||0,t);
-    if(isFinite(m) && m>=0) month=(month===null || d.ym!==ym)?m:Math.max(month,m); // 月がかわったら切りかえる
-    ym=d.ym;
-    draw();
+    if(isFinite(m) && m>=0) month=(month===null || d.ym!==ym)?m:Math.max(month,m);
+    ym=d.ym; draw();
   }
   function flush(keep){
     if(sending || pending<=0) return;
@@ -2531,33 +2562,54 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     if(document.hidden) return;
     rpc('shii_clap_stats').then(function(v){ setStats(v); }).catch(function(){});
   }
-  // ふわっと飛ぶハートと拍手
+
+  // しぃのひとこと
+  var bT=0;
+  function say(t,ms,rare){
+    bubble.textContent=t; bubble.classList.toggle('is-rare',!!rare); bubble.classList.add('is-on');
+    clearTimeout(bT); bT=setTimeout(function(){ bubble.classList.remove('is-on'); },ms||3200);
+  }
+  var MILE={10:'えへへ、ありがとう♡',50:'うれしい〜！もっともっと！',100:'100回もぱちぱちしてくれたの！？だいすき♡',300:'手、だいじょうぶ？ありがとうね🍰',500:'500回…！見守り隊のかがみだよ〜✨',1000:'1000回たっせい！しぃの宝物だよ🌈'};
+  function mileText(n){ if(MILE[n]) return MILE[n]; if(n>1000 && n%1000===0) return n+'回！いつも見守ってくれてありがとう♡'; return ''; }
+
+  // ふわっと飛ぶハートとスイーツ
   var fly=0, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function pop(){
-    if(reduce || fly>=24) return;
-    var el=document.createElement('span'), emo=Math.random()<.35;
+  var EMO=['🍰','🍭','🍓','🧁','🍩','🍬','👏','✨'];
+  function pop(list){
+    if(reduce || fly>=36) return;
+    var el=document.createElement('span'), emo=Math.random()<.65;
     el.className='clap__fly'+(emo?' is-e':'');
-    if(emo){ el.textContent='👏'; }
+    if(emo){ var L=list||EMO; el.textContent=L[Math.floor(Math.random()*L.length)]; }
     else{ el.innerHTML='<svg><use href="#heart"/></svg>'; }
-    el.style.setProperty('--dx',(Math.random()*180-90)+'px');
-    el.style.setProperty('--dy',-(90+Math.random()*80)+'px');
+    el.style.setProperty('--dx',(Math.random()*220-110)+'px');
+    el.style.setProperty('--dy',-(80+Math.random()*110)+'px');
     el.style.setProperty('--rot',(Math.random()*50-25)+'deg');
     stage.appendChild(el); fly++;
-    setTimeout(function(){ el.remove(); fly--; },1000);
+    setTimeout(function(){ el.remove(); fly--; },1100);
   }
+  function burst(n,list){ for(var i=0;i<n;i++) setTimeout(function(){ pop(list); },i*40); }
+
+  var hitT=0;
   btn.addEventListener('click',function(){
     me++; pending++; draw();
     try{ localStorage.setItem(ME,String(me)); }catch(e){}
-    btn.classList.add('is-hit'); setTimeout(function(){ btn.classList.remove('is-hit'); },70);
+    btn.classList.add('is-hit'); clearTimeout(hitT); hitT=setTimeout(function(){ btn.classList.remove('is-hit'); },160);
     if(navigator.vibrate) try{ navigator.vibrate(8); }catch(e){}
-    pop();
+    var mt=mileText(me);
+    if(mt){ say(mt,4200); burst(8); }
+    else if(Math.random()<.02){
+      // ごくまれに：にじいろぱちぱち
+      say('レア！にじいろぱちぱち🌈✨',3800,true); burst(16,['🌈','✨','💖','🍭','🦄']);
+      btn.classList.remove('is-rainbow'); void btn.offsetWidth; btn.classList.add('is-rainbow');
+    }
+    else pop();
     if(pending>=60) flush(false); else schedule(1500);
   });
   // ページを閉じるときも、押した分を送る
   function leave(){ if(pending>0){ var n=Math.min(pending,60); pending-=n; try{ rpc('shii_clap_hit',{p_n:n},true).catch(function(){}); }catch(e){} } }
   document.addEventListener('visibilitychange',function(){ if(document.hidden) leave(); else poll(); });
   window.addEventListener('pagehide',leave);
-  draw(); poll(); pollT=setInterval(poll,20000);
+  draw(); poll(); setInterval(poll,20000);
 })();
 </script>
 <script>
