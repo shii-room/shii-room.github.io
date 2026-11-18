@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261118141000">
+<meta name="build" content="20261118143500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -616,6 +616,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .clap__chara { position: relative; width: 136px; aspect-ratio: 320 / 569; transition: transform .08s; transform-origin: 50% 100%; }
   .clap__chara img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; -webkit-user-drag: none; filter: drop-shadow(0 6px 8px rgba(174,92,120,.22)); }
   .clap__b { opacity: 0; }
+  .clap__hands { position: absolute; left: 50%; top: 56%; font-size: 44px; line-height: 1; opacity: 0; transform: translate(-50%,-50%) scale(.4); transition: opacity .08s, transform .12s; pointer-events: none; z-index: 2; }
+  .clap__btn.is-hit .clap__hands { opacity: 1; transform: translate(-50%,-50%) scale(1.15); }
   .clap__btn.is-hit .clap__chara { transform: translateY(-5px) scale(1.04, .97); }
   .clap__btn.is-hit .clap__b { opacity: 1; }
   .clap__btn.is-hit .clap__a { opacity: 0; }
@@ -1860,7 +1862,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <p class="req__lead">しぃをタップして、ぱちぱちを届けてね👏 見守り隊のみんなの分が、どんどんたまっていくよ！ 今月はみんなでケーキを作ろう🍰</p>
       <div class="clap__stage" id="clap-stage">
         <p class="clap__bubble" id="clap-bubble" role="status" aria-live="polite"></p>
-        <button class="clap__btn" id="clap-btn" type="button" aria-label="しぃをタップしてぱちぱちする"><span class="clap__chara" aria-hidden="true"><img class="clap__a" src="img/chibi-a.webp" alt="" width="320" height="569"><img class="clap__b" src="img/chibi-b.webp" alt="" width="320" height="569"></span><span class="clap__pill">ぱちぱち♡</span></button>
+        <button class="clap__btn" id="clap-btn" type="button" aria-label="しぃをタップしてぱちぱちする"><span class="clap__chara" aria-hidden="true"><img class="clap__a" src="img/chibi-a.webp" alt="" width="320" height="569"><img class="clap__b" src="img/chibi-b.webp" alt="" width="320" height="569"><span class="clap__hands">👏</span></span><span class="clap__pill">👏 ぱちぱち♡</span></button>
       </div>
       <div class="clap__goal" id="clap-goal" hidden>
         <p class="clap__goalt"><span id="clap-stagetxt">スポンジを焼いています🥚</span><small id="clap-goaln"></small></p>
