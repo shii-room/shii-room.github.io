@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261118133000">
+<meta name="build" content="20261118135000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -510,6 +510,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .quick a.quick__stamp { flex-direction: row; gap: 10px; min-height: 58px; font-size: 14px; background: linear-gradient(110deg, #FFF8EC, #FDEBD6); border-color: #F2D2A8; box-shadow: 0 3px 0 #E7BE86; color: #9A6A2E; }
   .quick a.quick__stamp::after { color: #D49A4C; }
   .quick__stamp .quick__i { background: #FBE2C2; color: #E59A3A; }
+  .quick a.quick__clap { grid-column: 1 / -1; flex-direction: row; gap: 10px; min-height: 58px; font-size: 14px; }
   .quick__dot { position: absolute; top: 8px; left: 10px; width: 9px; height: 9px; border-radius: 50%; background: #FF6F9C; box-shadow: 0 0 0 2px #fff; animation: dot-pulse 1.4s ease-in-out infinite; }
   @keyframes dot-pulse { 50% { transform: scale(1.35); } }
   .quick__wide small { font-family: var(--maru); font-weight: 500; font-size: 11px; color: var(--ink-sub); padding: 2px 8px; border-radius: 999px; background: #FBE3EA; }
@@ -1497,11 +1498,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     .hero__sns { margin-inline: auto; width: 100%; }
     .quick { max-width: none; gap: 12px; }
     .quick a { min-height: 88px; }
-    .quick a.quick__omikuji, .quick a.quick__stamp { min-height: 60px; }
+    .quick a.quick__clap, .quick a.quick__omikuji, .quick a.quick__stamp { min-height: 60px; }
     .menu__in { width: min(760px, 100% - 192px); padding-block: 36px 64px; }
     .quick--menu { max-width: none; margin-top: 0; gap: 16px; }
     .quick--menu a { min-height: 104px; font-size: 15px; }
-    .quick--menu a.quick__omikuji, .quick--menu a.quick__stamp { min-height: 72px; font-size: 15px; }
+    .quick--menu a.quick__clap, .quick--menu a.quick__omikuji, .quick--menu a.quick__stamp { min-height: 72px; font-size: 15px; }
     .menu__sns a, .menu__top { min-height: 44px; display: inline-flex; align-items: center; }
     .prof { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
     .prof__side { gap: 16px; }
@@ -1625,6 +1626,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
       <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
       <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
+      <a class="quick__clap" href="#clap"><span class="quick__i"><svg><use href="#heart"/></svg></span>拍手</a>
       <a class="quick__omikuji" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
           <a class="quick__stamp" href="#stamp"><span class="quick__i"><svg><use href="#heart"/></svg></span>スタンプカード<i class="quick__dot" hidden></i></a>
     </div>
@@ -1680,6 +1682,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
           <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
           <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
+          <a class="quick__clap" href="#clap"><span class="quick__i"><svg><use href="#heart"/></svg></span>拍手</a>
           <a class="quick__omikuji" href="#omikuji"><span class="quick__i"><svg><use href="#omi"/></svg></span>しぃおみくじ</a>
           <a class="quick__stamp" href="#stamp"><span class="quick__i"><svg><use href="#heart"/></svg></span>スタンプカード<i class="quick__dot" hidden></i></a>
         </nav>
