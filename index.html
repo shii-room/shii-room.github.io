@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261119003000">
+<meta name="build" content="20261119010000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -640,6 +640,13 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .clap__ac.is-new { animation: clapcake .6s ease-out, clapfloat 3.8s ease-in-out .6s infinite; }
   @keyframes clapfloat { 0%, 100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(-5px) rotate(var(--r,0deg)); } }
   @keyframes clapcake { 0% { transform: scale(.4) rotate(var(--r,0deg)); opacity: 0; } 55% { transform: scale(1.25) rotate(var(--r,0deg)); opacity: 1; } 100% { transform: scale(1) rotate(var(--r,0deg)); } }
+  .clap__ac.is-lux { filter: drop-shadow(0 0 7px rgba(255,214,120,.95)) drop-shadow(0 3px 3px rgba(174,92,120,.25)); z-index: 1; }
+  .clap__ac.is-lux img { height: 58px; }
+  .clap__ac.is-lux::after { content: '✨'; position: absolute; right: -6px; top: -8px; font-size: 14px; line-height: 1; animation: claptwk 1.8s ease-in-out infinite; }
+  @keyframes claptwk { 0%, 100% { opacity: .2; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.15); } }
+  .clap__lux { display: block; width: 100%; margin-top: 14px; padding: 10px 14px; border-radius: 16px; border: 1.5px solid #F2C46B; background: linear-gradient(180deg,#FFF8E1,#FFE9A8); box-shadow: 0 3px 0 rgba(222,170,60,.5); color: var(--ink); font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .04em; line-height: 1.5; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .clap__lux:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(222,170,60,.5); }
+  .clap__lux small { display: block; font-weight: 500; font-size: 11px; color: var(--ink-sub); }
   .clap__cakerow { display: flex; align-items: center; gap: 12px; }
   .clap__cakecur { flex: 0 0 58px; width: 58px; }
   .clap__cakecur svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -658,7 +665,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .clap__fly svg { display: block; width: 100%; height: 100%; }
   .clap__fly.is-e { width: auto; height: auto; font-size: 24px; line-height: 1; }
   @keyframes clapfly { 0% { opacity: 0; transform: translate(0,0) scale(.4) rotate(0); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1) rotate(var(--rot)); } }
-  @media (prefers-reduced-motion: reduce) { .clap__ac, .clap__ac.is-new, .clap__cakecur.is-pop, .clap__me b.is-bump { animation: none; } .clap__fly { display: none; } .clap__chara, .clap__pill { transition: none; } .clap__btn.is-rainbow .clap__chara { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .clap__ac, .clap__ac.is-new, .clap__ac.is-lux::after, .clap__cakecur.is-pop, .clap__me b.is-bump { animation: none; } .clap__fly { display: none; } .clap__chara, .clap__pill { transition: none; } .clap__btn.is-rainbow .clap__chara { animation: none; } }
 
   /* SCHEDULE */
   .sched__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; }
@@ -1898,6 +1905,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
             <div class="clap__bar" aria-hidden="true"><i id="clap-bar"></i></div>
           </div>
         </div>
+        <button class="clap__lux" id="clap-lux" type="button" hidden>🎁 ケーキ10個を、豪華ケーキ1個に交換する<small>交換しても、みんなの数字は減らないよ（この端末の飾りかえ）</small></button>
       </div>
       <p class="clap__nums"><span>今月のぱちぱち<b id="clap-month">–</b></span><span>あなたのぱちぱち<b id="clap-me">0</b></span></p>
       <button class="clap__refresh" id="clap-refresh" type="button"><span class="clap__ri" aria-hidden="true">🔄</span>数字を最新にする</button>
@@ -2610,13 +2618,18 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     return o+'</svg>';
   }
   var STAGES=['スポンジを焼いています🥚','クリームをぬっています🍦','いちごをのせています🍓','ろうそくを立てています🕯️'];
-  var shelfK=-1;
+  var shelfK=-1, shelfL=-1;
+  // 豪華ケーキ：今月のケーキが10個たまったら、10個を豪華ケーキ1個に交換できる（飾りかえ。この端末だけ・月がかわるとリセット。数字は減らない）
+  var LUXK='shii_clap_lux', LUXN=6, lux=0;
+  function loadLux(){ try{ var v=JSON.parse(localStorage.getItem(LUXK)||'null'); lux=(v&&v.ym===ym)?Math.max(0,Math.floor(+v.n||0)):0; }catch(e){ lux=0; } }
+  function saveLux(){ try{ localStorage.setItem(LUXK,JSON.stringify({ym:ym,n:lux})); }catch(e){} }
   // できたケーキは、しぃのまわりにふえていく（左右に6個ずつ、あわせて12個まで）。ケーキの絵はいろんなケーキのイラストセット（Illustrator Factory）
   var SLOTS=[[3,14],[16,28],[3,42],[16,56],[3,70],[16,84]];
   function aroundHTML(k){
-    var n=Math.min(k,12), h='', i, sl;
-    for(i=0;i<n;i++){ sl=SLOTS[Math.floor(i/2)];
-      h+='<span class="clap__ac" style="'+(i%2?'right':'left')+':'+sl[0]+'%;top:'+sl[1]+'%;--r:'+(((i*37)%17)-8)+'deg;animation-delay:'+((i%5)*.4)+'s"><img src="img/cake-'+(i%9+1)+'.webp" alt="" width="40" height="38" decoding="async"></span>'; }
+    var L=Math.min(lux,Math.floor(k/10)), norm=k-L*10, n=Math.min(L+norm,12), h='', i, sl, isL, src, w;
+    for(i=0;i<n;i++){ sl=SLOTS[Math.floor(i/2)]; isL=i<L;
+      src=isL?'img/lux-'+(i%LUXN+1)+'.webp':'img/cake-'+((i-L)%9+1)+'.webp';
+      h+='<span class="clap__ac'+(isL?' is-lux':'')+'" style="'+(i%2?'right':'left')+':'+sl[0]+'%;top:'+sl[1]+'%;--r:'+(((i*37)%17)-8)+'deg;animation-delay:'+((i%5)*.4)+'s"><img src="'+src+'" alt="" height="'+(isL?58:38)+'" decoding="async"></span>'; }
     return h;
   }
   function drawCake(t){
@@ -2630,16 +2643,26 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       if(lastStage!==-1 && !reduce){ cur.classList.remove('is-pop'); void cur.offsetWidth; cur.classList.add('is-pop'); }
       lastStage=st;
     }
-    if(k!==shelfK){
+    var avail=k-Math.min(lux,Math.floor(k/10))*10;
+    var lb=$('clap-lux'); lb.hidden=avail<10;
+    if(k!==shelfK || lux!==shelfL){
       var ar=$('clap-around'); ar.innerHTML=aroundHTML(k);
       if(shelfK!==-1 && k>shelfK && k<=12){ var c=ar.lastElementChild; if(c) c.classList.add('is-new'); }
-      shelfK=k;
+      shelfK=k; shelfL=lux;
     }
     if(lastK===null) lastK=k;
     else if(k>lastK){ lastK=k; say(fmt(k)+'個目のケーキが完成したよ〜！みんなありがとう🎂',4500,true); burst(14,['🎂','🍰','✨','🍓','🎉']); }
   }
 ['スポンジを焼いています🥚','クリームをぬっています🍦','いちごをのせています🍓','ろうそくを立てています🕯️'];
 
+  $('clap-lux').addEventListener('click',function(){
+    var k=Math.floor(((month||0)+pending)/CAKE);
+    if(k-Math.min(lux,Math.floor(k/10))*10<10) return;
+    lux++; saveLux(); draw();
+    var ar=$('clap-around'), c=ar.querySelector('.clap__ac.is-lux:last-of-type'); 
+    var all=ar.querySelectorAll('.clap__ac.is-lux'); if(all.length) all[all.length-1].classList.add('is-new');
+    say('わぁ〜！豪華なケーキになったよ✨',4200,true); burst(16,['🎂','✨','🍓','🎉','💎']);
+  });
   function rpc(fn,body,keep){
     return fetch(SB+fn,{method:'POST',keepalive:!!keep,headers:{'apikey':KEY,'Content-Type':'application/json'},body:JSON.stringify(body||{})})
       .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){ if(!r.ok) throw new Error('server'); return d; }); });
@@ -2656,10 +2679,10 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var t=Number(d.total), m=Number(d.month);
     if(isFinite(t) && t>=0) total=Math.max(total||0,t);
     if(isFinite(m) && m>=0){
-      if(month===null || d.ym!==ym){ if(ym!==null && d.ym!==ym){ lastK=null; shelfK=-1; lastStage=-1; } month=m; }  // 月がかわったら、ケーキもあたらしく
+      if(month===null || d.ym!==ym){ if(ym!==null && d.ym!==ym){ lastK=null; shelfK=-1; lastStage=-1; lux=0; } month=m; }  // 月がかわったら、ケーキもあたらしく
       else month=Math.max(month,m);
     }
-    ym=d.ym; draw();
+    ym=d.ym; if(shelfL===-1) loadLux(); draw();
   }
   function flush(){
     if(sending) return sending;
