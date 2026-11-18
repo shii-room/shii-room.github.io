@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261119010000">
+<meta name="build" content="20261119012000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -635,6 +635,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .clap__me b.is-bump { animation: clapbump .18s ease-out; }
   @keyframes clapbump { 0% { transform: scale(1); } 40% { transform: scale(1.14); } 100% { transform: scale(1); } }
   .clap__around { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .clap__ac { cursor: pointer; pointer-events: auto; -webkit-tap-highlight-color: transparent; }
+  .clap__zoom { position: absolute; left: 50%; top: 46%; z-index: 4; width: min(78%, 280px); transform: translate(-50%,-50%) scale(.3); opacity: 0; padding: 14px 14px 10px; border-radius: 28px; background: rgba(255,255,255,.93); border: 2px solid var(--white); box-shadow: 0 10px 30px rgba(174,92,120,.35); text-align: center; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; transition: transform .28s cubic-bezier(.2,1.4,.4,1), opacity .2s; }
+  .clap__zoom.is-on { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+  .clap__zoom img { display: block; width: auto; max-width: 100%; height: 170px; margin: 0 auto 6px; object-fit: contain; filter: drop-shadow(0 6px 6px rgba(174,92,120,.3)); }
+  .clap__zoom.is-lux { background: linear-gradient(180deg,#FFFBEA,#FFEFC0); border-color: #F2C46B; }
+  .clap__zoom.is-lux img { height: 190px; filter: drop-shadow(0 0 10px rgba(255,214,120,.95)); }
   .clap__ac { position: absolute; transform: rotate(var(--r,0deg)); animation: clapfloat 3.8s ease-in-out infinite; filter: drop-shadow(0 3px 3px rgba(174,92,120,.2)); }
   .clap__ac img { display: block; width: auto; height: 38px; }
   .clap__ac.is-new { animation: clapcake .6s ease-out, clapfloat 3.8s ease-in-out .6s infinite; }
@@ -2619,6 +2625,20 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   var STAGES=['スポンジを焼いています🥚','クリームをぬっています🍦','いちごをのせています🍓','ろうそくを立てています🕯️'];
   var shelfK=-1, shelfL=-1;
+  // ケーキをタップすると、ぐっと大きく見える（もう一度タップ／少したつと閉じる）
+  var zoomEl=null, zoomT=0;
+  function zoomCake(src,isLux){
+    var st=$('clap-stage'); if(!zoomEl){ zoomEl=document.createElement('div'); zoomEl.className='clap__zoom'; zoomEl.addEventListener('click',function(e){ e.stopPropagation(); closeZoom(); }); st.appendChild(zoomEl); }
+    zoomEl.classList.toggle('is-lux',!!isLux);
+    zoomEl.innerHTML='<img src="'+src+'" alt=""><span>'+(isLux?'豪華ケーキ✨':'みんなで作ったケーキ🍰')+'</span>';
+    void zoomEl.offsetWidth; zoomEl.classList.add('is-on');
+    clearTimeout(zoomT); zoomT=setTimeout(closeZoom,3500);
+  }
+  function closeZoom(){ clearTimeout(zoomT); if(zoomEl) zoomEl.classList.remove('is-on'); }
+  $('clap-around').addEventListener('click',function(e){
+    var t=e.target.closest&&e.target.closest('.clap__ac'); if(!t) return;
+    var im=t.querySelector('img'); if(im) zoomCake(im.getAttribute('src'),t.classList.contains('is-lux'));
+  });
   // 豪華ケーキ：今月のケーキが10個たまったら、10個を豪華ケーキ1個に交換できる（飾りかえ。この端末だけ・月がかわるとリセット。数字は減らない）
   var LUXK='shii_clap_lux', LUXN=6, lux=0;
   function loadLux(){ try{ var v=JSON.parse(localStorage.getItem(LUXK)||'null'); lux=(v&&v.ym===ym)?Math.max(0,Math.floor(+v.n||0)):0; }catch(e){ lux=0; } }
@@ -2660,7 +2680,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     if(k-Math.min(lux,Math.floor(k/10))*10<10) return;
     lux++; saveLux(); draw();
     var ar=$('clap-around'), c=ar.querySelector('.clap__ac.is-lux:last-of-type'); 
-    var all=ar.querySelectorAll('.clap__ac.is-lux'); if(all.length) all[all.length-1].classList.add('is-new');
+    var all=ar.querySelectorAll('.clap__ac.is-lux'); closeZoom(); if(all.length) all[all.length-1].classList.add('is-new');
     say('わぁ〜！豪華なケーキになったよ✨',4200,true); burst(16,['🎂','✨','🍓','🎉','💎']);
   });
   function rpc(fn,body,keep){
