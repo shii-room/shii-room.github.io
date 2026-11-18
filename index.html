@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261118233500">
+<meta name="build" content="20261119000500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -635,8 +635,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .clap__me b.is-bump { animation: clapbump .18s ease-out; }
   @keyframes clapbump { 0% { transform: scale(1); } 40% { transform: scale(1.14); } 100% { transform: scale(1); } }
   .clap__around { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-  .clap__ac { position: absolute; width: 44px; transform: rotate(var(--r,0deg)); animation: clapfloat 3.8s ease-in-out infinite; filter: drop-shadow(0 3px 3px rgba(174,92,120,.2)); }
-  .clap__ac svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .clap__ac { position: absolute; transform: rotate(var(--r,0deg)); animation: clapfloat 3.8s ease-in-out infinite; filter: drop-shadow(0 3px 3px rgba(174,92,120,.2)); }
+  .clap__ac img { display: block; width: auto; height: 38px; }
   .clap__ac.is-new { animation: clapcake .6s ease-out, clapfloat 3.8s ease-in-out .6s infinite; }
   @keyframes clapfloat { 0%, 100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(-5px) rotate(var(--r,0deg)); } }
   @keyframes clapcake { 0% { transform: scale(.4) rotate(var(--r,0deg)); opacity: 0; } 55% { transform: scale(1.25) rotate(var(--r,0deg)); opacity: 1; } 100% { transform: scale(1) rotate(var(--r,0deg)); } }
@@ -2581,12 +2581,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   var STAGES=['スポンジを焼いています🥚','クリームをぬっています🍦','いちごをのせています🍓','ろうそくを立てています🕯️'];
   var shelfK=-1;
-  // できたケーキは、しぃのまわりにふえていく（左右に6個ずつ、あわせて12個まで）
+  // できたケーキは、しぃのまわりにふえていく（左右に6個ずつ、あわせて12個まで）。ケーキの絵はいろんなケーキのイラストセット（Illustrator Factory）
   var SLOTS=[[3,14],[16,28],[3,42],[16,56],[3,70],[16,84]];
   function aroundHTML(k){
     var n=Math.min(k,12), h='', i, sl;
     for(i=0;i<n;i++){ sl=SLOTS[Math.floor(i/2)];
-      h+='<span class="clap__ac" style="'+(i%2?'right':'left')+':'+sl[0]+'%;top:'+sl[1]+'%;--r:'+(((i*37)%17)-8)+'deg;animation-delay:'+((i%5)*.4)+'s">'+cakeSVG(4)+'</span>'; }
+      h+='<span class="clap__ac" style="'+(i%2?'right':'left')+':'+sl[0]+'%;top:'+sl[1]+'%;--r:'+(((i*37)%17)-8)+'deg;animation-delay:'+((i%5)*.4)+'s"><img src="img/cake-'+(i%9+1)+'.webp" alt="" width="40" height="38" decoding="async"></span>'; }
     return h;
   }
   function drawCake(t){
