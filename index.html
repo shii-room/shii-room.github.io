@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261118151500">
+<meta name="build" content="20261118160000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1869,12 +1869,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <p class="clap__bubble" id="clap-bubble" role="status" aria-live="polite"></p>
         <button class="clap__btn" id="clap-btn" type="button" aria-label="しぃをタップしてぱちぱちする"><span class="clap__chara" aria-hidden="true"><img class="clap__a" src="img/chibi-a.webp" alt="" width="320" height="569"><img class="clap__b" src="img/chibi-b.webp" alt="" width="320" height="569"><span class="clap__hands">👏</span></span><span class="clap__pill">👏 ぱちぱち♡</span></button>
       </div>
-      <p class="clap__me">あなたのぱちぱち<b id="clap-me">0</b></p>
+      <p class="clap__me">みんなのぱちぱち（全員の累計）<b id="clap-total">–</b></p>
       <div class="clap__goal" id="clap-goal" hidden>
         <p class="clap__goalt"><span id="clap-stagetxt">スポンジを焼いています🥚</span><small id="clap-goaln"></small></p>
         <div class="clap__bar" aria-hidden="true"><i id="clap-bar"></i></div>
       </div>
-      <p class="clap__nums"><span>今月のぱちぱち<b id="clap-month">–</b></span><span>見守り隊の累計<b id="clap-total">–</b></span></p>
+      <p class="clap__nums"><span>今月のみんなのぱちぱち<b id="clap-month">–</b></span><span>あなたのぱちぱち<b id="clap-me">0</b></span></p>
       <p class="clap__note" id="clap-note" role="status" aria-live="polite"></p>
     </div>
   </section>
@@ -2600,7 +2600,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var hitT=0;
   btn.addEventListener('click',function(){
     me++; pending++; draw();
-    meEl.classList.remove('is-bump'); void meEl.offsetWidth; meEl.classList.add('is-bump');
+    totalEl.classList.remove('is-bump'); void totalEl.offsetWidth; totalEl.classList.add('is-bump');
     try{ localStorage.setItem(ME,String(me)); }catch(e){}
     btn.classList.add('is-hit'); clearTimeout(hitT); hitT=setTimeout(function(){ btn.classList.remove('is-hit'); },160);
     if(navigator.vibrate) try{ navigator.vibrate(8); }catch(e){}
