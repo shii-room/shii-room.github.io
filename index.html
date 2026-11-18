@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261118130000">
+<meta name="build" content="20261118131500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1621,7 +1621,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="quick quick--menu">
       <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
       <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信予定</a>
-      <a href="#clap"><span class="quick__i"><svg><use href="#heart"/></svg></span>拍手</a>
       <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
       <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
       <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
@@ -1677,8 +1676,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <nav class="quick" aria-label="メニュー">
           <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
           <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信予定</a>
-          <a href="#clap"><span class="quick__i"><svg><use href="#heart"/></svg></span>拍手</a>
-      <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
+          <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
           <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
           <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
           <a href="#present"><span class="quick__i"><svg><use href="#gift"/></svg></span>プレゼント</a>
@@ -1770,19 +1768,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     </div>
   </section>
 
-  <section class="sec" id="clap">
-    <div class="sec__head"><h2 class="sec__en">Clap</h2><span class="sec__ja">拍手</span></div>
-    <div class="clap deco deco--love">
-      <span class="deco__i p1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span>
-      <p class="req__lead">配信を見ていたら、ぱちぱち押してね👏 みんなの拍手がどんどんたまっていくよ！</p>
-      <div class="clap__stage" id="clap-stage">
-        <button class="clap__btn" id="clap-btn" type="button" aria-label="拍手する"><span class="clap__emoji" aria-hidden="true">👏</span><span class="clap__txt">ぱちぱち</span></button>
-      </div>
-      <p class="clap__nums"><span>みんなの拍手<b id="clap-total">–</b></span><span>あなたの拍手<b id="clap-me">0</b></span></p>
-      <p class="clap__note" id="clap-note" role="status" aria-live="polite"></p>
-    </div>
-  </section>
-
   <section class="sec" id="request">
     <div class="sec__head"><h2 class="sec__en">Request</h2><span class="sec__ja">歌のリクエスト</span></div>
     <div class="req deco deco--music">
@@ -1852,6 +1837,19 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <p>再開したら X でお知らせするね。</p>
       </div>
       </div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="clap">
+    <div class="sec__head"><h2 class="sec__en">Clap</h2><span class="sec__ja">拍手</span></div>
+    <div class="clap deco deco--love">
+      <span class="deco__i p1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span>
+      <p class="req__lead">配信を見ていたら、ぱちぱち押してね👏 みんなの拍手がどんどんたまっていくよ！</p>
+      <div class="clap__stage" id="clap-stage">
+        <button class="clap__btn" id="clap-btn" type="button" aria-label="拍手する"><span class="clap__emoji" aria-hidden="true">👏</span><span class="clap__txt">ぱちぱち</span></button>
+      </div>
+      <p class="clap__nums"><span>みんなの拍手<b id="clap-total">–</b></span><span>あなたの拍手<b id="clap-me">0</b></span></p>
+      <p class="clap__note" id="clap-note" role="status" aria-live="polite"></p>
     </div>
   </section>
 
