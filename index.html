@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261119020000">
+<meta name="build" content="20261119120000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2068,7 +2068,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <summary class="credit__ttl">CREDIT</summary>
     <ul>
       <li>ケーキのイラスト / <a href="https://illustrator-factory.com/clip-art-of-various-cakes/" target="_blank" rel="noopener">Illustrator Factory</a></li>
-      <li>豪華ケーキのイラスト / <a href="https://booth.pm/ja/items/5348088" target="_blank" rel="noopener">A.I. Art Stock</a></li>
+      <li>豪華ケーキのイラスト / <a href="https://www.ac-illust.com/main/profile.php?id=ZSzHkq83&area=1" target="_blank" rel="noopener">イラストAC（ねもとしょうが）</a></li>
       <li>Font: DotGothic16, Yomogi, Great Vibes, Playfair Display / <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a></li>
     </ul>
   </details>
@@ -2656,7 +2656,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var im=t.querySelector('img'); if(im) zoomCake(im.getAttribute('src'),t.classList.contains('is-lux'));
   });
   // 豪華ケーキ：今月のケーキが10個たまったら、10個を豪華ケーキ1個に交換できる（飾りかえ。この端末だけ・月がかわるとリセット。数字は減らない）
-  var LUXK='shii_clap_lux', LUXN=6, lux=0;
+  var LUXK='shii_clap_lux', LUXN=5, lux=0;
   function loadLux(){ try{ var v=JSON.parse(localStorage.getItem(LUXK)||'null'); lux=(v&&v.ym===ym)?Math.max(0,Math.floor(+v.n||0)):0; }catch(e){ lux=0; } }
   function saveLux(){ try{ localStorage.setItem(LUXK,JSON.stringify({ym:ym,n:lux})); }catch(e){} }
   // できたケーキは、しぃのまわりにふえていく（左右に6個ずつ、あわせて12個まで）。ケーキの絵はいろんなケーキのイラストセット（Illustrator Factory）
