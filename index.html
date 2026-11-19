@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261119140000">
+<meta name="build" content="20261119150000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -634,7 +634,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .clap__me b { display: block; font-family: var(--en); font-size: 64px; line-height: 1.1; letter-spacing: .02em; color: var(--rose-deep); font-variant-numeric: tabular-nums; text-shadow: 3px 3px 0 var(--white); }
   .clap__me b.is-bump { animation: clapbump .18s ease-out; }
   @keyframes clapbump { 0% { transform: scale(1); } 40% { transform: scale(1.14); } 100% { transform: scale(1); } }
-  .clap__around { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .clap__around { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
   .clap__ac { cursor: pointer; pointer-events: auto; -webkit-tap-highlight-color: transparent; }
   .clap__zoom { position: absolute; left: 50%; top: 46%; z-index: 4; width: min(78%, 280px); transform: translate(-50%,-50%) scale(.3); opacity: 0; padding: 14px 14px 10px; border-radius: 28px; background: rgba(255,255,255,.93); border: 2px solid var(--white); box-shadow: 0 10px 30px rgba(174,92,120,.35); text-align: center; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; transition: transform .28s cubic-bezier(.2,1.4,.4,1), opacity .2s; }
   .clap__zoom.is-on { transform: translate(-50%,-50%) scale(1); opacity: 1; }
@@ -2665,7 +2665,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var L=Math.min(lux,Math.floor(k/10)), norm=k-L*10, n=Math.min(L+norm,12), h='', i, sl, isL, src, w;
     for(i=0;i<n;i++){ sl=SLOTS[Math.floor(i/2)]; isL=i<L;
       src=isL?'img/lux-'+(i%LUXN+1)+'.webp':'img/cake-'+((i-L)%9+1)+'.webp';
-      h+='<span class="clap__ac'+(isL?' is-lux':'')+'" style="'+(i%2?'right':'left')+':'+sl[0]+'%;top:'+sl[1]+'%;--r:'+(((i*37)%17)-8)+'deg;animation-delay:'+((i%5)*.4)+'s"><img src="'+src+'" alt="" height="'+(isL?58:38)+'" decoding="async"></span>'; }
+      h+='<span class="clap__ac'+(isL?' is-lux':'')+'" style="'+(i%2?'right':'left')+':'+(isL?1:sl[0])+'%;top:'+(isL?Math.min(6+Math.floor(i/2)*22,86):sl[1])+'%;--r:'+(((i*37)%17)-8)+'deg;animation-delay:'+((i%5)*.4)+'s"><img src="'+src+'" alt="" height="'+(isL?58:38)+'" decoding="async"></span>'; }
     return h;
   }
   function drawCake(t){
