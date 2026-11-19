@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261119150000">
+<meta name="build" content="20261119160000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2662,10 +2662,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // できたケーキは、しぃのまわりにふえていく（左右に6個ずつ、あわせて12個まで）。ケーキの絵はいろんなケーキのイラストセット（Illustrator Factory）
   var SLOTS=[[3,14],[16,28],[3,42],[16,56],[3,70],[16,84]];
   function aroundHTML(k){
-    var L=Math.min(lux,Math.floor(k/10)), norm=k-L*10, n=Math.min(L+norm,12), h='', i, sl, isL, src, w;
-    for(i=0;i<n;i++){ sl=SLOTS[Math.floor(i/2)]; isL=i<L;
+    var L=Math.min(lux,Math.floor(k/10)), norm=k-L*10, n=Math.min(L+norm,12), h='', i, isL, src, side, ht, top, x, H=($('clap-around')&&$('clap-around').offsetHeight)||370, cur=[4,4];
+    for(i=0;i<n;i++){ isL=i<L; side=i%2; ht=isL?58:38;
       src=isL?'img/lux-'+(i%LUXN+1)+'.webp':'img/cake-'+((i-L)%9+1)+'.webp';
-      h+='<span class="clap__ac'+(isL?' is-lux':'')+'" style="'+(i%2?'right':'left')+':'+(isL?1:sl[0])+'%;top:'+(isL?Math.min(6+Math.floor(i/2)*22,86):sl[1])+'%;--r:'+(((i*37)%17)-8)+'deg;animation-delay:'+((i%5)*.4)+'s"><img src="'+src+'" alt="" height="'+(isL?58:38)+'" decoding="async"></span>'; }
+      top=Math.min(cur[side],Math.max(0,H-ht-2)); cur[side]+=ht+8;
+      x=isL?1:(Math.floor(i/2)%2?12:3);
+      h+='<span class="clap__ac'+(isL?' is-lux':'')+'" style="'+(side?'right':'left')+':'+x+'%;top:'+top+'px;--r:'+(((i*37)%17)-8)+'deg;animation-delay:'+((i%5)*.4)+'s"><img src="'+src+'" alt="" height="'+ht+'" decoding="async"></span>'; }
     return h;
   }
   function drawCake(t){
