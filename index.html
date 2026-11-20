@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261121050000">
+<meta name="build" content="20261121070000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1450,6 +1450,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .opening { display: none; }
   html.op .opening { display: block; }
   html.op body { overflow: hidden; }
+  /* アプリ内ブラウザ（Xやイロハミント等）では、下のバーの裏側が幕で覆われず本編が透けるため、オープニング中は画面の下端を暗い帯で覆っておく（顔の探索演出は残す） */
+  html.op, html.op body { background: #14040c; }
+  html.op body::after { content: ""; position: absolute; left: 0; right: 0; top: calc(100svh - 110px); height: 700px; background: #14040c; z-index: 99; pointer-events: none; }
   /* Keep navigation available above the opening from the first frame. */
   html.op .header { z-index: 101; }
   /* オープニング中はヘッダーも暗転。電光掲示板だけが暗闇で光る（ボタンは押せるまま） */
