@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261120110000">
+<meta name="build" content="20261120140000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2656,7 +2656,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var im=t.querySelector('img'); if(im) zoomCake(im.getAttribute('src'),t.classList.contains('is-lux'));
   });
   // 豪華ケーキ：今月のケーキが10個たまったら、10個を豪華ケーキ1個に交換できる（飾りかえ。この端末だけ・月がかわるとリセット。数字は減らない）
-  var LUXK='shii_clap_lux', LUXN=9, lux=0;
+  var LUXK='shii_clap_lux', LUXN=12, lux=0;
   function loadLux(){ try{ var v=JSON.parse(localStorage.getItem(LUXK)||'null'); lux=(v&&v.ym===ym)?Math.max(0,Math.floor(+v.n||0)):0; }catch(e){ lux=0; } }
   function saveLux(){ try{ localStorage.setItem(LUXK,JSON.stringify({ym:ym,n:lux})); }catch(e){} }
   // できたケーキは、しぃのまわりにふえていく（左右に6個ずつ、あわせて12個まで）。ケーキの絵はいろんなケーキのイラストセット（Illustrator Factory）
