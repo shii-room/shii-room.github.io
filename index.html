@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261120190000">
+<meta name="build" content="20261120200000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -650,6 +650,20 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .zk__it.is-lux { background: linear-gradient(180deg,#FFFBEA,#FFF1CC); border-color: #F2C46B; }
   .zk__it.is-no img { filter: brightness(0); opacity: .13; }
   .zk__it.is-no span { color: #C9A8B6; }
+  .zk__it.is-on2 { cursor: pointer; }
+  .zk__it.is-on2::after { content: '？'; position: absolute; }
+  .zk__it { position: relative; }
+  .zk__it.is-on2::after { content: 'i'; right: 5px; top: 4px; width: 15px; height: 15px; border-radius: 50%; background: var(--rose); color: #fff; font: 700 10px/15px var(--en); text-align: center; }
+  .zk__d { position: absolute; inset: 0; z-index: 2; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(90,40,60,.35); }
+  .zk__d.is-on { display: flex; }
+  .zk__dc { width: min(100%, 340px); max-height: 80dvh; overflow-y: auto; padding: 18px 16px 14px; border-radius: 24px; background: #fff; border: 3px solid var(--white); box-shadow: 0 8px 30px rgba(90,40,60,.35); text-align: center; animation: zkpop .25s ease-out; }
+  .zk__dc.is-lux { background: linear-gradient(180deg,#FFFBEA,#FFF1CC); border-color: #F2C46B; }
+  .zk__dc img { display: block; width: auto; max-width: 80%; height: 150px; margin: 0 auto 8px; object-fit: contain; filter: drop-shadow(0 6px 6px rgba(174,92,120,.3)); }
+  .zk__dn { margin: 0 0 8px; font-family: var(--maru); font-weight: 700; font-size: 17px; color: var(--rose-deep); }
+  .zk__dm { margin: 0 0 6px; font-family: var(--maru); font-size: 11px; font-weight: 700; color: var(--ink-sub); }
+  .zk__dt { margin: 0; text-align: left; font-size: 13px; line-height: 1.8; color: var(--ink); }
+  .zk__dx { display: block; margin: 12px auto 0; padding: 7px 24px; border: 0; border-radius: 999px; background: var(--rose); color: #fff; font-weight: 700; cursor: pointer; }
+  @keyframes zkpop { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .zk__x { flex: none; display: block; margin: 12px auto 0; padding: 8px 26px; border-radius: 999px; border: 0; background: var(--rose); color: #fff; font-weight: 700; cursor: pointer; }
   .clap__zoom { position: absolute; left: 50%; top: 46%; z-index: 4; width: min(78%, 280px); transform: translate(-50%,-50%) scale(.3); opacity: 0; padding: 14px 14px 10px; border-radius: 28px; background: rgba(255,255,255,.93); border: 2px solid var(--white); box-shadow: 0 10px 30px rgba(174,92,120,.35); text-align: center; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; transition: transform .28s cubic-bezier(.2,1.4,.4,1), opacity .2s; }
   .clap__zoom.is-on { transform: translate(-50%,-50%) scale(1); opacity: 1; }
@@ -1951,6 +1965,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <p class="zk__h">✨ 豪華スイーツ</p><div class="zk__grid" id="zk-l"></div></div>
       <button class="zk__x" id="zk-x" type="button">とじる</button>
     </div>
+    <div class="zk__d" id="zk-d"><div class="zk__dc" id="zk-dc"></div></div>
   </div>
   <section class="sec" id="omikuji">
     <div class="sec__head"><h2 class="sec__en">Omikuji</h2><span class="sec__ja">しぃおみくじ</span></div>
@@ -2688,6 +2703,27 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // 月がわりテーマ：ym の月だけ、ふつうのケーキの代わりにテーマのスイーツが並ぶ（図鑑には残る）
   var THEMES=[];  // 例: {ym:'2026-12',name:'クリスマス',emoji:'🎄',items:[['ブッシュドノエル','th-2026-12-1.webp'],...]}
   function themeOf(m){ for(var j=0;j<THEMES.length;j++) if(THEMES[j].ym===m) return THEMES[j]; return null; }
+  var NT=['日本のショートケーキは、スポンジ・生クリーム・いちごが定番。本場アメリカのショートケーキはビスケット生地が基本で、いまの形は日本で育ったスタイルなんだよ。',
+'ムース(mousse)はフランス語で「泡」のこと。泡立てた生クリームやメレンゲを混ぜて、ふわふわ・とろける口どけにしているよ。',
+'名前の「スポンジ」は海綿のこと。卵をしっかり泡立てて、そのたくさんの小さな気泡でふくらませるから、あの穴だらけのふんわり生地になるんだ。',
+'「ミルクレープ」はフランス語の「千(ミル)」＋「クレープ」で、千枚のクレープという意味。薄く焼いたクレープを何十枚も重ねているよ。',
+'ティラミスはイタリア語で「私を引っぱり上げて」、つまり「元気にして」という意味。エスプレッソとマスカルポーネチーズが入っているよ。',
+'ガトー・ショコラはフランス語で「チョコレートのお菓子」。小麦粉が少なめで、しっとり濃厚な口あたりが特徴だよ。',
+'植物学では、いちごやラズベリーは実はベリー(液果)じゃなくて、バナナやトマト、ぶどうのほうが本当のベリーなんだって。ふしぎだね。',
+'抹茶は、日よけをして育てた茶葉(てん茶)を粉にしたもの。お茶の葉をまるごと食べるから、お茶の香りがしっかり楽しめるよ。',
+'オペラは、チョコレートとコーヒー味のクリームを重ねたフランスのケーキ。パリのオペラ座にちなんで名づけられたという説があるよ。'];
+  var LT=['ホール(whole)は「まるごと」という意味。切り分ける前の、丸い1台ぶんのケーキのことを「ホールケーキ」と呼ぶよ。',
+'日本のクリスマスケーキは、白いクリームにいちごをのせた形が定番。洋菓子店がクリスマスに売り出して広まり、戦後に定着したといわれているよ。',
+'ブッシュ・ド・ノエルは、フランス語で「クリスマスの薪(まき)」。昔、クリスマスに大きな薪を暖炉で燃やした風習から、丸太の形になったんだって。',
+'さくらんぼの収穫量は、山形県が日本一。全国のさくらんぼの、およそ7割が山形県でとれているよ。',
+'カップケーキの名前は、小さなカップで焼くから、または材料をカップで量って作ったから、という説があるよ。',
+'パンケーキがふくらむのは、ベーキングパウダーなどが生地の中で炭酸ガスを出すから。そのガスの小さな泡で、ふっくら焼けるんだ。',
+'ブラウニーは、19世紀末のアメリカで生まれたといわれるよ。ふくらし粉を入れ忘れて、しっとり重たい生地になったのが始まり、という逸話もあるんだ。',
+'パウンドケーキは、小麦粉・バター・砂糖・卵をそれぞれ1ポンド(pound)ずつ使って作ったのが名前の由来。材料の量が覚えやすいね。',
+'赤とみどりは色の輪で向かい合う「反対色(補色)」。いっしょに並べると、おたがいを引き立てて、あざやかに見えるんだよ。',
+'マフィンは甘さ控えめで朝ごはん向き。カップケーキは、クリームなどでデコレーションするおやつ向き、というのが一般的な違いだよ。',
+'タルトは、焼いた台(タルト生地)の上にフルーツやクリームをのせたお菓子。台がさくっとかたいのが特徴で、パイとは生地の作り方がちがうんだ。',
+'「パフェ(parfait)」はフランス語で「完全な」という意味。グラスの中に、アイスやクリーム、フルーツを何層にも重ねているよ。'];
   var ZK=(function(){ var z={n:[],l:[]}; try{ var v=JSON.parse(localStorage.getItem('shii_zukan')||'null'); if(v&&typeof v==='object'){ for(var k in v) if(Array.isArray(v[k])) z[k]=v[k]; } }catch(e){} return z; })();
   function zkGet(t,i){ return !!ZK[t]&&ZK[t].indexOf(i)>=0; }
   function zkTotal(){ var c=ZK.n.length+ZK.l.length,all=NN.length+LN.length,j; for(j=0;j<THEMES.length;j++){ all+=THEMES[j].items.length; c+=(ZK['t'+THEMES[j].ym]||[]).length; } return [c,all]; }
@@ -2706,21 +2742,36 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   }
   function zkCount(){ var e=document.getElementById('clap-zkn'); if(e) var ta=zkTotal(); e.textContent='('+ta[0]+'/'+ta[1]+')'; }
   function zkRender(){
-    var h=function(t,names,pre,ext,cls){ var o='',i; for(i=0;i<names.length;i++){ var on=zkGet(t,i+1); o+='<div class="zk__it '+cls+(on?'':' is-no')+'"><img src="img/'+pre+(i+1)+'.webp" alt="" loading="lazy"><span>'+(on?names[i]:'？？？')+'</span></div>'; } return o; };
+    var h=function(t,names,pre,ext,cls){ var o='',i; for(i=0;i<names.length;i++){ var on=zkGet(t,i+1); o+='<div class="zk__it '+cls+(on?' is-on2':' is-no')+'" data-t="'+t+'" data-i="'+(i+1)+'"><img src="img/'+pre+(i+1)+'.webp" alt="" loading="lazy"><span>'+(on?names[i]:'？？？')+'</span></div>'; } return o; };
     document.getElementById('zk-n').innerHTML=h('n',NN,'cake-','webp','');
     document.getElementById('zk-l').innerHTML=h('l',LN,'lux-','webp','is-lux');
     var tz=document.getElementById('zk-th'), th='', j, it, o, q, ta=zkTotal();
     for(j=THEMES.length-1;j>=0;j--){ q=THEMES[j]; if(q.ym>(ym||q.ym)) continue; o='';
-      for(it=0;it<q.items.length;it++){ var on=zkGet('t'+q.ym,it+1); o+='<div class="zk__it is-th'+(on?'':' is-no')+'"><img src="img/'+q.items[it][1]+'" alt="" loading="lazy"><span>'+(on?q.items[it][0]:'？？？')+'</span></div>'; }
+      for(it=0;it<q.items.length;it++){ var on=zkGet('t'+q.ym,it+1); o+='<div class="zk__it is-th is-lux'+(on?' is-on2':' is-no')+'" data-t="t'+q.ym+'" data-i="'+(it+1)+'"><img src="img/'+q.items[it][1]+'" alt="" loading="lazy"><span>'+(on?q.items[it][0]:'？？？')+'</span></div>'; }
       th+='<p class="zk__h">'+q.emoji+' '+(+q.ym.slice(5))+'月のテーマ「'+q.name+'」</p><div class="zk__grid">'+o+'</div>'; }
     tz.innerHTML=th;
     document.getElementById('zk-cnt').textContent='あつめたスイーツ '+ta[0]+' / '+ta[1]+'（この端末の記録だよ）';
   }
-  function zkOpen(on){ var z=document.getElementById('zk'); if(on){ zkRender(); z.hidden=false; z.classList.add('is-on'); document.body.style.overflow='hidden'; } else { z.classList.remove('is-on'); z.hidden=true; document.body.style.overflow=''; } }
+  function zkOpen(on){ var z=document.getElementById('zk'); document.getElementById('zk-d').classList.remove('is-on'); if(on){ zkRender(); z.hidden=false; z.classList.add('is-on'); document.body.style.overflow='hidden'; } else { z.classList.remove('is-on'); z.hidden=true; document.body.style.overflow=''; } }
   document.getElementById('clap-zk').addEventListener('click',function(){ zkOpen(true); });
   document.getElementById('zk-x').addEventListener('click',function(){ zkOpen(false); });
   document.getElementById('zk').addEventListener('click',function(e){ if(e.target.id==='zk') zkOpen(false); });
   zkCount();
+  function zkDetail(t,i){
+    var th=t.charAt(0)==='t'?themeOf(t.slice(1)):null, nm, src, tx, lux=(t==='l'||!!th), mk;
+    if(th){ nm=th.items[i-1][0]; src='img/'+th.items[i-1][1]; tx=th.items[i-1][2]||''; mk=th.emoji+' '+(+th.ym.slice(5))+'月のテーマ'; }
+    else if(t==='l'){ nm=LN[i-1]; src='img/lux-'+i+'.webp'; tx=LT[i-1]; mk='✨ 豪華スイーツ'; }
+    else { nm=NN[i-1]; src='img/cake-'+i+'.webp'; tx=NT[i-1]; mk='🍰 ふつうのケーキ'; }
+    var c=document.getElementById('zk-dc'); c.className='zk__dc'+(lux?' is-lux':'');
+    c.innerHTML='<img src="'+src+'" alt=""><p class="zk__dm">'+mk+'</p><p class="zk__dn"></p><p class="zk__dt"></p><button class="zk__dx" type="button">とじる</button>';
+    c.querySelector('.zk__dn').textContent=nm; c.querySelector('.zk__dt').textContent=tx?'💡 豆知識　'+tx:'';
+    document.getElementById('zk-d').classList.add('is-on');
+  }
+  document.getElementById('zk').addEventListener('click',function(e){
+    var d=document.getElementById('zk-d');
+    if(d.classList.contains('is-on')){ if(e.target.id==='zk-d'||e.target.classList.contains('zk__dx')) d.classList.remove('is-on'); return; }
+    var it=e.target.closest&&e.target.closest('.zk__it.is-on2'); if(it) zkDetail(it.getAttribute('data-t'),+it.getAttribute('data-i'));
+  });
   function saveLux(){ try{ localStorage.setItem(LUXK,JSON.stringify({ym:ym,n:lux})); }catch(e){} }
   // できたケーキは、しぃのまわりにふえていく（左右に6個ずつ、あわせて12個まで）。ケーキの絵はいろんなケーキのイラストセット（Illustrator Factory）
   var SLOTS=[[3,14],[16,28],[3,42],[16,56],[3,70],[16,84]];
