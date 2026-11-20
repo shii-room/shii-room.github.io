@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261120200000">
+<meta name="build" content="20261120210000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2724,12 +2724,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 'マフィンは甘さ控えめで朝ごはん向き。カップケーキは、クリームなどでデコレーションするおやつ向き、というのが一般的な違いだよ。',
 'タルトは、焼いた台(タルト生地)の上にフルーツやクリームをのせたお菓子。台がさくっとかたいのが特徴で、パイとは生地の作り方がちがうんだ。',
 '「パフェ(parfait)」はフランス語で「完全な」という意味。グラスの中に、アイスやクリーム、フルーツを何層にも重ねているよ。'];
-  var ZK=(function(){ var z={n:[],l:[]}; try{ var v=JSON.parse(localStorage.getItem('shii_zukan')||'null'); if(v&&typeof v==='object'){ for(var k in v) if(Array.isArray(v[k])) z[k]=v[k]; } }catch(e){} return z; })();
+  var ZK=(function(){ var z={n:[],l:[],d:{}}; try{ var v=JSON.parse(localStorage.getItem('shii_zukan')||'null'); if(v&&typeof v==='object'){ for(var k in v) if(Array.isArray(v[k])) z[k]=v[k]; if(v.d&&typeof v.d==='object') z.d=v.d; } }catch(e){} return z; })();
   function zkGet(t,i){ return !!ZK[t]&&ZK[t].indexOf(i)>=0; }
   function zkTotal(){ var c=ZK.n.length+ZK.l.length,all=NN.length+LN.length,j; for(j=0;j<THEMES.length;j++){ all+=THEMES[j].items.length; c+=(ZK['t'+THEMES[j].ym]||[]).length; } return [c,all]; }
   var zkReady=false, zkQ=0;
   function zkAdd(t,i){
-    if(!ZK[t]) ZK[t]=[]; if(ZK[t].indexOf(i)>=0) return; ZK[t].push(i); try{ localStorage.setItem('shii_zukan',JSON.stringify(ZK)); }catch(e){} zkCount();
+    if(!ZK[t]) ZK[t]=[]; if(ZK[t].indexOf(i)>=0) return; ZK[t].push(i); var dt=new Date(); ZK.d[t+':'+i]=dt.getFullYear()+'-'+('0'+(dt.getMonth()+1)).slice(-2)+'-'+('0'+dt.getDate()).slice(-2); try{ localStorage.setItem('shii_zukan',JSON.stringify(ZK)); }catch(e){} zkCount();
     if(!zkReady) return;
     var ta=zkTotal(), tot=ta[0], all=ta[1], th=t.charAt(0)==='t'?themeOf(t.slice(1)):null, nm=th?th.items[i-1][0]:(t==='l'?LN:NN)[i-1], txt, big=false;
     if(tot>=all){ txt='スイーツ図鑑コンプリート！！ぜんぶ見つけてくれてありがとう🎉📖'; big=true; }
@@ -2764,7 +2764,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     else { nm=NN[i-1]; src='img/cake-'+i+'.webp'; tx=NT[i-1]; mk='🍰 ふつうのケーキ'; }
     var c=document.getElementById('zk-dc'); c.className='zk__dc'+(lux?' is-lux':'');
     c.innerHTML='<img src="'+src+'" alt=""><p class="zk__dm">'+mk+'</p><p class="zk__dn"></p><p class="zk__dt"></p><button class="zk__dx" type="button">とじる</button>';
-    c.querySelector('.zk__dn').textContent=nm; c.querySelector('.zk__dt').textContent=tx?'💡 豆知識　'+tx:'';
+    var dd=(ZK.d[t+':'+i]||'2026-11-20').split('-'); c.querySelector('.zk__dm').textContent+='　📅 登録日 '+dd[0]+'年'+(+dd[1])+'月'+(+dd[2])+'日'; c.querySelector('.zk__dn').textContent=nm; c.querySelector('.zk__dt').textContent=tx?'💡 豆知識　'+tx:'';
     document.getElementById('zk-d').classList.add('is-on');
   }
   document.getElementById('zk').addEventListener('click',function(e){
