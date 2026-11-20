@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261120160000">
+<meta name="build" content="20261120170000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -639,7 +639,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .clap__zk { display: block; margin: 12px auto 0; padding: 9px 18px; border-radius: 999px; border: 2px solid var(--white); background: rgba(255,255,255,.85); color: var(--rose-deep); font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .04em; cursor: pointer; box-shadow: 0 3px 0 rgba(224,116,150,.3); }
   .zk { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(90,40,60,.45); }
   .zk.is-on { display: flex; }
-  .zk__box { width: min(100%, 420px); max-height: 88vh; overflow: auto; padding: 18px 14px 14px; border-radius: 24px; background: #FFF7FA; border: 3px solid var(--white); box-shadow: 0 8px 30px rgba(90,40,60,.3); }
+  .zk__box { display: flex; flex-direction: column; width: min(100%, 420px); max-height: 80vh; max-height: 80dvh; padding: 18px 14px 14px; border-radius: 24px; background: #FFF7FA; border: 3px solid var(--white); box-shadow: 0 8px 30px rgba(90,40,60,.3); }
+  .zk__sc { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; padding-right: 2px; }
   .zk__ttl { margin: 0 0 4px; text-align: center; font-family: var(--maru); font-weight: 700; font-size: 17px; color: var(--rose-deep); }
   .zk__cnt { margin: 0 0 10px; text-align: center; font-size: 12px; color: var(--ink-sub); }
   .zk__h { margin: 12px 0 6px; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); }
@@ -649,7 +650,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .zk__it.is-lux { background: linear-gradient(180deg,#FFFBEA,#FFF1CC); border-color: #F2C46B; }
   .zk__it.is-no img { filter: brightness(0); opacity: .13; }
   .zk__it.is-no span { color: #C9A8B6; }
-  .zk__x { display: block; margin: 14px auto 0; padding: 8px 26px; border-radius: 999px; border: 0; background: var(--rose); color: #fff; font-weight: 700; cursor: pointer; }
+  .zk__x { flex: none; display: block; margin: 12px auto 0; padding: 8px 26px; border-radius: 999px; border: 0; background: var(--rose); color: #fff; font-weight: 700; cursor: pointer; }
   .clap__zoom { position: absolute; left: 50%; top: 46%; z-index: 4; width: min(78%, 280px); transform: translate(-50%,-50%) scale(.3); opacity: 0; padding: 14px 14px 10px; border-radius: 28px; background: rgba(255,255,255,.93); border: 2px solid var(--white); box-shadow: 0 10px 30px rgba(174,92,120,.35); text-align: center; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; transition: transform .28s cubic-bezier(.2,1.4,.4,1), opacity .2s; }
   .clap__zoom.is-on { transform: translate(-50%,-50%) scale(1); opacity: 1; }
   .clap__zoom img { display: block; width: auto; max-width: 100%; height: 170px; margin: 0 auto 6px; object-fit: contain; filter: drop-shadow(0 6px 6px rgba(174,92,120,.3)); }
@@ -1946,8 +1947,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="zk__box">
       <p class="zk__ttl">📖 ケーキ図鑑</p>
       <p class="zk__cnt" id="zk-cnt"></p>
-      <p class="zk__h">🍰 ふつうのケーキ</p><div class="zk__grid" id="zk-n"></div>
-      <p class="zk__h">✨ 豪華ケーキ</p><div class="zk__grid" id="zk-l"></div>
+      <div class="zk__sc"><p class="zk__h" style="margin-top:0">🍰 ふつうのケーキ</p><div class="zk__grid" id="zk-n"></div>
+      <p class="zk__h">✨ 豪華ケーキ</p><div class="zk__grid" id="zk-l"></div></div>
       <button class="zk__x" id="zk-x" type="button">とじる</button>
     </div>
   </div>
@@ -2705,7 +2706,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     document.getElementById('zk-l').innerHTML=h('l',LN,'lux-','webp','is-lux');
     document.getElementById('zk-cnt').textContent='あつめたケーキ '+(ZK.n.length+ZK.l.length)+' / '+(NN.length+LN.length)+'（この端末の記録だよ）';
   }
-  function zkOpen(on){ var z=document.getElementById('zk'); if(on){ zkRender(); z.hidden=false; z.classList.add('is-on'); } else { z.classList.remove('is-on'); z.hidden=true; } }
+  function zkOpen(on){ var z=document.getElementById('zk'); if(on){ zkRender(); z.hidden=false; z.classList.add('is-on'); document.body.style.overflow='hidden'; } else { z.classList.remove('is-on'); z.hidden=true; document.body.style.overflow=''; } }
   document.getElementById('clap-zk').addEventListener('click',function(){ zkOpen(true); });
   document.getElementById('zk-x').addEventListener('click',function(){ zkOpen(false); });
   document.getElementById('zk').addEventListener('click',function(e){ if(e.target.id==='zk') zkOpen(false); });
