@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261120170000">
+<meta name="build" content="20261120180000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1935,7 +1935,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           </div>
         </div>
         <button class="clap__lux" id="clap-lux" type="button" hidden>🎁 ケーキ10個を、豪華ケーキ1個に交換する<small>交換しても、みんなの数字は減らないよ（この端末の飾りかえ）</small></button>
-        <button class="clap__zk" id="clap-zk" type="button">📖 ケーキ図鑑 <span id="clap-zkn"></span></button>
+        <button class="clap__zk" id="clap-zk" type="button">📖 スイーツ図鑑 <span id="clap-zkn"></span></button>
       </div>
       <p class="clap__nums"><span>今月のぱちぱち<b id="clap-month">–</b></span><span>あなたのぱちぱち<b id="clap-me">0</b></span></p>
       <button class="clap__refresh" id="clap-refresh" type="button"><span class="clap__ri" aria-hidden="true">🔄</span>数字を最新にする</button>
@@ -1943,12 +1943,12 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     </div>
   </section>
 
-  <div class="zk" id="zk" role="dialog" aria-modal="true" aria-label="ケーキ図鑑" hidden>
+  <div class="zk" id="zk" role="dialog" aria-modal="true" aria-label="スイーツ図鑑" hidden>
     <div class="zk__box">
-      <p class="zk__ttl">📖 ケーキ図鑑</p>
+      <p class="zk__ttl">📖 スイーツ図鑑</p>
       <p class="zk__cnt" id="zk-cnt"></p>
       <div class="zk__sc"><p class="zk__h" style="margin-top:0">🍰 ふつうのケーキ</p><div class="zk__grid" id="zk-n"></div>
-      <p class="zk__h">✨ 豪華ケーキ</p><div class="zk__grid" id="zk-l"></div></div>
+      <p class="zk__h">✨ 豪華スイーツ</p><div class="zk__grid" id="zk-l"></div></div>
       <button class="zk__x" id="zk-x" type="button">とじる</button>
     </div>
   </div>
@@ -2692,7 +2692,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     if(ZK[t].indexOf(i)>=0) return; ZK[t].push(i); try{ localStorage.setItem('shii_zukan',JSON.stringify(ZK)); }catch(e){} zkCount();
     if(!zkReady) return;
     var tot=ZK.n.length+ZK.l.length, all=NN.length+LN.length, nm=(t==='l'?LN:NN)[i-1], txt, big=false;
-    if(tot>=all){ txt='ケーキ図鑑コンプリート！！ぜんぶ見つけてくれてありがとう🎉📖'; big=true; }
+    if(tot>=all){ txt='スイーツ図鑑コンプリート！！ぜんぶ見つけてくれてありがとう🎉📖'; big=true; }
     else if(tot%5===0){ txt='図鑑が'+tot+'種類になったよ！すごいすごい📖✨'; }
     else if(t==='l'){ txt='図鑑に豪華な「'+nm+'」が載ったよ✨📖'; }
     else { txt='図鑑に「'+nm+'」が載ったよ📖♡'; }
@@ -2704,7 +2704,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var h=function(t,names,pre,ext,cls){ var o='',i; for(i=0;i<names.length;i++){ var on=zkGet(t,i+1); o+='<div class="zk__it '+cls+(on?'':' is-no')+'"><img src="img/'+pre+(i+1)+'.webp" alt="" loading="lazy"><span>'+(on?names[i]:'？？？')+'</span></div>'; } return o; };
     document.getElementById('zk-n').innerHTML=h('n',NN,'cake-','webp','');
     document.getElementById('zk-l').innerHTML=h('l',LN,'lux-','webp','is-lux');
-    document.getElementById('zk-cnt').textContent='あつめたケーキ '+(ZK.n.length+ZK.l.length)+' / '+(NN.length+LN.length)+'（この端末の記録だよ）';
+    document.getElementById('zk-cnt').textContent='あつめたスイーツ '+(ZK.n.length+ZK.l.length)+' / '+(NN.length+LN.length)+'（この端末の記録だよ）';
   }
   function zkOpen(on){ var z=document.getElementById('zk'); if(on){ zkRender(); z.hidden=false; z.classList.add('is-on'); document.body.style.overflow='hidden'; } else { z.classList.remove('is-on'); z.hidden=true; document.body.style.overflow=''; } }
   document.getElementById('clap-zk').addEventListener('click',function(){ zkOpen(true); });
