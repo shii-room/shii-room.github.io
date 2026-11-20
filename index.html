@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261120140000">
+<meta name="build" content="20261120150000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -636,6 +636,20 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes clapbump { 0% { transform: scale(1); } 40% { transform: scale(1.14); } 100% { transform: scale(1); } }
   .clap__around { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
   .clap__ac { cursor: pointer; pointer-events: auto; -webkit-tap-highlight-color: transparent; }
+  .clap__zk { display: block; margin: 12px auto 0; padding: 9px 18px; border-radius: 999px; border: 2px solid var(--white); background: rgba(255,255,255,.85); color: var(--rose-deep); font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .04em; cursor: pointer; box-shadow: 0 3px 0 rgba(224,116,150,.3); }
+  .zk { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(90,40,60,.45); }
+  .zk.is-on { display: flex; }
+  .zk__box { width: min(100%, 420px); max-height: 88vh; overflow: auto; padding: 18px 14px 14px; border-radius: 24px; background: #FFF7FA; border: 3px solid var(--white); box-shadow: 0 8px 30px rgba(90,40,60,.3); }
+  .zk__ttl { margin: 0 0 4px; text-align: center; font-family: var(--maru); font-weight: 700; font-size: 17px; color: var(--rose-deep); }
+  .zk__cnt { margin: 0 0 10px; text-align: center; font-size: 12px; color: var(--ink-sub); }
+  .zk__h { margin: 12px 0 6px; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); }
+  .zk__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .zk__it { display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 92px; padding: 8px 4px 6px; border-radius: 14px; background: #fff; border: 1.5px solid #F3D3DE; font-size: 10.5px; line-height: 1.3; text-align: center; color: var(--ink); }
+  .zk__it img { display: block; width: auto; max-width: 90%; height: 52px; object-fit: contain; }
+  .zk__it.is-lux { background: linear-gradient(180deg,#FFFBEA,#FFF1CC); border-color: #F2C46B; }
+  .zk__it.is-no img { filter: brightness(0); opacity: .13; }
+  .zk__it.is-no span { color: #C9A8B6; }
+  .zk__x { display: block; margin: 14px auto 0; padding: 8px 26px; border-radius: 999px; border: 0; background: var(--rose); color: #fff; font-weight: 700; cursor: pointer; }
   .clap__zoom { position: absolute; left: 50%; top: 46%; z-index: 4; width: min(78%, 280px); transform: translate(-50%,-50%) scale(.3); opacity: 0; padding: 14px 14px 10px; border-radius: 28px; background: rgba(255,255,255,.93); border: 2px solid var(--white); box-shadow: 0 10px 30px rgba(174,92,120,.35); text-align: center; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; transition: transform .28s cubic-bezier(.2,1.4,.4,1), opacity .2s; }
   .clap__zoom.is-on { transform: translate(-50%,-50%) scale(1); opacity: 1; }
   .clap__zoom img { display: block; width: auto; max-width: 100%; height: 170px; margin: 0 auto 6px; object-fit: contain; filter: drop-shadow(0 6px 6px rgba(174,92,120,.3)); }
@@ -1920,6 +1934,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
           </div>
         </div>
         <button class="clap__lux" id="clap-lux" type="button" hidden>🎁 ケーキ10個を、豪華ケーキ1個に交換する<small>交換しても、みんなの数字は減らないよ（この端末の飾りかえ）</small></button>
+        <button class="clap__zk" id="clap-zk" type="button">📖 ケーキ図鑑 <span id="clap-zkn"></span></button>
       </div>
       <p class="clap__nums"><span>今月のぱちぱち<b id="clap-month">–</b></span><span>あなたのぱちぱち<b id="clap-me">0</b></span></p>
       <button class="clap__refresh" id="clap-refresh" type="button"><span class="clap__ri" aria-hidden="true">🔄</span>数字を最新にする</button>
@@ -1927,6 +1942,15 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     </div>
   </section>
 
+  <div class="zk" id="zk" role="dialog" aria-modal="true" aria-label="ケーキ図鑑" hidden>
+    <div class="zk__box">
+      <p class="zk__ttl">📖 ケーキ図鑑</p>
+      <p class="zk__cnt" id="zk-cnt"></p>
+      <p class="zk__h">🍰 ふつうのケーキ</p><div class="zk__grid" id="zk-n"></div>
+      <p class="zk__h">✨ 豪華ケーキ</p><div class="zk__grid" id="zk-l"></div>
+      <button class="zk__x" id="zk-x" type="button">とじる</button>
+    </div>
+  </div>
   <section class="sec" id="omikuji">
     <div class="sec__head"><h2 class="sec__en">Omikuji</h2><span class="sec__ja">しぃおみくじ</span></div>
     <div class="deco deco--omi">
@@ -2658,12 +2682,30 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   // 豪華ケーキ：今月のケーキが10個たまったら、10個を豪華ケーキ1個に交換できる（飾りかえ。この端末だけ・月がかわるとリセット。数字は減らない）
   var LUXK='shii_clap_lux', LUXN=12, lux=0;
   function loadLux(){ try{ var v=JSON.parse(localStorage.getItem(LUXK)||'null'); lux=(v&&v.ym===ym)?Math.max(0,Math.floor(+v.n||0)):0; }catch(e){ lux=0; } }
+  var NN=['ショートケーキ','ストロベリームース','スポンジケーキ','ミルクレープ','ティラミス','ガトーショコラ','ベリームース','抹茶ケーキ','オペラ'];
+  var LN=['2段ホールケーキ','クリスマスケーキ','ブッシュドノエル','チェリーロール','ラズベリーカップケーキ','ベリーソースのパンケーキ','クルミ入りブラウニー','パウンドケーキ','ラズベリーと抹茶のカップケーキ','ブルーベリーマフィン','フルーツのタルト','グラスデザート'];
+  var ZK=(function(){ try{ var v=JSON.parse(localStorage.getItem('shii_zukan')||'null'); return {n:(v&&v.n)||[],l:(v&&v.l)||[]}; }catch(e){ return {n:[],l:[]}; } })();
+  function zkGet(t,i){ return ZK[t].indexOf(i)>=0; }
+  function zkAdd(t,i){ if(ZK[t].indexOf(i)>=0) return; ZK[t].push(i); try{ localStorage.setItem('shii_zukan',JSON.stringify(ZK)); }catch(e){} zkCount(); }
+  function zkCount(){ var e=document.getElementById('clap-zkn'); if(e) e.textContent='('+(ZK.n.length+ZK.l.length)+'/'+(NN.length+LN.length)+')'; }
+  function zkRender(){
+    var h=function(t,names,pre,ext,cls){ var o='',i; for(i=0;i<names.length;i++){ var on=zkGet(t,i+1); o+='<div class="zk__it '+cls+(on?'':' is-no')+'"><img src="img/'+pre+(i+1)+'.webp" alt="" loading="lazy"><span>'+(on?names[i]:'？？？')+'</span></div>'; } return o; };
+    document.getElementById('zk-n').innerHTML=h('n',NN,'cake-','webp','');
+    document.getElementById('zk-l').innerHTML=h('l',LN,'lux-','webp','is-lux');
+    document.getElementById('zk-cnt').textContent='あつめたケーキ '+(ZK.n.length+ZK.l.length)+' / '+(NN.length+LN.length)+'（この端末の記録だよ）';
+  }
+  function zkOpen(on){ var z=document.getElementById('zk'); if(on){ zkRender(); z.hidden=false; z.classList.add('is-on'); } else { z.classList.remove('is-on'); z.hidden=true; } }
+  document.getElementById('clap-zk').addEventListener('click',function(){ zkOpen(true); });
+  document.getElementById('zk-x').addEventListener('click',function(){ zkOpen(false); });
+  document.getElementById('zk').addEventListener('click',function(e){ if(e.target.id==='zk') zkOpen(false); });
+  zkCount();
   function saveLux(){ try{ localStorage.setItem(LUXK,JSON.stringify({ym:ym,n:lux})); }catch(e){} }
   // できたケーキは、しぃのまわりにふえていく（左右に6個ずつ、あわせて12個まで）。ケーキの絵はいろんなケーキのイラストセット（Illustrator Factory）
   var SLOTS=[[3,14],[16,28],[3,42],[16,56],[3,70],[16,84]];
   function aroundHTML(k){
     var L=Math.min(lux,Math.floor(k/10)), norm=k-L*10, n=Math.min(L+norm,12), h='', i, isL, src, side, ht, top, x, H=($('clap-around')&&$('clap-around').offsetHeight)||370, cur=[4,4];
     for(i=0;i<n;i++){ isL=i<L; side=i%2; ht=isL?58:38;
+      if(isL) zkAdd('l',i%LUXN+1); else zkAdd('n',(i-L)%9+1);
       src=isL?'img/lux-'+(i%LUXN+1)+'.webp':'img/cake-'+((i-L)%9+1)+'.webp';
       top=Math.min(cur[side],Math.max(0,H-ht-2)); cur[side]+=ht+8;
       x=isL?1:(Math.floor(i/2)%2?12:3);
