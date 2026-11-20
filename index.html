@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261120180000">
+<meta name="build" content="20261120190000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1947,7 +1947,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="zk__box">
       <p class="zk__ttl">📖 スイーツ図鑑</p>
       <p class="zk__cnt" id="zk-cnt"></p>
-      <div class="zk__sc"><p class="zk__h" style="margin-top:0">🍰 ふつうのケーキ</p><div class="zk__grid" id="zk-n"></div>
+      <div class="zk__sc"><div id="zk-th"></div><p class="zk__h">🍰 ふつうのケーキ</p><div class="zk__grid" id="zk-n"></div>
       <p class="zk__h">✨ 豪華スイーツ</p><div class="zk__grid" id="zk-l"></div></div>
       <button class="zk__x" id="zk-x" type="button">とじる</button>
     </div>
@@ -2685,26 +2685,36 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function loadLux(){ try{ var v=JSON.parse(localStorage.getItem(LUXK)||'null'); lux=(v&&v.ym===ym)?Math.max(0,Math.floor(+v.n||0)):0; }catch(e){ lux=0; } }
   var NN=['ショートケーキ','ストロベリームース','スポンジケーキ','ミルクレープ','ティラミス','ガトーショコラ','ベリームース','抹茶ケーキ','オペラ'];
   var LN=['2段ホールケーキ','クリスマスケーキ','ブッシュドノエル','チェリーロール','ラズベリーカップケーキ','ベリーソースのパンケーキ','クルミ入りブラウニー','パウンドケーキ','ラズベリーと抹茶のカップケーキ','ブルーベリーマフィン','フルーツのタルト','グラスデザート'];
-  var ZK=(function(){ try{ var v=JSON.parse(localStorage.getItem('shii_zukan')||'null'); return {n:(v&&v.n)||[],l:(v&&v.l)||[]}; }catch(e){ return {n:[],l:[]}; } })();
-  function zkGet(t,i){ return ZK[t].indexOf(i)>=0; }
+  // 月がわりテーマ：ym の月だけ、ふつうのケーキの代わりにテーマのスイーツが並ぶ（図鑑には残る）
+  var THEMES=[];  // 例: {ym:'2026-12',name:'クリスマス',emoji:'🎄',items:[['ブッシュドノエル','th-2026-12-1.webp'],...]}
+  function themeOf(m){ for(var j=0;j<THEMES.length;j++) if(THEMES[j].ym===m) return THEMES[j]; return null; }
+  var ZK=(function(){ var z={n:[],l:[]}; try{ var v=JSON.parse(localStorage.getItem('shii_zukan')||'null'); if(v&&typeof v==='object'){ for(var k in v) if(Array.isArray(v[k])) z[k]=v[k]; } }catch(e){} return z; })();
+  function zkGet(t,i){ return !!ZK[t]&&ZK[t].indexOf(i)>=0; }
+  function zkTotal(){ var c=ZK.n.length+ZK.l.length,all=NN.length+LN.length,j; for(j=0;j<THEMES.length;j++){ all+=THEMES[j].items.length; c+=(ZK['t'+THEMES[j].ym]||[]).length; } return [c,all]; }
   var zkReady=false, zkQ=0;
   function zkAdd(t,i){
-    if(ZK[t].indexOf(i)>=0) return; ZK[t].push(i); try{ localStorage.setItem('shii_zukan',JSON.stringify(ZK)); }catch(e){} zkCount();
+    if(!ZK[t]) ZK[t]=[]; if(ZK[t].indexOf(i)>=0) return; ZK[t].push(i); try{ localStorage.setItem('shii_zukan',JSON.stringify(ZK)); }catch(e){} zkCount();
     if(!zkReady) return;
-    var tot=ZK.n.length+ZK.l.length, all=NN.length+LN.length, nm=(t==='l'?LN:NN)[i-1], txt, big=false;
+    var ta=zkTotal(), tot=ta[0], all=ta[1], th=t.charAt(0)==='t'?themeOf(t.slice(1)):null, nm=th?th.items[i-1][0]:(t==='l'?LN:NN)[i-1], txt, big=false;
     if(tot>=all){ txt='スイーツ図鑑コンプリート！！ぜんぶ見つけてくれてありがとう🎉📖'; big=true; }
     else if(tot%5===0){ txt='図鑑が'+tot+'種類になったよ！すごいすごい📖✨'; }
+    else if(th){ txt=th.emoji+'今月のテーマ「'+th.name+'」の「'+nm+'」が図鑑に載ったよ📖✨'; }
     else if(t==='l'){ txt='図鑑に豪華な「'+nm+'」が載ったよ✨📖'; }
     else { txt='図鑑に「'+nm+'」が載ったよ📖♡'; }
     zkQ++; setTimeout(function(){ say(txt,4500,true); burst(big?24:6,['📖','✨','🍰','🎂','🎉']); },5200+(zkQ-1)*4700);
     setTimeout(function(){ zkQ=Math.max(0,zkQ-1); },5200+(zkQ-1)*4700+100);
   }
-  function zkCount(){ var e=document.getElementById('clap-zkn'); if(e) e.textContent='('+(ZK.n.length+ZK.l.length)+'/'+(NN.length+LN.length)+')'; }
+  function zkCount(){ var e=document.getElementById('clap-zkn'); if(e) var ta=zkTotal(); e.textContent='('+ta[0]+'/'+ta[1]+')'; }
   function zkRender(){
     var h=function(t,names,pre,ext,cls){ var o='',i; for(i=0;i<names.length;i++){ var on=zkGet(t,i+1); o+='<div class="zk__it '+cls+(on?'':' is-no')+'"><img src="img/'+pre+(i+1)+'.webp" alt="" loading="lazy"><span>'+(on?names[i]:'？？？')+'</span></div>'; } return o; };
     document.getElementById('zk-n').innerHTML=h('n',NN,'cake-','webp','');
     document.getElementById('zk-l').innerHTML=h('l',LN,'lux-','webp','is-lux');
-    document.getElementById('zk-cnt').textContent='あつめたスイーツ '+(ZK.n.length+ZK.l.length)+' / '+(NN.length+LN.length)+'（この端末の記録だよ）';
+    var tz=document.getElementById('zk-th'), th='', j, it, o, q, ta=zkTotal();
+    for(j=THEMES.length-1;j>=0;j--){ q=THEMES[j]; if(q.ym>(ym||q.ym)) continue; o='';
+      for(it=0;it<q.items.length;it++){ var on=zkGet('t'+q.ym,it+1); o+='<div class="zk__it is-th'+(on?'':' is-no')+'"><img src="img/'+q.items[it][1]+'" alt="" loading="lazy"><span>'+(on?q.items[it][0]:'？？？')+'</span></div>'; }
+      th+='<p class="zk__h">'+q.emoji+' '+(+q.ym.slice(5))+'月のテーマ「'+q.name+'」</p><div class="zk__grid">'+o+'</div>'; }
+    tz.innerHTML=th;
+    document.getElementById('zk-cnt').textContent='あつめたスイーツ '+ta[0]+' / '+ta[1]+'（この端末の記録だよ）';
   }
   function zkOpen(on){ var z=document.getElementById('zk'); if(on){ zkRender(); z.hidden=false; z.classList.add('is-on'); document.body.style.overflow='hidden'; } else { z.classList.remove('is-on'); z.hidden=true; document.body.style.overflow=''; } }
   document.getElementById('clap-zk').addEventListener('click',function(){ zkOpen(true); });
@@ -2717,8 +2727,9 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function aroundHTML(k){
     var L=Math.min(lux,Math.floor(k/10)), norm=k-L*10, n=Math.min(L+norm,12), h='', i, isL, src, side, ht, top, x, H=($('clap-around')&&$('clap-around').offsetHeight)||370, cur=[4,4];
     for(i=0;i<n;i++){ isL=i<L; side=i%2; ht=isL?58:38;
-      if(isL) zkAdd('l',i%LUXN+1); else zkAdd('n',(i-L)%9+1);
-      src=isL?'img/lux-'+(i%LUXN+1)+'.webp':'img/cake-'+((i-L)%9+1)+'.webp';
+      var TH=isL?null:themeOf(ym), ti=TH?(i-L)%TH.items.length:0;
+      if(isL) zkAdd('l',i%LUXN+1); else if(TH) zkAdd('t'+TH.ym,ti+1); else zkAdd('n',(i-L)%9+1);
+      src=isL?'img/lux-'+(i%LUXN+1)+'.webp':TH?'img/'+TH.items[ti][1]:'img/cake-'+((i-L)%9+1)+'.webp';
       top=Math.min(cur[side],Math.max(0,H-ht-2)); cur[side]+=ht+8;
       x=isL?1:(Math.floor(i/2)%2?12:3);
       h+='<span class="clap__ac'+(isL?' is-lux':'')+'" style="'+(side?'right':'left')+':'+x+'%;top:'+top+'px;--r:'+(((i*37)%17)-8)+'deg;animation-delay:'+((i%5)*.4)+'s"><img src="'+src+'" alt="" height="'+ht+'" decoding="async"></span>'; }
