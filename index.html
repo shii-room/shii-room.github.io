@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261121080000">
+<meta name="build" content="20261121090000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -671,13 +671,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   .zk__xs { display: inline-block; margin: 12px 6px 0; padding: 7px 18px; border-radius: 999px; background: #1a1a1a; color: #fff !important; font-weight: 700; font-size: 13px; text-decoration: none; }
   .zk__dx { display: inline-block; margin: 12px 6px 0; padding: 7px 24px; border: 0; border-radius: 999px; background: var(--rose); color: #fff; font-weight: 700; cursor: pointer; }
   @keyframes zkpop { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .zk__mv { padding: 10px; border-radius: 14px; background: #fff; border: 2px dashed #f2b8cb; }
-  .zk__mv p { margin: 0 0 8px; font-size: 12px; line-height: 1.7; color: var(--ink); }
-  .zk__mv textarea { display: block; width: 100%; box-sizing: border-box; padding: 8px; border-radius: 10px; border: 2px solid #f2b8cb; font-size: 16px; line-height: 1.4; font-family: monospace; resize: none; background: #FFF7FA; color: var(--ink); word-break: break-all; }
-  .zk__mvb { display: flex; gap: 8px; margin-top: 8px; }
-  .zk__mvb button { flex: 1 1 0; padding: 9px 4px; border: 0; border-radius: 999px; background: var(--rose); color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; }
-  .zk__mvb button:last-child { background: #fff; color: var(--rose-deep); border: 2px solid var(--rose); }
-  .zk__mm { margin: 8px 0 0 !important; min-height: 1.2em; font-weight: 700; }
+  .zk__mvo { display: block; width: 100%; padding: 10px; border: 2px dashed #f2b8cb; border-radius: 14px; background: #fff; color: var(--rose-deep); font-weight: 700; font-size: 13px; cursor: pointer; }
+  .mv__p { margin: 0 0 10px; font-size: 12.5px; line-height: 1.8; color: var(--ink); }
+  .mv__p b { color: var(--rose-deep); }
+  .mv__ul { margin: 0 0 12px; padding-left: 1.3em; font-size: 12px; line-height: 1.7; color: var(--ink); }
+  #mv textarea { display: block; width: 100%; box-sizing: border-box; padding: 8px; border-radius: 10px; border: 2px solid #f2b8cb; font-size: 16px; line-height: 1.4; font-family: monospace; resize: none; background: #fff; color: var(--ink); word-break: break-all; }
+  .mv__b { display: flex; gap: 8px; margin-top: 8px; }
+  .mv__b button { flex: 1 1 0; padding: 10px 4px; border: 0; border-radius: 999px; background: var(--rose); color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; }
+  .mv__b button:last-child { background: #fff; color: var(--rose-deep); border: 2px solid var(--rose); }
+  .mv__m { margin: 8px 0 0; min-height: 1.4em; font-size: 12.5px; font-weight: 700; color: var(--rose-deep); }
+  .menu__mv { margin-left: 18px; padding: 0; border: 0; border-bottom: 1.5px solid var(--rose); background: none; cursor: pointer; }
   .zk__x { flex: none; display: block; margin: 12px auto 0; padding: 8px 26px; border-radius: 999px; border: 0; background: var(--rose); color: #fff; font-weight: 700; cursor: pointer; }
   .clap__zoom { position: absolute; left: 50%; top: 46%; z-index: 4; width: min(78%, 280px); transform: translate(-50%,-50%) scale(.3); opacity: 0; padding: 14px 14px 10px; border-radius: 28px; background: rgba(255,255,255,.93); border: 2px solid var(--white); box-shadow: 0 10px 30px rgba(174,92,120,.35); text-align: center; font-family: var(--maru); font-weight: 700; font-size: 13px; color: var(--ink); cursor: pointer; transition: transform .28s cubic-bezier(.2,1.4,.4,1), opacity .2s; }
   .clap__zoom.is-on { transform: translate(-50%,-50%) scale(1); opacity: 1; }
@@ -1742,7 +1745,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="hero__btns">
       <a class="watch" href="https://www.mirrativ.com/user/150505157" target="_blank" rel="noopener"><span class="watch__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9.2 7.2v9.6l8-4.8z"/></svg></span><span class="watch__t">配信を見にいく<small class="watch__sub">Mirrativ・夜22時からほぼ毎日</small></span><span class="watch__go" aria-hidden="true">›</span></a>
     </div>
-    <a class="menu__top" href="#top">↑ トップへ戻る</a>
+    <a class="menu__top" href="#top">↑ トップへ戻る</a><button class="menu__top menu__mv" id="menu-mv" type="button">📲 引き継ぎ（機種変更）</button>
   </div>
 </nav>
 
@@ -1982,11 +1985,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <p class="zk__cnt" id="zk-cnt"></p>
       <div class="zk__sc"><div id="zk-th"></div><p class="zk__h">🍰 ふつうのケーキ</p><div class="zk__grid" id="zk-n"></div>
       <p class="zk__h">✨ 豪華スイーツ</p><div class="zk__grid" id="zk-l"></div>
-      <p class="zk__h">📲 機種変更のとき（引き継ぎコード）</p>
-      <div class="zk__mv"><p>図鑑と「あなたのぱちぱち」を、別のスマホに引き継げるよ。①いまのスマホで「コードを作ってコピー」→ ②新しいスマホでコードを貼って「復元する」。</p>
-        <textarea id="zk-code" rows="3" placeholder="ここにコードが出るよ／引き継ぐときはここに貼りつけてね" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
-        <div class="zk__mvb"><button type="button" id="zk-mk">コードを作ってコピー</button><button type="button" id="zk-rs">復元する</button></div>
-        <p class="zk__mm" id="zk-mm" role="status" aria-live="polite"></p></div></div>
+      <p class="zk__h">📲 機種変更のとき</p><button class="zk__mvo" id="zk-mvo" type="button">引き継ぎコードを作る／復元する</button></div>
       <button class="zk__x" id="zk-x" type="button">とじる</button>
     </div>
     <div class="zk__d" id="zk-d"><div class="zk__dc" id="zk-dc"></div></div>
@@ -2793,47 +2792,6 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function zkOpen(on){ var z=document.getElementById('zk'); document.getElementById('zk-d').classList.remove('is-on'); if(on){ zkRender(); z.hidden=false; z.classList.add('is-on'); zkLock(true); } else { z.classList.remove('is-on'); z.hidden=true; zkLock(false); } }
   document.getElementById('clap-zk').addEventListener('click',function(){ zkOpen(true); });
   document.getElementById('zk-x').addEventListener('click',function(){ zkOpen(false); });
-  // 引き継ぎコード：図鑑・「あなたのぱちぱち」・豪華ケーキ交換数を、コードにして別のスマホへ。復元は「足し合わせ」（減らない・消えない）
-  var MVK=/^(n|l|t\d{4}-\d{2})$/, MVD=/^(n|l|t\d{4}-\d{2}):\d{1,3}$/;
-  function mvMake(){
-    var d={}, z={}, k;
-    for(k in ZK.d) d[k]=String(ZK.d[k]).replace(/-/g,'').slice(2);
-    for(k in ZK) if(Array.isArray(ZK[k])) z[k]=ZK[k];
-    var b=btoa(JSON.stringify({z:z,d:d,s:Math.floor(+sent||0),l:{ym:ym,n:lux}}));
-    return 'SHII1.'+b.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-  }
-  function mvRestore(code){
-    var m=/^SHII1\.([A-Za-z0-9_-]+)$/.exec(String(code||'').replace(/\s+/g,'')); if(!m) return 'コードの形がちがうみたい…もう一度コピーしてみてね';
-    var o; try{ var b=m[1].replace(/-/g,'+').replace(/_/g,'/'); while(b.length%4) b+='='; o=JSON.parse(atob(b)); }catch(e){ return 'コードを読み取れなかったよ…'; }
-    if(!o||typeof o!=='object'||!o.z||typeof o.z!=='object') return 'コードを読み取れなかったよ…';
-    var k, i, v, added=0;
-    for(k in o.z){ if(!MVK.test(k)||!Array.isArray(o.z[k])) continue; if(!ZK[k]) ZK[k]=[];
-      for(i=0;i<o.z[k].length;i++){ v=o.z[k][i]; if(typeof v==='number'&&v>=1&&v<=99&&v%1===0&&ZK[k].indexOf(v)<0){ ZK[k].push(v); added++; } } }
-    if(o.d&&typeof o.d==='object') for(k in o.d){ if(!MVD.test(k)||!/^\d{6}$/.test(String(o.d[k]))) continue; var s6=String(o.d[k]), full='20'+s6.slice(0,2)+'-'+s6.slice(2,4)+'-'+s6.slice(4,6);
-      if(!ZK.d[k]||full<ZK.d[k]) ZK.d[k]=full; }
-    try{
-      localStorage.setItem('shii_zukan',JSON.stringify(ZK));
-      var s0=Math.max(Math.floor(+sent||0),Math.min(1e9,Math.max(0,Math.floor(+o.s||0)))); localStorage.setItem(SENT,String(s0));
-      if(o.l&&/^\d{4}-\d{2}$/.test(String(o.l.ym))){ var cur=JSON.parse(localStorage.getItem(LUXK)||'null')||{ym:'',n:0}, n2=Math.min(999,Math.max(0,Math.floor(+o.l.n||0)));
-        if(String(o.l.ym)>String(cur.ym)||(o.l.ym===cur.ym&&n2>(+cur.n||0))) localStorage.setItem(LUXK,JSON.stringify({ym:o.l.ym,n:n2})); }
-      sessionStorage.setItem('shii_mvok',String(added));
-    }catch(e){ return 'この端末では保存できなかったよ…'; }
-    setTimeout(function(){ location.reload(); },50);
-    return 'OK';
-  }
-  (function(){
-    var ta=document.getElementById('zk-code'), mm=document.getElementById('zk-mm');
-    document.getElementById('zk-mk').addEventListener('click',function(){
-      var c=mvMake(); ta.value=c; ta.focus(); ta.select();
-      var ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
-      if(!ok&&navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(c).then(function(){ mm.textContent='コピーしたよ📋 新しいスマホで貼りつけてね'; },function(){}); }
-      mm.textContent=ok?'コピーしたよ📋 新しいスマホで貼りつけてね':'コードができたよ。長押しでコピーしてね';
-    });
-    document.getElementById('zk-rs').addEventListener('click',function(){
-      if(!ta.value.trim()){ mm.textContent='コードを貼りつけてね'; return; }
-      var r=mvRestore(ta.value); mm.textContent=r==='OK'?'引き継ぎ中…ページを読み込み直すよ':r;
-    });
-  })();
 
   document.getElementById('zk').addEventListener('click',function(e){ if(e.target.id==='zk') zkOpen(false); });
   zkCount();
@@ -3705,6 +3663,88 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   motion.addEventListener('change',refresh);
   new MutationObserver(refresh).observe(document.getElementById('menu'),{attributes:true,attributeFilter:['class']});
 
+})();
+</script>
+
+<div class="zk" id="mv" role="dialog" aria-modal="true" aria-label="引き継ぎ（機種変更）" hidden>
+  <div class="zk__box">
+    <p class="zk__ttl">📲 引き継ぎ（機種変更）</p>
+    <div class="zk__sc">
+      <p class="mv__p">スマホを買いかえたり、ブラウザのデータを消したりしても、<b>いままでの記録をコードで引き継げる</b>よ。<br>①いまのスマホで「コードを作ってコピー」 → ②新しいスマホで、このページにコードを貼って「復元する」。</p>
+      <ul class="mv__ul"><li>レベル・EXP・もらった記録</li><li>スタンプカード（これまで来た回数）</li><li>拍手（あなたのぱちぱち）・豪華スイーツの交換数</li><li>スイーツ図鑑</li></ul>
+      <textarea id="mv-code" rows="4" placeholder="ここにコードが出るよ／引き継ぐときはここに貼りつけてね" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
+      <div class="mv__b"><button type="button" id="mv-mk">コードを作ってコピー</button><button type="button" id="mv-rs">復元する</button></div>
+      <p class="mv__m" id="mv-mm" role="status" aria-live="polite"></p>
+      <p class="mv__p" style="font-size:11.5px">※復元は「足し合わせ」だよ。新しいスマホにある記録は消えず、数は大きいほうが残るよ。コードは他の人に見せないでね。</p>
+    </div>
+    <button class="zk__x" id="mv-x" type="button">とじる</button>
+  </div>
+</div>
+<script>
+// 引き継ぎコード：サイト全体の記録（localStorage）をコードにして、別の端末へ。復元は足し合わせ（減らない・消えない）
+(function(){
+  var LS=window.localStorage, $=function(id){ return document.getElementById(id); };
+  function rd(k){ try{ return JSON.parse(LS.getItem(k)||'null'); }catch(e){ return null; } }
+  function wr(k,v){ LS.setItem(k,typeof v==='string'?v:JSON.stringify(v)); }
+  var DATE=/^\d{4}-\d{2}-\d{2}$/, YM=/^\d{4}-\d{2}$/, ZKEY=/^(n|l|t\d{4}-\d{2})$/, ZDK=/^(n|l|t\d{4}-\d{2}):\d{1,3}$/;
+  var c6=function(d){ return String(d).replace(/-/g,'').slice(2); }, u6=function(s){ return '20'+s.slice(0,2)+'-'+s.slice(2,4)+'-'+s.slice(4,6); };
+  var int=function(v,max){ v=Math.floor(+v); return (isFinite(v)&&v>0)?Math.min(v,max):0; };
+  function make(){
+    var o={v:2}, xp=rd('shii_xp'), st=rd('shii_stamp'), zk=rd('shii_zukan'), cl=rd('shii_clap_lux'), cs=int(LS.getItem('shii_clap_sent'),1e9), k;
+    if(xp&&typeof xp.xp==='number'){ o.x={p:int(xp.xp,1e7),g:xp.got&&typeof xp.got==='object'?xp.got:{}}; }
+    if(st&&Array.isArray(st.d)){ o.s={m:st.m||'',d:st.d.filter(function(d){return DATE.test(d);}).map(c6),t:int(st.total,1e6),l:st.last||'',r:!!st.reward}; }
+    if(zk&&typeof zk==='object'){ var z={}, d={}; for(k in zk) if(Array.isArray(zk[k])) z[k]=zk[k]; if(zk.d) for(k in zk.d) d[k]=c6(zk.d[k]); o.z=z; o.zd=d; }
+    if(cs) o.c=cs;
+    if(cl&&YM.test(String(cl.ym))) o.cl={y:cl.ym,n:int(cl.n,999)};
+    var b=btoa(JSON.stringify(o)); return 'SHII2.'+b.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  function restore(code){
+    var m=/^SHII2\.([A-Za-z0-9_-]+)$/.exec(String(code||'').replace(/\s+/g,'')); if(!m) return 'コードの形がちがうみたい…もう一度コピーしてみてね';
+    var o; try{ var b=m[1].replace(/-/g,'+').replace(/_/g,'/'); while(b.length%4) b+='='; o=JSON.parse(atob(b)); }catch(e){ return 'コードを読み取れなかったよ…'; }
+    if(!o||typeof o!=='object'||o.v!==2) return 'コードを読み取れなかったよ…';
+    var k, i, v;
+    try{
+      if(o.x&&typeof o.x==='object'){ var X=rd('shii_xp')||{xp:0,got:{}}; if(typeof X.xp!=='number') X.xp=0; if(!X.got||typeof X.got!=='object') X.got={};
+        X.xp=Math.max(X.xp,int(o.x.p,1e7)); var g=o.x.g&&typeof o.x.g==='object'?o.x.g:{};
+        for(k in g){ if(!/^[a-z0-9_]{1,16}$/.test(k)) continue; v=g[k]; if(v===true){ if(!X.got[k]) X.got[k]=true; } else if(typeof v==='string'&&v.length<=20){ if(typeof X.got[k]!=='string'||v>X.got[k]) X.got[k]=v; } }
+        wr('shii_xp',X); }
+      if(o.s&&typeof o.s==='object'){ var S=rd('shii_stamp')||{d:[],total:0,reward:false}; if(!Array.isArray(S.d)) S.d=[];
+        var im=/^\d{4}-\d{2}$/.test(String(o.s.m))?o.s.m:'', lm=YM.test(String(S.m))?S.m:'', mm=im>lm?im:lm;
+        var all=S.d.filter(function(d){return DATE.test(d);}), add=Array.isArray(o.s.d)?o.s.d.filter(function(d){return /^\d{6}$/.test(String(d));}).map(u6):[];
+        var seen={}; all=all.concat(add).filter(function(d){ if(seen[d]||(mm&&d.slice(0,7)!==mm)) return false; seen[d]=1; return true; }).sort().slice(0,20);
+        S.d=all; S.m=mm||S.m; S.total=Math.max(int(S.total,1e6),int(o.s.t,1e6),all.length);
+        var ll=typeof o.s.l==='string'&&DATE.test(o.s.l)?o.s.l:''; if(ll>(S.last||'')) S.last=ll;
+        S.reward=all.length>=20||!!(S.reward&&(!mm||S.m===mm)); wr('shii_stamp',S); }
+      if(o.z&&typeof o.z==='object'){ var Z=rd('shii_zukan')||{n:[],l:[],d:{}}; if(!Z.d||typeof Z.d!=='object') Z.d={};
+        for(k in o.z){ if(!ZKEY.test(k)||!Array.isArray(o.z[k])) continue; if(!Array.isArray(Z[k])) Z[k]=[];
+          for(i=0;i<o.z[k].length;i++){ v=o.z[k][i]; if(typeof v==='number'&&v>=1&&v<=99&&v%1===0&&Z[k].indexOf(v)<0) Z[k].push(v); } }
+        if(o.zd&&typeof o.zd==='object') for(k in o.zd){ if(!ZDK.test(k)||!/^\d{6}$/.test(String(o.zd[k]))) continue; var f=u6(String(o.zd[k])); if(!Z.d[k]||f<Z.d[k]) Z.d[k]=f; }
+        wr('shii_zukan',Z); }
+      if(o.c) wr('shii_clap_sent',String(Math.max(int(LS.getItem('shii_clap_sent'),1e9),int(o.c,1e9))));
+      if(o.cl&&YM.test(String(o.cl.y))){ var cur=rd('shii_clap_lux')||{ym:'',n:0}, n2=int(o.cl.n,999);
+        if(String(o.cl.y)>String(cur.ym)||(o.cl.y===cur.ym&&n2>(+cur.n||0))) wr('shii_clap_lux',{ym:o.cl.y,n:n2}); }
+      sessionStorage.setItem('shii_mvok','1');
+    }catch(e){ return 'この端末では保存できなかったよ…'; }
+    setTimeout(function(){ location.reload(); },50);
+    return 'OK';
+  }
+  var box=$('mv'), ta=$('mv-code'), mm=$('mv-mm'), locked=false;
+  function lock(on){ var b=document.body, h=document.documentElement; if(on&&!locked){ h.style.overflow='hidden'; b.style.overflow='hidden'; locked=true; } else if(!on&&locked){ h.style.overflow=''; b.style.overflow=''; locked=false; } }
+  function open(on){ if(on){ mm.textContent=''; box.hidden=false; box.classList.add('is-on'); lock(true); } else { box.classList.remove('is-on'); box.hidden=true; lock(false); } }
+  box.addEventListener('touchmove',function(e){ if(!(e.target.closest&&e.target.closest('.zk__sc'))) e.preventDefault(); },{passive:false});
+  box.addEventListener('click',function(e){ if(e.target===box) open(false); });
+  $('mv-x').addEventListener('click',function(){ open(false); });
+  $('menu-mv').addEventListener('click',function(){ open(true); });
+  var zo=$('zk-mvo'); if(zo) zo.addEventListener('click',function(){ open(true); });
+  $('mv-mk').addEventListener('click',function(){
+    var c=make(); ta.value=c; ta.focus(); ta.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+    if(!ok&&navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(c).then(function(){ mm.textContent='コピーしたよ📋 新しいスマホで貼りつけてね'; },function(){}); }
+    mm.textContent=ok?'コピーしたよ📋 新しいスマホで貼りつけてね':'コードができたよ。長押しでコピーしてね';
+  });
+  $('mv-rs').addEventListener('click',function(){
+    if(!ta.value.trim()){ mm.textContent='コードを貼りつけてね'; return; }
+    var r=restore(ta.value); mm.textContent=r==='OK'?'引き継ぎ中…ページを読み込み直すよ':r;
+  });
 })();
 </script>
 </body>
