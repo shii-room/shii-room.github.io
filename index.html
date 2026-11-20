@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261121040000">
+<meta name="build" content="20261121050000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2695,7 +2695,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function zoomCake(src,isLux){
     var st=$('clap-stage'); if(!zoomEl){ zoomEl=document.createElement('div'); zoomEl.className='clap__zoom'; zoomEl.addEventListener('click',function(e){ e.stopPropagation(); closeZoom(); }); st.appendChild(zoomEl); }
     zoomEl.classList.toggle('is-lux',!!isLux);
-    zoomEl.innerHTML='<img src="'+src+'" alt=""><span>'+(isLux?'豪華ケーキ✨':'みんなで作ったケーキ🍰')+'</span>';
+    zoomEl.innerHTML='<img src="'+src+'" alt=""><span>'+(function(){ var m=/(cake|lux)-(\d+)/.exec(src), nm=m&&(m[1]==='lux'?LN:NN)[+m[2]-1]; return nm?nm+(isLux?'✨':'🍰'):(isLux?'豪華ケーキ✨':'みんなで作ったケーキ🍰'); })()+'</span>';
     void zoomEl.offsetWidth; zoomEl.classList.add('is-on');
     clearTimeout(zoomT); zoomT=setTimeout(closeZoom,3500);
   }
