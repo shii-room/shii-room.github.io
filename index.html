@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261120230000">
+<meta name="build" content="20261121000000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2755,8 +2755,8 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var zkY=0, zkLocked=false;
   function zkLock(on){
     var b=document.body, h=document.documentElement;
-    if(on&&!zkLocked){ zkY=window.pageYOffset||h.scrollTop||0; b.style.position='fixed'; b.style.top=(-zkY)+'px'; b.style.left='0'; b.style.right='0'; b.style.width='100%'; h.style.overscrollBehavior='none'; zkLocked=true; }
-    else if(!on&&zkLocked){ b.style.position=''; b.style.top=''; b.style.left=''; b.style.right=''; b.style.width=''; b.style.overflow=''; h.style.overscrollBehavior=''; zkLocked=false; window.scrollTo(0,zkY); }
+    if(on&&!zkLocked){ h.style.overflow='hidden'; b.style.overflow='hidden'; h.style.overscrollBehavior='none'; zkLocked=true; }
+    else if(!on&&zkLocked){ h.style.overflow=''; b.style.overflow=''; h.style.overscrollBehavior=''; zkLocked=false; }
   }
   document.getElementById('zk').addEventListener('touchmove',function(e){ if(!(e.target.closest&&e.target.closest('.zk__sc,.zk__dc'))) e.preventDefault(); },{passive:false});
   function zkOpen(on){ var z=document.getElementById('zk'); document.getElementById('zk-d').classList.remove('is-on'); if(on){ zkRender(); z.hidden=false; z.classList.add('is-on'); zkLock(true); } else { z.classList.remove('is-on'); z.hidden=true; zkLock(false); } }
