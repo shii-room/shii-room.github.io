@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261121020000">
+<meta name="build" content="20261121030000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -1937,7 +1937,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="sec__head"><h2 class="sec__en">Clap</h2><span class="sec__ja">拍手　みんなでスイーツを作ろう！</span></div>
     <div class="clap deco deco--love">
       <span class="deco__i p1" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span>
-      <p class="req__lead">しぃをタップして、ぱちぱちを届けてね👏 見守り隊のみんなの分が、どんどんたまっていくよ！ 今月はみんなでケーキを作ろう🍰 今月のぱちぱちが1,000回たまるごとに1個できあがり！ 毎月1日から、また新しいケーキ作りが始まるよ。</p>
+      <p class="req__lead">しぃをタップして、ぱちぱちを届けてね👏 見守り隊のみんなの分が、どんどんたまっていくよ！ 今月はみんなでスイーツを作ろう🍰 今月のぱちぱちが1,000回たまるごとに1個できあがり！ 毎月1日から、また新しいスイーツ作りが始まるよ。</p>
       <div class="clap__stage" id="clap-stage">
         <div class="clap__around" id="clap-around" aria-hidden="true"></div>
         <p class="clap__bubble" id="clap-bubble" role="status" aria-live="polite"></p>
@@ -2810,7 +2810,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     var k=Math.floor(t/CAKE), r=t%CAKE, pct=r/CAKE*100, st=Math.min(3,Math.floor(pct/25));
     $('clap-cake').hidden=false; $('clap-bar').style.width=pct+'%';
     $('clap-stagetxt').textContent=(k?'🎂×'+fmt(k)+' ':'')+STAGES[st];
-    $('clap-goaln').textContent='今月のケーキ作り：次の1個まであと '+fmt(CAKE-r)+'回';
+    $('clap-goaln').textContent='今月のスイーツ作り：次の1個まであと '+fmt(CAKE-r)+'回';
     var cur=$('clap-cakecur');
     if(st!==lastStage || (k!==lastK && lastK!==null)){
       cur.innerHTML=cakeSVG(st);
