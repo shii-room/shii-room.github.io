@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261120150000">
+<meta name="build" content="20261120160000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2686,7 +2686,18 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var LN=['2段ホールケーキ','クリスマスケーキ','ブッシュドノエル','チェリーロール','ラズベリーカップケーキ','ベリーソースのパンケーキ','クルミ入りブラウニー','パウンドケーキ','ラズベリーと抹茶のカップケーキ','ブルーベリーマフィン','フルーツのタルト','グラスデザート'];
   var ZK=(function(){ try{ var v=JSON.parse(localStorage.getItem('shii_zukan')||'null'); return {n:(v&&v.n)||[],l:(v&&v.l)||[]}; }catch(e){ return {n:[],l:[]}; } })();
   function zkGet(t,i){ return ZK[t].indexOf(i)>=0; }
-  function zkAdd(t,i){ if(ZK[t].indexOf(i)>=0) return; ZK[t].push(i); try{ localStorage.setItem('shii_zukan',JSON.stringify(ZK)); }catch(e){} zkCount(); }
+  var zkReady=false, zkQ=0;
+  function zkAdd(t,i){
+    if(ZK[t].indexOf(i)>=0) return; ZK[t].push(i); try{ localStorage.setItem('shii_zukan',JSON.stringify(ZK)); }catch(e){} zkCount();
+    if(!zkReady) return;
+    var tot=ZK.n.length+ZK.l.length, all=NN.length+LN.length, nm=(t==='l'?LN:NN)[i-1], txt, big=false;
+    if(tot>=all){ txt='ケーキ図鑑コンプリート！！ぜんぶ見つけてくれてありがとう🎉📖'; big=true; }
+    else if(tot%5===0){ txt='図鑑が'+tot+'種類になったよ！すごいすごい📖✨'; }
+    else if(t==='l'){ txt='図鑑に豪華な「'+nm+'」が載ったよ✨📖'; }
+    else { txt='図鑑に「'+nm+'」が載ったよ📖♡'; }
+    zkQ++; setTimeout(function(){ say(txt,4500,true); burst(big?24:6,['📖','✨','🍰','🎂','🎉']); },5200+(zkQ-1)*4700);
+    setTimeout(function(){ zkQ=Math.max(0,zkQ-1); },5200+(zkQ-1)*4700+100);
+  }
   function zkCount(){ var e=document.getElementById('clap-zkn'); if(e) e.textContent='('+(ZK.n.length+ZK.l.length)+'/'+(NN.length+LN.length)+')'; }
   function zkRender(){
     var h=function(t,names,pre,ext,cls){ var o='',i; for(i=0;i<names.length;i++){ var on=zkGet(t,i+1); o+='<div class="zk__it '+cls+(on?'':' is-no')+'"><img src="img/'+pre+(i+1)+'.webp" alt="" loading="lazy"><span>'+(on?names[i]:'？？？')+'</span></div>'; } return o; };
@@ -2730,6 +2741,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       if(shelfK!==-1 && k>shelfK && k<=12){ var c=ar.lastElementChild; if(c) c.classList.add('is-new'); }
       shelfK=k; shelfL=lux;
     }
+    zkReady=true;
     if(lastK===null) lastK=k;
     else if(k>lastK){ lastK=k; say(fmt(k)+'個目のケーキが完成したよ〜！みんなありがとう🎂',4500,true); burst(14,['🎂','🍰','✨','🍓','🎉']); }
   }
