@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261122140000">
+<meta name="build" content="20261122200000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2716,7 +2716,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function zoomCake(src,isLux){
     var st=$('clap-stage'); if(!zoomEl){ zoomEl=document.createElement('div'); zoomEl.className='clap__zoom'; zoomEl.addEventListener('click',function(e){ e.stopPropagation(); closeZoom(); }); st.appendChild(zoomEl); }
     zoomEl.classList.toggle('is-lux',!!isLux);
-    zoomEl.innerHTML='<img src="'+src+'" alt=""><span>'+(function(){ var m=/(cake|lux)-(\d+)/.exec(src), nm=m&&(m[1]==='lux'?LN:NN)[+m[2]-1]; return nm?nm+(isLux?'✨':'🍰'):(isLux?'豪華ケーキ✨':'みんなで作ったケーキ🍰'); })()+'</span>';
+    zoomEl.innerHTML='<img src="'+src+'" alt=""><span>'+(function(){ var m=/(cake|lux)-(\d+)/.exec(src), nm=m&&(m[1]==='lux'?LN:NN)[+m[2]-1], t=/th-(\d{4}-\d{2})-(\d+)/.exec(src), th=t&&themeOf(t[1]); if(th&&th.items[+t[2]-1]) return th.items[+t[2]-1][0]+th.emoji; return nm?nm+(isLux?'✨':'🍰'):(isLux?'豪華ケーキ✨':'みんなで作ったスイーツ🍰'); })()+'</span>';
     void zoomEl.offsetWidth; zoomEl.classList.add('is-on');
     clearTimeout(zoomT); zoomT=setTimeout(closeZoom,3500);
   }
@@ -2731,7 +2731,16 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   var NN=['ショートケーキ','ストロベリームース','スポンジケーキ','ミルクレープ','ティラミス','ガトーショコラ','ベリームース','抹茶ケーキ','オペラ'];
   var LN=['2段ホールケーキ','クリスマスケーキ','ブッシュドノエル','チェリーロール','ラズベリーカップケーキ','ベリーソースのパンケーキ','クルミ入りブラウニー','パウンドケーキ','ラズベリーと抹茶のカップケーキ','ブルーベリーマフィン','フルーツのタルト','グラスデザート'];
   // 月がわりテーマ：ym の月だけ、ふつうのケーキの代わりにテーマのスイーツが並ぶ（図鑑には残る）
-  var THEMES=[];  // 例: {ym:'2026-12',name:'クリスマス',emoji:'🎄',items:[['ブッシュドノエル','th-2026-12-1.webp'],...]}
+  var THEMES=[  // {ym, name, emoji, items:[[名前, 画像, 豆知識],...]}。その月は、ふつうのケーキの代わりにこのスイーツが並ぶ
+    {ym:'2026-12',name:'クリスマス',emoji:'🎄',items:[
+      ['クッキーいろいろ','th-2026-12-1.webp','クッキーの語源は、オランダ語の「koekje（小さなケーキ）」だといわれているよ。クリスマスには、型抜きクッキーを家族で焼く国も多いんだ。'],
+      ['ストロベリードーナッツ','th-2026-12-2.webp','ドーナツの真ん中に穴があるのは、生地の中まで均一に火を通すためという説が有名だよ。'],
+      ['プリンアラモード','th-2026-12-3.webp','「アラモード」はフランス語で「流行の」という意味。横浜のホテルで、戦後まもない頃に生まれたといわれているよ。'],
+      ['チョコレートいろいろ','th-2026-12-4.webp','丸いトリュフチョコの名前は、高級食材のキノコ「トリュフ」に形が似ていることから付いたんだよ。'],
+      ['オランジェット','th-2026-12-5.webp','オレンジの皮を砂糖漬けにして、チョコをかけたフランス生まれのお菓子。ほろ苦さと甘酸っぱさが相性ばつぐんだよ。'],
+      ['マンディアン','th-2026-12-6.webp','ナッツやドライフルーツをチョコにのせたお菓子。もとは修道会の服の色にちなんで、4種類の具をのせたといわれているよ。']
+    ]}
+  ];
   function themeOf(m){ for(var j=0;j<THEMES.length;j++) if(THEMES[j].ym===m) return THEMES[j]; return null; }
   var NT=['日本のショートケーキは、スポンジ・生クリーム・いちごが定番。本場アメリカのショートケーキはビスケット生地が基本で、いまの形は日本で育ったスタイルなんだよ。',
 'ムース(mousse)はフランス語で「泡」のこと。泡立てた生クリームやメレンゲを混ぜて、ふわふわ・とろける口どけにしているよ。',
