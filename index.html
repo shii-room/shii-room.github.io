@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261121090000">
+<meta name="build" content="20261122140000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -636,6 +636,11 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   @keyframes clapbump { 0% { transform: scale(1); } 40% { transform: scale(1.14); } 100% { transform: scale(1); } }
   .clap__around { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
   .clap__ac { cursor: pointer; pointer-events: auto; -webkit-tap-highlight-color: transparent; }
+  .clap__hist { width: min(100%, 360px); margin: 14px auto 0; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.75); border: 2px dashed #f2b8cb; }
+  .clap__hist summary { cursor: pointer; font-weight: 700; font-size: 13.5px; color: var(--rose-deep); text-align: center; }
+  .clap__hl { list-style: none; margin: 10px 0 0; padding: 0; font-size: 13px; color: var(--ink); }
+  .clap__hl li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 2px; border-top: 1px dotted #f2b8cb; }
+  .clap__hl b { color: var(--rose-deep); font-variant-numeric: tabular-nums; }
   .clap__zk { display: block; margin: 16px auto 0; padding: 13px 28px; border-radius: 999px; border: 3px solid var(--white); background: linear-gradient(180deg,#ff9ec0,#e8789f); color: #fff; font-family: var(--maru); font-weight: 800; font-size: 16px; letter-spacing: .06em; cursor: pointer; box-shadow: 0 5px 0 rgba(200,80,120,.45), 0 8px 18px rgba(232,120,159,.35); text-shadow: 0 1px 2px rgba(160,50,90,.35); animation: zkbtn 2.6s ease-in-out infinite; }
   .clap__zk:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(200,80,120,.45); animation: none; }
   @keyframes zkbtn { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
@@ -1971,6 +1976,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         </div>
         <button class="clap__lux" id="clap-lux" type="button" hidden>🎁 ケーキ10個を、豪華ケーキ1個に交換する<small>交換しても、みんなの数字は減らないよ（この端末の飾りかえ）</small></button>
         <button class="clap__zk" id="clap-zk" type="button">📖 スイーツ図鑑 <span id="clap-zkn"></span></button>
+        <details class="clap__hist" id="clap-hist"><summary>📅 月ごとのぱちぱち記録</summary><ul class="clap__hl" id="clap-hl"><li>ひらくと表示されるよ</li></ul></details>
       </div>
       <p class="clap__nums"><span>今月のぱちぱち<b id="clap-month">–</b></span><span>あなたのぱちぱち<b id="clap-me">0</b></span></p>
       <button class="clap__refresh" id="clap-refresh" type="button"><span class="clap__ri" aria-hidden="true">🔄</span>数字を最新にする</button>
@@ -2940,6 +2946,21 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   function leave(){ if(pending>0 && !sending){ var n=Math.min(pending,60); pending-=n; sent+=n; keep(); try{ rpc('shii_clap_hit',{p_n:n},true).catch(function(){}); }catch(e){} } }
   document.addEventListener('visibilitychange',function(){ if(document.hidden) leave(); else poll(); });
   window.addEventListener('pagehide',leave);
+  var hist=$('clap-hist'), hl=$('clap-hl'), hloaded=false;
+  hist.addEventListener('toggle',function(){
+    if(!hist.open||hloaded) return;
+    hl.innerHTML='<li>読みこみ中…</li>';
+    rpc('shii_clap_history').then(function(rows){
+      if(!Array.isArray(rows)) throw new Error('x');
+      hloaded=true; hl.innerHTML='';
+      if(!rows.length){ hl.innerHTML='<li>まだ記録がないよ</li>'; return; }
+      rows.forEach(function(r){
+        var m=/^(\d{4})-(\d{2})$/.exec(String(r.ym)); if(!m) return;
+        var n=Math.max(0,Math.floor(+r.total||0)), li=document.createElement('li'), a=document.createElement('span'), b=document.createElement('b');
+        a.textContent=m[1]+'年'+(+m[2])+'月'; b.textContent=fmt(n)+'回 🍰×'+Math.floor(n/1000); li.appendChild(a); li.appendChild(b); hl.appendChild(li);
+      });
+    }).catch(function(){ hl.innerHTML='<li>いまは読みこめなかったよ</li>'; });
+  });
   var xs=$('clap-xs'); xs.addEventListener('click',function(){ xs.href=xurl(statsText()); });
   var rb=$('clap-refresh'), busy=false;
   rb.addEventListener('click',function(){
