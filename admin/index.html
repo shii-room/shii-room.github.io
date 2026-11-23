@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261124010000">
+<meta name="build" content="20261124040800">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -214,7 +214,7 @@
       <button type="button" data-t="wall"><span class="ic">✿</span><span class="lb">ごほうび壁紙</span><span class="st">スタンプの壁紙</span></button>
       <button type="button" data-t="cal"><span class="ic">♛</span><span class="lb">ランキング</span><span class="st">TOP10に入った日を記録</span></button>
       <button type="button" data-t="evt"><span class="ic">✦</span><span class="lb">カウントダウン</span><span class="st">誕生日・周年・イベント</span></button>
-      <button type="button" data-t="txt"><span class="ic">✎</span><span class="lb">プロフィール</span><span class="st">自己紹介・文面を直す</span></button>
+      <button type="button" data-t="txt"><span class="ic">✎</span><span class="lb">プロフィール</span><span class="st">自己紹介・配信の文面など</span></button>
     </div>
     <div class="backbar" id="backbar" hidden><button type="button" id="backBtn">‹ もどる</button><b id="backTitle"></b></div>
     <div class="tabs" role="tablist" style="display:none">
@@ -407,6 +407,17 @@
         <label style="margin-top:16px">プロフィールの項目<small style="font-weight:500;color:var(--sub)">（左：項目名　右：内容・最大6つ）</small></label>
         <div id="txMeta"></div>
         <div class="row"><button class="ghost" id="txMetaAdd" type="button">＋ 項目を足す</button></div>
+        <h2 style="margin-top:28px">配信（スケジュール）</h2>
+        <label for="txSchTime">配信の時間<small style="font-weight:500;color:var(--sub)">（大きく出るところ）</small></label>
+        <input id="txSchTime" maxlength="12" autocomplete="off" placeholder="例）22:00〜">
+        <label for="txSchFreq" style="margin-top:16px">頻度<small style="font-weight:500;color:var(--sub)">（時間の右のピンクの文字）</small></label>
+        <input id="txSchFreq" maxlength="16" autocomplete="off" placeholder="例）ほぼ毎日">
+        <label for="txSchNote" style="margin-top:16px">ひとこと説明</label>
+        <textarea id="txSchNote" rows="3" maxlength="120"></textarea>
+        <p class="hint">文章の中の「X」という文字は、しぃのXへのリンクになります。</p>
+        <label style="margin-top:16px">配信でやっていること<small style="font-weight:500;color:var(--sub)">（丸いタグ・最大8つ）</small></label>
+        <div id="txActs"></div>
+        <div class="row"><button class="ghost" id="txActAdd" type="button">＋ 足す</button></div>
         <h2 style="margin-top:28px">外部リンク</h2>
         <label>名前とリンク<small style="font-weight:500;color:var(--sub)">（最大8つ）</small></label>
         <div id="txLinks"></div>
@@ -1510,6 +1521,7 @@
   var TXD={heroTag:'🌈 ほにゃららLIVERS所属',welcome:'しぃの部屋へようこそ',watchMain:'配信を見にいく',watchSub:'Mirrativ・夜22時からほぼ毎日',profName:'しぃ',profAff:'ほにゃららLIVERS所属',
     profText:'面白いこと、楽しいこと、お菓子が大好きな元メイドのしぃと申します🍭🍰꙳.*',
     meta:[{k:'FM',v:'🍭🍰꙳.*'},{k:'FT',v:'しぃの見守り隊'},{k:'FA',v:'しぃとふたりごと'}],
+    schedTime:'22:00〜',schedFreq:'ほぼ毎日',schedNote:'ゲリラで朝やお昼に配信することもあります。お知らせはXで。',acts:['まったり雑談','ミラティブのゲーム','PUBG MOBILE参加型','歌ってみた'],
     links:[{n:'Mirrativ',u:'https://www.mirrativ.com/user/150505157'},{n:'X',u:'https://x.com/shiitarou210'},{n:'ほにゃららLIVERS',u:'https://honyararalivers.jp/'}]};
   var txLoaded=false;
   function txRow(box,a,b,pa,pb,maxA,maxB,urlB){
@@ -1520,12 +1532,22 @@
     x.onclick=function(){ d.remove(); };
     d.appendChild(i1); d.appendChild(i2); d.appendChild(x); box.appendChild(d);
   }
+  function actRow(v){
+    var d=document.createElement('div'); d.style.cssText='display:grid;grid-template-columns:1fr 44px;gap:8px;margin-top:8px;align-items:center';
+    var i=document.createElement('input'); i.maxLength=20; i.value=v||''; i.placeholder='例）まったり雑談'; i.autocomplete='off';
+    var x=document.createElement('button'); x.type='button'; x.className='del'; x.textContent='×'; x.setAttribute('aria-label','この行を消す'); x.style.cssText='height:52px;padding:0';
+    x.onclick=function(){ d.remove(); };
+    d.appendChild(i); d.appendChild(x); $('txActs').appendChild(d);
+  }
   function txFill(d){
     function g(k){ return (typeof d[k]==='string'&&d[k].trim())?d[k]:TXD[k]; }
     $('txHeroTag').value=g('heroTag'); $('txWelcome').value=g('welcome'); $('txWatchMain').value=g('watchMain'); $('txWatchSub').value=g('watchSub');
     $('txName').value=g('profName'); $('txAff').value=g('profAff'); $('txText').value=g('profText');
     var meta=(Array.isArray(d.meta)&&d.meta.some(function(r){return r&&r.k&&r.v;}))?d.meta:TXD.meta;
     $('txMeta').innerHTML=''; meta.forEach(function(r){ if(r&&r.k&&r.v) txRow($('txMeta'),r.k,r.v,'項目名','内容',8,40,false); });
+    $('txSchTime').value=g('schedTime'); $('txSchFreq').value=g('schedFreq'); $('txSchNote').value=g('schedNote');
+    var acts=(Array.isArray(d.acts)&&d.acts.some(function(x){return x;}))?d.acts:TXD.acts;
+    $('txActs').innerHTML=''; acts.forEach(function(x){ if(x) actRow(x); });
     var links=(Array.isArray(d.links)&&d.links.some(function(r){return r&&r.n&&r.u;}))?d.links:TXD.links;
     $('txLinks').innerHTML=''; links.forEach(function(r){ if(r&&r.n&&r.u) txRow($('txLinks'),r.n,r.u,'名前','https://…',20,200,true); });
   }
@@ -1533,6 +1555,8 @@
     function rows(box){ return Array.prototype.map.call(box.children,function(d){ var i=d.querySelectorAll('input'); return [i[0].value.trim(),i[1].value.trim()]; }).filter(function(r){ return r[0]&&r[1]; }); }
     return {heroTag:$('txHeroTag').value.trim(),welcome:$('txWelcome').value.trim(),watchMain:$('txWatchMain').value.trim(),watchSub:$('txWatchSub').value.trim(),
       profName:$('txName').value.trim(),profAff:$('txAff').value.trim(),profText:$('txText').value.trim(),
+      schedTime:$('txSchTime').value.trim(),schedFreq:$('txSchFreq').value.trim(),schedNote:$('txSchNote').value.trim(),
+      acts:Array.prototype.map.call($('txActs').querySelectorAll('input'),function(i){return i.value.trim();}).filter(Boolean).slice(0,8),
       meta:rows($('txMeta')).slice(0,6).map(function(r){return {k:r[0],v:r[1]};}),
       links:rows($('txLinks')).slice(0,8).map(function(r){return {n:r[0],u:r[1]};})};
   }
@@ -1541,6 +1565,7 @@
     call('shii_texts_admin',{p_action:'get'}).then(function(d){ txLoaded=true; txFill(d||{}); })
       .catch(function(e){ fail(e,$('txMsg')); });
   }
+  $('txActAdd').onclick=function(){ if($('txActs').children.length>=8){ say($('txMsg'),'タグは8つまでです',true); return; } actRow(''); };
   $('txMetaAdd').onclick=function(){ if($('txMeta').children.length>=6){ say($('txMsg'),'項目は6つまでです',true); return; } txRow($('txMeta'),'','','項目名','内容',8,40,false); };
   $('txLinkAdd').onclick=function(){ if($('txLinks').children.length>=8){ say($('txMsg'),'リンクは8つまでです',true); return; } txRow($('txLinks'),'','','名前','https://…',20,200,true); };
   $('txSave').onclick=function(){

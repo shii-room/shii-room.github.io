@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261124010000">
+<meta name="build" content="20261124040800">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -3905,6 +3905,9 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     setText('.hero__tag',d.heroTag); setText('.hero__welcome span',d.welcome);
     if(typeof d.watchMain==='string'&&d.watchMain.trim()) all('.watch__t').forEach(function(el){ for(var n=el.firstChild;n;n=n.nextSibling){ if(n.nodeType===3){ n.nodeValue=d.watchMain; break; } } });
     setText('.watch__sub',d.watchSub);
+    setText('.sched__time',d.schedTime); setText('.sched__freq',d.schedFreq);
+    if(typeof d.schedNote==='string'&&d.schedNote.trim()) all('.sched__note').forEach(function(el){ el.textContent=''; d.schedNote.split('X').forEach(function(t,i){ if(i){ var a=document.createElement('a'); a.href='https://x.com/shiitarou210'; a.target='_blank'; a.rel='noopener'; a.textContent='X'; el.appendChild(a); } el.appendChild(document.createTextNode(t)); }); });
+    if(Array.isArray(d.acts)){ var ac=d.acts.filter(function(x){ return typeof x==='string'&&x.trim(); }); if(ac.length) all('.acts').forEach(function(ul){ ul.textContent=''; ac.forEach(function(x){ var li=document.createElement('li'); li.textContent=x; ul.appendChild(li); }); }); }
     setText('.prof__name',d.profName); setText('.prof__aff',d.profAff); setLines('.prof__text',d.profText);
     if(Array.isArray(d.meta)){ var rows=d.meta.filter(function(r){ return r&&r.k&&r.v; }); if(rows.length) all('.prof__meta').forEach(function(dl){ dl.textContent=''; rows.forEach(function(r){ var div=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd'); dt.textContent=r.k; dd.textContent=r.v; div.appendChild(dt); div.appendChild(dd); dl.appendChild(div); }); }); }
     if(Array.isArray(d.links)){ var ls=d.links.filter(function(l){ return l&&l.n&&/^https?:\/\//.test(l.u||''); }); if(ls.length) all('.hero__sns,.menu__sns').forEach(function(ul){ ul.textContent=''; ls.forEach(function(l){ var li=document.createElement('li'),a=document.createElement('a'); a.href=l.u; a.target='_blank'; a.rel='noopener'; a.textContent=l.n; li.appendChild(a); ul.appendChild(li); }); }); }
