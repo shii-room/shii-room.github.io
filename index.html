@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261122200000">
+<meta name="build" content="20261123233000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -969,6 +969,34 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   mark.songs__hit { background: #FFE3EC; color: inherit; border-radius: 4px; padding: 0 1px; }
 
   /* 今週の配信予定（しぃ管理の予定表メーカーから反映） */
+  /* ---- ランキングカレンダー ---- */
+  .rcal { margin-bottom: 4px; }
+  .rcal__years { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+  .rcal__years button { font: inherit; font-family: var(--en); font-weight: 700; font-size: 15px; border: 0; background: none; color: var(--ink-sub); padding: 4px 12px; border-radius: 999px; cursor: pointer; }
+  .rcal__years button.on { background: rgba(255,255,255,.85); color: var(--rose-deep); box-shadow: 0 2px 0 rgba(224,116,150,.25); }
+  .rcal__head { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 2px 0 10px; }
+  .rcal__head b { font-family: var(--en); font-weight: 700; font-size: 20px; letter-spacing: .06em; color: var(--rose-deep); min-width: 9.5em; text-align: center; }
+  .rcal__head button { font: inherit; font-size: 20px; font-weight: 700; border: 0; background: rgba(255,255,255,.85); color: var(--rose-deep); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; line-height: 1; box-shadow: 0 2px 0 rgba(224,116,150,.25); }
+  .rcal__head button:disabled { opacity: .35; cursor: default; }
+  .rcal__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+  .rcal__grid .wd { background: rgba(255,255,255,.7); color: var(--ink-sub); font-family: var(--maru); font-weight: 700; font-size: 12px; text-align: center; border-radius: 9px; padding: 4px 0; }
+  .rcal__grid .wd.su { color: var(--rose-deep); } .rcal__grid .wd.sa { color: #6F8FD6; }
+  .rcal__grid .d { position: relative; min-height: 58px; background: rgba(255,255,255,.82); border-radius: 10px; padding: 3px 3px 4px; font: inherit; font-family: var(--en); font-weight: 600; font-size: 12px; color: var(--ink-sub); text-align: left; display: flex; flex-direction: column; gap: 3px; border: 0; }
+  .rcal__grid .d.su { color: var(--rose-deep); } .rcal__grid .d.sa { color: #6F8FD6; }
+  .rcal__grid .d.blank { background: none; }
+  .rcal__grid button.d { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .rcal__grid button.d.sel { box-shadow: 0 0 0 2px var(--rose) inset; }
+  .rcal__grid .d.today { box-shadow: 0 0 0 2px #F5B7CB inset; }
+  .rcal__grid .rk { display: block; border-radius: 8px; padding: 2px 0; text-align: center; font-family: var(--maru); font-weight: 700; font-size: 10.5px; line-height: 1.3; white-space: nowrap; letter-spacing: -.02em; }
+  .rcal__grid .rk.r1 { background: #FBECC8; color: #9A6A12; } .rcal__grid .rk.r2 { background: #E6E2FB; color: #6B5DB5; }
+  .rcal__grid .rk.r3 { background: #FBDFE6; color: #B25B78; } .rcal__grid .rk.rx { background: #FFE9F0; color: #C9557B; }
+  .rcal__foot { margin: 12px 0 0; text-align: center; font-family: var(--maru); font-size: 12px; color: var(--ink-sub); }
+  .rcal__detail { margin-top: 14px; padding: 14px 16px; border-radius: 18px; background: rgba(255,255,255,.85); box-shadow: 0 2px 0 rgba(224,116,150,.25); text-align: center; }
+  .rcal__detail .cd { margin: 0; font-family: var(--en); font-weight: 600; letter-spacing: .1em; font-size: 13px; color: var(--ink-sub); }
+  .rcal__detail h3 { margin: 4px 0 6px; font-family: var(--maru); font-weight: 700; font-size: 19px; color: var(--rose-deep); }
+  .rcal__detail ul { list-style: none; margin: 8px 0 0; padding: 0; text-align: left; font-family: var(--maru); font-size: 14px; color: var(--ink); }
+  .rcal__detail li { padding: 6px 0; border-top: 1px dashed rgba(224,116,150,.4); }
+  .rcal__empty { margin: 14px 0 0; text-align: center; font-family: var(--maru); font-size: 13px; color: var(--ink-sub); }
   .week { margin-bottom: 18px; }
   .week__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; margin-bottom: 10px; }
   .week__ttl { font-family: var(--maru); font-weight: 700; font-size: 16px; color: var(--ink); }
@@ -1712,6 +1740,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <nav class="nav" aria-label="メイン">
         <a href="#profile">PROFILE</a>
         <a href="#schedule">SCHEDULE</a>
+        <a href="#calendar">CALENDAR</a>
         <a href="#request">REQUEST</a>
         <a href="#message">MESSAGE</a>
         <a href="songs.html">SONGS</a>
@@ -1733,6 +1762,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
     <div class="quick quick--menu">
       <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
       <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信予定</a>
+      <a href="#calendar"><span class="quick__i"><svg><use href="#star"/></svg></span>カレンダー</a>
       <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
       <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
       <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
@@ -1789,6 +1819,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
         <nav class="quick" aria-label="メニュー">
           <a href="#profile"><span class="quick__i"><svg><use href="#bow"/></svg></span>プロフィール</a>
           <a href="#schedule"><span class="quick__i"><svg><use href="#moon"/></svg></span>配信予定</a>
+          <a href="#calendar"><span class="quick__i"><svg><use href="#star"/></svg></span>カレンダー</a>
           <a href="#request"><span class="quick__i"><svg><use href="#note1"/></svg></span>歌リクエスト</a>
           <a href="#message"><span class="quick__i"><svg><use href="#mail"/></svg></span>メッセージ</a>
           <a href="songs.html"><span class="quick__i"><svg><use href="#note2"/></svg></span>歌えるリスト</a>
@@ -1879,6 +1910,21 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
       <div class="xfeed__list" id="xfeed-list"></div>
       <a class="xfeed__more" href="https://x.com/shiitarou210" target="_blank" rel="noopener">ほかのポストも X で見る ↗</a>
     </div>
+    </div>
+  </section>
+
+  <section class="sec" id="calendar">
+    <div class="sec__head"><h2 class="sec__en">Calendar</h2><span class="sec__ja">ランキングの記録</span></div>
+    <div class="deco deco--spark">
+      <span class="deco__i p1" aria-hidden="true"><svg><use href="#kira"/></svg></span><span class="deco__i p2 w" aria-hidden="true"><svg><use href="#heart"/></svg></span><span class="deco__i p3" aria-hidden="true"><svg><use href="#star"/></svg></span><span class="deco__i p4 w" aria-hidden="true"><svg><use href="#kira"/></svg></span>
+      <div class="rcal" id="rcal">
+        <div class="rcal__years" id="rcalYears"></div>
+        <div class="rcal__head"><button type="button" id="rcalPrev" aria-label="前の月">‹</button><b id="rcalTitle"></b><button type="button" id="rcalNext" aria-label="次の月">›</button></div>
+        <div class="rcal__grid" id="rcalGrid"></div>
+        <p class="rcal__foot">👑 ランキングTOP10に入った日だけ、記録が残るよ</p>
+        <p class="rcal__empty" id="rcalEmpty" hidden>この月の記録はまだないよ</p>
+      </div>
+      <div class="rcal__detail" id="rcalDetail" hidden></div>
     </div>
   </section>
 
@@ -3523,6 +3569,68 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
   afterOpening(autoStamp);
   // 開いたまま日付をまたいだときも、戻ってきたら押す
   document.addEventListener('visibilitychange',function(){ if(!document.hidden) setTimeout(autoStamp,600); });
+})();
+</script>
+<script>
+(function(){
+  // ---- しぃのランキングカレンダー（しぃ管理で記録した「TOP10に入った日」を表示） ----
+  var grid=document.getElementById('rcalGrid'); if(!grid) return;
+  var cal={}, calY=0, calM=0, sel='';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function jst(){ var d=new Date(Date.now()+9*3600*1000); return {y:d.getUTCFullYear(),m:d.getUTCMonth()+1,d:d.getUTCDate()}; }
+  function pad(n){ return ('0'+n).slice(-2); }
+  var now=jst(); calY=now.y; calM=now.m;
+  function bounds(){
+    var minY=2026, maxY=now.y+1; Object.keys(cal).forEach(function(k){ var y=+k.slice(0,4); if(y<minY) minY=y; if(y>maxY) maxY=y; });
+    return {minY:minY,maxY:maxY};
+  }
+  function render(){
+    var b=bounds(), yh='';
+    for(var y=b.minY;y<=b.maxY;y++) yh+='<button type="button" data-y="'+y+'" class="'+(y===calY?'on':'')+'">'+y+'</button>';
+    document.getElementById('rcalYears').innerHTML=yh;
+    document.getElementById('rcalTitle').textContent='♡ '+calY+'年'+calM+'月 ♡';
+    document.getElementById('rcalPrev').disabled=(calY===b.minY&&calM===1);
+    document.getElementById('rcalNext').disabled=(calY===b.maxY&&calM===12);
+    var wd=['日','月','火','水','木','金','土'], h='';
+    wd.forEach(function(w,i){ h+='<div class="wd'+(i===0?' su':i===6?' sa':'')+'">'+w+'</div>'; });
+    var first=new Date(Date.UTC(calY,calM-1,1)).getUTCDay(), last=new Date(Date.UTC(calY,calM,0)).getUTCDate(), n=0;
+    for(var i=0;i<first;i++) h+='<div class="d blank"></div>';
+    for(var d=1;d<=last;d++){
+      var key=calY+'-'+pad(calM)+'-'+pad(d), w=(first+d-1)%7, e=cal[key];
+      var cls='d'+(w===0?' su':'')+(w===6?' sa':'')+((calY===now.y&&calM===now.m&&d===now.d)?' today':'');
+      if(e&&e.r){
+        n++;
+        h+='<button type="button" class="'+cls+(key===sel?' sel':'')+'" data-d="'+key+'" aria-label="'+calM+'月'+d+'日 '+e.r+'位"><span>'+d+'</span><span class="rk '+(e.r<=3?'r'+e.r:'rx')+'">👑 '+e.r+'位</span></button>';
+      } else h+='<div class="'+cls+'"><span>'+d+'</span></div>';
+    }
+    grid.innerHTML=h;
+    document.getElementById('rcalEmpty').hidden=n>0;
+    var box=document.getElementById('rcalDetail');
+    if(sel&&cal[sel]&&sel.slice(0,7)===calY+'-'+pad(calM)) detail(sel); else { sel=''; box.hidden=true; }
+  }
+  function detail(key){
+    var e=cal[key], box=document.getElementById('rcalDetail'); if(!e){ box.hidden=true; return; }
+    sel=key;
+    var p=key.split('-'), dow=['SUN','MON','TUE','WED','THU','FRI','SAT'][new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay()];
+    var li=''; if(e.e) li+='<li>イベント名：'+esc(e.e)+'</li>';
+    li+='<li>ランキング：'+esc(e.r)+'位</li><li>来てくれたみんな：ありがとう♡</li>';
+    if(e.m) li+='<li>しぃのひとこと：'+esc(e.m)+'</li>';
+    box.innerHTML='<p class="cd">'+p[0]+'.'+p[1]+'.'+p[2]+' '+dow+'</p><h3>👑 ランキング'+esc(e.r)+'位 👑</h3><ul>'+li+'</ul>';
+    box.hidden=false;
+    Array.prototype.forEach.call(grid.querySelectorAll('button.d'),function(x){ x.classList.toggle('sel',x.dataset.d===key); });
+  }
+  grid.addEventListener('click',function(ev){ var b=ev.target.closest('button[data-d]'); if(b) detail(b.dataset.d); });
+  document.getElementById('rcalYears').addEventListener('click',function(ev){ var b=ev.target.closest('button[data-y]'); if(b){ calY=+b.dataset.y; render(); } });
+  document.getElementById('rcalPrev').addEventListener('click',function(){ calM--; if(calM<1){ calM=12; calY--; } render(); });
+  document.getElementById('rcalNext').addEventListener('click',function(){ calM++; if(calM>12){ calM=1; calY++; } render(); });
+  render();
+  fetch('https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/shii_cal_get',{method:'POST',headers:{'apikey':'sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC','Content-Type':'application/json'},body:'{}'})
+    .then(function(r){ return r.ok?r.json():null; }).then(function(d){
+      if(!d||typeof d!=='object'||Array.isArray(d)) return;
+      cal=d; var keys=Object.keys(cal).sort(); // 記録があるなら、いちばん新しい月を最初に開く
+      if(keys.length&&!cal[now.y+'-'+pad(now.m)+'-01']&&!keys.some(function(k){ return k.slice(0,7)===now.y+'-'+pad(now.m); })){ var k=keys[keys.length-1]; calY=+k.slice(0,4); calM=+k.slice(5,7); }
+      render();
+    }).catch(function(){});
 })();
 </script>
 <script>
