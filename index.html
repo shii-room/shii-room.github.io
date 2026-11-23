@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261124001500">
+<meta name="build" content="20261124010000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -3891,6 +3891,29 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     if(!ta.value.trim()){ mm.textContent='コードを貼りつけてね'; return; }
     var r=restore(ta.value); mm.textContent=r==='OK'?'引き継ぎ中…ページを読み込み直すよ':r;
   });
+})();
+</script>
+<script>
+/* 管理画面「プロフィール・文面」で変えた文面を反映する */
+(function(){
+  var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC', CK='shii_texts_v1';
+  function all(s){ return document.querySelectorAll(s); }
+  function setText(sel,v){ if(typeof v!=='string'||!v.trim()) return; all(sel).forEach(function(el){ el.textContent=v; }); }
+  function setLines(sel,v){ if(typeof v!=='string'||!v.trim()) return; all(sel).forEach(function(el){ el.textContent=''; v.split(/\r?\n/).forEach(function(l,i){ if(i) el.appendChild(document.createElement('br')); el.appendChild(document.createTextNode(l)); }); }); }
+  function apply(d){
+    if(!d||typeof d!=='object') return;
+    setText('.hero__tag',d.heroTag); setText('.hero__welcome span',d.welcome);
+    if(typeof d.watchMain==='string'&&d.watchMain.trim()) all('.watch__t').forEach(function(el){ for(var n=el.firstChild;n;n=n.nextSibling){ if(n.nodeType===3){ n.nodeValue=d.watchMain; break; } } });
+    setText('.watch__sub',d.watchSub);
+    setText('.prof__name',d.profName); setText('.prof__aff',d.profAff); setLines('.prof__text',d.profText);
+    if(Array.isArray(d.meta)){ var rows=d.meta.filter(function(r){ return r&&r.k&&r.v; }); if(rows.length) all('.prof__meta').forEach(function(dl){ dl.textContent=''; rows.forEach(function(r){ var div=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd'); dt.textContent=r.k; dd.textContent=r.v; div.appendChild(dt); div.appendChild(dd); dl.appendChild(div); }); }); }
+    if(Array.isArray(d.links)){ var ls=d.links.filter(function(l){ return l&&l.n&&/^https?:\/\//.test(l.u||''); }); if(ls.length) all('.hero__sns,.menu__sns').forEach(function(ul){ ul.textContent=''; ls.forEach(function(l){ var li=document.createElement('li'),a=document.createElement('a'); a.href=l.u; a.target='_blank'; a.rel='noopener'; a.textContent=l.n; li.appendChild(a); ul.appendChild(li); }); }); }
+  }
+  try{ apply(JSON.parse(localStorage.getItem(CK)||'null')); }catch(e){}
+  fetch(SB+'shii_texts_get',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'})
+    .then(function(r){ return r.ok?r.json():null; })
+    .then(function(d){ if(d&&typeof d==='object'){ apply(d); try{ localStorage.setItem(CK,JSON.stringify(d)); }catch(e){} } })
+    .catch(function(){});
 })();
 </script>
 </body>
