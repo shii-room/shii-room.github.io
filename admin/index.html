@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="build" content="20261124040800">
+<meta name="build" content="20261128020000">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#F6E4E9">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -214,7 +214,7 @@
       <button type="button" data-t="wall"><span class="ic">✿</span><span class="lb">ごほうび壁紙</span><span class="st">スタンプの壁紙</span></button>
       <button type="button" data-t="cal"><span class="ic">♛</span><span class="lb">ランキング</span><span class="st">TOP10に入った日を記録</span></button>
       <button type="button" data-t="evt"><span class="ic">✦</span><span class="lb">カウントダウン</span><span class="st">誕生日・周年・イベント</span></button>
-      <button type="button" data-t="txt"><span class="ic">✎</span><span class="lb">プロフィール</span><span class="st">自己紹介・配信の文面など</span></button>
+      <button type="button" data-t="txt"><span class="ic">✎</span><span class="lb">プロフィール</span><span class="st">自己紹介・文面・弾幕など</span></button>
     </div>
     <div class="backbar" id="backbar" hidden><button type="button" id="backBtn">‹ もどる</button><b id="backTitle"></b></div>
     <div class="tabs" role="tablist" style="display:none">
@@ -418,6 +418,10 @@
         <label style="margin-top:16px">配信でやっていること<small style="font-weight:500;color:var(--sub)">（丸いタグ・最大8つ）</small></label>
         <div id="txActs"></div>
         <div class="row"><button class="ghost" id="txActAdd" type="button">＋ 足す</button></div>
+        <h2 style="margin-top:28px">歌枠の弾幕</h2>
+        <p class="hint" style="margin-top:0">歌える曲リストのページに出る、リスナーさんがコピーして配信のコメント欄に貼る用のコメントです（最大10個）。</p>
+        <div id="txDmk"></div>
+        <div class="row"><button class="ghost" id="txDmkAdd" type="button">＋ 弾幕を足す</button></div>
         <h2 style="margin-top:28px">外部リンク</h2>
         <label>名前とリンク<small style="font-weight:500;color:var(--sub)">（最大8つ）</small></label>
         <div id="txLinks"></div>
@@ -1522,6 +1526,7 @@
     profText:'面白いこと、楽しいこと、お菓子が大好きな元メイドのしぃと申します🍭🍰꙳.*',
     meta:[{k:'FM',v:'🍭🍰꙳.*'},{k:'FT',v:'しぃの見守り隊'},{k:'FA',v:'しぃとふたりごと'}],
     schedTime:'22:00〜',schedFreq:'ほぼ毎日',schedNote:'ゲリラで朝やお昼に配信することもあります。お知らせはXで。',acts:['まったり雑談','ミラティブのゲーム','PUBG MOBILE参加型','歌ってみた'],
+    danmaku:['🍭🍰꙳.*し.•*¨*•.¸💗¸♬.•*¨*•.¸¸🍭🍰꙳.*ぃ.•*¨*•.¸🍭🍰꙳.*ち.•*¨*•.¸🍭🍰꙳.*ゃ•*¨*•.¸¸♪🍭🍰꙳.*ん.•*¨*•.¸💞¸♬❤','✩∗*ﾟ⋆｡˚✩🍭🍰☪︎⋆｡˚✩˚✩∗*ﾟ🍭🍰 ⋆｡˚✩⋆｡˚✩ 🍭🍰 ˚✩∗*ﾟ⋆｡˚✩🍭🍰☪︎⋆｡˚✩˚✩∗*ﾟ🍭🍰 ⋆｡˚✩⋆｡˚✩ 🍭🍰'],
     links:[{n:'Mirrativ',u:'https://www.mirrativ.com/user/150505157'},{n:'X',u:'https://x.com/shiitarou210'},{n:'ほにゃららLIVERS',u:'https://honyararalivers.jp/'}]};
   var txLoaded=false;
   function txRow(box,a,b,pa,pb,maxA,maxB,urlB){
@@ -1539,6 +1544,13 @@
     x.onclick=function(){ d.remove(); };
     d.appendChild(i); d.appendChild(x); $('txActs').appendChild(d);
   }
+  function dmkRow(v){
+    var d=document.createElement('div'); d.style.cssText='display:grid;grid-template-columns:1fr 44px;gap:8px;margin-top:8px;align-items:start';
+    var t=document.createElement('textarea'); t.rows=2; t.maxLength=300; t.value=v||''; t.placeholder='弾幕コメントを貼りつけ'; t.setAttribute('aria-label','弾幕コメント');
+    var x=document.createElement('button'); x.type='button'; x.className='del'; x.textContent='×'; x.setAttribute('aria-label','この弾幕を消す'); x.style.cssText='height:52px;padding:0';
+    x.onclick=function(){ d.remove(); };
+    d.appendChild(t); d.appendChild(x); $('txDmk').appendChild(d);
+  }
   function txFill(d){
     function g(k){ return (typeof d[k]==='string'&&d[k].trim())?d[k]:TXD[k]; }
     $('txHeroTag').value=g('heroTag'); $('txWelcome').value=g('welcome'); $('txWatchMain').value=g('watchMain'); $('txWatchSub').value=g('watchSub');
@@ -1548,6 +1560,8 @@
     $('txSchTime').value=g('schedTime'); $('txSchFreq').value=g('schedFreq'); $('txSchNote').value=g('schedNote');
     var acts=(Array.isArray(d.acts)&&d.acts.some(function(x){return x;}))?d.acts:TXD.acts;
     $('txActs').innerHTML=''; acts.forEach(function(x){ if(x) actRow(x); });
+    var dm=(Array.isArray(d.danmaku)&&d.danmaku.some(function(x){return typeof x==='string'&&x.trim();}))?d.danmaku:TXD.danmaku;
+    $('txDmk').innerHTML=''; dm.forEach(function(x){ if(typeof x==='string'&&x.trim()) dmkRow(x); });
     var links=(Array.isArray(d.links)&&d.links.some(function(r){return r&&r.n&&r.u;}))?d.links:TXD.links;
     $('txLinks').innerHTML=''; links.forEach(function(r){ if(r&&r.n&&r.u) txRow($('txLinks'),r.n,r.u,'名前','https://…',20,200,true); });
   }
@@ -1557,6 +1571,7 @@
       profName:$('txName').value.trim(),profAff:$('txAff').value.trim(),profText:$('txText').value.trim(),
       schedTime:$('txSchTime').value.trim(),schedFreq:$('txSchFreq').value.trim(),schedNote:$('txSchNote').value.trim(),
       acts:Array.prototype.map.call($('txActs').querySelectorAll('input'),function(i){return i.value.trim();}).filter(Boolean).slice(0,8),
+      danmaku:Array.prototype.map.call($('txDmk').querySelectorAll('textarea'),function(i){return i.value.trim();}).filter(Boolean).slice(0,10),
       meta:rows($('txMeta')).slice(0,6).map(function(r){return {k:r[0],v:r[1]};}),
       links:rows($('txLinks')).slice(0,8).map(function(r){return {n:r[0],u:r[1]};})};
   }
@@ -1566,13 +1581,14 @@
       .catch(function(e){ fail(e,$('txMsg')); });
   }
   $('txActAdd').onclick=function(){ if($('txActs').children.length>=8){ say($('txMsg'),'タグは8つまでです',true); return; } actRow(''); };
+  $('txDmkAdd').onclick=function(){ if($('txDmk').children.length>=10){ say($('txMsg'),'弾幕は10個までです',true); return; } dmkRow(''); };
   $('txMetaAdd').onclick=function(){ if($('txMeta').children.length>=6){ say($('txMsg'),'項目は6つまでです',true); return; } txRow($('txMeta'),'','','項目名','内容',8,40,false); };
   $('txLinkAdd').onclick=function(){ if($('txLinks').children.length>=8){ say($('txMsg'),'リンクは8つまでです',true); return; } txRow($('txLinks'),'','','名前','https://…',20,200,true); };
   $('txSave').onclick=function(){
     var d=txCollect(), bad=d.links.filter(function(l){ return !/^https?:\/\//.test(l.u); });
     if(bad.length){ say($('txMsg'),'リンクは https:// からはじまるものを入れてね',true); return; }
     var b=$('txSave'); b.disabled=true; say($('txMsg'),'保存しています…');
-    call('shii_texts_admin',{p_action:'save',p_data:d}).then(function(r){ txFill(r||{}); say($('txMsg'),'保存しました！HPにすぐ出ます（開いている人は読み込み直すと変わります）'); })
+    call('shii_texts_admin',{p_action:'save',p_data:d}).then(function(r){ txFill(r||{}); var ok=!d.danmaku.length||(r&&Array.isArray(r.danmaku)&&r.danmaku.join('\n')===d.danmaku.join('\n')); if(!ok){ say($('txMsg'),'ほかの文面は保存できましたが、弾幕だけ保存できませんでした。ヒロさんに連絡してね',true); return; } say($('txMsg'),'保存しました！HPにすぐ出ます（開いている人は読み込み直すと変わります）'); })
       .catch(function(e){ fail(e,$('txMsg')); }).then(function(){ b.disabled=false; });
   };
   $('txReset').onclick=function(){
