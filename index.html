@@ -8,7 +8,7 @@
 <title>しぃ｜公式サイト</title>
 <meta name="description" content="ほにゃららLIVERS所属・Mirrativ配信者しぃの公式サイト。">
 <meta name="theme-color" content="#F3DDE3">
-<meta name="build" content="20261128020000">
+<meta name="build" content="20261128123000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="しぃの部屋">
 <meta property="og:title" content="しぃの部屋｜しぃ公式サイト">
@@ -2818,7 +2818,7 @@ try{ if(!sessionStorage.getItem('shii_op') && !matchMedia('(prefers-reduced-moti
 '「パフェ(parfait)」はフランス語で「完全な」という意味。グラスの中に、アイスやクリーム、フルーツを何層にも重ねているよ。'];
   var ZK=(function(){ var z={n:[],l:[],d:{}}; try{ var v=JSON.parse(localStorage.getItem('shii_zukan')||'null'); if(v&&typeof v==='object'){ for(var k in v) if(Array.isArray(v[k])) z[k]=v[k]; if(v.d&&typeof v.d==='object') z.d=v.d; } }catch(e){} return z; })();
   function zkGet(t,i){ return !!ZK[t]&&ZK[t].indexOf(i)>=0; }
-  function zkTotal(){ var c=ZK.n.length+ZK.l.length,all=NN.length+LN.length,j; for(j=0;j<THEMES.length;j++){ all+=THEMES[j].items.length; c+=(ZK['t'+THEMES[j].ym]||[]).length; } return [c,all]; }
+  function zkTotal(){ var c=ZK.n.length+ZK.l.length,all=NN.length+LN.length,j; for(j=0;j<THEMES.length;j++){ if(THEMES[j].ym>(ym||THEMES[j].ym)) continue; all+=THEMES[j].items.length; c+=(ZK['t'+THEMES[j].ym]||[]).length; } return [c,all]; }
   var SHARE_TAG='#しぃの見守り隊', SHARE_URL='https://shii-room.github.io/#clap', chipT=0;
   function xurl(t){ return 'https://x.com/intent/tweet?text='+encodeURIComponent(t+'\n'+SHARE_TAG)+'&url='+encodeURIComponent(SHARE_URL); }
   function offerShare(t){
